@@ -1567,34 +1567,24 @@
         var isDownloading = false;
         var adLoaded = false;
 
-        // ===== SALIN LINK MENGGUNAKAN WORKER =====
+        // ===== SALIN LINK =====
         function copyWallpaperLink() {
-    if (!currentWallpaper) {
-        showToast('❌ Tidak ada wallpaper yang dipilih.', 'error');
-        return;
-    }
-    var detailUrl = window.location.origin + '/wallpaper-detail.html?id=' + currentWallpaper.id;
+            if (!currentWallpaper) {
+                showToast('❌ Tidak ada wallpaper yang dipilih.', 'error');
+                return;
+            }
+            var detailUrl = window.location.origin + '/wallpaper-detail.html?id=' + currentWallpaper.id;
 
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(detailUrl).then(function() {
-            showToast('✅ Link wallpaper (detail) disalin!', 'success');
-        }).catch(function() {
-            fallbackCopy(detailUrl);
-        });
-    } else {
-        fallbackCopy(detailUrl);
-    }
-}
-
-function fallbackCopy(text) {
-    var input = document.createElement('input');
-    input.value = text;
-    document.body.appendChild(input);
-    input.select();
-    document.execCommand('copy');
-    document.body.removeChild(input);
-    showToast('✅ Link wallpaper (detail) disalin!', 'success');
-}
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(detailUrl).then(function() {
+                    showToast('✅ Link wallpaper (detail) disalin!', 'success');
+                }).catch(function() {
+                    fallbackCopy(detailUrl);
+                });
+            } else {
+                fallbackCopy(detailUrl);
+            }
+        }
 
         function fallbackCopy(text) {
             var input = document.createElement('input');
@@ -1603,7 +1593,7 @@ function fallbackCopy(text) {
             input.select();
             document.execCommand('copy');
             document.body.removeChild(input);
-            showToast('✅ Link wallpaper (Worker) disalin!', 'success');
+            showToast('✅ Link wallpaper disalin!', 'success');
         }
 
         // ===== BUKA / TUTUP LIGHTBOX =====
@@ -1745,18 +1735,18 @@ function fallbackCopy(text) {
         });
 
         // ============================================================
-        // ===== PAGINASI & LOAD WALLPAPERS ===========================
+        // ===== PAGINASI & LOAD WALLPAPERS (FILTER SISI CLIENT) =====
         // ============================================================
         var pageSize = 12;
-        var lastVisible = null;
-        var allLoaded = false;
+        var allWallpapers = [];
+        var filteredWallpapers = [];
+        var currentPage = 0;
         var isLoading = false;
-        var currentFilter = { search: '', category: '' };
+        var allLoaded = false;
 
         var grid = document.getElementById('wallpaperGrid');
         var loadMoreBtn = document.getElementById('loadMoreBtn');
         var loadMoreWrap = document.getElementById('loadMoreWrap');
-        var allLoadedWallpapers = [];
 
         function renderWallpapers(items, append) {
             if (!append) {
@@ -1780,154 +1770,135 @@ function fallbackCopy(text) {
                     '</h4><div class="meta"><span class="download-count"><i class="fas fa-download"></i> ' + (wp.downloads || 0) + '</span></div></div>';
                 card.addEventListener('click', function() {
                     var id = this.dataset.id;
-                    var wpData = allLoadedWallpapers.find(function(w) { return w.id === id; });
+                    var wpData = allWallpapers.find(function(w) { return w.id === id; });
                     if (wpData) openLightbox(wpData);
                 });
                 grid.appendChild(card);
             });
         }
 
-        function fetchWallpapers(reset) {
-            if (isLoading) return;
+        function applyFilters() {
+            var search = document.getElementById('searchInput').value.trim().toLowerCase();
+            var category = document.getElementById('categoryFilter').value;
+
+            filteredWallpapers = allWallpapers.filter(function(wp) {
+                var matchSearch = true;
+                var matchCategory = true;
+                if (search) {
+                    matchSearch = (wp.title || '').toLowerCase().includes(search);
+                }
+                if (category) {
+                    matchCategory = (wp.category || '') === category;
+                }
+                return matchSearch && matchCategory;
+            });
+
+            currentPage = 0;
+            allLoaded = false;
+            loadMoreWrap.style.display = 'flex';
+            loadMoreBtn.querySelector('.btn-text').innerHTML = '<i class="fas fa-chevron-down"></i> Load More';
+            loadMoreBtn.disabled = false;
+            loadMoreBtn.classList.remove('loading');
+
+            loadMorePage();
+        }
+
+        function loadMorePage() {
+            if (isLoading || allLoaded) return;
             isLoading = true;
             loadMoreBtn.disabled = true;
             loadMoreBtn.classList.add('loading');
             loadMoreBtn.querySelector('.btn-text').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memuat...';
 
-            var query = db.collection('wallpapers')
-                .orderBy('createdAt', 'desc')
-                .limit(pageSize);
+            var start = currentPage * pageSize;
+            var end = start + pageSize;
+            var pageItems = filteredWallpapers.slice(start, end);
 
-            if (!reset && lastVisible) {
-                query = query.startAfter(lastVisible);
-            }
-
-            var search = currentFilter.search.trim().toLowerCase();
-            var category = currentFilter.category;
-
-            if (category) {
-                query = query.where('category', '==', category);
-            }
-
-            query.get().then(function(snapshot) {
-                var docs = [];
-                snapshot.forEach(function(doc) {
-                    docs.push({
-                        id: doc.id,
-                        imageUrl: doc.data().imageUrl,
-                        title: doc.data().title || 'Untitled',
-                        category: doc.data().category || 'Uncategorized',
-                        resolution: doc.data().resolution || 'Auto',
-                        downloads: doc.data().downloads || 0
-                    });
-                });
-
-                if (search) {
-                    docs = docs.filter(function(wp) {
-                        return wp.title.toLowerCase().includes(search);
-                    });
-                }
-
-                if (snapshot.docs.length > 0) {
-                    lastVisible = snapshot.docs[snapshot.docs.length - 1];
-                } else {
-                    allLoaded = true;
-                }
-
-                if (docs.length < pageSize) {
-                    allLoaded = true;
-                }
-
-                if (reset) {
-                    allLoadedWallpapers = docs;
-                } else {
-                    allLoadedWallpapers = allLoadedWallpapers.concat(docs);
-                }
-
-                if (reset) {
-                    renderWallpapers(docs, false);
-                } else {
-                    renderWallpapers(docs, true);
-                }
-
-                if (allLoaded || docs.length < pageSize) {
-                    loadMoreWrap.style.display = 'none';
-                } else {
-                    loadMoreWrap.style.display = 'flex';
-                }
-
+            if (pageItems.length === 0) {
+                allLoaded = true;
+                loadMoreWrap.style.display = 'none';
                 isLoading = false;
                 loadMoreBtn.disabled = false;
                 loadMoreBtn.classList.remove('loading');
                 loadMoreBtn.querySelector('.btn-text').innerHTML = '<i class="fas fa-chevron-down"></i> Load More';
-
-                if (reset && docs.length === 0) {
-                    grid.innerHTML = '<div class="empty-state"><i class="fas fa-image"></i><p>Tidak ada wallpaper yang cocok.</p></div>';
-                    loadMoreWrap.style.display = 'none';
-                }
-            }).catch(function(err) {
-                console.error('Error fetching wallpapers:', err);
-                showToast('❌ Gagal memuat data. Error: ' + err.message, 'error');
-                isLoading = false;
-                loadMoreBtn.disabled = false;
-                loadMoreBtn.classList.remove('loading');
-                loadMoreBtn.querySelector('.btn-text').innerHTML = '<i class="fas fa-chevron-down"></i> Load More';
-                if (reset) {
-                    grid.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Gagal memuat wallpaper. Coba refresh.</p></div>';
-                }
-            });
-        }
-
-        function resetPagination() {
-            lastVisible = null;
-            allLoaded = false;
-            allLoadedWallpapers = [];
-            fetchWallpapers(true);
-        }
-
-        loadMoreBtn.addEventListener('click', function() {
-            if (!isLoading && !allLoaded) {
-                fetchWallpapers(false);
+                return;
             }
-        });
 
-        document.getElementById('searchInput').addEventListener('input', function() {
-            currentFilter.search = this.value;
-            resetPagination();
-        });
+            // Render
+            var isFirstLoad = currentPage === 0;
+            renderWallpapers(pageItems, !isFirstLoad);
 
-        document.getElementById('categoryFilter').addEventListener('change', function() {
-            currentFilter.category = this.value;
-            resetPagination();
-        });
+            currentPage++;
 
+            if (end >= filteredWallpapers.length) {
+                allLoaded = true;
+                loadMoreWrap.style.display = 'none';
+            } else {
+                loadMoreWrap.style.display = 'flex';
+            }
+
+            isLoading = false;
+            loadMoreBtn.disabled = false;
+            loadMoreBtn.classList.remove('loading');
+            loadMoreBtn.querySelector('.btn-text').innerHTML = '<i class="fas fa-chevron-down"></i> Load More';
+        }
+
+        loadMoreBtn.addEventListener('click', loadMorePage);
+
+        // ===== EVENT FILTER =====
+        document.getElementById('searchInput').addEventListener('input', applyFilters);
+        document.getElementById('categoryFilter').addEventListener('change', applyFilters);
         document.getElementById('resetFilterBtn').addEventListener('click', function() {
             document.getElementById('searchInput').value = '';
             document.getElementById('categoryFilter').value = '';
-            currentFilter.search = '';
-            currentFilter.category = '';
-            resetPagination();
+            applyFilters();
         });
 
+        // ===== LOAD ALL WALLPAPERS FIRST =====
         function initLoad() {
+            // Tampilkan skeleton
             var skeletonHtml = '';
             for (var i = 0; i < pageSize; i++) {
                 skeletonHtml +=
                     '<div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-text"><div class="line"></div><div class="line short"></div></div></div>';
             }
             grid.innerHTML = skeletonHtml;
-            fetchWallpapers(true);
+
+            if (typeof db === 'undefined' || !db) {
+                console.error('Firestore db not initialized');
+                grid.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Koneksi database gagal. Coba refresh.</p></div>';
+                loadMoreWrap.style.display = 'none';
+                return;
+            }
+
+            db.collection('wallpapers')
+                .orderBy('createdAt', 'desc')
+                .get()
+                .then(function(snapshot) {
+                    allWallpapers = [];
+                    snapshot.forEach(function(doc) {
+                        allWallpapers.push({
+                            id: doc.id,
+                            imageUrl: doc.data().imageUrl,
+                            title: doc.data().title || 'Untitled',
+                            category: doc.data().category || 'Uncategorized',
+                            resolution: doc.data().resolution || 'Auto',
+                            downloads: doc.data().downloads || 0
+                        });
+                    });
+
+                    applyFilters();
+                })
+                .catch(function(err) {
+                    console.error('Error fetching wallpapers:', err);
+                    grid.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Gagal memuat wallpaper. Error: ' + err.message + '</p></div>';
+                    loadMoreWrap.style.display = 'none';
+                });
         }
 
-        if (typeof db === 'undefined' || !db) {
-            console.error('Firestore db not initialized');
-            grid.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Koneksi database gagal. Coba refresh.</p></div>';
-            loadMoreWrap.style.display = 'none';
-        } else {
-            initLoad();
-        }
+        initLoad();
 
-        console.log('🎨 Wallpaper Gallery loaded (Adblock detector stabil + tombol lanjutkan)');
+        console.log('🎨 Wallpaper Gallery loaded (filter sisi client - berfungsi)');
     </script>
 
     <!-- ============================================================ -->
