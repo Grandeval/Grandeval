@@ -1,0 +1,1920 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+  <title>Detail Manga – Akino Store</title>
+  <meta name="description" content="Detail manga, sinopsis, daftar chapter, dan komentar." />
+  <link rel="manifest" href="/manifest.json?v=4.2" />
+  <meta name="theme-color" content="#3B82F6" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="apple-touch-icon" href="https://res.cloudinary.com/d39mdjct/image/upload/w_180,h_180,c_fit/v1783493763/apk_pgxcmo.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="https://res.cloudinary.com/d39mdjct/image/upload/w_152,h_152,c_fit/v1783493763/apk_pgxcmo.png" />
+  <link rel="apple-touch-icon" sizes="167x167" href="https://res.cloudinary.com/d39mdjct/image/upload/w_167,h_167,c_fit/v1783493763/apk_pgxcmo.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/d39mdjct/image/upload/w_180,h_180,c_fit/v1783493763/apk_pgxcmo.png" />
+  <meta property="og:site_name" content="Akino Store" />
+  <meta property="og:title" content="Detail Manga - Akino Store" />
+  <meta property="og:description" content="Baca manga, manhwa, dan manhua terjemahan Indonesia. Detail, sinopsis, dan chapter." />
+  <meta property="og:image" content="https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://akinocpm.my.id/detail.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Detail Manga - Akino Store" />
+  <meta name="twitter:description" content="Baca manga, manhwa, dan manhua terjemahan Indonesia." />
+  <meta name="twitter:image" content="https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png" />
+  <link rel="icon" href="https://res.cloudinary.com/d39mdjct/image/upload/v1783478697/icon_tnzy32.ico" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-init.js?v=4.2"></script>
+  <style>
+    :root {
+      --bg-primary: #0f0f0f;
+      --bg-secondary: #181818;
+      --bg-card: #1e1e1e;
+      --bg-card-hover: #282828;
+      --bg-glass: rgba(24,24,24,0.85);
+      --fg-primary: #f0f0f0;
+      --fg-secondary: #a0a0a0;
+      --fg-muted: #6b6b6b;
+      --accent: #3B82F6;
+      --accent-hover: #2563eb;
+      --accent-dim: rgba(59,130,246,0.12);
+      --accent-glow: rgba(59,130,246,0.2);
+      --border-color: rgba(255,255,255,0.06);
+      --border-hover: rgba(255,255,255,0.12);
+      --shadow: 0 8px 32px rgba(0,0,0,0.5);
+      --shadow-hover: 0 16px 48px rgba(0,0,0,0.6);
+      --radius: 12px;
+      --radius-lg: 16px;
+      --radius-sm: 8px;
+      --font: 'Inter', sans-serif;
+      --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+      --navbar-height: 68px;
+    }
+    body.light-theme {
+      --bg-primary: #f5f5f8;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --bg-card-hover: #f0f0f5;
+      --bg-glass: rgba(255,255,255,0.85);
+      --fg-primary: #121212;
+      --fg-secondary: #555555;
+      --fg-muted: #888888;
+      --border-color: rgba(0,0,0,0.06);
+      --border-hover: rgba(0,0,0,0.12);
+      --shadow: 0 8px 32px rgba(0,0,0,0.08);
+      --shadow-hover: 0 16px 48px rgba(0,0,0,0.12);
+      --accent-glow: rgba(59,130,246,0.15);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--bg-primary);
+      color: var(--fg-primary);
+      transition: background var(--transition), color var(--transition);
+      padding-top: var(--navbar-height);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height:1.6;
+    }
+    a { text-decoration:none; color:inherit; }
+    img { display:block; max-width:100%; }
+    button { cursor:pointer; font-family:var(--font); border:none; background:none; color:inherit; }
+    ::-webkit-scrollbar { width:6px; height:6px; }
+    ::-webkit-scrollbar-track { background:var(--bg-secondary); }
+    ::-webkit-scrollbar-thumb { background:var(--accent); border-radius:3px; }
+
+    .navbar {
+      position:fixed; top:0; left:0; right:0; z-index:1000;
+      background:var(--bg-glass);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--border-color);
+      height:var(--navbar-height);
+      transition: background var(--transition), box-shadow var(--transition);
+    }
+    .navbar.scrolled { box-shadow:var(--shadow); }
+    .navbar-inner {
+      display:flex; align-items:center; justify-content:space-between;
+      height:100%; max-width:1400px; margin:0 auto; padding:0 16px; gap:0.8rem;
+    }
+    .navbar .logo {
+      display:flex; align-items:center; gap:0.4rem;
+      font-size:1.1rem; font-weight:800; color:var(--fg-primary); flex-shrink:0;
+    }
+    .navbar .logo i { color:var(--accent); font-size:1rem; }
+    .navbar .logo span { color:var(--accent); }
+    .nav-menu {
+      display:flex; align-items:center; gap:0.2rem; list-style:none;
+      flex:1; justify-content:center; flex-wrap:wrap;
+    }
+    .nav-menu a {
+      padding:0.3rem 0.6rem; border-radius:var(--radius-sm);
+      font-size:0.75rem; font-weight:500; color:var(--fg-secondary);
+      transition:all var(--transition); white-space:nowrap;
+    }
+    .nav-menu a:hover, .nav-menu a.active {
+      color:var(--fg-primary); background:var(--bg-card);
+    }
+    .nav-menu a.active { color:var(--accent); background:var(--accent-dim); }
+    .nav-actions {
+      display:flex; align-items:center; gap:0.4rem; flex-shrink:0;
+    }
+    .nav-actions .theme-btn {
+      width:34px; height:34px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      background:var(--bg-card); border:1px solid var(--border-color);
+      color:var(--fg-secondary); transition:all var(--transition); font-size:0.8rem;
+    }
+    .nav-actions .theme-btn:hover {
+      border-color:var(--accent); color:var(--fg-primary); background:var(--accent-dim);
+    }
+    .nav-actions .auth-btn {
+      padding:0.3rem 0.8rem; border-radius:var(--radius-sm);
+      font-size:0.75rem; font-weight:600; color:#fff;
+      background:var(--accent); border:none;
+      transition:all var(--transition);
+      display:inline-flex; align-items:center; gap:0.3rem;
+      text-decoration:none; font-family:var(--font);
+      box-shadow:0 2px 8px rgba(59,130,246,0.2);
+    }
+    .nav-actions .auth-btn:hover {
+      background:var(--accent-hover); transform:scale(1.02);
+      box-shadow:0 4px 16px rgba(59,130,246,0.3);
+    }
+    .nav-actions .auth-btn i { font-size:0.7rem; }
+    .hamburger {
+      display:none; flex-direction:column; gap:4px;
+      background:none; border:none; padding:4px; cursor:pointer;
+    }
+    .hamburger span {
+      display:block; width:22px; height:2px;
+      background:var(--fg-primary); border-radius:2px; transition:all var(--transition);
+    }
+    .hamburger.active span:nth-child(1) { transform:rotate(45deg) translate(4px,4px); }
+    .hamburger.active span:nth-child(2) { opacity:0; }
+    .hamburger.active span:nth-child(3) { transform:rotate(-45deg) translate(4px,-4px); }
+    .mobile-menu {
+      display:none; position:fixed; top:var(--navbar-height); left:0; right:0; bottom:0;
+      background:var(--bg-primary); padding:1.5rem; overflow-y:auto; z-index:999;
+      border-top:1px solid var(--border-color); flex-direction:column; gap:0.5rem;
+    }
+    .mobile-menu.open { display:flex; }
+    .mobile-menu a {
+      padding:0.8rem 1rem; border-radius:var(--radius-sm);
+      font-size:0.95rem; font-weight:500; color:var(--fg-secondary);
+      transition:all var(--transition); border-bottom:1px solid var(--border-color);
+    }
+    .mobile-menu a:hover, .mobile-menu a.active {
+      color:var(--fg-primary); background:var(--bg-card);
+    }
+    .mobile-menu a.active { color:var(--accent); background:var(--accent-dim); }
+
+    .container { max-width:1400px; margin:0 auto; padding:0 16px; }
+
+    .detail-back {
+      display:inline-flex; align-items:center; gap:0.4rem;
+      padding:0.3rem 1rem; border-radius:var(--radius-sm);
+      background:var(--bg-card); border:1px solid var(--border-color);
+      color:var(--fg-secondary); font-size:0.78rem;
+      transition:all var(--transition); cursor:pointer; margin-bottom:1rem;
+    }
+    .detail-back:hover { border-color:var(--accent); color:var(--fg-primary); background:var(--accent-dim); }
+
+    .detail-main {
+      display:flex; gap:2rem; flex-wrap:wrap;
+    }
+    .detail-main .cover-wrap {
+      flex:0 0 220px; max-width:220px;
+      border-radius:var(--radius); overflow:hidden;
+      border:1px solid var(--border-color);
+      box-shadow:var(--shadow);
+    }
+    .detail-main .cover-wrap img { width:100%; display:block; }
+    .detail-main .info-wrap { flex:1; min-width:240px; }
+    .detail-main .info-wrap h2 {
+      font-size:2rem; font-weight:800; line-height:1.2; margin-bottom:0.2rem;
+      letter-spacing:-0.5px;
+    }
+    .detail-main .info-wrap .alt-title {
+      font-size:0.85rem; color:var(--fg-secondary); margin-bottom:0.5rem;
+    }
+    .detail-main .info-wrap .detail-meta {
+      display:flex; flex-wrap:wrap; gap:0.6rem 1.2rem;
+      font-size:0.8rem; color:var(--fg-secondary); margin-bottom:0.5rem;
+    }
+    .detail-main .info-wrap .detail-meta strong { color:var(--fg-primary); }
+    .detail-main .info-wrap .detail-meta .rating-star { color:var(--accent); }
+
+    .detail-main .info-wrap .origin-tag {
+      display:inline-block; padding:0.15rem 0.8rem; border-radius:20px;
+      background:var(--accent-dim); border:1px solid var(--accent);
+      color:var(--accent); font-size:0.7rem; font-weight:600;
+      cursor:pointer; transition:all var(--transition); margin-top:0.2rem;
+    }
+    .detail-main .info-wrap .origin-tag:hover {
+      background:var(--accent); color:#fff; transform:scale(1.05);
+    }
+
+    .detail-main .info-wrap .desc {
+      font-size:0.9rem; line-height:1.7; color:var(--fg-secondary);
+      margin-top:0.5rem; max-height:120px; overflow-y:auto;
+      padding-right:0.5rem;
+    }
+    .detail-main .info-wrap .desc::-webkit-scrollbar { width:4px; }
+    .detail-main .info-wrap .desc::-webkit-scrollbar-thumb { background:var(--border-color); border-radius:4px; }
+
+    .detail-main .info-wrap .genre-tags {
+      display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:0.6rem;
+    }
+    .detail-main .info-wrap .genre-tags .tag {
+      background:var(--bg-card); border:1px solid var(--border-color);
+      border-radius:20px; padding:0.1rem 0.7rem;
+      font-size:0.65rem; color:var(--fg-secondary);
+      cursor:pointer; transition:all var(--transition);
+    }
+    .detail-main .info-wrap .genre-tags .tag:hover {
+      border-color:var(--accent); color:var(--accent);
+      background:var(--accent-dim); transform:scale(1.05);
+    }
+
+    .detail-main .info-wrap .actions {
+      display:flex; gap:0.6rem; flex-wrap:wrap; margin-top:0.8rem;
+    }
+    .detail-main .info-wrap .actions .btn {
+      padding:0.4rem 1.5rem; border-radius:var(--radius-sm);
+      font-weight:600; font-size:0.85rem; transition:all var(--transition);
+    }
+    .detail-main .info-wrap .actions .btn-primary {
+      background:var(--accent); color:#fff; border:none;
+      box-shadow:0 2px 12px rgba(59,130,246,0.25);
+    }
+    .detail-main .info-wrap .actions .btn-primary:hover { background:var(--accent-hover); transform:scale(1.02); }
+    .detail-main .info-wrap .actions .btn-outline {
+      background:transparent; border:1px solid var(--border-color);
+      color:var(--fg-secondary);
+    }
+    .detail-main .info-wrap .actions .btn-outline:hover {
+      border-color:var(--accent); color:var(--accent); background:var(--accent-dim);
+    }
+
+    .detail-chapters { margin-top:1.5rem; }
+    .detail-chapters h3 {
+      font-size:1.1rem; font-weight:700; margin-bottom:0.5rem;
+      display:flex; align-items:center; gap:0.5rem;
+    }
+    .detail-chapters h3 i { color:var(--accent); }
+
+    .lang-tabs {
+      display:flex; gap:0.5rem; margin:0.8rem 0 1rem; flex-wrap:wrap;
+    }
+    .lang-tabs .tab {
+      padding:0.3rem 1rem; border-radius:50px;
+      background:var(--bg-card); border:1px solid var(--border-color);
+      font-size:0.75rem; font-weight:600; color:var(--fg-secondary);
+      cursor:pointer; transition:all var(--transition);
+    }
+    .lang-tabs .tab:hover { border-color:var(--accent); color:var(--fg-primary); background:var(--accent-dim); }
+    .lang-tabs .tab.active { background:var(--accent); color:#fff; border-color:var(--accent); box-shadow:0 2px 12px rgba(59,130,246,0.25); }
+
+    .ch-list {
+      display:flex; flex-direction:column; gap:0.3rem;
+      max-height:500px; overflow-y:auto; padding-right:0.3rem;
+    }
+    .ch-list::-webkit-scrollbar { width:4px; }
+    .ch-list::-webkit-scrollbar-thumb { background:var(--border-color); border-radius:4px; }
+    .ch-item {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:0.5rem 0.8rem; background:var(--bg-card);
+      border:1px solid var(--border-color); border-radius:var(--radius-sm);
+      transition:all var(--transition); cursor:pointer;
+    }
+    .ch-item:hover { border-color:var(--accent); background:var(--bg-card-hover); }
+    .ch-item .ch-info {
+      display:flex; gap:0.8rem; align-items:center; font-size:0.8rem; flex-wrap:wrap;
+    }
+    .ch-item .ch-info .ch-num { font-weight:600; color:var(--fg-primary); }
+    .ch-item .ch-info .ch-meta { color:var(--fg-secondary); font-size:0.7rem; }
+    .ch-item .ch-read {
+      padding:0.2rem 0.8rem; background:var(--accent);
+      border:none; border-radius:var(--radius-sm);
+      color:#fff; font-size:0.7rem; font-weight:600;
+      transition:all var(--transition);
+    }
+    .ch-item .ch-read:hover { background:var(--accent-hover); transform:scale(1.02); }
+    .badge-lang {
+      font-size:0.55rem; padding:0.1rem 0.5rem; border-radius:12px; font-weight:700;
+    }
+    .badge-lang.id { background:rgba(59,130,246,0.2); color:#3B82F6; }
+    .badge-lang.en { background:rgba(239,68,68,0.2); color:#ef4444; }
+
+    .recommendations {
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-color);
+    }
+    .recommendations h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .recommendations h3 i { color: var(--accent); }
+    .recommendations .rec-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.8rem;
+    }
+    .recommendations .rec-item {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      transition: all var(--transition);
+      cursor: pointer;
+    }
+    .recommendations .rec-item:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      box-shadow: var(--shadow-hover);
+      background: var(--bg-card-hover);
+    }
+    .recommendations .rec-item img {
+      width: 100%;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      background: var(--bg-secondary);
+    }
+    .recommendations .rec-item .rec-info {
+      padding: 0.4rem 0.5rem 0.6rem;
+    }
+    .recommendations .rec-item .rec-info h4 {
+      font-size: 0.75rem;
+      font-weight: 600;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .recommendations .rec-item .rec-info .rec-meta {
+      font-size: 0.6rem;
+      color: var(--fg-secondary);
+      margin-top: 0.1rem;
+    }
+    .recommendations .rec-empty {
+      text-align: center;
+      color: var(--fg-secondary);
+      font-size: 0.85rem;
+      padding: 1rem 0;
+    }
+
+    .comment-section {
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-color);
+    }
+    .comment-section h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .comment-section h3 i { color: var(--accent); }
+    .comment-section .comment-count {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: var(--fg-secondary);
+    }
+
+    .comment-form {
+      display: flex;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .comment-form input {
+      flex: 1;
+      min-width: 200px;
+      padding: 0.6rem 1rem;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--fg-primary);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border var(--transition), box-shadow var(--transition);
+      font-family: var(--font);
+    }
+    .comment-form input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+    .comment-form input::placeholder { color: var(--fg-muted); }
+    .comment-form .btn-submit-comment {
+      padding: 0.6rem 1.2rem;
+      border-radius: var(--radius-sm);
+      background: var(--accent);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.85rem;
+      border: none;
+      cursor: pointer;
+      transition: all var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      white-space: nowrap;
+      box-shadow:0 2px 8px rgba(59,130,246,0.2);
+    }
+    .comment-form .btn-submit-comment:hover {
+      background: var(--accent-hover);
+      transform: scale(1.02);
+      box-shadow:0 4px 16px rgba(59,130,246,0.3);
+    }
+    .comment-form .btn-submit-comment:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .reply-form {
+      display: none;
+      margin-top: 0.5rem;
+      margin-left: 2.2rem;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+    .reply-form.open { display: flex; }
+    .reply-form input {
+      flex: 1;
+      min-width: 160px;
+      padding: 0.4rem 0.8rem;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--fg-primary);
+      font-size: 0.8rem;
+      outline: none;
+      transition: border var(--transition), box-shadow var(--transition);
+      font-family: var(--font);
+    }
+    .reply-form input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+    .reply-form .btn-reply-submit {
+      padding: 0.4rem 1rem;
+      border-radius: var(--radius-sm);
+      background: var(--accent);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.75rem;
+      border: none;
+      cursor: pointer;
+      transition: all var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      white-space: nowrap;
+    }
+    .reply-form .btn-reply-submit:hover {
+      background: var(--accent-hover);
+      transform: scale(1.02);
+    }
+    .reply-form .btn-reply-submit:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .reply-form .btn-reply-cancel {
+      padding: 0.4rem 0.8rem;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--fg-secondary);
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all var(--transition);
+      font-family: var(--font);
+    }
+    .reply-form .btn-reply-cancel:hover {
+      border-color: var(--accent);
+      color: var(--fg-primary);
+      background: var(--accent-dim);
+    }
+
+    .comment-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      max-height: 600px;
+      overflow-y: auto;
+      padding-right: 0.3rem;
+    }
+    .comment-list::-webkit-scrollbar { width: 4px; }
+    .comment-list::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+
+    .comment-item {
+      padding: 0.6rem 0.8rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      transition: border var(--transition), background var(--transition);
+    }
+    .comment-item:hover {
+      border-color: var(--accent-dim);
+      background: var(--bg-card-hover);
+    }
+    .comment-item .comment-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.2rem;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+    }
+    .comment-item .comment-name {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--fg-primary);
+    }
+    .comment-item .comment-name .avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      flex-shrink: 0;
+    }
+    .comment-item .comment-name .avatar-placeholder {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--fg-muted);
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .comment-item .comment-time {
+      font-size: 0.65rem;
+      color: var(--fg-muted);
+    }
+    .comment-item .comment-text {
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: var(--fg-secondary);
+      word-wrap: break-word;
+    }
+    .comment-item .comment-actions {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.3rem;
+      font-size: 0.7rem;
+      color: var(--fg-muted);
+    }
+    .comment-item .comment-actions button {
+      background: none;
+      border: none;
+      color: var(--fg-muted);
+      cursor: pointer;
+      font-size: 0.7rem;
+      transition: color var(--transition);
+      padding: 0.1rem 0.2rem;
+      font-family: var(--font);
+    }
+    .comment-item .comment-actions button:hover { color: var(--accent); }
+    .comment-item .comment-actions .delete-btn:hover { color: #ef4444; }
+
+    .comment-item .replies {
+      margin-left: 2.2rem;
+      margin-top: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      border-left: 2px solid var(--border-color);
+      padding-left: 0.6rem;
+    }
+    .comment-item .replies .reply-item {
+      padding: 0.4rem 0.6rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+    }
+    .comment-item .replies .reply-item .reply-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      margin-bottom: 0.1rem;
+    }
+    .comment-item .replies .reply-item .reply-name {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: var(--fg-primary);
+    }
+    .comment-item .replies .reply-item .reply-name .avatar {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      flex-shrink: 0;
+    }
+    .comment-item .replies .reply-item .reply-name .avatar-placeholder {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--fg-muted);
+      font-size: 0.7rem;
+      flex-shrink: 0;
+    }
+    .comment-item .replies .reply-item .reply-text {
+      font-size: 0.8rem;
+      color: var(--fg-secondary);
+      line-height: 1.4;
+      word-wrap: break-word;
+    }
+    .comment-item .replies .reply-item .reply-time {
+      font-size: 0.6rem;
+      color: var(--fg-muted);
+    }
+
+    .comment-login-prompt {
+      text-align: center;
+      padding: 1.2rem;
+      color: var(--fg-secondary);
+      font-size: 0.9rem;
+      background: var(--bg-card);
+      border-radius: var(--radius-sm);
+      border: 1px dashed var(--border-color);
+      backdrop-filter: blur(4px);
+    }
+    .comment-login-prompt a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: underline;
+    }
+    .comment-login-prompt a:hover { color: var(--accent-hover); }
+
+    .empty-comment {
+      text-align: center;
+      padding: 2rem 0;
+      color: var(--fg-muted);
+      font-size: 0.85rem;
+    }
+    .empty-comment i {
+      font-size: 1.8rem;
+      display: block;
+      margin-bottom: 0.4rem;
+      color: var(--accent-dim);
+    }
+    .comment-error {
+      text-align: center;
+      padding: 1rem;
+      color: #ef4444;
+      background: rgba(239,68,68,0.08);
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(239,68,68,0.15);
+      font-size: 0.85rem;
+    }
+
+    .overlay-18plus {
+      position:fixed;
+      inset:0;
+      z-index:9999;
+      background:rgba(0,0,0,0.88);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:1.5rem;
+    }
+    .overlay-18plus.active { display:flex; }
+    .overlay-18plus .overlay-box {
+      max-width:480px;
+      width:100%;
+      background:var(--bg-secondary);
+      border:1px solid var(--border-color);
+      border-radius:var(--radius-lg);
+      padding:2rem 1.8rem;
+      text-align:center;
+      box-shadow:var(--shadow-hover);
+      animation:scaleIn 0.35s cubic-bezier(0.32,0.72,0,1);
+    }
+    @keyframes scaleIn {
+      from { opacity:0; transform:scale(0.94) translateY(20px); }
+      to { opacity:1; transform:scale(1) translateY(0); }
+    }
+    .overlay-18plus .overlay-icon {
+      font-size:3rem;
+      color:#ef4444;
+      margin-bottom:0.5rem;
+    }
+    .overlay-18plus .overlay-title {
+      font-size:1.3rem;
+      font-weight:700;
+      margin-bottom:0.3rem;
+    }
+    .overlay-18plus .overlay-desc {
+      font-size:0.9rem;
+      color:var(--fg-secondary);
+      line-height:1.6;
+      margin-bottom:0.5rem;
+    }
+    .overlay-18plus .overlay-warning {
+      background:rgba(239,68,68,0.08);
+      border:1px solid rgba(239,68,68,0.15);
+      border-radius:var(--radius-sm);
+      padding:0.6rem 1rem;
+      font-size:0.78rem;
+      color:#f87171;
+      margin-bottom:1.2rem;
+    }
+    .overlay-18plus .overlay-actions {
+      display:flex;
+      gap:0.6rem;
+      flex-wrap:wrap;
+    }
+    .overlay-18plus .overlay-actions .btn-confirm {
+      flex:1;
+      padding:0.7rem 1.5rem;
+      border-radius:var(--radius-sm);
+      background:#ef4444;
+      color:#fff;
+      font-weight:600;
+      font-size:0.9rem;
+      border:none;
+      cursor:pointer;
+      transition:all var(--transition);
+      box-shadow:0 2px 12px rgba(239,68,68,0.25);
+    }
+    .overlay-18plus .overlay-actions .btn-confirm:hover {
+      background:#dc2626;
+      transform:scale(1.02);
+      box-shadow:0 4px 20px rgba(239,68,68,0.35);
+    }
+    .overlay-18plus .overlay-actions .btn-cancel {
+      padding:0.7rem 1.5rem;
+      border-radius:var(--radius-sm);
+      background:var(--bg-card);
+      border:1px solid var(--border-color);
+      color:var(--fg-secondary);
+      font-weight:600;
+      font-size:0.9rem;
+      cursor:pointer;
+      transition:all var(--transition);
+    }
+    .overlay-18plus .overlay-actions .btn-cancel:hover {
+      border-color:var(--accent);
+      color:var(--fg-primary);
+      background:var(--accent-dim);
+    }
+    .overlay-18plus .overlay-login-msg {
+      color:var(--fg-secondary);
+      font-size:0.85rem;
+      margin-bottom:1rem;
+    }
+    .overlay-18plus .overlay-login-msg a {
+      color:var(--accent);
+      font-weight:600;
+      text-decoration:underline;
+    }
+    .overlay-18plus .overlay-login-msg a:hover { color:var(--accent-hover); }
+
+    .loading-spinner {
+      text-align:center; padding:4rem 0; color:var(--fg-secondary);
+    }
+    .loading-spinner i {
+      font-size:2.5rem; color:var(--accent); margin-bottom:0.5rem; display:block;
+    }
+
+    .toast-container {
+      position:fixed; bottom:20px; right:20px; z-index:9999;
+      display:flex; flex-direction:column; gap:0.5rem;
+    }
+    .toast {
+      padding:0.6rem 1.2rem; background:var(--bg-card);
+      border:1px solid var(--border-color); border-radius:var(--radius);
+      box-shadow:var(--shadow-hover); backdrop-filter:blur(12px);
+      display:flex; align-items:center; gap:0.6rem;
+      animation:slideInToast 0.3s ease; font-size:0.8rem;
+    }
+    .toast i { color:var(--accent); }
+    @keyframes slideInToast {
+      from { opacity:0; transform:translateX(50px); }
+      to { opacity:1; transform:translateX(0); }
+    }
+
+    .footer {
+      padding:2.5rem 1.5rem 1.5rem; border-top:1px solid var(--border-color);
+      margin-top:3rem;
+    }
+    .footer-grid {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+      gap:1.5rem; max-width:1000px; margin:0 auto 1.5rem; text-align:left;
+    }
+    .footer-grid h4 { font-size:0.8rem; color:var(--fg-primary); margin-bottom:0.6rem; }
+    .footer-grid p, .footer-grid a { font-size:0.75rem; color:var(--fg-secondary); line-height:1.8; }
+    .footer-grid a { display:block; transition:color 0.2s; }
+    .footer-grid a:hover { color:var(--accent); }
+    .footer-grid .brand-footer { font-weight:600; color:var(--accent); }
+    .footer-bottom {
+      max-width:1000px; margin:0 auto; border-top:1px solid var(--border-color);
+      padding-top:1rem; text-align:center; font-size:0.65rem; color:var(--fg-muted);
+    }
+
+    @media (max-width:768px) {
+      :root { --navbar-height:56px; }
+      .nav-menu { display:none; }
+      .hamburger { display:flex; }
+      .nav-actions .auth-btn span { display:none; }
+      .navbar-inner { padding:0 12px; }
+      .container { padding:0 12px; }
+      .detail-main .cover-wrap { flex:0 0 140px; max-width:140px; }
+      .detail-main .info-wrap h2 { font-size:1.4rem; }
+      .comment-form input { min-width:120px; }
+      .footer-grid { grid-template-columns:1fr 1fr; gap:1rem; text-align:center; }
+      .footer-grid h4 { text-align:center; }
+      .comment-item .replies { margin-left:0.8rem; padding-left:0.4rem; }
+      .reply-form { margin-left:0.8rem; }
+      .overlay-18plus .overlay-box { padding:1.5rem 1.2rem; }
+      .overlay-18plus .overlay-title { font-size:1.1rem; }
+      .overlay-18plus .overlay-actions { flex-direction:column; }
+      .overlay-18plus .overlay-actions .btn-confirm,
+      .overlay-18plus .overlay-actions .btn-cancel { width:100%; }
+      .recommendations .rec-grid { grid-template-columns:repeat(auto-fill,minmax(100px,1fr)); }
+    }
+    @media (max-width:480px) {
+      .detail-main .cover-wrap { flex:0 0 100%; max-width:180px; margin:0 auto; }
+      .detail-main .info-wrap h2 { font-size:1.2rem; }
+      .comment-form { flex-direction:column; }
+      .comment-form input { width:100%; }
+      .comment-form .btn-submit-comment { width:100%; justify-content:center; }
+      .reply-form { flex-direction:column; }
+      .reply-form input { width:100%; }
+      .reply-form .btn-reply-submit { width:100%; justify-content:center; }
+      .reply-form .btn-reply-cancel { width:100%; justify-content:center; }
+      .comment-item .comment-header { flex-direction:column; align-items:flex-start; }
+      .recommendations .rec-grid { grid-template-columns:repeat(2,1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="logo"><i class="fas fa-store"></i> Akino<span>Store</span></a>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="manga.html">Manga</a></li>
+        <li><a href="https://wa.me/6289687163314" target="_blank">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
+        <a href="login.html" class="auth-btn" id="authBtn">
+          <i class="fas fa-user"></i> <span id="authText">Login</span>
+        </a>
+        <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="manga.html">Manga</a>
+    <a href="https://wa.me/6289687163314" target="_blank">Contact</a>
+  </div>
+
+  <div class="overlay-18plus" id="overlay18plus">
+    <div class="overlay-box">
+      <div class="overlay-icon"><i class="fas fa-triangle-exclamation"></i></div>
+      <div class="overlay-title">⚠️ Konten Dewasa (18+)</div>
+      <div class="overlay-desc">
+        Manga ini mengandung materi dewasa yang hanya boleh diakses oleh pengguna berusia <strong>18 tahun ke atas</strong>.
+      </div>
+      <div class="overlay-warning">
+        <i class="fas fa-shield-halved" style="margin-right:0.3rem;"></i>
+        Dengan melanjutkan, Anda menyatakan bahwa Anda berusia 18 tahun atau lebih.
+      </div>
+      <div class="overlay-login-msg" id="overlayLoginMsg" style="display:none;">
+        <i class="fas fa-lock" style="margin-right:0.3rem;"></i>
+        Silakan <a href="#" onclick="redirectToLogin()">Login</a> terlebih dahulu untuk mengakses konten dewasa.
+      </div>
+      <div class="overlay-actions">
+        <button class="btn-confirm" id="overlayConfirmBtn">Saya sudah 18+</button>
+        <button class="btn-cancel" id="overlayCancelBtn">Kembali</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" id="app">
+    <button class="detail-back" id="detailBack"><i class="fas fa-arrow-left"></i> Kembali</button>
+
+    <div id="detailContainer">
+      <div class="loading-spinner" id="loadingSpinner">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Memuat detail...</p>
+      </div>
+
+      <div id="detailContent" style="display:none;">
+        <div class="detail-main" id="detailMain"></div>
+
+        <div class="detail-chapters">
+          <h3><i class="fas fa-list"></i> Daftar Chapter</h3>
+          <div class="lang-tabs" id="langTabs">
+            <button class="tab active" data-lang="all">All</button>
+            <button class="tab" data-lang="id">🇮🇩 Indonesia</button>
+            <button class="tab" data-lang="en">🇬🇧 English</button>
+          </div>
+          <div class="ch-list" id="chapterList"></div>
+        </div>
+
+        <div class="recommendations" id="recommendationsSection">
+          <h3><i class="fas fa-thumbs-up"></i> Rekomendasi Serupa</h3>
+          <div class="rec-grid" id="recGrid"></div>
+        </div>
+
+        <div class="comment-section" id="commentSection">
+          <h3>
+            <i class="fas fa-comments"></i> Komentar
+            <span class="comment-count" id="commentCount">(0)</span>
+          </h3>
+
+          <div id="commentFormWrapper">
+            <div class="comment-form" id="commentForm">
+              <input type="text" id="commentInput" placeholder="Tulis komentar..." maxlength="500" />
+              <button class="btn-submit-comment" id="submitCommentBtn">
+                <i class="fas fa-paper-plane"></i> Kirim
+              </button>
+            </div>
+            <div class="comment-login-prompt" id="commentLoginPrompt" style="display:none;">
+              <i class="fas fa-lock" style="display:block;margin-bottom:0.3rem;color:var(--accent);"></i>
+              <a href="login.html">Login</a> untuk berkomentar.
+            </div>
+          </div>
+
+          <div class="comment-list" id="commentList">
+            <div class="empty-comment" id="emptyComment">
+              <i class="fas fa-comment-slash"></i>
+              Belum ada komentar. Jadilah yang pertama!
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer" aria-label="Footer">
+    <div class="footer-grid">
+      <div><h4 class="brand-footer">Akino Store</h4><p>Jasa digital & game terpercaya sejak 2022. Solusi untuk kebutuhan game, sosial media, dan design Anda.</p></div>
+      <div><h4>Layanan</h4><a href="CarParkingMultiplayer.html">Car Parking</a><a href="SosialMedia.html">Sosial Media</a><a href="designedit.html">Design / Edit</a></div>
+      <div><h4>Tentang</h4><a href="about.html">About Us</a><a href="https://wa.me/6289687163314" target="_blank">Contact</a><a href="stockmobil.html">Stock Mobil</a></div>
+      <div><h4>Legal</h4><a href="privacy.html">Kebijakan Privasi</a><a href="terms.html">Syarat &amp; Ketentuan</a></div>
+      <div><h4>Follow</h4><a href="https://www.tiktok.com/@akinolaset_" target="_blank">TikTok</a><a href="https://www.instagram.com/akinostore_" target="_blank">Instagram</a><a href="https://youtube.com/@akinolaset" target="_blank">YouTube</a></div>
+    </div>
+    <div class="footer-bottom">&copy; 2022 Akino Store. All Rights Reserved.</div>
+  </footer>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    const WORKER_URL = 'https://manga-scrapper.akinostore.workers.dev';
+    const COVER_BASE = 'https://uploads.mangadex.org/covers';
+    const DEFAULT_THUMBNAIL = 'https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png';
+
+    const $ = id => document.getElementById(id);
+    const detailMain = $('detailMain');
+    const chapterList = $('chapterList');
+    const loadingSpinner = $('loadingSpinner');
+    const detailContent = $('detailContent');
+    const langTabs = $('langTabs');
+    const detailBack = $('detailBack');
+    const toastContainer = $('toastContainer');
+    const authBtn = $('authBtn');
+    const authText = $('authText');
+    const recGrid = $('recGrid');
+
+    const commentList = $('commentList');
+    const commentInput = $('commentInput');
+    const submitCommentBtn = $('submitCommentBtn');
+    const commentForm = $('commentForm');
+    const commentLoginPrompt = $('commentLoginPrompt');
+    const commentCount = $('commentCount');
+    const emptyComment = $('emptyComment');
+
+    const overlay18plus = $('overlay18plus');
+    const overlayConfirmBtn = $('overlayConfirmBtn');
+    const overlayCancelBtn = $('overlayCancelBtn');
+    const overlayLoginMsg = $('overlayLoginMsg');
+
+    let showMature = localStorage.getItem('showMature') === 'true';
+    let currentUser = null;
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        currentUser = user;
+        authText.textContent = 'Profil';
+        authBtn.href = 'profile.html';
+        authBtn.querySelector('i').className = 'fas fa-user-check';
+        commentForm.style.display = 'flex';
+        commentLoginPrompt.style.display = 'none';
+        if (overlay18plus.classList.contains('active') && overlayLoginMsg.style.display !== 'none') {
+          overlay18plus.classList.remove('active');
+          if (mangaId) loadDetail(mangaId);
+        }
+        const stored = localStorage.getItem('showMature') === 'true';
+        if (stored !== showMature) {
+          showMature = stored;
+          if (currentManga && detailContent.style.display !== 'none') {
+            loadRecommendations(currentManga);
+          }
+        }
+      } else {
+        currentUser = null;
+        authText.textContent = 'Login';
+        authBtn.href = 'login.html';
+        authBtn.querySelector('i').className = 'fas fa-user';
+        commentForm.style.display = 'none';
+        commentLoginPrompt.style.display = 'block';
+        const stored = localStorage.getItem('showMature') === 'true';
+        if (stored !== showMature) {
+          showMature = stored;
+          if (currentManga && detailContent.style.display !== 'none') {
+            loadRecommendations(currentManga);
+          }
+        }
+      }
+    });
+
+    let mangaId = null;
+    let currentManga = null;
+    let allChapters = [];
+    let currentLang = 'all';
+    let pendingMangaId = null;
+
+    function getTitle(attrs) {
+      if (!attrs || !attrs.title) return 'Untitled';
+      const t = attrs.title;
+      return t.en || t.id || t.ja || t['en-jp'] || t['ja-ro'] || Object.values(t)[0] || 'Untitled';
+    }
+
+    function getCoverUrl(manga) {
+      if (!manga || !manga.relationships) return null;
+      const coverRel = manga.relationships.find(r => r.type === 'cover_art');
+      if (!coverRel || !coverRel.attributes) return null;
+      const fileName = coverRel.attributes.fileName;
+      if (!fileName) return null;
+      return `${WORKER_URL}/proxy-image?url=${encodeURIComponent(`${COVER_BASE}/${manga.id}/${fileName}`)}`;
+    }
+
+    function getStatusLabel(status) {
+      const map = { 'ongoing':'Ongoing', 'completed':'Completed', 'hiatus':'Hiatus', 'cancelled':'Cancelled' };
+      return map[status] || status || 'Unknown';
+    }
+
+    function getOriginLabel(lang) {
+      const map = { 'ja':'🇯🇵 Manga', 'ko':'🇰🇷 Manhwa', 'zh':'🇨🇳 Manhua' };
+      return map[lang] || lang || 'Unknown';
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return 'Unknown';
+      if (dateStr.toDate) dateStr = dateStr.toDate();
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) return 'Baru saja';
+      return d.toLocaleDateString('id-ID', { year:'numeric', month:'short', day:'numeric' });
+    }
+
+    function showToast(msg, icon = 'fa-check-circle') {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `<i class="fas ${icon}"></i> ${msg}`;
+      toastContainer.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(50px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    function updateMetaTags(manga) {
+      const title = getTitle(manga.attributes);
+      const desc = manga.attributes.description?.en || manga.attributes.description?.id || 'Baca manga di Akino Store';
+      const cover = getCoverUrl(manga) || DEFAULT_THUMBNAIL;
+
+      let metaTitle = document.querySelector('meta[property="og:title"]');
+      if (!metaTitle) { metaTitle = document.createElement('meta'); metaTitle.setAttribute('property','og:title'); document.head.appendChild(metaTitle); }
+      metaTitle.setAttribute('content', title + ' - Akino Store');
+
+      let metaDesc = document.querySelector('meta[property="og:description"]');
+      if (!metaDesc) { metaDesc = document.createElement('meta'); metaDesc.setAttribute('property','og:description'); document.head.appendChild(metaDesc); }
+      metaDesc.setAttribute('content', desc.substring(0, 200));
+
+      let metaImage = document.querySelector('meta[property="og:image"]');
+      if (!metaImage) { metaImage = document.createElement('meta'); metaImage.setAttribute('property','og:image'); document.head.appendChild(metaImage); }
+      metaImage.setAttribute('content', cover);
+
+      let metaWidth = document.querySelector('meta[property="og:image:width"]');
+      if (!metaWidth) { metaWidth = document.createElement('meta'); metaWidth.setAttribute('property','og:image:width'); document.head.appendChild(metaWidth); }
+      metaWidth.setAttribute('content', '1200');
+
+      let metaHeight = document.querySelector('meta[property="og:image:height"]');
+      if (!metaHeight) { metaHeight = document.createElement('meta'); metaHeight.setAttribute('property','og:image:height'); document.head.appendChild(metaHeight); }
+      metaHeight.setAttribute('content', '630');
+
+      let twitterImage = document.querySelector('meta[name="twitter:image"]');
+      if (!twitterImage) { twitterImage = document.createElement('meta'); twitterImage.setAttribute('name','twitter:image'); document.head.appendChild(twitterImage); }
+      twitterImage.setAttribute('content', cover);
+
+      let twitterTitle = document.querySelector('meta[name="twitter:title"]');
+      if (!twitterTitle) { twitterTitle = document.createElement('meta'); twitterTitle.setAttribute('name','twitter:title'); document.head.appendChild(twitterTitle); }
+      twitterTitle.setAttribute('content', title + ' - Akino Store');
+
+      let twitterDesc = document.querySelector('meta[name="twitter:description"]');
+      if (!twitterDesc) { twitterDesc = document.createElement('meta'); twitterDesc.setAttribute('name','twitter:description'); document.head.appendChild(twitterDesc); }
+      twitterDesc.setAttribute('content', desc.substring(0, 200));
+    }
+
+    function isMatureContent(contentRating) {
+      return contentRating === 'erotica' || contentRating === 'pornographic';
+    }
+
+    function is18plusConfirmed(mangaId) {
+      const key = `confirmed18plus_${mangaId}`;
+      return sessionStorage.getItem(key) === 'true';
+    }
+
+    function set18plusConfirmed(mangaId) {
+      const key = `confirmed18plus_${mangaId}`;
+      sessionStorage.setItem(key, 'true');
+    }
+
+    function redirectToLogin() {
+      const currentUrl = encodeURIComponent(window.location.href);
+      window.location.href = `login.html?return=${currentUrl}`;
+    }
+
+    function checkMatureContent(manga) {
+      const contentRating = manga?.attributes?.contentRating || 'safe';
+      const isMature = isMatureContent(contentRating);
+      if (!isMature) return true;
+
+      const user = firebase.auth().currentUser;
+      if (!user) {
+        overlayLoginMsg.style.display = 'block';
+        overlayConfirmBtn.style.display = 'none';
+        overlay18plus.classList.add('active');
+        return false;
+      }
+
+      if (is18plusConfirmed(manga.id)) return true;
+      overlayLoginMsg.style.display = 'none';
+      overlayConfirmBtn.style.display = 'block';
+      overlay18plus.classList.add('active');
+      return false;
+    }
+
+    overlayConfirmBtn.addEventListener('click', function() {
+      const user = firebase.auth().currentUser;
+      if (!user) { redirectToLogin(); return; }
+      if (currentManga) {
+        set18plusConfirmed(currentManga.id);
+        overlay18plus.classList.remove('active');
+        renderDetail();
+        applyLanguageFilter(currentLang);
+        loadComments(mangaId);
+        loadingSpinner.style.display = 'none';
+        detailContent.style.display = 'block';
+        loadRecommendations(currentManga);
+      }
+    });
+
+    overlayCancelBtn.addEventListener('click', function() {
+      overlay18plus.classList.remove('active');
+      window.location.href = 'manga.html';
+    });
+
+    overlay18plus.addEventListener('click', function(e) {
+      if (e.target === this) { overlay18plus.classList.remove('active'); window.location.href = 'manga.html'; }
+    });
+
+    async function toggleBookmark(mangaId) {
+      const user = firebase.auth().currentUser;
+      if (!user) {
+        showToast('Silakan login terlebih dahulu!', 'fa-exclamation-circle');
+        setTimeout(() => window.location.href = 'login.html', 1500);
+        return;
+      }
+      try {
+        const userData = await getUserProfile(user.uid);
+        const bookmarks = userData?.bookmarks || [];
+        const isBookmarked = bookmarks.includes(mangaId);
+        if (isBookmarked) {
+          await removeBookmark(user.uid, mangaId);
+          showToast('Bookmark dihapus!', 'fa-bookmark');
+        } else {
+          await addBookmark(user.uid, mangaId);
+          showToast('Bookmark ditambahkan!', 'fa-check-circle');
+        }
+        renderDetail();
+      } catch (err) {
+        console.error('Bookmark error:', err);
+        showToast('Gagal update bookmark: ' + err.message, 'fa-exclamation-triangle');
+      }
+    }
+
+    async function getUserProfile(uid) {
+      try {
+        const doc = await db.collection('users').doc(uid).get();
+        return doc.exists ? doc.data() : null;
+      } catch { return null; }
+    }
+
+    async function addBookmark(uid, mangaId) {
+      const userData = await getUserProfile(uid) || {};
+      const bookmarks = userData.bookmarks || [];
+      if (!bookmarks.includes(mangaId)) {
+        bookmarks.push(mangaId);
+        await db.collection('users').doc(uid).set({ bookmarks }, { merge: true });
+      }
+    }
+
+    async function removeBookmark(uid, mangaId) {
+      const userData = await getUserProfile(uid) || {};
+      let bookmarks = userData.bookmarks || [];
+      bookmarks = bookmarks.filter(id => id !== mangaId);
+      await db.collection('users').doc(uid).set({ bookmarks }, { merge: true });
+    }
+
+    async function apiFetch(endpoint, params = {}) {
+      const url = new URL(WORKER_URL + endpoint);
+      Object.keys(params).forEach(key => {
+        if (Array.isArray(params[key])) {
+          params[key].forEach(v => url.searchParams.append(key, v));
+        } else if (typeof params[key] === 'object' && params[key] !== null) {
+          if (key === 'order') {
+            const orderObj = params[key];
+            Object.keys(orderObj).forEach(k => url.searchParams.append(`order[${k}]`, orderObj[k]));
+          } else {
+            url.searchParams.append(key, JSON.stringify(params[key]));
+          }
+        } else if (params[key] !== undefined && params[key] !== '') {
+          url.searchParams.append(key, params[key]);
+        }
+      });
+      const resp = await fetch(url);
+      if (!resp.ok) {
+        const text = await resp.text();
+        throw new Error(`HTTP ${resp.status}: ${text.substring(0,150)}`);
+      }
+      return resp.json();
+    }
+
+    async function loadDetail(id) {
+      try {
+        const data = await apiFetch(`/manga/${id}`, {
+          'includes[]': ['cover_art','artist','author']
+        });
+        currentManga = data.data;
+        updateMetaTags(currentManga);
+
+        if (!checkMatureContent(currentManga)) {
+          loadingSpinner.style.display = 'none';
+          return;
+        }
+
+        const [idChaps, enChaps] = await Promise.all([
+          apiFetch(`/manga/${id}/feed`, {
+            'translatedLanguage[]': ['id'],
+            order: { chapter:'desc' },
+            limit: 200,
+            'includes[]': ['scanlation_group'],
+            'contentRating[]': ['safe','suggestive','erotica','pornographic'],
+          }),
+          apiFetch(`/manga/${id}/feed`, {
+            'translatedLanguage[]': ['en'],
+            order: { chapter:'desc' },
+            limit: 200,
+            'includes[]': ['scanlation_group'],
+            'contentRating[]': ['safe','suggestive','erotica','pornographic'],
+          })
+        ]);
+
+        const idData = (idChaps.data || []).map(ch => ({ ...ch, _lang:'id' }));
+        const enData = (enChaps.data || []).map(ch => ({ ...ch, _lang:'en' }));
+        allChapters = [...idData, ...enData];
+        allChapters.sort((a,b) => {
+          const numA = parseFloat(a.attributes.chapter) || 0;
+          const numB = parseFloat(b.attributes.chapter) || 0;
+          return numB - numA;
+        });
+
+        renderDetail();
+        applyLanguageFilter('all');
+        await loadComments(id);
+        await loadRecommendations(currentManga);
+
+        loadingSpinner.style.display = 'none';
+        detailContent.style.display = 'block';
+      } catch (err) {
+        console.error(err);
+        loadingSpinner.innerHTML = `<p style="color:var(--fg-secondary);">Gagal memuat detail: ${err.message}</p>`;
+        showToast('Gagal memuat detail', 'fa-exclamation-triangle');
+      }
+    }
+
+    async function renderDetail() {
+      const m = currentManga;
+      if (!m) return;
+      const attrs = m.attributes;
+      const title = getTitle(attrs);
+      const altTitles = attrs.altTitles?.map(t => t.en || t.id || '').filter(Boolean).join(', ') || '';
+      const desc = attrs.description?.en || attrs.description?.id || 'No description.';
+      const status = attrs.status || 'unknown';
+      const year = attrs.year || '';
+      const rating = attrs.rating?.bayesianAverage || 0;
+      const genres = (m.attributes.tags || []).filter(t => t.attributes?.group === 'genre');
+      const coverUrl = getCoverUrl(m);
+      const coverSrc = coverUrl || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 300"%3E%3Crect width="200" height="300" fill="%23222"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" fill="%23555" font-size="14"%3ENo%20Cover%3C/text%3E%3C/svg%3E';
+
+      const origin = attrs.originalLanguage || '';
+      const originLabel = getOriginLabel(origin);
+
+      const genreHtml = genres.map(g => {
+        const name = g.attributes.name.en || g.attributes.name.id || '?';
+        return `<span class="tag" onclick="window.location.href='browse.html?genre=${encodeURIComponent(name)}'">${name}</span>`;
+      }).join('');
+
+      const originHtml = origin ?
+        `<span class="origin-tag" onclick="window.location.href='browse.html?origin=${origin}'"><i class="fas fa-flag"></i> ${originLabel}</span>` :
+        '';
+
+      let isBookmarked = false;
+      const user = firebase.auth().currentUser;
+      if (user) {
+        try {
+          const userData = await getUserProfile(user.uid);
+          const bookmarks = userData?.bookmarks || [];
+          isBookmarked = bookmarks.includes(m.id);
+        } catch (e) { console.error(e); }
+      }
+
+      detailMain.innerHTML = `
+        <div class="cover-wrap">
+          <img src="${coverSrc}" alt="${title}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 300%22%3E%3Crect width=%22200%22 height=%22300%22 fill=%22%23222%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23555%22 font-size=%2214%22%3ENo%20Cover%3C/text%3E%3C/svg%3E'" />
+        </div>
+        <div class="info-wrap">
+          <h2>${title}</h2>
+          ${altTitles ? `<div class="alt-title">${altTitles}</div>` : ''}
+          <div class="detail-meta">
+            <span><strong>Status:</strong> ${getStatusLabel(status)}</span>
+            ${year ? `<span><strong>Year:</strong> ${year}</span>` : ''}
+            ${rating ? `<span><strong>Rating:</strong> <i class="fas fa-star rating-star" style="font-size:0.7rem;"></i> ${rating.toFixed(1)}</span>` : ''}
+            <span><strong>Chapters:</strong> ${allChapters.length}</span>
+          </div>
+          ${originHtml}
+          <div class="genre-tags">${genreHtml || '<span class="tag">No genre</span>'}</div>
+          <div class="desc">${desc}</div>
+          <div class="actions">
+            <button class="btn btn-primary" id="bookmarkBtn">
+              <i class="fas ${isBookmarked ? 'fa-bookmark' : 'fa-bookmark'}"></i> ${isBookmarked ? 'Saved' : 'Bookmark'}
+            </button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('bookmarkBtn')?.addEventListener('click', () => {
+        toggleBookmark(m.id);
+      });
+    }
+
+    function applyLanguageFilter(lang) {
+      currentLang = lang;
+      let filtered = allChapters;
+      if (lang === 'id') filtered = allChapters.filter(ch => ch._lang === 'id');
+      else if (lang === 'en') filtered = allChapters.filter(ch => ch._lang === 'en');
+
+      chapterList.innerHTML = '';
+      if (!filtered.length) {
+        chapterList.innerHTML = `<div style="color:var(--fg-secondary);padding:0.5rem 0;">Tidak ada chapter untuk bahasa ini.</div>`;
+        return;
+      }
+
+      filtered.forEach((ch) => {
+        const chAttrs = ch.attributes;
+        const chNum = chAttrs.chapter || '?';
+        const chTitle = chAttrs.title || `Chapter ${chNum}`;
+        const uploaded = chAttrs.publishAt || chAttrs.createdAt;
+        const group = ch.relationships.find(r => r.type === 'scanlation_group')?.attributes?.name || 'Unknown';
+        const langLabel = ch._lang === 'id' ? '🇮🇩 ID' : '🇬🇧 EN';
+        const langClass = `badge-lang ${ch._lang}`;
+
+        const div = document.createElement('div');
+        div.className = 'ch-item';
+        div.innerHTML = `
+          <div class="ch-info">
+            <span class="ch-num">${chTitle}</span>
+            <span class="${langClass}">${langLabel}</span>
+            <span class="ch-meta">${group} • ${formatDate(uploaded)}</span>
+          </div>
+          <button class="ch-read" data-id="${ch.id}" data-lang="${ch._lang}" data-title="${chTitle}">Baca</button>
+        `;
+        div.querySelector('.ch-read').addEventListener('click', (e) => {
+          e.stopPropagation();
+          const btn = e.target;
+          const chapterId = btn.dataset.id;
+
+          const readingData = {
+            mangaId: currentManga.id,
+            chapters: allChapters.map(c => ({
+              id: c.id,
+              title: c.attributes.title || `Chapter ${c.attributes.chapter || '?'}`,
+              chapter: c.attributes.chapter || '?',
+              lang: c._lang || 'id'
+            }))
+          };
+          localStorage.setItem('currentReading', JSON.stringify(readingData));
+          window.location.href = `reader.html?chapter=${chapterId}`;
+        });
+        chapterList.appendChild(div);
+      });
+    }
+
+    async function loadRecommendations(manga) {
+      if (!manga) return;
+      try {
+        const tags = manga.attributes.tags || [];
+        const genreTags = tags.filter(t => t.attributes?.group === 'genre');
+        const genreIds = genreTags.map(t => t.id);
+        if (genreIds.length === 0) {
+          recGrid.innerHTML = `<div class="rec-empty">Tidak ada genre untuk rekomendasi.</div>`;
+          return;
+        }
+
+        let contentRating = ['safe', 'suggestive'];
+        if (showMature) contentRating = ['safe','suggestive','erotica','pornographic'];
+
+        const params = {
+          limit: 20,
+          offset: 0,
+          'availableTranslatedLanguage[]': ['id'],
+          'includes[]': ['cover_art'],
+          order: { followedCount: 'desc' },
+          'includedTags[]': genreIds,
+          'includedTagsMode': 'OR',
+          'contentRating[]': contentRating,
+        };
+        const data = await apiFetch('/manga', params);
+        let items = data.data || [];
+        items = items.filter(item => item.id !== manga.id);
+        const shuffled = items.sort(() => Math.random() - 0.5);
+        const recItems = shuffled.slice(0, 6);
+
+        recGrid.innerHTML = '';
+        if (recItems.length === 0) {
+          recGrid.innerHTML = `<div class="rec-empty">Belum ada rekomendasi untuk genre ini.</div>`;
+          return;
+        }
+
+        recItems.forEach(item => {
+          const title = getTitle(item.attributes);
+          const cover = getCoverUrl(item);
+          const coverSrc = cover || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 300"%3E%3Crect width="200" height="300" fill="%23222"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" fill="%23555" font-size="14"%3ENo%20Cover%3C/text%3E%3C/svg%3E';
+          const isMature = isMatureContent(item.attributes?.contentRating || 'safe');
+          const origin = item.attributes?.originalLanguage || '';
+          const originEmoji = origin === 'ja' ? '🇯🇵' : origin === 'ko' ? '🇰🇷' : origin === 'zh' ? '🇨🇳' : '';
+
+          const div = document.createElement('div');
+          div.className = 'rec-item';
+          div.innerHTML = `
+            <img src="${coverSrc}" alt="${title}" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 300%22%3E%3Crect width=%22200%22 height=%22300%22 fill=%22%23222%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23555%22 font-size=%2214%22%3ENo%20Cover%3C/text%3E%3C/svg%3E'" />
+            <div class="rec-info">
+              <h4>${title}</h4>
+              <div class="rec-meta">${originEmoji} ${isMature ? '🔞 18+' : ''} ${getStatusLabel(item.attributes.status)}</div>
+            </div>
+          `;
+          div.addEventListener('click', () => {
+            if (isMature) {
+              pendingMangaId = item.id;
+              overlayLoginMsg.style.display = 'none';
+              overlayConfirmBtn.style.display = 'block';
+              overlay18plus.classList.add('active');
+            } else {
+              window.location.href = `detail.html?id=${item.id}`;
+            }
+          });
+          recGrid.appendChild(div);
+        });
+      } catch (err) {
+        console.error('Load recommendations error:', err);
+        recGrid.innerHTML = `<div class="rec-empty">Gagal memuat rekomendasi.</div>`;
+      }
+    }
+
+    async function submitComment() {
+      const user = firebase.auth().currentUser;
+      if (!user) {
+        showToast('Silakan login terlebih dahulu!', 'fa-exclamation-circle');
+        return;
+      }
+
+      const text = commentInput.value.trim();
+      if (!text) return;
+
+      let name = 'User';
+      let photoURL = '';
+      try {
+        const userData = await getUserProfile(user.uid);
+        name = userData?.name || user.displayName || 'User';
+        photoURL = userData?.photoURL || user.photoURL || '';
+      } catch (e) {
+        name = user.displayName || 'User';
+        photoURL = user.photoURL || '';
+      }
+
+      submitCommentBtn.disabled = true;
+      submitCommentBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+      try {
+        await db.collection('comments').add({
+          mangaId: mangaId,
+          parentId: null,
+          uid: user.uid,
+          name: name,
+          photoURL: photoURL,
+          text: text,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        commentInput.value = '';
+        showToast('Komentar berhasil dikirim!', 'success');
+        await loadComments(mangaId);
+      } catch (err) {
+        console.error('Submit comment error:', err);
+        showToast('Gagal mengirim komentar: ' + err.message, 'fa-exclamation-triangle');
+      } finally {
+        submitCommentBtn.disabled = false;
+        submitCommentBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim';
+      }
+    }
+
+    async function submitReply(parentId, replyInput, replyBtn) {
+      const user = firebase.auth().currentUser;
+      if (!user) {
+        showToast('Silakan login terlebih dahulu!', 'fa-exclamation-circle');
+        return;
+      }
+
+      const text = replyInput.value.trim();
+      if (!text) return;
+
+      let name = 'User';
+      let photoURL = '';
+      try {
+        const userData = await getUserProfile(user.uid);
+        name = userData?.name || user.displayName || 'User';
+        photoURL = userData?.photoURL || user.photoURL || '';
+      } catch (e) {
+        name = user.displayName || 'User';
+        photoURL = user.photoURL || '';
+      }
+
+      replyBtn.disabled = true;
+      replyBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+      try {
+        await db.collection('comments').add({
+          mangaId: mangaId,
+          parentId: parentId,
+          uid: user.uid,
+          name: name,
+          photoURL: photoURL,
+          text: text,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        replyInput.value = '';
+        showToast('Balasan berhasil dikirim!', 'success');
+        await loadComments(mangaId);
+      } catch (err) {
+        console.error('Submit reply error:', err);
+        showToast('Gagal mengirim balasan: ' + err.message, 'fa-exclamation-triangle');
+      } finally {
+        replyBtn.disabled = false;
+        replyBtn.innerHTML = '<i class="fas fa-reply"></i> Kirim Balasan';
+      }
+    }
+
+    async function loadComments(mangaId) {
+      try {
+        const snapshot = await db.collection('comments')
+          .where('mangaId', '==', mangaId)
+          .orderBy('createdAt', 'desc')
+          .get();
+
+        const allComments = [];
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          if (!data.chapterId) {
+            allComments.push({ id: doc.id, ...data });
+          }
+        });
+
+        const parentComments = allComments.filter(c => c.parentId === null || c.parentId === undefined);
+        const replyComments = allComments.filter(c => c.parentId !== null && c.parentId !== undefined);
+
+        const commentMap = {};
+        parentComments.forEach(c => { commentMap[c.id] = { ...c, replies: [] }; });
+        replyComments.forEach(r => {
+          if (commentMap[r.parentId]) {
+            commentMap[r.parentId].replies.push(r);
+          }
+        });
+
+        Object.keys(commentMap).forEach(key => {
+          commentMap[key].replies.sort((a, b) => {
+            const aTime = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(0);
+            const bTime = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(0);
+            return aTime - bTime;
+          });
+        });
+
+        const sortedParents = Object.values(commentMap).sort((a, b) => {
+          const aTime = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(0);
+          const bTime = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(0);
+          return bTime - aTime;
+        });
+
+        renderCommentsWithReplies(sortedParents);
+      } catch (err) {
+        console.error('❌ Load comments error:', err);
+        commentList.innerHTML = `
+          <div class="comment-error">
+            <i class="fas fa-exclamation-triangle"></i> Gagal memuat komentar: ${err.message}
+            <br /><small style="font-size:0.7rem;color:var(--fg-muted);">
+              Pastikan index composite sudah dibuat (mangaId Asc, parentId Asc, createdAt Desc).
+            </small>
+          </div>
+        `;
+        commentCount.textContent = '(0)';
+      }
+    }
+
+    function renderCommentsWithReplies(comments) {
+      commentList.innerHTML = '';
+      commentCount.textContent = `(${comments.length})`;
+
+      if (comments.length === 0) {
+        commentList.innerHTML = `
+          <div class="empty-comment">
+            <i class="fas fa-comment-slash"></i>
+            Belum ada komentar. Jadilah yang pertama!
+          </div>
+        `;
+        return;
+      }
+
+      const user = firebase.auth().currentUser;
+
+      comments.forEach(comment => {
+        const div = document.createElement('div');
+        div.className = 'comment-item';
+
+        const isOwner = user && comment.uid === user.uid;
+        const time = comment.createdAt?.toDate ? formatDate(comment.createdAt.toDate()) : 'Baru saja';
+
+        let avatarHtml = '';
+        if (comment.photoURL) {
+          avatarHtml = `<img src="${comment.photoURL}" alt="Avatar" class="avatar" />`;
+        } else {
+          avatarHtml = `<div class="avatar-placeholder"><i class="fas fa-user"></i></div>`;
+        }
+
+        div.innerHTML = `
+          <div class="comment-header">
+            <span class="comment-name">
+              ${avatarHtml}
+              <span>${comment.name || 'Anonymous'}</span>
+            </span>
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+              <span class="comment-time">${time}</span>
+              ${isOwner ? `<button class="delete-btn" data-id="${comment.id}" title="Hapus komentar" style="background:none;border:none;color:var(--fg-muted);cursor:pointer;font-size:0.7rem;"><i class="fas fa-trash-alt"></i></button>` : ''}
+            </div>
+          </div>
+          <div class="comment-text">${comment.text}</div>
+          <div class="comment-actions">
+            <button class="reply-toggle" data-id="${comment.id}"><i class="fas fa-reply"></i> Balas</button>
+          </div>
+          <div class="reply-form" id="replyForm_${comment.id}">
+            <input type="text" placeholder="Tulis balasan..." maxlength="500" />
+            <button class="btn-reply-submit" data-parent="${comment.id}"><i class="fas fa-reply"></i> Kirim Balasan</button>
+            <button class="btn-reply-cancel" data-parent="${comment.id}">Batal</button>
+          </div>
+          <div class="replies" id="replies_${comment.id}">
+            ${comment.replies.map(reply => {
+              const isReplyOwner = user && reply.uid === user.uid;
+              const replyTime = reply.createdAt?.toDate ? formatDate(reply.createdAt.toDate()) : 'Baru saja';
+              let replyAvatar = '';
+              if (reply.photoURL) {
+                replyAvatar = `<img src="${reply.photoURL}" alt="Avatar" class="avatar" />`;
+              } else {
+                replyAvatar = `<div class="avatar-placeholder"><i class="fas fa-user"></i></div>`;
+              }
+              return `
+                <div class="reply-item" data-id="${reply.id}">
+                  <div class="reply-header">
+                    <span class="reply-name">
+                      ${replyAvatar}
+                      <span>${reply.name || 'Anonymous'}</span>
+                    </span>
+                    <div style="display:flex;align-items:center;gap:0.5rem;">
+                      <span class="reply-time">${replyTime}</span>
+                      ${isReplyOwner ? `<button class="delete-btn" data-id="${reply.id}" title="Hapus balasan" style="background:none;border:none;color:var(--fg-muted);cursor:pointer;font-size:0.6rem;"><i class="fas fa-trash-alt"></i></button>` : ''}
+                    </div>
+                  </div>
+                  <div class="reply-text">${reply.text}</div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+
+        div.querySelector('.reply-toggle').addEventListener('click', (e) => {
+          const parentId = e.target.closest('.reply-toggle').dataset.id;
+          const form = document.getElementById(`replyForm_${parentId}`);
+          form.classList.toggle('open');
+          if (form.classList.contains('open')) form.querySelector('input').focus();
+        });
+
+        div.querySelector('.btn-reply-cancel')?.addEventListener('click', (e) => {
+          const parentId = e.target.dataset.parent;
+          const form = document.getElementById(`replyForm_${parentId}`);
+          form.classList.remove('open');
+          form.querySelector('input').value = '';
+        });
+
+        div.querySelector('.btn-reply-submit')?.addEventListener('click', (e) => {
+          const parentId = e.target.dataset.parent;
+          const form = document.getElementById(`replyForm_${parentId}`);
+          const input = form.querySelector('input');
+          const btn = e.target;
+          submitReply(parentId, input, btn);
+        });
+
+        div.querySelector('.reply-form input')?.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            const parentId = e.target.closest('.reply-form').querySelector('.btn-reply-submit').dataset.parent;
+            const form = document.getElementById(`replyForm_${parentId}`);
+            const input = form.querySelector('input');
+            const btn = form.querySelector('.btn-reply-submit');
+            submitReply(parentId, input, btn);
+          }
+        });
+
+        div.querySelectorAll('.delete-btn').forEach(btn => {
+          btn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const id = e.target.closest('.delete-btn').dataset.id;
+            if (confirm('Hapus komentar/balasan ini?')) {
+              try {
+                await db.collection('comments').doc(id).delete();
+                showToast('Komentar/balasan dihapus.', 'info');
+                await loadComments(mangaId);
+              } catch (err) {
+                console.error('Delete error:', err);
+                showToast('Gagal hapus.', 'error');
+              }
+            }
+          });
+        });
+
+        commentList.appendChild(div);
+      });
+    }
+
+    langTabs.addEventListener('click', (e) => {
+      const tab = e.target.closest('.tab');
+      if (!tab) return;
+      const lang = tab.dataset.lang;
+      langTabs.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      applyLanguageFilter(lang);
+    });
+
+    detailBack.addEventListener('click', () => {
+      window.location.href = 'manga.html';
+    });
+
+    submitCommentBtn.addEventListener('click', submitComment);
+    commentInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); submitComment(); }
+    });
+
+    (function navbar() {
+      const navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 40); });
+
+      const hamburger = document.getElementById('hamburger');
+      const mobileMenu = document.getElementById('mobileMenu');
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        mobileMenu.classList.toggle('open');
+      });
+      mobileMenu.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          hamburger.classList.remove('active');
+          mobileMenu.classList.remove('open');
+        });
+      });
+
+      const themeToggle = document.getElementById('themeToggle');
+      const icon = themeToggle.querySelector('i');
+      const currentTheme = localStorage.getItem('theme') || 'dark';
+      if (currentTheme === 'light') {
+        document.body.classList.add('light-theme');
+        icon.className = 'fas fa-sun';
+      }
+      themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('light-theme');
+        const isLight = document.body.classList.contains('light-theme');
+        icon.className = isLight ? 'fas fa-sun' : 'fas fa-moon';
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      });
+    })();
+
+    const params = new URLSearchParams(window.location.search);
+    mangaId = params.get('id');
+    if (mangaId) {
+      loadDetail(mangaId);
+    } else {
+      loadingSpinner.innerHTML = '<p style="color:var(--fg-secondary);">ID manga tidak ditemukan.</p>';
+    }
+  </script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(() => console.log('✅ SW registered'))
+          .catch(err => console.log('❌ SW failed:', err));
+      });
+    }
+  </script>
+
+  <script>
+  // 🔥 Force update service worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistration().then(reg => {
+      if (reg) {
+        reg.update();
+        reg.addEventListener('updatefound', () => {
+          const newSW = reg.installing;
+          newSW.addEventListener('statechange', () => {
+            if (newSW.state === 'installed') {
+              newSW.postMessage('skipWaiting');
+              // Refresh halaman setelah update
+              setTimeout(() => {
+                window.location.reload();
+              }, 800);
+            }
+          });
+        });
+      }
+    });
+  }
+</script>
+</body>
+</html>

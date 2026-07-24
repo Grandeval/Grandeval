@@ -1,0 +1,1859 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+  <title>Baca Chapter – Akino Store</title>
+  <meta name="description" content="Baca chapter manga dengan nyaman." />
+  <link rel="manifest" href="/manifest.json?v=4.2" />
+  <meta name="theme-color" content="#3B82F6" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="apple-touch-icon" href="https://res.cloudinary.com/d39mdjct/image/upload/w_180,h_180,c_fit/v1783493763/apk_pgxcmo.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="https://res.cloudinary.com/d39mdjct/image/upload/w_152,h_152,c_fit/v1783493763/apk_pgxcmo.png" />
+  <link rel="apple-touch-icon" sizes="167x167" href="https://res.cloudinary.com/d39mdjct/image/upload/w_167,h_167,c_fit/v1783493763/apk_pgxcmo.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/d39mdjct/image/upload/w_180,h_180,c_fit/v1783493763/apk_pgxcmo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="icon" href="https://res.cloudinary.com/d39mdjct/image/upload/v1783478697/icon_tnzy32.ico" />
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-init.js?v=4.2"></script>
+  <style>
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-card: #1a1a26;
+      --bg-card-hover: #242433;
+      --bg-glass: rgba(18, 18, 26, 0.85);
+      --fg-primary: #f0f0f5;
+      --fg-secondary: #a0a0b0;
+      --fg-muted: #6a6a80;
+      --accent: #3B82F6;
+      --accent-hover: #2563eb;
+      --accent-dim: rgba(59, 130, 246, 0.12);
+      --accent-glow: rgba(59, 130, 246, 0.2);
+      --border-color: rgba(255, 255, 255, 0.06);
+      --border-hover: rgba(255, 255, 255, 0.12);
+      --shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+      --shadow-hover: 0 16px 56px rgba(0, 0, 0, 0.6);
+      --radius: 14px;
+      --radius-sm: 10px;
+      --radius-lg: 20px;
+      --font: 'Inter', sans-serif;
+      --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      --navbar-height: 68px;
+      --reader-bg: #0e0e16;
+    }
+    body.light-theme {
+      --bg-primary: #f0f0f5;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --bg-card-hover: #f0f0f5;
+      --bg-glass: rgba(255, 255, 255, 0.85);
+      --fg-primary: #12121a;
+      --fg-secondary: #555568;
+      --fg-muted: #88889e;
+      --border-color: rgba(0, 0, 0, 0.06);
+      --border-hover: rgba(0, 0, 0, 0.12);
+      --shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+      --shadow-hover: 0 16px 56px rgba(0, 0, 0, 0.12);
+      --reader-bg: #f5f5fa;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--bg-primary);
+      color: var(--fg-primary);
+      transition: background var(--transition), color var(--transition);
+      padding-top: var(--navbar-height);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height:1.6;
+    }
+    a { text-decoration:none; color:inherit; }
+    img { display:block; max-width:100%; }
+    button { cursor:pointer; font-family:var(--font); border:none; background:none; color:inherit; }
+    ::-webkit-scrollbar { width:5px; height:5px; }
+    ::-webkit-scrollbar-track { background:var(--bg-secondary); }
+    ::-webkit-scrollbar-thumb { background:var(--accent); border-radius:4px; }
+
+    .navbar {
+      position:fixed; top:0; left:0; right:0; z-index:1000;
+      background:var(--bg-glass);
+      backdrop-filter:blur(20px);
+      -webkit-backdrop-filter:blur(20px);
+      border-bottom:1px solid var(--border-color);
+      height:var(--navbar-height);
+      transition: background var(--transition), box-shadow var(--transition);
+    }
+    .navbar.scrolled { box-shadow:var(--shadow); }
+    .navbar-inner {
+      display:flex; align-items:center; justify-content:space-between;
+      height:100%; max-width:1400px; margin:0 auto; padding:0 16px; gap:0.8rem;
+    }
+    .navbar .logo {
+      display:flex; align-items:center; gap:0.4rem;
+      font-size:1.1rem; font-weight:800; color:var(--fg-primary); flex-shrink:0;
+      letter-spacing:-0.3px;
+    }
+    .navbar .logo i { color:var(--accent); font-size:1rem; }
+    .navbar .logo span { color:var(--accent); }
+    .nav-menu {
+      display:flex; align-items:center; gap:0.2rem; list-style:none;
+      flex:1; justify-content:center; flex-wrap:wrap;
+    }
+    .nav-menu a {
+      padding:0.3rem 0.6rem; border-radius:var(--radius-sm);
+      font-size:0.75rem; font-weight:500; color:var(--fg-secondary);
+      transition:all var(--transition); white-space:nowrap;
+    }
+    .nav-menu a:hover, .nav-menu a.active {
+      color:var(--fg-primary); background:var(--bg-card);
+    }
+    .nav-menu a.active { color:var(--accent); background:var(--accent-dim); }
+    .nav-actions {
+      display:flex; align-items:center; gap:0.4rem; flex-shrink:0;
+    }
+    .nav-actions .theme-btn {
+      width:34px; height:34px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      background:var(--bg-card); border:1px solid var(--border-color);
+      color:var(--fg-secondary); transition:all var(--transition); font-size:0.8rem;
+    }
+    .nav-actions .theme-btn:hover {
+      border-color:var(--accent); color:var(--fg-primary); background:var(--accent-dim);
+    }
+    .nav-actions .auth-btn {
+      padding:0.3rem 0.8rem; border-radius:var(--radius-sm);
+      font-size:0.75rem; font-weight:600; color:#fff;
+      background:var(--accent); border:none;
+      transition:all var(--transition);
+      display:inline-flex; align-items:center; gap:0.3rem;
+      text-decoration:none; font-family:var(--font);
+      box-shadow:0 2px 12px rgba(59,130,246,0.2);
+    }
+    .nav-actions .auth-btn:hover {
+      background:var(--accent-hover); transform:scale(1.02);
+      box-shadow:0 4px 20px rgba(59,130,246,0.3);
+    }
+    .nav-actions .auth-btn i { font-size:0.7rem; }
+    .hamburger {
+      display:none; flex-direction:column; gap:4px;
+      background:none; border:none; padding:4px; cursor:pointer;
+    }
+    .hamburger span {
+      display:block; width:22px; height:2px;
+      background:var(--fg-primary); border-radius:2px; transition:all var(--transition);
+    }
+    .hamburger.active span:nth-child(1) { transform:rotate(45deg) translate(4px,4px); }
+    .hamburger.active span:nth-child(2) { opacity:0; }
+    .hamburger.active span:nth-child(3) { transform:rotate(-45deg) translate(4px,-4px); }
+    .mobile-menu {
+      display:none; position:fixed; top:var(--navbar-height); left:0; right:0; bottom:0;
+      background:var(--bg-primary); padding:1.5rem; overflow-y:auto; z-index:999;
+      border-top:1px solid var(--border-color); flex-direction:column; gap:0.5rem;
+    }
+    .mobile-menu.open { display:flex; }
+    .mobile-menu a {
+      padding:0.8rem 1rem; border-radius:var(--radius-sm);
+      font-size:0.95rem; font-weight:500; color:var(--fg-secondary);
+      transition:all var(--transition); border-bottom:1px solid var(--border-color);
+    }
+    .mobile-menu a:hover, .mobile-menu a.active {
+      color:var(--fg-primary); background:var(--bg-card);
+    }
+    .mobile-menu a.active { color:var(--accent); background:var(--accent-dim); }
+
+    .container { max-width:1000px; margin:0 auto; padding:0 16px; }
+
+    .reader-header {
+      display:flex; flex-wrap:wrap; align-items:center;
+      justify-content:space-between; gap:0.6rem;
+      padding:1rem 0.2rem 0.8rem;
+      border-bottom:1px solid var(--border-color);
+      margin-bottom:1.2rem;
+    }
+    .reader-header .left {
+      display:flex; align-items:center; gap:0.6rem;
+    }
+    .reader-header .left .back-btn {
+      padding:0.35rem 0.9rem; border-radius:var(--radius-sm);
+      background:var(--bg-card); border:1px solid var(--border-color);
+      color:var(--fg-secondary); font-size:0.78rem;
+      transition:all var(--transition); cursor:pointer;
+      display:inline-flex; align-items:center; gap:0.3rem;
+    }
+    .reader-header .left .back-btn:hover {
+      border-color:var(--accent); color:var(--fg-primary);
+      background:var(--accent-dim);
+    }
+    .reader-header .left .back-btn i { font-size:0.7rem; }
+    .reader-header .left .title {
+      font-weight:700; font-size:0.9rem;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:300px;
+      letter-spacing:-0.2px;
+    }
+    .reader-header .right {
+      display:flex; align-items:center; gap:0.4rem; flex-wrap:wrap;
+    }
+    .reader-header .right select {
+      background:var(--bg-card); border:1px solid var(--border-color);
+      border-radius:var(--radius-sm); padding:0.3rem 0.8rem;
+      color:var(--fg-primary); font-size:0.78rem; outline:none;
+      cursor:pointer; font-family:var(--font); min-width:120px;
+      transition:border var(--transition);
+    }
+    .reader-header .right select:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-dim); }
+    .reader-header .right select option {
+      background:var(--bg-secondary); color:var(--fg-primary);
+    }
+    .mode-toggle {
+      display:flex; align-items:center; gap:0.2rem;
+      background:var(--bg-card); border:1px solid var(--border-color);
+      border-radius:var(--radius-sm); padding:0.15rem;
+    }
+    .mode-toggle button {
+      padding:0.2rem 0.6rem; border-radius:var(--radius-sm);
+      font-size:0.7rem; font-weight:600; color:var(--fg-secondary);
+      transition:all var(--transition);
+      background:transparent;
+    }
+    .mode-toggle button:hover { color:var(--fg-primary); }
+    .mode-toggle button.active {
+      background:var(--accent); color:#fff; box-shadow:0 2px 12px rgba(59,130,246,0.2);
+    }
+
+    .loading-spinner {
+      text-align:center; padding:5rem 0; color:var(--fg-secondary);
+    }
+    .loading-spinner i {
+      font-size:2.8rem; color:var(--accent); margin-bottom:0.8rem; display:block;
+    }
+    .loading-spinner .pulse-dots {
+      display:flex; justify-content:center; gap:0.4rem; margin-top:0.5rem;
+    }
+    .loading-spinner .pulse-dots span {
+      width:8px; height:8px; border-radius:50%; background:var(--accent);
+      animation:pulseDot 1.4s infinite ease-in-out both;
+    }
+    .loading-spinner .pulse-dots span:nth-child(1) { animation-delay:-0.32s; }
+    .loading-spinner .pulse-dots span:nth-child(2) { animation-delay:-0.16s; }
+    .loading-spinner .pulse-dots span:nth-child(3) { animation-delay:0s; }
+    @keyframes pulseDot {
+      0%,80%,100% { transform:scale(0.6); opacity:0.4; }
+      40% { transform:scale(1); opacity:1; }
+    }
+
+    .reader-images.scroll {
+      display:flex; flex-direction:column; align-items:center; gap:0.6rem;
+      padding-bottom:1.5rem;
+    }
+    .reader-images.scroll img {
+      max-width:100%; height:auto; border-radius:var(--radius-sm);
+      background:var(--reader-bg); border:1px solid var(--border-color);
+      box-shadow:0 2px 16px rgba(0,0,0,0.2);
+      transition:transform 0.3s ease;
+    }
+    .reader-images.scroll img:hover { transform:scale(1.005); }
+    .reader-images.scroll .scroll-footer {
+      width:100%; max-width:800px;
+      display:flex; justify-content:center; align-items:center;
+      padding:1rem 0.2rem 0;
+      margin-top:0.6rem;
+      border-top:1px solid var(--border-color);
+      gap:0.8rem;
+      flex-wrap:wrap;
+    }
+    .reader-images.scroll .scroll-footer .progress-text {
+      font-size:0.7rem; color:var(--fg-muted);
+    }
+    .reader-images.scroll .scroll-footer .next-chapter-btn {
+      padding:0.4rem 1.2rem; border-radius:var(--radius-sm);
+      background:linear-gradient(145deg, var(--accent), var(--accent-hover));
+      color:#fff; font-size:0.8rem; font-weight:600;
+      transition:all var(--transition); border:none; cursor:pointer;
+      display:inline-flex; align-items:center; gap:0.4rem;
+      box-shadow:0 2px 16px rgba(59,130,246,0.25);
+    }
+    .reader-images.scroll .scroll-footer .next-chapter-btn:hover:not(:disabled) {
+      transform:scale(1.02); box-shadow:0 4px 24px rgba(59,130,246,0.35);
+    }
+    .reader-images.scroll .scroll-footer .next-chapter-btn:disabled {
+      opacity:0.35; cursor:not-allowed; transform:none; box-shadow:none;
+    }
+
+    .reader-images.page {
+      display:flex; flex-direction:column; align-items:center; gap:0.4rem;
+      padding-bottom:2rem;
+      position:relative;
+    }
+    .reader-images.page .page-wrapper {
+      position:relative; width:100%; max-width:800px; margin:0 auto;
+      border-radius:var(--radius-sm);
+      overflow:hidden;
+      box-shadow:0 4px 24px rgba(0,0,0,0.25);
+    }
+    .reader-images.page .page-wrapper img {
+      width:100%; height:auto; display:block;
+      background:var(--reader-bg);
+      user-select:none;
+      -webkit-user-select:none;
+    }
+    .reader-images.page .click-area {
+      position:absolute;
+      inset:0;
+      display:flex;
+      cursor:pointer;
+      border-radius:var(--radius-sm);
+      overflow:hidden;
+      z-index:2;
+    }
+    .reader-images.page .click-area .half {
+      flex:1;
+      height:100%;
+      min-height:300px;
+      cursor:pointer;
+      transition:background 0.25s ease;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+    }
+    .reader-images.page .click-area .half::after {
+      content:'';
+      position:absolute; inset:0;
+      transition:background 0.3s ease;
+    }
+    .reader-images.page .click-area .half.left:hover::after {
+      background:linear-gradient(to right, rgba(0,0,0,0.2), transparent);
+    }
+    .reader-images.page .click-area .half.right:hover::after {
+      background:linear-gradient(to left, rgba(0,0,0,0.2), transparent);
+    }
+    .reader-images.page .click-area .half .hint {
+      font-size:0.7rem;
+      opacity:0;
+      transition:opacity 0.3s ease;
+      pointer-events:none;
+      background:rgba(0,0,0,0.6);
+      backdrop-filter:blur(8px);
+      padding:0.3rem 0.8rem;
+      border-radius:var(--radius-sm);
+      color:#fff;
+      font-weight:500;
+      z-index:1;
+    }
+    .reader-images.page .click-area .half:hover .hint {
+      opacity:1;
+    }
+    .reader-images.page .page-footer {
+      display:flex; align-items:center; justify-content:space-between;
+      width:100%; max-width:800px; margin-top:0.8rem;
+      padding:0 0.2rem; gap:1rem; flex-wrap:wrap;
+    }
+    .reader-images.page .page-footer .page-info {
+      font-size:0.8rem; color:var(--fg-secondary);
+      font-weight:500;
+    }
+    .reader-images.page .page-footer .page-info .current {
+      color:var(--accent); font-weight:700;
+    }
+    .reader-images.page .page-footer .nav-buttons {
+      display:flex; gap:0.4rem;
+    }
+    .reader-images.page .page-footer .nav-buttons button {
+      padding:0.3rem 0.8rem; border-radius:var(--radius-sm);
+      background:var(--bg-card); border:1px solid var(--border-color);
+      color:var(--fg-secondary); font-size:0.7rem;
+      transition:all var(--transition);
+      cursor:pointer;
+      display:inline-flex; align-items:center; gap:0.3rem;
+    }
+    .reader-images.page .page-footer .nav-buttons button:hover:not(:disabled) {
+      border-color:var(--accent); color:var(--fg-primary); background:var(--accent-dim);
+    }
+    .reader-images.page .page-footer .nav-buttons button:disabled {
+      opacity:0.25; cursor:not-allowed;
+    }
+    .reader-images.page .page-footer .next-chapter-btn {
+      padding:0.4rem 1.2rem; border-radius:var(--radius-sm);
+      background:linear-gradient(145deg, var(--accent), var(--accent-hover));
+      color:#fff; font-size:0.8rem; font-weight:600;
+      transition:all var(--transition); border:none; cursor:pointer;
+      display:inline-flex; align-items:center; gap:0.4rem;
+      box-shadow:0 2px 16px rgba(59,130,246,0.25);
+    }
+    .reader-images.page .page-footer .next-chapter-btn:hover:not(:disabled) {
+      transform:scale(1.02); box-shadow:0 4px 24px rgba(59,130,246,0.35);
+    }
+    .reader-images.page .page-footer .next-chapter-btn:disabled {
+      opacity:0.35; cursor:not-allowed; transform:none; box-shadow:none;
+    }
+
+    .full-toggle-btn {
+      position:fixed; bottom:24px; right:24px; z-index:100;
+      background:var(--bg-card); border:1px solid var(--border-color);
+      border-radius:50%; width:50px; height:50px;
+      display:flex; align-items:center; justify-content:center;
+      color:var(--fg-secondary); font-size:1.2rem;
+      transition:all var(--transition); cursor:pointer;
+      box-shadow:var(--shadow); backdrop-filter:blur(12px);
+    }
+    .full-toggle-btn:hover {
+      border-color:var(--accent); color:var(--fg-primary);
+      background:var(--accent-dim); transform:scale(1.05);
+    }
+
+    .full-view {
+      position:fixed; top:0; left:0; right:0; bottom:0; z-index:9999;
+      background:rgba(0,0,0,0.95);
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      animation:fadeInFull 0.35s ease;
+    }
+    @keyframes fadeInFull {
+      from { opacity:0; }
+      to { opacity:1; }
+    }
+    .full-view .full-content {
+      width:100%; height:100%; display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      overflow-y:auto; padding:10px;
+      position:relative;
+    }
+    .full-view .full-content .full-images {
+      width:100%; display:flex; flex-direction:column; align-items:center; gap:4px;
+      padding:10px 0;
+    }
+    .full-view .full-content .full-images img {
+      max-width:100%; height:auto; object-fit:contain;
+      max-height:90vh;
+    }
+    .full-view .full-click-area {
+      position:absolute;
+      inset:0;
+      display:flex;
+      z-index:2;
+      cursor:pointer;
+    }
+    .full-view .full-click-area .half {
+      flex:1;
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition:background 0.25s ease;
+    }
+    .full-view .full-click-area .half:hover {
+      background:rgba(255,255,255,0.04);
+    }
+    .full-view .full-click-area .half .hint {
+      font-size:1.2rem;
+      opacity:0;
+      transition:opacity 0.3s ease;
+      pointer-events:none;
+      color:#fff;
+      text-shadow:0 2px 16px rgba(0,0,0,0.6);
+      background:rgba(0,0,0,0.4);
+      backdrop-filter:blur(8px);
+      padding:0.5rem 1.2rem;
+      border-radius:var(--radius-sm);
+    }
+    .full-view .full-click-area .half:hover .hint {
+      opacity:1;
+    }
+    .full-view .full-content .full-nav {
+      position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
+      display:flex; gap:0.6rem; align-items:center;
+      background:rgba(0,0,0,0.7);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+      padding:0.5rem 1rem;
+      border-radius:var(--radius-lg);
+      z-index:10;
+      flex-wrap:wrap;
+      justify-content:center;
+      border:1px solid rgba(255,255,255,0.06);
+    }
+    .full-view .full-content .full-nav .full-info {
+      color:#fff; font-size:0.8rem; min-width:80px; text-align:center; font-weight:500;
+    }
+    .full-view .full-content .full-nav .full-nav-btn {
+      padding:0.3rem 0.7rem;
+      border-radius:var(--radius-sm);
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.06);
+      color:#fff;
+      font-size:0.8rem;
+      cursor:pointer;
+      transition:all var(--transition);
+      display:inline-flex; align-items:center; gap:0.2rem;
+    }
+    .full-view .full-content .full-nav .full-nav-btn:hover:not(:disabled) {
+      background:rgba(255,255,255,0.12);
+      transform:scale(1.05);
+    }
+    .full-view .full-content .full-nav .full-nav-btn:disabled {
+      opacity:0.2; cursor:not-allowed; transform:none;
+    }
+    .full-view .full-content .full-nav .full-next-chapter-btn {
+      padding:0.3rem 1rem;
+      border-radius:var(--radius-sm);
+      background:var(--accent);
+      color:#0a0a0f;
+      font-size:0.75rem;
+      font-weight:600;
+      border:none;
+      cursor:pointer;
+      transition:all var(--transition);
+      display:inline-flex; align-items:center; gap:0.3rem;
+    }
+    .full-view .full-content .full-nav .full-next-chapter-btn:hover:not(:disabled) {
+      background:var(--accent-hover);
+      transform:scale(1.02);
+    }
+    .full-view .full-content .full-nav .full-next-chapter-btn:disabled {
+      opacity:0.3; cursor:not-allowed; transform:none;
+    }
+    .full-view .close-full {
+      position:fixed; top:20px; right:20px; z-index:11;
+      color:#fff; font-size:1.6rem; cursor:pointer;
+      transition:all var(--transition);
+      background:rgba(0,0,0,0.4);
+      backdrop-filter:blur(12px);
+      width:44px; height:44px;
+      border-radius:50%; display:flex; align-items:center; justify-content:center;
+      border:1px solid rgba(255,255,255,0.08);
+    }
+    .full-view .close-full:hover { background:rgba(255,255,255,0.12); transform:rotate(90deg); }
+
+    .comment-section {
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-color);
+    }
+    .comment-section h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .comment-section h3 i { color: var(--accent); }
+    .comment-section .comment-count {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: var(--fg-secondary);
+    }
+
+    .comment-form {
+      display: flex;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .comment-form input {
+      flex: 1;
+      min-width: 200px;
+      padding: 0.6rem 1rem;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--fg-primary);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border var(--transition), box-shadow var(--transition);
+      font-family: var(--font);
+    }
+    .comment-form input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+    .comment-form input::placeholder { color: var(--fg-muted); }
+    .comment-form .btn-submit-comment {
+      padding: 0.6rem 1.2rem;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(145deg, var(--accent), var(--accent-hover));
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.85rem;
+      border: none;
+      cursor: pointer;
+      transition: all var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      white-space: nowrap;
+      box-shadow: 0 2px 12px rgba(59,130,246,0.2);
+    }
+    .comment-form .btn-submit-comment:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 20px rgba(59,130,246,0.3);
+    }
+    .comment-form .btn-submit-comment:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .reply-form {
+      display: none;
+      margin-top: 0.5rem;
+      margin-left: 2.2rem;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      animation:fadeIn 0.25s ease;
+    }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }
+    .reply-form.open { display: flex; }
+    .reply-form input {
+      flex: 1;
+      min-width: 160px;
+      padding: 0.4rem 0.8rem;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--fg-primary);
+      font-size: 0.8rem;
+      outline: none;
+      transition: border var(--transition), box-shadow var(--transition);
+      font-family: var(--font);
+    }
+    .reply-form input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+    .reply-form .btn-reply-submit {
+      padding: 0.4rem 1rem;
+      border-radius: var(--radius-sm);
+      background: var(--accent);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.75rem;
+      border: none;
+      cursor: pointer;
+      transition: all var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      white-space: nowrap;
+    }
+    .reply-form .btn-reply-submit:hover { background: var(--accent-hover); transform:scale(1.02); }
+    .reply-form .btn-reply-submit:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
+    .reply-form .btn-reply-cancel {
+      padding: 0.4rem 0.8rem;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--fg-secondary);
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all var(--transition);
+      font-family: var(--font);
+    }
+    .reply-form .btn-reply-cancel:hover {
+      border-color: var(--accent);
+      color: var(--fg-primary);
+      background: var(--accent-dim);
+    }
+
+    .comment-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      max-height: 600px;
+      overflow-y: auto;
+      padding-right: 0.3rem;
+    }
+    .comment-list::-webkit-scrollbar { width: 4px; }
+    .comment-list::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+
+    .comment-item {
+      padding: 0.6rem 0.8rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      transition: border var(--transition), background var(--transition);
+    }
+    .comment-item:hover {
+      border-color: var(--accent-dim);
+      background: var(--bg-card-hover);
+    }
+    .comment-item .comment-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.2rem;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+    }
+    .comment-item .comment-name {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--fg-primary);
+    }
+    .comment-item .comment-name .avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      flex-shrink: 0;
+    }
+    .comment-item .comment-name .avatar-placeholder {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--fg-muted);
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .comment-item .comment-time {
+      font-size: 0.65rem;
+      color: var(--fg-muted);
+    }
+    .comment-item .comment-text {
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: var(--fg-secondary);
+      word-wrap: break-word;
+    }
+    .comment-item .comment-actions {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.3rem;
+      font-size: 0.7rem;
+      color: var(--fg-muted);
+    }
+    .comment-item .comment-actions button {
+      background: none;
+      border: none;
+      color: var(--fg-muted);
+      cursor: pointer;
+      font-size: 0.7rem;
+      transition: color var(--transition);
+      padding: 0.1rem 0.2rem;
+      font-family: var(--font);
+    }
+    .comment-item .comment-actions button:hover { color: var(--accent); }
+    .comment-item .comment-actions .delete-btn:hover { color: #ef4444; }
+
+    .comment-item .replies {
+      margin-left: 2.2rem;
+      margin-top: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      border-left: 2px solid var(--border-color);
+      padding-left: 0.6rem;
+    }
+    .comment-item .replies .reply-item {
+      padding: 0.4rem 0.6rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+    }
+    .comment-item .replies .reply-item .reply-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      margin-bottom: 0.1rem;
+    }
+    .comment-item .replies .reply-item .reply-name {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: var(--fg-primary);
+    }
+    .comment-item .replies .reply-item .reply-name .avatar {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      flex-shrink: 0;
+    }
+    .comment-item .replies .reply-item .reply-name .avatar-placeholder {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--fg-muted);
+      font-size: 0.7rem;
+      flex-shrink: 0;
+    }
+    .comment-item .replies .reply-item .reply-text {
+      font-size: 0.8rem;
+      color: var(--fg-secondary);
+      line-height: 1.4;
+      word-wrap: break-word;
+    }
+    .comment-item .replies .reply-item .reply-time {
+      font-size: 0.6rem;
+      color: var(--fg-muted);
+    }
+
+    .comment-login-prompt {
+      text-align: center;
+      padding: 1.2rem;
+      color: var(--fg-secondary);
+      font-size: 0.9rem;
+      background: var(--bg-card);
+      border-radius: var(--radius-sm);
+      border: 1px dashed var(--border-color);
+    }
+    .comment-login-prompt a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: underline;
+    }
+    .comment-login-prompt a:hover { color: var(--accent-hover); }
+
+    .empty-comment {
+      text-align: center;
+      padding: 2rem 0;
+      color: var(--fg-muted);
+      font-size: 0.85rem;
+    }
+    .empty-comment i {
+      font-size: 1.8rem;
+      display: block;
+      margin-bottom: 0.4rem;
+      color: var(--accent-dim);
+    }
+    .comment-error {
+      text-align: center;
+      padding: 1rem;
+      color: #ef4444;
+      background: rgba(239,68,68,0.08);
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(239,68,68,0.15);
+      font-size: 0.85rem;
+    }
+
+    .toast-container {
+      position:fixed; bottom:24px; right:24px; z-index:9999;
+      display:flex; flex-direction:column; gap:0.5rem;
+      max-width:90%;
+    }
+    .toast {
+      padding:0.7rem 1.4rem; background:var(--bg-card);
+      border:1px solid var(--border-color); border-radius:var(--radius);
+      box-shadow:var(--shadow-hover); backdrop-filter:blur(16px);
+      display:flex; align-items:center; gap:0.6rem;
+      animation:slideInToast 0.35s cubic-bezier(0.34,1.56,0.64,1);
+      font-size:0.8rem; border-left:3px solid var(--accent);
+    }
+    .toast i { color:var(--accent); }
+    @keyframes slideInToast {
+      from { opacity:0; transform:translateX(60px) scale(0.9); }
+      to { opacity:1; transform:translateX(0) scale(1); }
+    }
+
+    .footer {
+      padding:2.5rem 1.5rem 1.5rem; border-top:1px solid var(--border-color);
+      margin-top:3rem;
+    }
+    .footer-grid {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+      gap:1.5rem; max-width:1000px; margin:0 auto 1.5rem; text-align:left;
+    }
+    .footer-grid h4 { font-size:0.8rem; color:var(--fg-primary); margin-bottom:0.6rem; letter-spacing:-0.2px; }
+    .footer-grid p, .footer-grid a { font-size:0.75rem; color:var(--fg-secondary); line-height:1.8; }
+    .footer-grid a { display:block; transition:color 0.2s; }
+    .footer-grid a:hover { color:var(--accent); }
+    .footer-grid .brand-footer { font-weight:600; color:var(--accent); }
+    .footer-bottom {
+      max-width:1000px; margin:0 auto; border-top:1px solid var(--border-color);
+      padding-top:1rem; text-align:center; font-size:0.65rem; color:var(--fg-muted);
+    }
+
+    @media (max-width:768px) {
+      :root { --navbar-height:56px; }
+      .nav-menu { display:none; }
+      .hamburger { display:flex; }
+      .nav-actions .auth-btn span { display:none; }
+      .navbar-inner { padding:0 12px; }
+      .container { padding:0 12px; }
+      .reader-header .left .title { max-width:140px; font-size:0.78rem; }
+      .reader-header .right select { min-width:80px; font-size:0.7rem; padding:0.2rem 0.5rem; }
+      .mode-toggle button { font-size:0.6rem; padding:0.15rem 0.4rem; }
+      .reader-images.page .click-area .half { min-height:200px; }
+      .full-view .close-full { top:12px; right:12px; width:38px; height:38px; font-size:1.3rem; }
+      .full-toggle-btn { width:44px; height:44px; font-size:1rem; bottom:16px; right:16px; }
+      .full-view .full-content .full-nav { bottom:16px; padding:0.4rem 0.8rem; flex-wrap:wrap; gap:0.3rem; }
+      .full-view .full-content .full-nav .full-nav-btn { font-size:0.7rem; padding:0.2rem 0.5rem; }
+      .full-view .full-content .full-nav .full-next-chapter-btn { font-size:0.65rem; padding:0.2rem 0.6rem; }
+      .footer-grid { grid-template-columns:1fr 1fr; gap:1rem; text-align:center; }
+      .footer-grid h4 { text-align:center; }
+      .comment-form { flex-direction:column; }
+      .comment-form input { width:100%; }
+      .comment-form .btn-submit-comment { width:100%; justify-content:center; }
+      .reply-form { flex-direction:column; margin-left:0.8rem; }
+      .reply-form input { width:100%; }
+      .reply-form .btn-reply-submit { width:100%; justify-content:center; }
+      .comment-item .comment-header { flex-direction:column; align-items:flex-start; }
+      .comment-item .replies { margin-left:0.8rem; padding-left:0.4rem; }
+      .reader-images.page .page-footer { flex-direction:column; align-items:center; gap:0.4rem; }
+      .reader-images.scroll .scroll-footer { flex-direction:column; align-items:center; gap:0.4rem; }
+    }
+    @media (max-width:480px) {
+      .reader-header .left .title { max-width:100px; font-size:0.7rem; }
+      .reader-header .right select { min-width:60px; font-size:0.65rem; padding:0.15rem 0.4rem; }
+      .reader-images.page .click-area .half { min-height:150px; }
+      .reader-images.page .click-area .half .hint { font-size:0.55rem; padding:0.2rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="logo"><i class="fas fa-store"></i> Akino<span>Store</span></a>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="manga.html">Manga</a></li>
+        <li><a href="https://wa.me/6289687163314" target="_blank">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
+        <a href="login.html" class="auth-btn" id="authBtn">
+          <i class="fas fa-user"></i> <span id="authText">Login</span>
+        </a>
+        <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="manga.html">Manga</a>
+    <a href="https://wa.me/6289687163314" target="_blank">Contact</a>
+  </div>
+
+  <div class="container" id="app">
+    <div class="loading-spinner" id="loadingSpinner">
+      <i class="fas fa-book-open"></i>
+      <p style="font-weight:500;letter-spacing:0.3px;">Memuat chapter...</p>
+      <div class="pulse-dots"><span></span><span></span><span></span></div>
+    </div>
+
+    <div id="readerContent" style="display:none;">
+      <div class="reader-header" id="readerHeader">
+        <div class="left">
+          <button class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Kembali</button>
+          <span class="title" id="readerTitle">Chapter</span>
+        </div>
+        <div class="right">
+          <div class="mode-toggle" id="modeToggle">
+            <button class="active" data-mode="scroll"><i class="fas fa-align-justify"></i></button>
+            <button data-mode="page"><i class="fas fa-square"></i></button>
+          </div>
+          <select id="chapterSelect"></select>
+        </div>
+      </div>
+
+      <div class="reader-images scroll" id="readerImages"></div>
+
+      <div class="comment-section" id="commentSection">
+        <h3>
+          <i class="fas fa-comments"></i> Komentar
+          <span class="comment-count" id="commentCount">(0)</span>
+        </h3>
+
+        <div id="commentFormWrapper">
+          <div class="comment-form" id="commentForm">
+            <input type="text" id="commentInput" placeholder="Tulis komentar..." maxlength="500" />
+            <button class="btn-submit-comment" id="submitCommentBtn">
+              <i class="fas fa-paper-plane"></i> Kirim
+            </button>
+          </div>
+          <div class="comment-login-prompt" id="commentLoginPrompt" style="display:none;">
+            <i class="fas fa-lock" style="display:block;margin-bottom:0.3rem;color:var(--accent);"></i>
+            <a href="login.html">Login</a> untuk berkomentar.
+          </div>
+        </div>
+
+        <div class="comment-list" id="commentList">
+          <div class="empty-comment" id="emptyComment">
+            <i class="fas fa-comment-slash"></i>
+            Belum ada komentar. Jadilah yang pertama!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="full-toggle-btn" id="fullToggleBtn" title="Tampilan Penuh">
+      <i class="fas fa-expand"></i>
+    </button>
+  </div>
+
+  <footer class="footer" aria-label="Footer">
+    <div class="footer-grid">
+      <div><h4 class="brand-footer">Akino Store</h4><p>Jasa digital & game terpercaya sejak 2022.</p></div>
+      <div><h4>Layanan</h4><a href="CarParkingMultiplayer.html">Car Parking</a><a href="SosialMedia.html">Sosial Media</a><a href="designedit.html">Design / Edit</a></div>
+      <div><h4>Tentang</h4><a href="about.html">About Us</a><a href="https://wa.me/6289687163314" target="_blank">Contact</a><a href="stockmobil.html">Stock Mobil</a></div>
+      <div><h4>Legal</h4><a href="privacy.html">Kebijakan Privasi</a><a href="terms.html">Syarat &amp; Ketentuan</a></div>
+      <div><h4>Follow</h4><a href="https://www.tiktok.com/@akinolaset_" target="_blank">TikTok</a><a href="https://www.instagram.com/akinostore_" target="_blank">Instagram</a><a href="https://youtube.com/@akinolaset" target="_blank">YouTube</a></div>
+    </div>
+    <div class="footer-bottom">&copy; 2022 Akino Store. All Rights Reserved.</div>
+  </footer>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    const WORKER_URL = 'https://manga-scrapper.akinostore.workers.dev';
+
+    const $ = id => document.getElementById(id);
+    const loadingSpinner = $('loadingSpinner');
+    const readerContent = $('readerContent');
+    const readerTitle = $('readerTitle');
+    const readerImages = $('readerImages');
+    const chapterSelect = $('chapterSelect');
+    const backBtn = $('backBtn');
+    const toastContainer = $('toastContainer');
+    const modeToggle = $('modeToggle');
+    const fullToggleBtn = $('fullToggleBtn');
+    const authBtn = $('authBtn');
+    const authText = $('authText');
+
+    const commentList = $('commentList');
+    const commentInput = $('commentInput');
+    const submitCommentBtn = $('submitCommentBtn');
+    const commentForm = $('commentForm');
+    const commentLoginPrompt = $('commentLoginPrompt');
+    const commentCount = $('commentCount');
+    const emptyComment = $('emptyComment');
+
+    let currentUser = null;
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        currentUser = user;
+        authText.textContent = 'Profil';
+        authBtn.href = 'profile.html';
+        authBtn.querySelector('i').className = 'fas fa-user-check';
+        commentForm.style.display = 'flex';
+        commentLoginPrompt.style.display = 'none';
+        if (currentMangaId && currentChapterId) renderComments();
+      } else {
+        currentUser = null;
+        authText.textContent = 'Login';
+        authBtn.href = 'login.html';
+        authBtn.querySelector('i').className = 'fas fa-user';
+        commentForm.style.display = 'none';
+        commentLoginPrompt.style.display = 'block';
+        if (currentMangaId && currentChapterId) renderComments();
+      }
+    });
+
+    let currentChapterId = null;
+    let currentMangaId = null;
+    let allChapters = [];
+    let pageUrls = [];
+    let currentMode = 'scroll';
+    let currentPageIndex = 0;
+    let isFullView = false;
+    let currentLang = null;
+    let currentChapterNum = 0;
+    let currentMangaTitle = 'Manga';
+
+    function showToast(msg, icon = 'fa-check-circle') {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `<i class="fas ${icon}"></i> ${msg}`;
+      toastContainer.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(50px) scale(0.9)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    function formatDate(ts) {
+      if (!ts) return '';
+      const d = ts.toDate ? ts.toDate() : new Date(ts);
+      return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    }
+
+    async function loadComments(mangaId, chapterId) {
+      try {
+        const snapshot = await db.collection('comments')
+          .where('mangaId', '==', mangaId)
+          .where('chapterId', '==', chapterId)
+          .orderBy('createdAt', 'desc')
+          .get();
+        const allComments = [];
+        snapshot.forEach(doc => allComments.push({ id: doc.id, ...doc.data() }));
+        const parentComments = allComments.filter(c => c.parentId === null || c.parentId === undefined);
+        const replyComments = allComments.filter(c => c.parentId !== null && c.parentId !== undefined);
+        const commentMap = {};
+        parentComments.forEach(c => { commentMap[c.id] = { ...c, replies: [] }; });
+        replyComments.forEach(r => {
+          if (commentMap[r.parentId]) commentMap[r.parentId].replies.push(r);
+        });
+        Object.keys(commentMap).forEach(key => {
+          commentMap[key].replies.sort((a, b) => {
+            const aTime = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(0);
+            const bTime = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(0);
+            return aTime - bTime;
+          });
+        });
+        const sortedParents = Object.values(commentMap).sort((a, b) => {
+          const aTime = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(0);
+          const bTime = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(0);
+          return bTime - aTime;
+        });
+        renderCommentsWithReplies(sortedParents);
+      } catch (err) {
+        console.error('Load comments error:', err);
+        commentList.innerHTML = `<div class="comment-error">Gagal memuat komentar.</div>`;
+        commentCount.textContent = '(0)';
+      }
+    }
+
+    function renderCommentsWithReplies(comments) {
+      commentList.innerHTML = '';
+      commentCount.textContent = `(${comments.length})`;
+      if (comments.length === 0) {
+        commentList.innerHTML = `<div class="empty-comment"><i class="fas fa-comment-slash"></i> Belum ada komentar.</div>`;
+        return;
+      }
+      const user = firebase.auth().currentUser;
+      comments.forEach(comment => {
+        const div = document.createElement('div');
+        div.className = 'comment-item';
+        const isOwner = user && comment.uid === user.uid;
+        const time = comment.createdAt?.toDate ? formatDate(comment.createdAt.toDate()) : 'Baru saja';
+        let avatarHtml = comment.photoURL ? `<img src="${comment.photoURL}" alt="Avatar" class="avatar" />` : `<div class="avatar-placeholder"><i class="fas fa-user"></i></div>`;
+        div.innerHTML = `
+          <div class="comment-header">
+            <span class="comment-name">${avatarHtml}<span>${comment.name || 'Anonymous'}</span></span>
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+              <span class="comment-time">${time}</span>
+              ${isOwner ? `<button class="delete-btn" data-id="${comment.id}" style="background:none;border:none;color:var(--fg-muted);cursor:pointer;font-size:0.7rem;"><i class="fas fa-trash-alt"></i></button>` : ''}
+            </div>
+          </div>
+          <div class="comment-text">${comment.text}</div>
+          <div class="comment-actions"><button class="reply-toggle" data-id="${comment.id}"><i class="fas fa-reply"></i> Balas</button></div>
+          <div class="reply-form" id="replyForm_${comment.id}">
+            <input type="text" placeholder="Tulis balasan..." maxlength="500" />
+            <button class="btn-reply-submit" data-parent="${comment.id}"><i class="fas fa-reply"></i> Kirim Balasan</button>
+            <button class="btn-reply-cancel" data-parent="${comment.id}">Batal</button>
+          </div>
+          <div class="replies" id="replies_${comment.id}">
+            ${comment.replies.map(reply => {
+              const isReplyOwner = user && reply.uid === user.uid;
+              const replyTime = reply.createdAt?.toDate ? formatDate(reply.createdAt.toDate()) : 'Baru saja';
+              let replyAvatar = reply.photoURL ? `<img src="${reply.photoURL}" alt="Avatar" class="avatar" />` : `<div class="avatar-placeholder"><i class="fas fa-user"></i></div>`;
+              return `<div class="reply-item" data-id="${reply.id}">
+                <div class="reply-header">
+                  <span class="reply-name">${replyAvatar}<span>${reply.name || 'Anonymous'}</span></span>
+                  <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <span class="reply-time">${replyTime}</span>
+                    ${isReplyOwner ? `<button class="delete-btn" data-id="${reply.id}" style="background:none;border:none;color:var(--fg-muted);cursor:pointer;font-size:0.6rem;"><i class="fas fa-trash-alt"></i></button>` : ''}
+                  </div>
+                </div>
+                <div class="reply-text">${reply.text}</div>
+              </div>`;
+            }).join('')}
+          </div>
+        `;
+        div.querySelector('.reply-toggle').addEventListener('click', (e) => {
+          const parentId = e.target.closest('.reply-toggle').dataset.id;
+          const form = document.getElementById(`replyForm_${parentId}`);
+          form.classList.toggle('open');
+          if (form.classList.contains('open')) form.querySelector('input').focus();
+        });
+        div.querySelector('.btn-reply-cancel')?.addEventListener('click', (e) => {
+          const parentId = e.target.dataset.parent;
+          const form = document.getElementById(`replyForm_${parentId}`);
+          form.classList.remove('open');
+          form.querySelector('input').value = '';
+        });
+        div.querySelector('.btn-reply-submit')?.addEventListener('click', (e) => {
+          const parentId = e.target.dataset.parent;
+          const form = document.getElementById(`replyForm_${parentId}`);
+          const input = form.querySelector('input');
+          const btn = e.target;
+          submitReply(parentId, input, btn);
+        });
+        div.querySelector('.reply-form input')?.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            const parentId = e.target.closest('.reply-form').querySelector('.btn-reply-submit').dataset.parent;
+            const form = document.getElementById(`replyForm_${parentId}`);
+            const input = form.querySelector('input');
+            const btn = form.querySelector('.btn-reply-submit');
+            submitReply(parentId, input, btn);
+          }
+        });
+        div.querySelectorAll('.delete-btn').forEach(btn => {
+          btn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const id = e.target.closest('.delete-btn').dataset.id;
+            if (confirm('Hapus komentar/balasan ini?')) {
+              try {
+                await db.collection('comments').doc(id).delete();
+                showToast('Komentar dihapus.', 'info');
+                if (currentMangaId && currentChapterId) loadComments(currentMangaId, currentChapterId);
+              } catch (err) { showToast('Gagal hapus.', 'error'); }
+            }
+          });
+        });
+        commentList.appendChild(div);
+      });
+    }
+
+    async function submitComment() {
+      const user = firebase.auth().currentUser;
+      if (!user) { showToast('Silakan login!', 'fa-exclamation-circle'); return; }
+      const text = commentInput.value.trim();
+      if (!text) return;
+      let name = 'User', photoURL = '';
+      try {
+        const userData = await getUserProfile(user.uid);
+        name = userData?.name || user.displayName || 'User';
+        photoURL = userData?.photoURL || user.photoURL || '';
+      } catch (e) {}
+      submitCommentBtn.disabled = true;
+      submitCommentBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      try {
+        await db.collection('comments').add({
+          mangaId: currentMangaId,
+          chapterId: currentChapterId,
+          parentId: null,
+          uid: user.uid,
+          name: name,
+          photoURL: photoURL,
+          text: text,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        commentInput.value = '';
+        showToast('Komentar terkirim!', 'success');
+        await loadComments(currentMangaId, currentChapterId);
+      } catch (err) { showToast('Gagal kirim', 'error'); }
+      finally {
+        submitCommentBtn.disabled = false;
+        submitCommentBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim';
+      }
+    }
+
+    async function submitReply(parentId, replyInput, replyBtn) {
+      const user = firebase.auth().currentUser;
+      if (!user) { showToast('Silakan login!', 'fa-exclamation-circle'); return; }
+      const text = replyInput.value.trim();
+      if (!text) return;
+      let name = 'User', photoURL = '';
+      try {
+        const userData = await getUserProfile(user.uid);
+        name = userData?.name || user.displayName || 'User';
+        photoURL = userData?.photoURL || user.photoURL || '';
+      } catch (e) {}
+      replyBtn.disabled = true;
+      replyBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      try {
+        await db.collection('comments').add({
+          mangaId: currentMangaId,
+          chapterId: currentChapterId,
+          parentId: parentId,
+          uid: user.uid,
+          name: name,
+          photoURL: photoURL,
+          text: text,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        replyInput.value = '';
+        showToast('Balasan terkirim!', 'success');
+        await loadComments(currentMangaId, currentChapterId);
+      } catch (err) { showToast('Gagal kirim', 'error'); }
+      finally {
+        replyBtn.disabled = false;
+        replyBtn.innerHTML = '<i class="fas fa-reply"></i> Kirim Balasan';
+      }
+    }
+
+    async function renderComments() {
+      if (!currentMangaId || !currentChapterId) {
+        commentList.innerHTML = '<div class="empty-comment">Belum ada komentar.</div>';
+        commentCount.textContent = '(0)';
+        return;
+      }
+      await loadComments(currentMangaId, currentChapterId);
+    }
+
+    async function getUserProfile(uid) {
+      try {
+        const doc = await db.collection('users').doc(uid).get();
+        return doc.exists ? doc.data() : null;
+      } catch { return null; }
+    }
+
+    async function saveReadingHistory() {
+      const user = firebase.auth().currentUser;
+      if (!user || !currentMangaId || !currentChapterId) return;
+      try {
+        const readingData = JSON.parse(localStorage.getItem('currentReading') || '{}');
+        const mangaTitle = currentMangaTitle || readingData.mangaTitle || 'Manga';
+        const coverUrl = readingData.coverUrl || '';
+        await saveReadingHistoryFn(user.uid, {
+          mangaId: currentMangaId,
+          mangaTitle: mangaTitle,
+          coverUrl: coverUrl,
+          chapterId: currentChapterId,
+          chapterNum: String(currentChapterNum || '0')
+        });
+      } catch (e) { console.error('Save history error:', e); }
+    }
+
+    async function saveReadingHistoryFn(uid, data) {
+      try {
+        const docRef = db.collection('users').doc(uid);
+        const docSnap = await docRef.get();
+        const history = docSnap.exists ? (docSnap.data().readingHistory || []) : [];
+        const existing = history.findIndex(h => h.mangaId === data.mangaId);
+        if (existing !== -1) {
+          history.splice(existing, 1);
+        }
+        history.unshift(data);
+        if (history.length > 100) history.pop();
+        await docRef.set({ readingHistory: history }, { merge: true });
+      } catch (e) { console.error('Save history error:', e); }
+    }
+
+    async function apiFetch(endpoint, params = {}) {
+      const url = new URL(WORKER_URL + endpoint);
+      Object.keys(params).forEach(key => {
+        if (Array.isArray(params[key])) {
+          params[key].forEach(v => url.searchParams.append(key, v));
+        } else if (typeof params[key] === 'object' && params[key] !== null) {
+          if (key === 'order') {
+            Object.keys(params[key]).forEach(k => url.searchParams.append(`order[${k}]`, params[key][k]));
+          } else {
+            url.searchParams.append(key, JSON.stringify(params[key]));
+          }
+        } else if (params[key] !== undefined && params[key] !== '') {
+          url.searchParams.append(key, params[key]);
+        }
+      });
+      const resp = await fetch(url);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      return resp.json();
+    }
+
+    function findNextChapter(currentId, lang) {
+      const current = allChapters.find(c => c.id === currentId);
+      if (!current) return null;
+      const currentNum = parseFloat(current.chapter) || 0;
+      let candidates = allChapters.filter(c => c.lang === lang && (parseFloat(c.chapter) || 0) > currentNum);
+      if (candidates.length === 0) candidates = allChapters.filter(c => (parseFloat(c.chapter) || 0) > currentNum);
+      if (candidates.length === 0) return null;
+      candidates.sort((a, b) => (parseFloat(a.chapter) || 0) - (parseFloat(b.chapter) || 0));
+      return candidates[0];
+    }
+
+    function goToNextChapter() {
+      if (!currentChapterId || !currentLang) { showToast('Tidak ada data chapter.', 'fa-info-circle'); return; }
+      const next = findNextChapter(currentChapterId, currentLang);
+      if (next) { goToChapter(next.id); }
+      else { showToast('Tidak ada chapter berikutnya.', 'fa-info-circle'); }
+    }
+
+    function renderImages(mode) {
+      const isPage = (mode === 'page');
+      readerImages.innerHTML = '';
+      const nextChapter = findNextChapter(currentChapterId, currentLang);
+
+      if (isPage) {
+        readerImages.className = 'reader-images page';
+        const wrapper = document.createElement('div');
+        wrapper.className = 'page-wrapper';
+        const img = document.createElement('img');
+        img.src = pageUrls[currentPageIndex] || '';
+        img.alt = `Halaman ${currentPageIndex + 1}`;
+        img.onerror = function() {
+          this.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 600%22%3E%3Crect width=%22400%22 height=%22600%22 fill=%22%23222%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23555%22 font-size=%2220%22%3EGagal%20load%3C/text%3E%3C/svg%3E';
+        };
+        const clickArea = document.createElement('div');
+        clickArea.className = 'click-area';
+        const leftHalf = document.createElement('div');
+        leftHalf.className = 'half left';
+        leftHalf.addEventListener('click', (e) => { e.stopPropagation(); goPage(-1); });
+        const rightHalf = document.createElement('div');
+        rightHalf.className = 'half right';
+        rightHalf.addEventListener('click', (e) => { e.stopPropagation(); goPage(1); });
+        clickArea.appendChild(leftHalf);
+        clickArea.appendChild(rightHalf);
+
+        const footer = document.createElement('div');
+        footer.className = 'page-footer';
+        const pageInfo = document.createElement('span');
+        pageInfo.className = 'page-info';
+        pageInfo.innerHTML = `<span class="current">${currentPageIndex + 1}</span> / ${pageUrls.length}`;
+
+        const navBtns = document.createElement('div');
+        navBtns.className = 'nav-buttons';
+        const prevPageBtn = document.createElement('button');
+        prevPageBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+        prevPageBtn.disabled = currentPageIndex === 0;
+        prevPageBtn.addEventListener('click', () => goPage(-1));
+        const nextPageBtn = document.createElement('button');
+        nextPageBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+        nextPageBtn.disabled = currentPageIndex === pageUrls.length - 1;
+        nextPageBtn.addEventListener('click', () => goPage(1));
+        navBtns.appendChild(prevPageBtn);
+        navBtns.appendChild(nextPageBtn);
+
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'next-chapter-btn';
+        nextBtn.innerHTML = 'Chapter Selanjutnya <i class="fas fa-arrow-right"></i>';
+        if (nextChapter) {
+          nextBtn.addEventListener('click', () => goToNextChapter());
+          nextBtn.disabled = false;
+        } else {
+          nextBtn.disabled = true;
+          nextBtn.innerHTML = 'Tidak ada chapter selanjutnya';
+        }
+        const isLastPage = (currentPageIndex === pageUrls.length - 1);
+        nextBtn.style.display = isLastPage ? 'inline-flex' : 'none';
+
+        footer.appendChild(pageInfo);
+        footer.appendChild(navBtns);
+        footer.appendChild(nextBtn);
+
+        wrapper.appendChild(clickArea);
+        wrapper.appendChild(img);
+        wrapper.appendChild(footer);
+        readerImages.appendChild(wrapper);
+
+        readerImages._img = img;
+        readerImages._pageInfo = pageInfo;
+        readerImages._nextBtn = nextBtn;
+        readerImages._prevBtn = prevPageBtn;
+        readerImages._nextPageBtn = nextPageBtn;
+
+      } else {
+        readerImages.className = 'reader-images scroll';
+        const fragment = document.createDocumentFragment();
+        pageUrls.forEach(url => {
+          const img = document.createElement('img');
+          img.src = url;
+          img.alt = 'Halaman';
+          img.loading = 'lazy';
+          img.onerror = function() {
+            this.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 600%22%3E%3Crect width=%22400%22 height=%22600%22 fill=%22%23222%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23555%22 font-size=%2220%22%3EGagal%20load%3C/text%3E%3C/svg%3E';
+          };
+          fragment.appendChild(img);
+        });
+        readerImages.appendChild(fragment);
+        const scrollFooter = document.createElement('div');
+        scrollFooter.className = 'scroll-footer';
+        const progressText = document.createElement('span');
+        progressText.className = 'progress-text';
+        progressText.textContent = `${pageUrls.length} halaman`;
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'next-chapter-btn';
+        nextBtn.innerHTML = 'Chapter Selanjutnya <i class="fas fa-arrow-right"></i>';
+        if (nextChapter) {
+          nextBtn.addEventListener('click', () => goToNextChapter());
+          nextBtn.disabled = false;
+        } else {
+          nextBtn.disabled = true;
+          nextBtn.innerHTML = 'Tidak ada chapter selanjutnya';
+        }
+        scrollFooter.appendChild(progressText);
+        scrollFooter.appendChild(nextBtn);
+        readerImages.appendChild(scrollFooter);
+        readerImages._scrollNextBtn = nextBtn;
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      saveReadingHistory();
+    }
+
+    function updatePageFooter() {
+      if (currentMode !== 'page') return;
+      const footer = readerImages.querySelector('.page-footer');
+      if (!footer) return;
+      const info = footer.querySelector('.page-info');
+      const nextBtn = footer.querySelector('.next-chapter-btn');
+      const prevBtn = footer.querySelector('.nav-buttons button:first-child');
+      const nextPageBtn = footer.querySelector('.nav-buttons button:last-child');
+      if (info) info.innerHTML = `<span class="current">${currentPageIndex + 1}</span> / ${pageUrls.length}`;
+      if (prevBtn) prevBtn.disabled = currentPageIndex === 0;
+      if (nextPageBtn) nextPageBtn.disabled = currentPageIndex === pageUrls.length - 1;
+      const isLast = (currentPageIndex === pageUrls.length - 1);
+      if (nextBtn) {
+        const nextChapter = findNextChapter(currentChapterId, currentLang);
+        if (nextChapter) {
+          nextBtn.disabled = false;
+          nextBtn.innerHTML = 'Chapter Selanjutnya <i class="fas fa-arrow-right"></i>';
+          nextBtn.style.display = isLast ? 'inline-flex' : 'none';
+        } else {
+          nextBtn.disabled = true;
+          nextBtn.innerHTML = 'Tidak ada chapter selanjutnya';
+          nextBtn.style.display = isLast ? 'inline-flex' : 'none';
+        }
+      }
+    }
+
+    function goPage(direction) {
+      const newIndex = currentPageIndex + direction;
+      if (newIndex < 0 || newIndex >= pageUrls.length) return;
+      currentPageIndex = newIndex;
+      if (currentMode === 'page') {
+        const img = readerImages.querySelector('.page-wrapper img');
+        if (img) img.src = pageUrls[currentPageIndex] || '';
+        updatePageFooter();
+      } else {
+        renderImages(currentMode);
+      }
+    }
+
+    async function loadChapter(chapterId) {
+      try {
+        loadingSpinner.style.display = 'block';
+        readerContent.style.display = 'none';
+
+        const serverData = await apiFetch(`/at-home/server/${chapterId}`);
+        const baseUrl = serverData.baseUrl;
+        const chapterHash = serverData.chapter.hash;
+        const pages = serverData.chapter.data || [];
+
+        if (!pages.length) {
+          readerImages.innerHTML = `<p style="color:var(--fg-secondary);text-align:center;padding:2rem 0;">Chapter ini tidak memiliki halaman.</p>`;
+          loadingSpinner.style.display = 'none';
+          readerContent.style.display = 'block';
+          return;
+        }
+
+        pageUrls = pages.map(p => `${WORKER_URL}/proxy-image?url=${encodeURIComponent(`${baseUrl}/data/${chapterHash}/${p}`)}`);
+
+        currentPageIndex = 0;
+        renderImages(currentMode);
+        chapterSelect.value = chapterId;
+
+        const chapterData = allChapters.find(c => c.id === chapterId);
+        if (chapterData) {
+          const langLabel = chapterData.lang === 'id' ? '🇮🇩 ID' : chapterData.lang === 'en' ? '🇬🇧 EN' : '🌐';
+          const title = chapterData.title || `Chapter ${chapterData.chapter}`;
+          readerTitle.textContent = `${title} (${langLabel})`;
+          currentLang = chapterData.lang;
+          currentChapterNum = parseFloat(chapterData.chapter) || 0;
+        } else {
+          readerTitle.textContent = `Chapter`;
+          currentLang = null;
+          currentChapterNum = 0;
+        }
+
+        loadingSpinner.style.display = 'none';
+        readerContent.style.display = 'block';
+
+        if (currentMangaId && currentChapterId) await renderComments();
+
+        setTimeout(() => updatePageFooter(), 100);
+
+      } catch (err) {
+        console.error('loadChapter error:', err);
+        loadingSpinner.innerHTML = `<p style="color:var(--fg-secondary);">Gagal memuat chapter: ${err.message}</p>`;
+        showToast('Gagal memuat chapter', 'fa-exclamation-triangle');
+      }
+    }
+
+    function goToChapter(chapterId) {
+      if (chapterId === currentChapterId) return;
+      currentChapterId = chapterId;
+      const url = new URL(window.location);
+      url.searchParams.set('chapter', chapterId);
+      window.history.pushState({}, '', url);
+      loadChapter(chapterId);
+    }
+
+    modeToggle.addEventListener('click', (e) => {
+      const btn = e.target.closest('button');
+      if (!btn || !btn.dataset.mode || btn.dataset.mode === currentMode) return;
+      modeToggle.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentMode = btn.dataset.mode;
+      currentPageIndex = 0;
+      renderImages(currentMode);
+    });
+
+    function toggleFullView() {
+      if (isFullView) { closeFullView(); return; }
+      isFullView = true;
+      const fv = document.createElement('div');
+      fv.className = 'full-view';
+      fv.id = 'fullView';
+      const content = document.createElement('div');
+      content.className = 'full-content';
+      const nextChapter = findNextChapter(currentChapterId, currentLang);
+      let currentImgIndex = currentPageIndex;
+
+      const clickArea = document.createElement('div');
+      clickArea.className = 'full-click-area';
+      const leftHalf = document.createElement('div');
+      leftHalf.className = 'half left';
+      leftHalf.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (currentImgIndex > 0) { currentImgIndex--; updateFullViewImage(); updateFullViewInfo(); }
+      });
+      const rightHalf = document.createElement('div');
+      rightHalf.className = 'half right';
+      rightHalf.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (currentImgIndex < pageUrls.length - 1) { currentImgIndex++; updateFullViewImage(); updateFullViewInfo(); }
+      });
+      clickArea.appendChild(leftHalf);
+      clickArea.appendChild(rightHalf);
+
+      const img = document.createElement('img');
+      img.src = pageUrls[currentImgIndex] || '';
+      img.alt = `Halaman ${currentImgIndex + 1}`;
+      img.style.maxWidth = '100%';
+      img.style.maxHeight = '92vh';
+      img.style.objectFit = 'contain';
+
+      function updateFullViewImage() {
+        img.src = pageUrls[currentImgIndex] || '';
+      }
+      function updateFullViewInfo() {
+        const info = content.querySelector('.full-info');
+        if (info) info.textContent = `${currentImgIndex + 1} / ${pageUrls.length}`;
+        const nextBtn = content.querySelector('.full-next-chapter-btn');
+        const isLast = (currentImgIndex === pageUrls.length - 1);
+        if (nextBtn) nextBtn.style.display = isLast ? 'inline-flex' : 'none';
+        const prevBtn = content.querySelector('.full-nav-btn[data-action="prev"]');
+        const nextPageBtn = content.querySelector('.full-nav-btn[data-action="next"]');
+        if (prevBtn) prevBtn.disabled = currentImgIndex === 0;
+        if (nextPageBtn) nextPageBtn.disabled = currentImgIndex === pageUrls.length - 1;
+      }
+
+      const nav = document.createElement('div');
+      nav.className = 'full-nav';
+      const prevBtn = document.createElement('button');
+      prevBtn.className = 'full-nav-btn';
+      prevBtn.dataset.action = 'prev';
+      prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+      prevBtn.disabled = currentImgIndex === 0;
+      prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (currentImgIndex > 0) { currentImgIndex--; updateFullViewImage(); updateFullViewInfo(); }
+      });
+      const info = document.createElement('span');
+      info.className = 'full-info';
+      info.textContent = `${currentImgIndex + 1} / ${pageUrls.length}`;
+      const nextPageBtn = document.createElement('button');
+      nextPageBtn.className = 'full-nav-btn';
+      nextPageBtn.dataset.action = 'next';
+      nextPageBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+      nextPageBtn.disabled = currentImgIndex === pageUrls.length - 1;
+      nextPageBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (currentImgIndex < pageUrls.length - 1) { currentImgIndex++; updateFullViewImage(); updateFullViewInfo(); }
+      });
+
+      const nextChapterBtn = document.createElement('button');
+      nextChapterBtn.className = 'full-next-chapter-btn';
+      nextChapterBtn.innerHTML = 'Chapter Selanjutnya <i class="fas fa-arrow-right"></i>';
+      if (nextChapter) {
+        nextChapterBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          closeFullView();
+          goToNextChapter();
+        });
+        nextChapterBtn.disabled = false;
+      } else {
+        nextChapterBtn.disabled = true;
+        nextChapterBtn.textContent = 'Tidak ada chapter selanjutnya';
+      }
+      const isLastPageFull = (currentImgIndex === pageUrls.length - 1);
+      nextChapterBtn.style.display = isLastPageFull ? 'inline-flex' : 'none';
+
+      nav.appendChild(prevBtn);
+      nav.appendChild(info);
+      nav.appendChild(nextPageBtn);
+      nav.appendChild(nextChapterBtn);
+
+      content.appendChild(clickArea);
+      content.appendChild(img);
+      content.appendChild(nav);
+
+      const closeBtn = document.createElement('button');
+      closeBtn.className = 'close-full';
+      closeBtn.innerHTML = '<i class="fas fa-times"></i>';
+      closeBtn.addEventListener('click', toggleFullView);
+      fv.appendChild(content);
+      fv.appendChild(closeBtn);
+      document.body.style.overflow = 'hidden';
+      document.body.appendChild(fv);
+    }
+
+    function closeFullView() {
+      const fv = document.querySelector('.full-view');
+      if (fv) fv.remove();
+      document.body.style.overflow = '';
+      isFullView = false;
+    }
+
+    fullToggleBtn.addEventListener('click', toggleFullView);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFullView(); }
+      if (e.key === 'Escape' && isFullView) { closeFullView(); }
+      if (e.key === 'ArrowLeft' && currentMode === 'page' && !isFullView) { goPage(-1); e.preventDefault(); }
+      if (e.key === 'ArrowRight' && currentMode === 'page' && !isFullView) { goPage(1); e.preventDefault(); }
+    });
+
+    (function() {
+      const navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 40));
+      const hamburger = document.getElementById('hamburger');
+      const mobileMenu = document.getElementById('mobileMenu');
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        mobileMenu.classList.toggle('open');
+      });
+      mobileMenu.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          hamburger.classList.remove('active');
+          mobileMenu.classList.remove('open');
+        });
+      });
+      const themeToggle = document.getElementById('themeToggle');
+      const icon = themeToggle.querySelector('i');
+      const currentTheme = localStorage.getItem('theme') || 'dark';
+      if (currentTheme === 'light') {
+        document.body.classList.add('light-theme');
+        icon.className = 'fas fa-sun';
+      }
+      themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('light-theme');
+        const isLight = document.body.classList.contains('light-theme');
+        icon.className = isLight ? 'fas fa-sun' : 'fas fa-moon';
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      });
+    })();
+
+    backBtn.addEventListener('click', () => {
+      if (currentMangaId) {
+        window.location.href = `detail.html?id=${currentMangaId}`;
+      } else {
+        window.history.back();
+      }
+    });
+
+    submitCommentBtn.addEventListener('click', submitComment);
+    commentInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); submitComment(); }
+    });
+
+    async function init() {
+      const params = new URLSearchParams(window.location.search);
+      const chapterId = params.get('chapter');
+
+      if (!chapterId) {
+        loadingSpinner.innerHTML = '<p style="color:var(--fg-secondary);">ID chapter tidak ditemukan.</p>';
+        return;
+      }
+
+      try {
+        const readingData = JSON.parse(localStorage.getItem('currentReading'));
+        if (readingData && readingData.chapters && readingData.chapters.length > 0) {
+          allChapters = readingData.chapters;
+          currentMangaId = readingData.mangaId || null;
+          currentMangaTitle = readingData.mangaTitle || 'Manga';
+        } else {
+          allChapters = [{ id: chapterId, title: 'Chapter', chapter: '?', lang: 'id' }];
+          currentMangaId = null;
+          currentMangaTitle = 'Manga';
+        }
+      } catch {
+        allChapters = [{ id: chapterId, title: 'Chapter', chapter: '?', lang: 'id' }];
+        currentMangaId = null;
+        currentMangaTitle = 'Manga';
+      }
+
+      allChapters.sort((a, b) => {
+        const numA = parseFloat(a.chapter) || 0;
+        const numB = parseFloat(b.chapter) || 0;
+        return numA - numB;
+      });
+
+      chapterSelect.innerHTML = '';
+      allChapters.forEach((ch, idx) => {
+        const opt = document.createElement('option');
+        opt.value = ch.id;
+        const label = ch.title || `Chapter ${ch.chapter || idx + 1}`;
+        const langLabel = ch.lang === 'id' ? '🇮🇩 ID' : ch.lang === 'en' ? '🇬🇧 EN' : ch.lang === 'ja' ? '🇯🇵 JP' : '🌐';
+        opt.textContent = `${label} (${langLabel})`;
+        if (ch.id === chapterId) opt.selected = true;
+        chapterSelect.appendChild(opt);
+      });
+
+      chapterSelect.addEventListener('change', (e) => goToChapter(e.target.value));
+
+      currentChapterId = chapterId;
+      await loadChapter(chapterId);
+    }
+
+    init();
+  </script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(() => console.log('✅ SW registered'))
+          .catch(err => console.log('❌ SW failed:', err));
+      });
+    }
+  </script>
+
+  <script>
+  // 🔥 Force update service worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistration().then(reg => {
+      if (reg) {
+        reg.update();
+        reg.addEventListener('updatefound', () => {
+          const newSW = reg.installing;
+          newSW.addEventListener('statechange', () => {
+            if (newSW.state === 'installed') {
+              newSW.postMessage('skipWaiting');
+              // Refresh halaman setelah update
+              setTimeout(() => {
+                window.location.reload();
+              }, 800);
+            }
+          });
+        });
+      }
+    });
+  }
+</script>
+</body>
+</html>

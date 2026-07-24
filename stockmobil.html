@@ -1,0 +1,3369 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <meta name="description" content="Stock mobil CPM murah mulai Rp2.000. Tersedia berbagai model dengan harga terjangkau." />
+    <meta property="og:title" content="Stock Mobil Murah - Akino Store" />
+    <meta property="og:description" content="Stock mobil CPM murah mulai 2rb. Hot Stock premium, flash sale, dan limited edition." />
+    <meta property="og:image" content="https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png" />
+    <meta property="og:type" content="website" />
+    <title>Stock Mobil Murah - Akino Store</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="icon" href="https://res.cloudinary.com/d39mdjct/image/upload/v1783478697/icon_tnzy32.ico" />
+    <link rel="manifest" href="/manifest.json?v=4.2" />
+<script src="firebase-init.js?v=4.2"></script>
+    <meta name="theme-color" content="#3B82F6" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="apple-touch-icon" href="https://res.cloudinary.com/d39mdjct/image/upload/w_180,h_180,c_fit/v1783493763/apk_pgxcmo.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="https://res.cloudinary.com/d39mdjct/image/upload/w_152,h_152,c_fit/v1783493763/apk_pgxcmo.png" />
+    <link rel="apple-touch-icon" sizes="167x167" href="https://res.cloudinary.com/d39mdjct/image/upload/w_167,h_167,c_fit/v1783493763/apk_pgxcmo.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/d39mdjct/image/upload/w_180,h_180,c_fit/v1783493763/apk_pgxcmo.png" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --bg-primary: #08080f;
+            --bg-secondary: #0e0e1a;
+            --bg-card: rgba(255, 255, 255, 0.04);
+            --bg-card-hover: rgba(255, 255, 255, 0.07);
+            --bg-input: rgba(255, 255, 255, 0.04);
+            --fg: #f0f0f8;
+            --fg-dim: rgba(240, 240, 248, 0.6);
+            --muted: #7a7a95;
+            --muted-light: #9a9ab0;
+            --accent: #ffd866;
+            --accent-glow: rgba(255, 216, 102, 0.15);
+            --accent-dim: rgba(255, 216, 102, 0.08);
+            --border: rgba(255, 255, 255, 0.06);
+            --border-hover: rgba(255, 255, 255, 0.12);
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --shadow-glow: 0 0 60px rgba(255, 216, 102, 0.06);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --radius-xs: 6px;
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --toast-bg: rgba(12, 12, 24, 0.92);
+            --scrollbar-thumb: rgba(255, 255, 255, 0.12);
+        }
+        [data-theme="light"] {
+            --bg-primary: #f5f5fa;
+            --bg-secondary: #ededf2;
+            --bg-card: rgba(0, 0, 0, 0.04);
+            --bg-card-hover: rgba(0, 0, 0, 0.07);
+            --bg-input: rgba(0, 0, 0, 0.04);
+            --fg: #0e0e18;
+            --fg-dim: rgba(14, 14, 24, 0.6);
+            --muted: #6a6a82;
+            --muted-light: #8a8aa0;
+            --border: rgba(0, 0, 0, 0.08);
+            --border-hover: rgba(0, 0, 0, 0.16);
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.08);
+            --shadow-glow: 0 0 60px rgba(255, 216, 102, 0.12);
+            --scrollbar-thumb: rgba(0, 0, 0, 0.12);
+            --toast-bg: rgba(240, 240, 248, 0.96);
+        }
+        html {
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--fg);
+            overflow-x: hidden;
+            line-height: 1.6;
+            min-height: 100vh;
+            min-height: 100dvh;
+            transition: background var(--transition), color var(--transition);
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 10px;
+        }
+        ::selection {
+            background: var(--accent);
+            color: #0a0a0f;
+        }
+        img,
+        iframe {
+            display: block;
+            max-width: 100%;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: inherit;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background: rgba(8, 8, 15, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.35s ease;
+            min-height: 60px;
+        }
+        [data-theme="light"] .navbar {
+            background: rgba(245, 245, 250, 0.7);
+        }
+        .navbar.scrolled {
+            background: rgba(8, 8, 15, 0.92);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+        [data-theme="light"] .navbar.scrolled {
+            background: rgba(245, 245, 250, 0.92);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.06);
+        }
+        .nav-brand {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .nav-brand i {
+            font-size: 1rem;
+            opacity: 0.7;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            color: var(--fg-dim);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition);
+            background: transparent;
+            flex-shrink: 0;
+        }
+        .theme-toggle:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-card);
+            color: var(--fg);
+        }
+        .menu-toggle {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            color: var(--fg);
+            font-size: 1.15rem;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition);
+            background: transparent;
+            flex-shrink: 0;
+        }
+        .menu-toggle:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-card);
+        }
+        .menu-toggle.active {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 0.2rem;
+            align-items: center;
+        }
+        .nav-links a {
+            color: var(--muted);
+            padding: 0.45rem 0.9rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all var(--transition);
+            white-space: nowrap;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--fg);
+            background: var(--bg-card);
+        }
+        .nav-links a.active {
+            color: var(--accent);
+            background: var(--accent-dim);
+        }
+        .dropdown {
+            position: relative;
+        }
+        .dropdown>a {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(12, 12, 24, 0.96);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            min-width: 220px;
+            padding: 0.4rem;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+            animation: fadeDown 0.25s ease forwards;
+        }
+        [data-theme="light"] .dropdown-menu {
+            background: rgba(245, 245, 250, 0.96);
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        @keyframes fadeDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+        .dropdown-menu a {
+            display: block;
+            padding: 0.5rem 0.9rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.82rem;
+            white-space: nowrap;
+            color: var(--muted);
+            transition: all var(--transition);
+        }
+        .dropdown-menu a:hover {
+            background: var(--accent-dim);
+            color: var(--accent);
+        }
+        .breadcrumb {
+            max-width: 1000px;
+            margin: 5rem auto 0.5rem;
+            padding: 0 1rem;
+            font-size: 0.7rem;
+            color: var(--muted);
+        }
+        .breadcrumb a {
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .breadcrumb a:hover {
+            color: var(--accent);
+        }
+        .breadcrumb span {
+            color: var(--fg);
+        }
+        .page-hero {
+            padding: 1rem 1rem 1.5rem;
+            text-align: center;
+            position: relative;
+        }
+        .page-hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-dim), var(--accent), var(--accent-dim), transparent);
+            border-radius: 2px;
+        }
+        .page-hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(1.6rem, 5vw, 2.6rem);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.4rem;
+            line-height: 1.1;
+        }
+        .page-hero h1 .highlight {
+            color: var(--accent);
+            position: relative;
+        }
+        .page-hero h1 .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--accent);
+            opacity: 0.25;
+            border-radius: 2px;
+        }
+        .page-hero p {
+            color: var(--muted);
+            font-size: 0.92rem;
+            max-width: 480px;
+            margin: 0.4rem auto 0;
+            line-height: 1.6;
+        }
+        .page-hero .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: var(--accent-dim);
+            padding: 0.25rem 0.9rem;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 216, 102, 0.15);
+            margin-bottom: 0.8rem;
+        }
+        .stats-bar {
+            max-width: 700px;
+            margin: 0.5rem auto 1.5rem;
+            padding: 0 1rem;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0.75rem 0.5rem;
+            backdrop-filter: blur(8px);
+        }
+        .stats-item {
+            text-align: center;
+            padding: 0.15rem 0.25rem;
+        }
+        .stats-item .stat-number {
+            font-family: var(--font-display);
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            font-weight: 700;
+            color: var(--accent);
+            display: block;
+            line-height: 1.2;
+        }
+        .stats-item .stat-label {
+            font-size: 0.55rem;
+            font-weight: 500;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+        .stats-item .stat-number.flash {
+            color: #fb923c;
+        }
+        .stats-item .stat-number.sold {
+            color: #f87171;
+        }
+        .stats-item .stat-number.hot {
+            color: #ff6b6b;
+        }
+        .info-bar {
+            max-width: 600px;
+            margin: 0 auto 1.5rem;
+            padding: 0 1rem;
+        }
+        .info-card {
+            background: var(--accent-dim);
+            border: 1px solid rgba(255, 216, 102, 0.12);
+            border-radius: var(--radius);
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            backdrop-filter: blur(8px);
+        }
+        .info-card .info-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-sm);
+            background: var(--accent);
+            color: #0a0a0f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        .info-card .info-text {
+            flex: 1;
+            min-width: 160px;
+        }
+        .info-card .info-text h3 {
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.05rem;
+        }
+        .info-card .info-text p {
+            font-size: 0.78rem;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+        .info-card .info-text span {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .limited-banner {
+            position: relative;
+            background: linear-gradient(145deg, rgba(255, 216, 102, 0.08), rgba(255, 216, 102, 0.02), rgba(255, 180, 0, 0.05));
+            border: 1px solid rgba(255, 216, 102, 0.25);
+            border-radius: var(--radius);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            overflow: hidden;
+            box-shadow: var(--shadow-glow), inset 0 1px 0 rgba(255, 216, 102, 0.1);
+            animation: pulseGlow 4s ease-in-out infinite;
+            margin-bottom: 1.5rem;
+        }
+        .limited-banner::before {
+            content: '';
+            position: absolute;
+            top: -60%;
+            left: -60%;
+            width: 220%;
+            height: 220%;
+            background: conic-gradient(from 0deg at 50% 50%, transparent, rgba(255, 216, 102, 0.06), transparent 30%);
+            animation: bannerSpin 10s linear infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+        @keyframes bannerSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        @keyframes pulseGlow {
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(255, 216, 102, 0.06);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(255, 216, 102, 0.15);
+            }
+        }
+        .limited-banner>* {
+            position: relative;
+            z-index: 1;
+        }
+        .limited-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: var(--accent-dim);
+            padding: 0.2rem 1rem;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 216, 102, 0.15);
+            margin-bottom: 0.5rem;
+        }
+        .limited-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.4rem, 4.5vw, 2.2rem);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            line-height: 1.1;
+            margin-bottom: 0.3rem;
+        }
+        .limited-title .accent {
+            color: var(--accent);
+        }
+        .limited-price {
+            font-family: var(--font-display);
+            font-size: clamp(1rem, 3.5vw, 1.6rem);
+            font-weight: 700;
+            color: var(--fg);
+            margin-bottom: 0.2rem;
+            letter-spacing: -0.2px;
+        }
+        .limited-price span {
+            color: var(--accent);
+            font-size: clamp(1.3rem, 4.5vw, 2rem);
+            margin: 0 0.1rem;
+        }
+        .limited-sub {
+            color: var(--fg-dim);
+            font-size: 0.82rem;
+            line-height: 1.6;
+            margin-bottom: 0.8rem;
+        }
+        .limited-sub strong {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .limited-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.35rem;
+        }
+        .limited-tags span {
+            font-size: 0.68rem;
+            font-weight: 500;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            color: var(--fg-dim);
+            transition: all var(--transition);
+        }
+        .limited-tags span:hover {
+            border-color: rgba(255, 216, 102, 0.3);
+            color: var(--accent);
+            background: var(--accent-dim);
+        }
+        .secret-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 0.7rem;
+        }
+        .secret-grid .ig-card {
+            border-radius: var(--radius);
+            overflow: hidden;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            transition: all var(--transition);
+            cursor: pointer;
+            aspect-ratio: 3/4;
+            position: relative;
+        }
+        .secret-grid .ig-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+        .secret-grid .ig-card-embed-wrap {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+            background: #0a0a12;
+        }
+        .secret-grid .ig-card-embed {
+            position: absolute !important;
+            inset: 0;
+            width: 100% !important;
+            height: 100% !important;
+            pointer-events: none;
+            border: none;
+            display: block;
+        }
+        .secret-grid .ig-card-thumb-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            cursor: pointer;
+            background: linear-gradient(to top, rgba(8, 8, 15, 0.7) 10%, transparent 50%);
+        }
+        .secret-grid .ig-card-thumb-price {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            z-index: 3;
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--fg);
+            pointer-events: none;
+            line-height: 1.3;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+        }
+        .secret-grid .ig-card .secret-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            z-index: 4;
+            font-size: 0.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #0a0a0f;
+            background: var(--accent);
+            padding: 0.15rem 0.6rem;
+            border-radius: 50px;
+            pointer-events: none;
+        }
+        .limited-empty {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: var(--muted);
+            grid-column: 1/-1;
+        }
+        .limited-empty i {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 0.5rem;
+            opacity: 0.3;
+        }
+        .flash-section {
+            margin-bottom: 2rem;
+            background: rgba(251, 146, 60, 0.06);
+            border: 1px solid rgba(251, 146, 60, 0.25);
+            border-radius: var(--radius);
+            padding: 1.25rem 1rem 0.8rem;
+            position: relative;
+        }
+        .flash-header {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .flash-header h2 {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fb923c;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .flash-header h2 i {
+            font-size: 0.9rem;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.6;
+                transform: scale(1.1);
+            }
+        }
+        .flash-header .count {
+            font-size: 0.7rem;
+            padding: 0.15rem 0.6rem;
+            border-radius: 50px;
+            background: rgba(251, 146, 60, 0.15);
+            color: #fb923c;
+            font-weight: 600;
+        }
+        .flash-header .global-countdown {
+            font-size: 0.7rem;
+            padding: 0.15rem 0.6rem;
+            border-radius: 50px;
+            background: rgba(251, 146, 60, 0.1);
+            color: #fb923c;
+            font-weight: 500;
+            margin-left: auto;
+        }
+        .flash-scroll-wrapper {
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
+            padding: 0.2rem 0 0.6rem;
+            margin: 0 -0.5rem;
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+        .flash-scroll-wrapper::-webkit-scrollbar {
+            height: 4px;
+        }
+        .flash-scroll-wrapper::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .flash-scroll-wrapper::-webkit-scrollbar-thumb {
+            background: var(--border-hover);
+            border-radius: 10px;
+        }
+        .flash-grid {
+            display: inline-flex;
+            flex-direction: row;
+            gap: 0.7rem;
+            flex-wrap: nowrap;
+            padding: 0.1rem 0;
+        }
+        .flash-card {
+            flex: 0 0 180px;
+            width: 180px;
+            flex-shrink: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            transition: all var(--transition);
+            cursor: pointer;
+            scroll-snap-align: start;
+        }
+        .flash-card:hover {
+            border-color: #fb923c;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(251, 146, 60, 0.15);
+        }
+        .flash-card .ig-card-embed-wrap {
+            width: 100%;
+            aspect-ratio: 3/3.5;
+            overflow: hidden;
+            position: relative;
+            background: #0a0a12;
+        }
+        .flash-card .ig-card-embed {
+            position: absolute !important;
+            inset: 0;
+            width: 100% !important;
+            height: 100% !important;
+            pointer-events: none;
+            border: none;
+            display: block;
+        }
+        .flash-card .thumb-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            cursor: pointer;
+            background: linear-gradient(to top, rgba(8, 8, 15, 0.7) 10%, transparent 45%);
+        }
+        .flash-card .flash-badge {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            z-index: 4;
+            background: #fb923c;
+            color: #0a0a0f;
+            font-size: 0.55rem;
+            font-weight: 700;
+            padding: 0.1rem 0.4rem;
+            border-radius: 50px;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+            pointer-events: none;
+        }
+        .flash-card .price-info {
+            position: absolute;
+            bottom: 10px;
+            left: 8px;
+            right: 8px;
+            z-index: 3;
+            pointer-events: none;
+            line-height: 1.2;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+        }
+        .flash-card .price-info .original {
+            font-size: 0.65rem;
+            color: #a0a0b0;
+            text-decoration: line-through;
+            display: block;
+        }
+        .flash-card .price-info .discount {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fb923c;
+            display: block;
+        }
+        .flash-card .countdown {
+            position: absolute;
+            bottom: 46px;
+            left: 8px;
+            right: 8px;
+            z-index: 3;
+            font-size: 0.65rem;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: 600;
+            pointer-events: none;
+            border: 1px solid rgba(251, 146, 60, 0.3);
+        }
+        .sold-section {
+            margin-bottom: 2rem;
+            background: rgba(248, 113, 113, 0.03);
+            border-radius: var(--radius);
+            padding: 1rem 1rem 0.5rem;
+            border: 1px solid rgba(248, 113, 113, 0.06);
+        }
+        .sold-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.6rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .sold-header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .sold-header-left h2 {
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #f87171;
+        }
+        .sold-header-left .sold-count {
+            font-size: 0.65rem;
+            padding: 0.1rem 0.5rem;
+            border-radius: 50px;
+            background: rgba(248, 113, 113, 0.12);
+            color: #f87171;
+            font-weight: 600;
+        }
+        .sold-toggle {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-family: var(--font-body);
+            font-size: 0.7rem;
+            font-weight: 500;
+            padding: 0.2rem 0.7rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .sold-toggle:hover {
+            border-color: var(--border-hover);
+            color: var(--fg);
+        }
+        .sold-toggle.open {
+            color: var(--accent);
+            border-color: rgba(255, 216, 102, 0.2);
+            background: var(--accent-dim);
+        }
+        .sold-toggle.open i {
+            transform: rotate(180deg);
+        }
+        .sold-toggle i {
+            transition: transform 0.3s ease;
+            font-size: 0.5rem;
+        }
+        .sold-list {
+            display: flex;
+            flex-direction: row;
+            gap: 0.5rem;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 0.2rem 0 0.6rem;
+            scroll-snap-type: x proximity;
+            -webkit-overflow-scrolling: touch;
+            max-height: 180px;
+            opacity: 1;
+            transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease;
+        }
+        .sold-list::-webkit-scrollbar {
+            height: 2px;
+        }
+        .sold-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sold-list::-webkit-scrollbar-thumb {
+            background: rgba(248, 113, 113, 0.2);
+            border-radius: 10px;
+        }
+        .sold-list.collapsed {
+            max-height: 0 !important;
+            opacity: 0;
+            overflow: hidden;
+            padding: 0;
+        }
+        .sold-card {
+            flex-shrink: 0;
+            width: 130px;
+            background: rgba(248, 113, 113, 0.04);
+            border: 1px solid rgba(248, 113, 113, 0.1);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all var(--transition);
+            scroll-snap-align: start;
+            animation: fadeUp 0.4s ease both;
+        }
+        .sold-card:hover {
+            border-color: rgba(248, 113, 113, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(248, 113, 113, 0.08);
+        }
+        .sold-card-thumb {
+            width: 100%;
+            height: 110px;
+            overflow: hidden;
+            position: relative;
+            background: #0e0e18;
+        }
+        .sold-card-thumb iframe {
+            position: absolute !important;
+            inset: 0;
+            width: 100% !important;
+            height: 100% !important;
+            pointer-events: none;
+            border: none;
+            display: block;
+        }
+        .sold-card-thumb-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            cursor: pointer;
+        }
+        .sold-card-thumb-overlay::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background: linear-gradient(to top, rgba(8, 8, 15, 0.7), transparent);
+            pointer-events: none;
+        }
+        .sold-card-sold-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            z-index: 3;
+            font-size: 0.5rem;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            color: #fff;
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            background: rgba(248, 113, 113, 0.9);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 0.15rem;
+        }
+        .sold-card-sold-badge i {
+            font-size: 0.3rem;
+        }
+        .sold-card-body {
+            padding: 0.3rem 0.4rem 0.4rem;
+        }
+        .sold-card-body .sc-name {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+            margin-bottom: 0.05rem;
+            color: var(--fg);
+            transition: color var(--transition);
+        }
+        .sold-card-body .sc-name:hover {
+            color: var(--accent);
+        }
+        .sold-card-body .sc-price {
+            font-size: 0.68rem;
+            color: var(--accent);
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+        }
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem 1rem;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.2rem;
+            background: var(--bg-card);
+            padding: 0.6rem 1rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+        }
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            flex-wrap: wrap;
+        }
+        .filter-group label {
+            font-size: 0.7rem;
+            color: var(--muted);
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        .filter-group input {
+            width: 80px;
+            padding: 0.3rem 0.5rem;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xs);
+            color: var(--fg);
+            font-size: 0.75rem;
+            outline: none;
+            transition: border-color var(--transition);
+        }
+        .filter-group input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-dim);
+        }
+        .filter-group input::placeholder {
+            color: var(--muted);
+            opacity: 0.5;
+        }
+        .filter-group .filter-sep {
+            color: var(--muted);
+            font-size: 0.7rem;
+            padding: 0 0.1rem;
+        }
+        .price-range-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+        .range-slider-container {
+            position: relative;
+            width: 160px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+        }
+        .range-slider-container input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            position: absolute;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            pointer-events: none;
+            outline: none;
+            margin: 0;
+            padding: 0;
+        }
+        .range-slider-container input[type="range"]::-webkit-slider-runnable-track {
+            height: 4px;
+            background: var(--border);
+            border-radius: 4px;
+        }
+        .range-slider-container input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            pointer-events: auto;
+            border: 2px solid var(--bg-primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            margin-top: -6px;
+            transition: transform 0.15s ease;
+        }
+        .range-slider-container input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+        .range-slider-container input[type="range"]::-moz-range-track {
+            height: 4px;
+            background: var(--border);
+            border-radius: 4px;
+            border: none;
+        }
+        .range-slider-container input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            pointer-events: auto;
+            border: 2px solid var(--bg-primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        .range-slider-container .range-track-fill {
+            position: absolute;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 4px;
+            pointer-events: none;
+            left: 0;
+            right: 0;
+            opacity: 0.5;
+        }
+        .range-values {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.68rem;
+            color: var(--muted);
+            min-width: 80px;
+            font-weight: 500;
+        }
+        .range-values span {
+            color: var(--fg);
+            font-weight: 600;
+        }
+        .filter-actions {
+            display: flex;
+            gap: 0.4rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .filter-flash-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 0.3rem 0.7rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: var(--font-body);
+            font-weight: 500;
+        }
+        .filter-flash-btn.active {
+            background: #fb923c;
+            color: #0a0a0f;
+            border-color: #fb923c;
+        }
+        .filter-flash-btn:hover {
+            border-color: var(--border-hover);
+            color: var(--fg);
+        }
+        .filter-hot-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 0.3rem 0.7rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: var(--font-body);
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        .filter-hot-btn.active {
+            background: #ff6b6b;
+            color: #0a0a0f;
+            border-color: #ff6b6b;
+        }
+        .filter-hot-btn i {
+            font-size: 0.6rem;
+        }
+        .view-toggle {
+            display: flex;
+            gap: 0.2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 0.15rem;
+        }
+        .view-toggle button {
+            padding: 0.2rem 0.5rem;
+            border-radius: var(--radius-xs);
+            font-size: 0.7rem;
+            color: var(--muted);
+            transition: all var(--transition);
+            background: transparent;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+        .view-toggle button:hover {
+            color: var(--fg);
+        }
+        .view-toggle button.active {
+            background: var(--accent);
+            color: #0a0a0f;
+            box-shadow: 0 2px 8px rgba(255, 216, 102, 0.2);
+        }
+        .view-toggle button i {
+            font-size: 0.7rem;
+        }
+        .refresh-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 0.3rem 0.7rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: var(--font-body);
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .refresh-btn:hover {
+            color: var(--fg);
+            border-color: var(--border-hover);
+        }
+        .refresh-btn i {
+            font-size: 0.7rem;
+        }
+        .sort-tabs {
+            display: flex;
+            gap: 0.4rem;
+            justify-content: center;
+            margin-bottom: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .sort-btn {
+            padding: 0.35rem 0.9rem;
+            border-radius: 50px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-family: var(--font-body);
+            font-size: 0.72rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            white-space: nowrap;
+        }
+        .sort-btn:hover {
+            color: var(--fg);
+            border-color: var(--border-hover);
+        }
+        .sort-btn.active {
+            background: var(--accent);
+            color: #0a0a0f;
+            border-color: var(--accent);
+            box-shadow: 0 2px 16px rgba(255, 216, 102, 0.2);
+        }
+        .sort-btn i {
+            font-size: 0.6rem;
+        }
+        .price-thumbnails {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            justify-content: center;
+            margin: 1rem 0 1.5rem;
+        }
+        .price-thumb {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 90px;
+            padding: 0.6rem 0.8rem;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            transition: all var(--transition);
+            cursor: pointer;
+            text-align: center;
+            font-family: var(--font-display);
+            font-weight: 600;
+            color: var(--fg-dim);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .price-thumb:hover {
+            border-color: var(--accent);
+            background: var(--accent-dim);
+            color: var(--fg);
+            transform: translateY(-2px);
+        }
+        .price-thumb.active {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: #0a0a0f;
+            box-shadow: 0 4px 16px rgba(255, 216, 102, 0.3);
+        }
+        .price-thumb .thumb-price {
+            font-size: 1.1rem;
+            line-height: 1.2;
+        }
+        .price-thumb .thumb-count {
+            font-size: 0.6rem;
+            font-weight: 400;
+            opacity: 0.6;
+            margin-top: 0.1rem;
+        }
+        .price-thumb .thumb-count strong {
+            font-weight: 700;
+            opacity: 1;
+        }
+        .price-thumb .thumb-icon {
+            font-size: 0.7rem;
+            margin-bottom: 0.1rem;
+        }
+        .ig-list {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.7rem;
+        }
+        .ig-list.list-view {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .ig-list.list-view .ig-card {
+            display: flex;
+            flex-direction: row;
+            aspect-ratio: unset;
+            height: 110px;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            transition: all var(--transition);
+            cursor: pointer;
+        }
+        .ig-list.list-view .ig-card:hover {
+            border-color: rgba(255, 216, 102, 0.2);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-card);
+        }
+        .ig-list.list-view .ig-card .ig-card-embed-wrap {
+            width: 110px;
+            height: 100%;
+            aspect-ratio: unset;
+            flex-shrink: 0;
+        }
+        .ig-list.list-view .ig-card .ig-card-embed {
+            height: 100% !important;
+            min-height: unset !important;
+            width: 100% !important;
+        }
+        .ig-list.list-view .ig-card .ig-card-thumb-price {
+            position: static;
+            padding: 0.5rem 0.8rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-shadow: none;
+            white-space: normal;
+            overflow: visible;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.2rem;
+            background: var(--bg-card);
+        }
+        .ig-list.list-view .ig-card .ig-card-thumb-price .price-label {
+            font-size: 0.6rem;
+            color: var(--muted);
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .ig-list.list-view .ig-card .ig-card-thumb-price .price-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .ig-list.list-view .ig-card .ig-card-thumb-price .item-desc {
+            font-size: 0.7rem;
+            color: var(--fg-dim);
+            font-weight: 400;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.4;
+        }
+        .ig-list.list-view .ig-card .ig-card-thumb-overlay {
+            background: none;
+        }
+        .ig-list.list-view .ig-card .status-badge {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            z-index: 4;
+            font-size: 0.45rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 0.1rem 0.4rem;
+            border-radius: 50px;
+            pointer-events: none;
+        }
+        .ig-list.list-view .ig-card .hot-badge {
+            background: #ff6b6b;
+            color: #0a0a0f;
+        }
+        .ig-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: all var(--transition);
+            cursor: pointer;
+            animation: scaleIn 0.4s ease both;
+            position: relative;
+        }
+        .ig-card:hover {
+            border-color: rgba(255, 216, 102, 0.2);
+            box-shadow: var(--shadow-card);
+            transform: translateY(-3px);
+        }
+        .ig-card.hot {
+            border-color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.04);
+        }
+        .ig-card.hot:hover {
+            border-color: #ff6b6b;
+            box-shadow: 0 8px 32px rgba(255, 107, 107, 0.15);
+        }
+        .ig-card-embed-wrap {
+            width: 100%;
+            aspect-ratio: 3/3.5;
+            overflow: hidden;
+            position: relative;
+            background: #0a0a12;
+        }
+        .ig-card-embed {
+            position: absolute !important;
+            inset: 0;
+            width: 100% !important;
+            height: 100% !important;
+            pointer-events: none;
+            border: none;
+            display: block;
+        }
+        .ig-card-thumb-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            cursor: pointer;
+            background: linear-gradient(to top, rgba(8, 8, 15, 0.75) 10%, transparent 45%);
+        }
+        .ig-card-thumb-price {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            z-index: 3;
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--accent);
+            pointer-events: none;
+            line-height: 1.3;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .ig-card .status-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            z-index: 4;
+            font-size: 0.5rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 0.15rem 0.5rem;
+            border-radius: 50px;
+            pointer-events: none;
+            background: rgba(255, 216, 102, 0.9);
+            color: #0a0a0f;
+        }
+        .ig-card .hot-badge {
+            background: #ff6b6b;
+            color: #0a0a0f;
+        }
+        .ig-card .status-badge.flash-badge {
+            background: #fb923c;
+            color: #fff;
+        }
+        .ig-counter {
+            text-align: center;
+            margin: 0 0 1rem;
+            font-size: 0.8rem;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .ig-counter strong {
+            color: var(--accent);
+            font-family: var(--font-display);
+        }
+        .pagination-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+            margin-top: 2rem;
+        }
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .pagination.hidden {
+            display: none !important;
+        }
+        .page-btn {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            color: var(--fg);
+            border: 1px solid var(--border);
+            font-family: var(--font-body);
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .page-btn:hover:not(:disabled) {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-dim);
+        }
+        .page-btn:disabled {
+            opacity: 0.25;
+            cursor: not-allowed;
+        }
+        .page-numbers {
+            display: flex;
+            gap: 0.25rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .page-num {
+            width: 34px;
+            height: 34px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-family: var(--font-display);
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .page-num:hover {
+            border-color: var(--border-hover);
+            color: var(--fg);
+        }
+        .page-num.active {
+            background: var(--accent);
+            color: #0a0a0f;
+            border-color: var(--accent);
+            box-shadow: 0 2px 12px rgba(255, 216, 102, 0.2);
+        }
+        .page-ellipsis {
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--muted);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            user-select: none;
+        }
+        .show-all-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: 0.2rem;
+        }
+        .show-all-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 0.4rem 1.2rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.78rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: var(--font-body);
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .show-all-btn:hover {
+            color: var(--fg);
+            border-color: var(--border-hover);
+        }
+        .show-all-btn.active {
+            background: var(--accent);
+            color: #0a0a0f;
+            border-color: var(--accent);
+            box-shadow: 0 2px 12px rgba(255, 216, 102, 0.2);
+        }
+        .show-all-btn i {
+            font-size: 0.7rem;
+        }
+        .gb-wrap {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        .gb {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.75rem 1.5rem;
+            backdrop-filter: blur(8px);
+        }
+        .gb-hdr {
+            text-align: center;
+            margin-bottom: 1.25rem;
+        }
+        .gb-hdr h2 {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.15rem;
+        }
+        .gb-hdr p {
+            font-size: 0.78rem;
+            color: var(--muted);
+        }
+        .gb label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--muted);
+            margin-bottom: 0.2rem;
+        }
+        .gb input,
+        .gb textarea {
+            width: 100%;
+            padding: 0.6rem 0.9rem;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--fg);
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            outline: none;
+            transition: border-color var(--transition);
+            margin-bottom: 0.8rem;
+        }
+        .gb input:focus,
+        .gb textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-dim);
+        }
+        .gb textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
+        .gb-submit {
+            padding: 0.6rem 1.4rem;
+            background: var(--accent);
+            color: #0a0a0f;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-family: var(--font-body);
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .gb-submit:hover {
+            box-shadow: 0 4px 20px rgba(255, 216, 102, 0.3);
+            transform: translateY(-1px);
+        }
+        .gb-submit:active {
+            transform: scale(0.97);
+        }
+        .gb-msgs {
+            margin-top: 1.25rem;
+            max-height: 380px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+        }
+        .gb-msgs::-webkit-scrollbar {
+            width: 3px;
+        }
+        .gb-msgs::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 10px;
+        }
+        .gb-msg {
+            padding: 0.75rem 0.9rem;
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            margin-bottom: 0.6rem;
+            transition: border-color var(--transition);
+        }
+        .gb-msg:hover {
+            border-color: var(--border-hover);
+        }
+        .gb-msg strong {
+            display: block;
+            font-size: 0.82rem;
+            margin-bottom: 0.1rem;
+            color: var(--fg);
+        }
+        .gb-msg p {
+            font-size: 0.8rem;
+            color: var(--fg-dim);
+            line-height: 1.5;
+        }
+        .gb-msg small {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.2);
+            margin-top: 0.2rem;
+            display: block;
+        }
+        [data-theme="light"] .gb-msg small {
+            color: rgba(0, 0, 0, 0.2);
+        }
+        .social-row {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            padding: 1.5rem 1rem;
+        }
+        .social-row a {
+            width: 42px;
+            height: 42px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--muted);
+            font-size: 0.95rem;
+            transition: all var(--transition);
+        }
+        .social-row a:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+            background: var(--accent-dim);
+            transform: translateY(-3px);
+        }
+        .footer {
+            padding: 3rem 1.5rem 1.5rem;
+            border-top: 1px solid var(--border);
+            margin-top: 1rem;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto 2rem;
+            text-align: left;
+        }
+        .footer-grid h4 {
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            color: var(--fg);
+            margin-bottom: 0.8rem;
+            letter-spacing: -0.2px;
+        }
+        .footer-grid p,
+        .footer-grid a {
+            font-size: 0.8rem;
+            color: var(--muted);
+            line-height: 1.8;
+        }
+        .footer-grid a {
+            display: block;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .footer-grid a:hover {
+            color: var(--accent);
+        }
+        .footer-grid .brand-footer {
+            font-weight: 600;
+            color: var(--accent);
+        }
+        .footer-bottom {
+            max-width: 1000px;
+            margin: 0 auto;
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--muted);
+        }
+        .chat-float {
+            position: fixed;
+            bottom: 1.25rem;
+            right: 1.25rem;
+            z-index: 99;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.5rem;
+        }
+        .chat-float-label {
+            background: rgba(12, 12, 24, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 0.4rem 0.9rem;
+            font-size: 0.72rem;
+            color: var(--muted);
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateY(6px) scale(0.95);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        [data-theme="light"] .chat-float-label {
+            background: rgba(245, 245, 250, 0.92);
+        }
+        .chat-float-label span {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .chat-float:hover .chat-float-label {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        .chat-float-btn {
+            width: 54px;
+            height: 54px;
+            border-radius: 16px;
+            background: #25D366;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.6rem;
+            box-shadow: 0 4px 24px rgba(37, 211, 102, 0.35);
+            transition: all var(--transition);
+            text-decoration: none;
+        }
+        .chat-float-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 36px rgba(37, 211, 102, 0.45);
+        }
+        .chat-float-btn:active {
+            transform: scale(0.94);
+        }
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 7.5rem;
+            right: 1.25rem;
+            z-index: 90;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #0a0a0f;
+            border: none;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(255, 216, 102, 0.3);
+            transition: all var(--transition);
+            opacity: 0;
+            transform: translateY(20px) scale(0.8);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .scroll-top-btn.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+        .scroll-top-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 32px rgba(255, 216, 102, 0.4);
+        }
+        .scroll-top-btn:active {
+            transform: scale(0.92);
+        }
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            animation: lbFadeIn 0.25s ease;
+        }
+        .lightbox-content {
+            position: relative;
+            width: 100%;
+            max-width: 520px;
+            max-height: 92vh;
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            overflow-y: auto;
+            overflow-x: hidden;
+            animation: lbScaleIn 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+            margin: auto;
+        }
+        .lightbox-content::-webkit-scrollbar {
+            width: 3px;
+        }
+        .lightbox-content::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 10px;
+        }
+        .lightbox-close {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 210;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--fg);
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition);
+        }
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.06);
+        }
+        .lightbox-iframe-wrap {
+            width: 100%;
+            background: #0a0a12;
+        }
+        .lightbox-iframe-wrap iframe {
+            width: 100%;
+            height: 580px;
+            border: none;
+            display: block;
+        }
+        .lightbox-info {
+            padding: 1rem 1.25rem 1.5rem;
+        }
+        .lightbox-info .ig-card-price {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.3rem;
+        }
+        .lightbox-info .ig-card-desc {
+            color: var(--fg-dim);
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            white-space: pre-line;
+            line-height: 1.6;
+        }
+        .lightbox-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+        .lightbox-actions .btn-order-sm {
+            flex: 1;
+            justify-content: center;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.85rem;
+        }
+        .lightbox-actions a.ig-link {
+            padding: 0.6rem 1rem;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.8rem;
+            text-decoration: none;
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            white-space: nowrap;
+        }
+        .lightbox-actions a.ig-link:hover {
+            color: var(--accent);
+            border-color: rgba(255, 216, 102, 0.2);
+            background: var(--accent-dim);
+        }
+        .lightbox-actions .share-btn {
+            padding: 0.6rem 1rem;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            white-space: nowrap;
+        }
+        .lightbox-actions .share-btn:hover {
+            color: var(--accent);
+            border-color: rgba(255, 216, 102, 0.2);
+            background: var(--accent-dim);
+        }
+        .btn-order-sm {
+            padding: 0.5rem 1.1rem;
+            border-radius: var(--radius-sm);
+            background: var(--accent-dim);
+            color: var(--accent);
+            border: 1px solid rgba(255, 216, 102, 0.15);
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition);
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            text-decoration: none;
+        }
+        .btn-order-sm:hover {
+            background: var(--accent);
+            color: #0a0a0f;
+            box-shadow: 0 4px 20px rgba(255, 216, 102, 0.25);
+            transform: translateY(-1px);
+        }
+        .btn-order-sm:active {
+            transform: scale(0.97);
+        }
+        .sold-order-badge {
+            background: rgba(248, 113, 113, 0.08) !important;
+            color: #f87171 !important;
+            border-color: rgba(248, 113, 113, 0.2) !important;
+            cursor: default !important;
+            pointer-events: none !important;
+        }
+        .sold-order-badge:hover {
+            background: rgba(248, 113, 113, 0.08) !important;
+            color: #f87171 !important;
+            box-shadow: none !important;
+            transform: none !important;
+        }
+        @keyframes lbFadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        @keyframes lbScaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.94) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        .toast-container {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 300;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            pointer-events: none;
+            max-width: 90%;
+        }
+        .toast {
+            background: var(--toast-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 0.7rem 1.2rem;
+            color: var(--fg);
+            font-size: 0.82rem;
+            font-weight: 500;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: auto;
+            text-align: center;
+            max-width: 400px;
+            border-left: 4px solid var(--accent);
+            animation: floatUp 0.4s ease forwards;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        .toast.info {
+            border-left-color: var(--accent);
+        }
+        .toast.success {
+            border-left-color: #34d399;
+        }
+        .toast.error {
+            border-left-color: #f87171;
+        }
+        .toast.warning {
+            border-left-color: #fb923c;
+        }
+        .toast i {
+            margin-right: 0.4rem;
+        }
+        .toast .toast-emoji {
+            font-size: 1.2rem;
+            margin-right: 0.4rem;
+        }
+        .toast .toast-title {
+            font-weight: 700;
+            display: block;
+            font-size: 0.9rem;
+        }
+        .toast .toast-sub {
+            font-weight: 400;
+            font-size: 0.75rem;
+            color: var(--muted-light);
+            display: block;
+            margin-top: 0.05rem;
+        }
+        [data-theme="light"] .toast {
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+        }
+        @media (max-width: 768px) {
+            .ig-list {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+            }
+            .price-thumbnails {
+                gap: 0.4rem;
+            }
+            .price-thumb {
+                min-width: 70px;
+                padding: 0.4rem 0.5rem;
+            }
+            .price-thumb .thumb-price {
+                font-size: 0.9rem;
+            }
+            .price-thumb .thumb-count {
+                font-size: 0.5rem;
+            }
+            .sort-tabs {
+                gap: 0.3rem;
+            }
+            .sort-btn {
+                font-size: 0.65rem;
+                padding: 0.25rem 0.7rem;
+            }
+            .lightbox-iframe-wrap iframe {
+                height: 480px !important;
+                min-height: 480px !important;
+            }
+            .navbar .menu-toggle {
+                display: flex;
+            }
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: rgba(8, 8, 15, 0.97);
+                backdrop-filter: blur(24px);
+                -webkit-backdrop-filter: blur(24px);
+                border-bottom: 1px solid var(--border);
+                padding: 0.6rem 0.8rem 0.8rem;
+                gap: 0.1rem;
+                align-items: stretch;
+                max-height: 80vh;
+                overflow-y: auto;
+            }
+            [data-theme="light"] .nav-links {
+                background: rgba(245, 245, 250, 0.97);
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .nav-links a {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.9rem;
+                border-radius: var(--radius-sm);
+                width: 100%;
+            }
+            .dropdown-menu {
+                position: static;
+                transform: none;
+                box-shadow: none;
+                background: rgba(255, 255, 255, 0.03);
+                border: none;
+                border-radius: var(--radius-sm);
+                min-width: auto;
+                padding: 0.2rem 0 0.2rem 1rem;
+                animation: none;
+            }
+            .dropdown:hover .dropdown-menu {
+                display: none;
+            }
+            .dropdown.active .dropdown-menu {
+                display: block !important;
+            }
+            .dropdown-menu a {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.82rem;
+                white-space: normal;
+            }
+        }
+        @media (max-width: 420px) {
+            .ig-list {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.4rem;
+            }
+            .price-thumb {
+                min-width: 60px;
+                padding: 0.3rem 0.4rem;
+            }
+            .price-thumb .thumb-price {
+                font-size: 0.8rem;
+            }
+            .price-thumb .thumb-count {
+                font-size: 0.45rem;
+            }
+        }
+        @media (min-width: 769px) {
+            .ig-list {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 1rem;
+            }
+            .price-thumb {
+                min-width: 100px;
+                padding: 0.7rem 1rem;
+            }
+            .price-thumb .thumb-price {
+                font-size: 1.2rem;
+            }
+        }
+        .ig-card-loader {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(8, 8, 15, 0.7);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 5;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            border-radius: inherit;
+        }
+        .ig-card-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <a href="index.html" class="nav-brand"><i class="fas fa-store"></i> Akino Store</a>
+        <div class="nav-right">
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle tema"><i class="fas fa-moon"></i></button>
+            <button class="menu-toggle" id="menuToggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li class="dropdown" id="dropdownService">
+                <a href="#" class="active" id="dropdownToggle">Service <i class="fas fa-chevron-down" style="font-size:0.5rem;margin-left:3px"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="CarParkingMultiplayer.html">Car Parking Multiplayer</a></li>
+          <li><a href="SosialMedia.html">Layanan Sosial Media</a></li>
+          <li><a href="designedit.html">Design / Edit Foto</a></li>
+          <li><a href="manga.html">Manga</a></li>
+          <li><a href="wallpaper.html">Wallpaper</a></li>
+                </ul>
+            </li>
+            <li><a href="https://wa.me/6289687163314" target="_blank">Contact</a></li>
+        </ul>
+    </nav>
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a> <i class="fas fa-chevron-right" style="font-size:0.5rem;margin:0 0.4rem;color:var(--muted);"></i>
+        <span>Stock Mobil</span>
+    </nav>
+    <section class="page-hero">
+        <div class="hero-badge"><i class="fas fa-fire"></i> Stock Terbatas</div>
+        <h1>Stock Mobil <span class="highlight">Murah</span></h1>
+        <p>Klik tombol harga di bawah untuk menampilkan mobil dengan harga tersebut.</p>
+    </section>
+    <div class="stats-bar">
+        <div class="stats-grid">
+            <div class="stats-item">
+                <span class="stat-number" id="statTotal">0</span>
+                <span class="stat-label">Total Mobil</span>
+            </div>
+            <div class="stats-item">
+                <span class="stat-number" id="statAvailable">0</span>
+                <span class="stat-label">Tersedia</span>
+            </div>
+            <div class="stats-item">
+                <span class="stat-number flash" id="statFlash">0</span>
+                <span class="stat-label">🔥 Flash Sale</span>
+            </div>
+            <div class="stats-item">
+                <span class="stat-number hot" id="statHot">0</span>
+                <span class="stat-label">🔥 Hot Stock</span>
+            </div>
+        </div>
+    </div>
+    <div class="info-bar">
+        <div class="info-card">
+            <div class="info-icon"><i class="fas fa-car"></i></div>
+            <div class="info-text">
+                <h3>Cara Pesan</h3>
+                <p>Klik foto <span>→ perbesar</span> → klik <span>Pesan</span> → langsung redirect ke WhatsApp.</p>
+            </div>
+        </div>
+    </div>
+    <section class="sec" style="padding-top:0.5rem;padding-bottom:0.5rem">
+        <div class="container">
+            <div class="limited-banner reveal">
+                <div class="limited-badge"><i class="fas fa-star"></i> LIMITED EDITION</div>
+                <h2 class="limited-title">Secret Car <span class="accent">!!</span></h2>
+                <div class="limited-price">Hanya <span>5rb</span> Rupiah !!</div>
+                <p class="limited-sub"><strong>Free Request Spek</strong> (Tune Up, Glitch, FFA) &middot; <strong>Free Sirine / Police Sirine</strong></p>
+                <div class="limited-tags">
+                    <span>Mercedes Benz W124</span>
+                    <span>Toyota Celica GT Four ST205</span>
+                    <span>Toyota Fortuner</span>
+                    <span>Ford F650</span>
+                    <span>Mitsubishi 300GT VR4</span>
+                    <span>Toyota Supra MK3</span>
+                </div>
+            </div>
+            <div class="secret-grid" id="secretGrid"></div>
+        </div>
+    </section>
+    <div class="sec-divider"><hr /></div>
+    <section class="sec" style="padding-top:0.5rem;padding-bottom:0.5rem">
+        <div class="container">
+            <div class="flash-section" id="flashSection" style="display:none">
+                <div class="flash-header">
+                    <h2><i class="fas fa-bolt"></i> 🔥 Flash Sale</h2>
+                    <span class="count" id="flashCount">0</span>
+                    <span class="global-countdown" id="globalCountdown"></span>
+                </div>
+                <div class="flash-scroll-wrapper">
+                    <div class="flash-grid" id="flashGrid"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="sec" style="padding-top:0.5rem">
+        <div class="container">
+            <div class="sold-section" id="soldSection" style="display:none">
+                <div class="sold-header">
+                    <div class="sold-header-left">
+                        <h2><i class="fas fa-tag" style="margin-right:0.3rem"></i>Mobil Terjual</h2>
+                        <span class="sold-count" id="soldCount">0</span>
+                    </div>
+                    <button class="sold-toggle open" id="soldToggle" onclick="toggleSoldList()">
+                        <span id="soldToggleText">Sembunyikan</span> <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="sold-list" id="soldList"></div>
+            </div>
+            <div class="filter-bar reveal">
+                <div class="filter-group">
+                    <label for="priceMin">Harga</label>
+                    <input type="number" id="priceMin" placeholder="Min" min="0" step="1000" />
+                    <span class="filter-sep">–</span>
+                    <input type="number" id="priceMax" placeholder="Max" min="0" step="1000" />
+                </div>
+                <div class="price-range-wrapper">
+                    <div class="range-slider-container" id="rangeSlider">
+                        <input type="range" id="rangeMin" min="0" max="1000000" step="1000" value="0" />
+                        <input type="range" id="rangeMax" min="0" max="1000000" step="1000" value="1000000" />
+                        <div class="range-track-fill" id="rangeFill"></div>
+                    </div>
+                    <div class="range-values">
+                        <span id="rangeMinLabel">Rp0</span> – <span id="rangeMaxLabel">Rp1JT</span>
+                    </div>
+                </div>
+                <div class="filter-actions">
+                    <button class="filter-flash-btn" id="flashFilterBtn" onclick="toggleFlashFilter()">🔥 Flash Sale</button>
+                    <button class="filter-hot-btn" id="hotFilterBtn" onclick="toggleHotFilter()"><i class="fas fa-fire"></i> Hot Stock</button>
+                    <div class="view-toggle">
+                        <button class="active" id="viewGridBtn" onclick="setView('grid')" title="Grid"><i class="fas fa-th"></i></button>
+                        <button id="viewListBtn" onclick="setView('list')" title="Daftar"><i class="fas fa-list"></i></button>
+                    </div>
+                    <button class="refresh-btn" onclick="manualRefresh()"><i class="fas fa-sync"></i> Refresh</button>
+                </div>
+            </div>
+            <div class="sort-tabs" style="margin-bottom:0.5rem;">
+                <button class="sort-btn active" data-sort="newest" onclick="setSort('newest')"><i class="fas fa-clock"></i> Terbaru</button>
+                <button class="sort-btn" data-sort="price-asc" onclick="setSort('price-asc')"><i class="fas fa-arrow-up-1-9"></i> Termurah</button>
+                <button class="sort-btn" data-sort="price-desc" onclick="setSort('price-desc')"><i class="fas fa-arrow-down-9-1"></i> Termahal</button>
+            </div>
+            <div id="priceThumbnails" class="price-thumbnails"></div>
+            <div class="ig-counter reveal" id="igCounter"></div>
+            <div class="ig-list" id="igGrid"></div>
+            <div class="pagination-wrapper" id="paginationWrapper">
+                <div class="pagination" id="pagination" style="display:none">
+                    <button class="page-btn" id="prevBtn" onclick="prevPage()"><i class="fas fa-chevron-left"></i> Sebelumnya</button>
+                    <div class="page-numbers" id="pageNumbers"></div>
+                    <button class="page-btn" id="nextBtn" onclick="nextPage()">Selanjutnya <i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="show-all-wrapper">
+                    <button class="show-all-btn" id="showAllBtn" onclick="toggleShowAll()"><i class="fas fa-expand"></i> <span id="showAllLabel">Tampilkan Semua</span></button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="sec-divider"><hr /></div>
+    <section class="sec">
+        <div class="gb-wrap reveal">
+            <div class="gb">
+                <div class="gb-hdr">
+                    <h2><i class="fas fa-comments" style="color:var(--accent);margin-right:0.4rem"></i>Komentar Klien</h2>
+                    <p>Tulis pengalaman kamu membeli stock mobil di sini</p>
+                </div>
+                <form id="messageForm">
+                    <label for="gb-name">Nama</label>
+                    <input type="text" id="gb-name" required placeholder="Masukkan nama kamu" />
+                    <label for="gb-msg">Komentar</label>
+                    <textarea id="gb-msg" rows="3" required placeholder="Tulis pengalaman kamu..."></textarea>
+                    <button type="submit" class="gb-submit"><i class="fas fa-paper-plane"></i> Kirim Komentar</button>
+                </form>
+                <div id="gbMsgs" class="gb-msgs"></div>
+            </div>
+        </div>
+    </section>
+    <div class="social-row">
+        <a href="https://www.tiktok.com/@akinolaset_?_t=8pbChkK23O6&_r=1" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+        <a href="https://www.instagram.com/akinostore_/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://youtube.com/@akinolaset?si=e4NLLQrgN0R3BPi4" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+        <a href="https://wa.me/6289687163314" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+    </div>
+    <footer class="footer" aria-label="Footer">
+        <div class="footer-grid">
+            <div><h4 class="brand-footer">Akino Store</h4><p>Jasa digital & game terpercaya sejak 2022.</p></div>
+            <div><h4>Layanan</h4><a href="CarParkingMultiplayer.html">Car Parking</a><a href="SosialMedia.html">Sosial Media</a><a href="designedit.html">Design / Edit</a></div>
+            <div><h4>Tentang</h4><a href="about.html">About Us</a><a href="https://wa.me/6289687163314" target="_blank">Contact</a><a href="stockmobil.html">Stock Mobil</a></div>
+            <div><h4>Legal</h4><a href="privacy.html">Kebijakan Privasi</a><a href="terms.html">Syarat &amp; Ketentuan</a></div>
+            <div><h4>Follow</h4><a href="https://www.tiktok.com/@akinolaset_" target="_blank">TikTok</a><a href="https://www.instagram.com/akinostore_" target="_blank">Instagram</a><a href="https://youtube.com/@akinolaset" target="_blank">YouTube</a></div>
+        </div>
+        <div class="footer-bottom">&copy; 2022 Akino Store. All Rights Reserved.</div>
+    </footer>
+    <div class="chat-float">
+        <div class="chat-float-label">Chat Admin: <span>089687163314</span></div>
+        <a href="https://wa.me/6289687163314" target="_blank" rel="noopener" class="chat-float-btn" aria-label="Chat Admin WhatsApp"><i class="fab fa-whatsapp"></i></a>
+    </div>
+    <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Kembali ke atas"><i class="fas fa-arrow-up"></i></button>
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-backdrop" id="lbBackdrop"></div>
+        <div class="lightbox-content" id="lbContent">
+            <div class="lightbox-iframe-wrap"><iframe id="lbIframe" src="" loading="lazy" allowtransparency="true" allowfullscreen="true" scrolling="no" frameborder="0"></iframe></div>
+            <div class="lightbox-info">
+                <div class="ig-card-price" id="lbPrice"></div>
+                <div class="ig-card-desc" id="lbDesc"></div>
+                <div class="lightbox-actions">
+                    <a href="#" id="lbIgLink" target="_blank" rel="noopener" class="ig-link"><i class="fab fa-instagram"></i> Lihat di IG</a>
+                    <button class="btn-order-sm" id="lbOrder"><i class="fab fa-whatsapp"></i> Pesan</button>
+                    <button class="share-btn" id="lbShare"><i class="fas fa-share-alt"></i> Bagikan</button>
+                </div>
+            </div>
+        </div>
+        <button class="lightbox-close" id="lbClose" aria-label="Tutup"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="toast-container" id="toastContainer"></div>
+    <script>
+        function esc(t) { var d = document.createElement('div');
+            d.textContent = t; return d.innerHTML }
+
+        function getCode(url) { var m = url.match(/\/p\/([A-Za-z0-9_-]+)/); return m ? m[1] : null }
+
+        function getFirstLine(d) { return (d || '').split('\n')[0].trim() }
+
+        function formatCountdown(ms) {
+            if (ms <= 0) return '⏳ Habis';
+            var days = Math.floor(ms / 86400000);
+            var hours = Math.floor((ms % 86400000) / 3600000);
+            var minutes = Math.floor((ms % 3600000) / 60000);
+            var seconds = Math.floor((ms % 60000) / 1000);
+            if (days > 0) return days + 'h ' + String(hours).padStart(2, '0') + 'j ' + String(minutes).padStart(2, '0') + 'm';
+            return String(hours).padStart(2, '0') + 'j ' + String(minutes).padStart(2, '0') + 'm ' + String(seconds).padStart(2,
+                '0') + 's';
+        }
+
+        function showToast(message, type, duration) {
+            if (type === undefined) type = 'info';
+            if (duration === undefined) duration = 4000;
+            var container = document.getElementById('toastContainer');
+            var toast = document.createElement('div');
+            toast.className = 'toast ' + type;
+            var iconMap = { info: 'fa-info-circle', success: 'fa-check-circle', error: 'fa-exclamation-circle',
+                warning: 'fa-triangle-exclamation' };
+            var icon = iconMap[type] || 'fa-info-circle';
+            toast.innerHTML = '<i class="fas ' + icon + '"></i> ' + message;
+            container.appendChild(toast);
+            toast.offsetHeight;
+            toast.classList.add('show');
+            setTimeout(function() {
+                toast.classList.remove('show');
+                setTimeout(function() { if (toast.parentNode) toast.remove(); }, 400);
+            }, duration);
+        }
+
+        function addLoaderToCard(card, iframe) {
+            var wrap = card.querySelector('.ig-card-embed-wrap');
+            if (!wrap) return;
+            var loader = document.createElement('div');
+            loader.className = 'ig-card-loader';
+            var spinner = document.createElement('div');
+            spinner.className = 'spinner';
+            loader.appendChild(spinner);
+            wrap.appendChild(loader);
+            iframe.addEventListener('load', function() { loader.classList.add('hidden'); });
+            setTimeout(function() { loader.classList.add('hidden'); }, 5000);
+        }
+        var currentTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        var themeToggle = document.getElementById('themeToggle');
+        var themeIcon = themeToggle.querySelector('i');
+        themeIcon.className = currentTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+        themeToggle.addEventListener('click', function() {
+            var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            themeIcon.className = next === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+        });
+        window.addEventListener('scroll', function() {
+            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+            var btn = document.getElementById('scrollTopBtn');
+            if (window.scrollY > 400) btn.classList.add('visible');
+            else btn.classList.remove('visible');
+        });
+        var menuToggle = document.getElementById('menuToggle');
+        var navLinks = document.getElementById('navLinks');
+        menuToggle.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+            var icon = menuToggle.querySelector('i');
+            icon.className = navLinks.classList.contains('active') ? 'fas fa-xmark' : 'fas fa-bars';
+        });
+        document.getElementById('dropdownToggle').addEventListener('click', function(e) {
+            if (window.innerWidth <= 768) { e.preventDefault();
+                document.getElementById('dropdownService').classList.toggle('active'); }
+        });
+        navLinks.querySelectorAll('a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    navLinks.classList.remove('active');
+                    menuToggle.classList.remove('active');
+                    menuToggle.querySelector('i').className = 'fas fa-bars';
+                }
+            });
+        });
+        document.getElementById('scrollTopBtn').addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        var revObs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e) {
+                if (e.isIntersecting) { e.target.classList.add('visible');
+                    revObs.unobserve(e.target); }
+            });
+        }, { threshold: 0.08 });
+        document.querySelectorAll('.reveal').forEach(function(el) { revObs.observe(el); });
+        var lbEl = document.getElementById('lightbox'),
+            lbIframe = document.getElementById('lbIframe'),
+            lbPrice = document.getElementById('lbPrice'),
+            lbDesc = document.getElementById('lbDesc'),
+            lbIgLink = document.getElementById('lbIgLink'),
+            lbOrder = document.getElementById('lbOrder'),
+            lbShare = document.getElementById('lbShare'),
+            lbContent = document.getElementById('lbContent'),
+            lbCurrentPost = null,
+            lbOpts = {},
+            lbTouchStartY = 0;
+
+        window.openLightbox = function(post, opts) {
+            opts = opts || {};
+            var code = getCode(post.url);
+            if (!code) return;
+            lbCurrentPost = post;
+            lbOpts = opts;
+            lbIframe.src = 'https://www.instagram.com/p/' + code + '/embed/';
+            lbPrice.style.display = '';
+            lbDesc.style.display = '';
+            lbOrder.style.display = '';
+            lbOrder.className = 'btn-order-sm';
+            lbOrder.style.cssText = '';
+            lbShare.style.display = 'inline-flex';
+            var priceToShow = '',
+                priceForWa = '',
+                waMsg = '';
+            if (opts.isSecret) {
+                priceToShow = 'Rp 5.000';
+                priceForWa = 'Rp 5.000';
+                var name = post.name || 'Secret Car';
+                waMsg = "Halo admin, saya tertarik dengan Secret Car:\n\n" + name + "\n\nHarga: " + priceForWa +
+                    "\n\nLink: " + post.url;
+                lbPrice.textContent = priceToShow;
+                lbDesc.textContent = name;
+                lbDesc.style.display = '';
+                lbIgLink.href = post.url || '#';
+                lbOrder.innerHTML = '<i class="fab fa-whatsapp"></i> Pesan';
+                lbOrder.dataset.waMsg = waMsg;
+            } else if (opts.isSold) {
+                priceToShow = post.discountedPrice || post.editedPrice || post.price || '';
+                lbPrice.textContent = priceToShow;
+                lbDesc.textContent = post.desc || '';
+                lbDesc.style.display = lbDesc.textContent ? '' : 'none';
+                lbIgLink.href = post.url || '#';
+                lbOrder.innerHTML = '<i class="fas fa-check-circle"></i> Sudah Terjual';
+                lbOrder.className = 'btn-order-sm sold-order-badge';
+                delete lbOrder.dataset.waMsg;
+            } else {
+                priceToShow = post.discountedPrice || post.editedPrice || post.price || '';
+                priceForWa = priceToShow;
+                lbPrice.textContent = priceToShow;
+                lbDesc.textContent = post.desc || '';
+                lbDesc.style.display = lbDesc.textContent ? '' : 'none';
+                lbIgLink.href = post.url || '#';
+                lbOrder.innerHTML = '<i class="fab fa-whatsapp"></i> Pesan';
+                waMsg = "Halo admin, saya mau pesan mobil:\n\n" + priceForWa + "\n" + (post.desc || '') + "\n\nLink: " +
+                    post.url;
+                lbOrder.dataset.waMsg = waMsg;
+            }
+            lbEl.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            lbContent.scrollTop = 0;
+        };
+
+        window.closeLightbox = function() {
+            lbEl.classList.remove('active');
+            setTimeout(function() { lbIframe.src = ''; }, 350);
+            document.body.style.overflow = '';
+            lbCurrentPost = null;
+            lbOpts = {};
+            lbOrder.innerHTML = '<i class="fab fa-whatsapp"></i> Pesan';
+            lbOrder.className = 'btn-order-sm';
+            lbOrder.style.cssText = '';
+            lbOrder.style.display = '';
+            lbPrice.style.display = '';
+            lbDesc.style.display = '';
+            lbShare.style.display = 'inline-flex';
+            delete lbOrder.dataset.waMsg;
+        };
+        document.getElementById('lbBackdrop').addEventListener('click', closeLightbox);
+        document.getElementById('lbClose').addEventListener('click', closeLightbox);
+        lbOrder.addEventListener('click', function() {
+            if (!lbCurrentPost) return;
+            if (this.classList.contains('sold-order-badge')) return;
+            var waMsg = this.dataset.waMsg;
+            if (!waMsg) {
+                if (lbOpts.isSecret) {
+                    waMsg = "Halo admin, saya tertarik dengan Secret Car:\n\n" + (lbCurrentPost.name || '') +
+                        "\n\nHarga: Rp 5.000\n\nLink: " + lbCurrentPost.url;
+                } else {
+                    var price = lbCurrentPost.discountedPrice || lbCurrentPost.editedPrice || lbCurrentPost.price || '';
+                    waMsg = "Halo admin, saya mau pesan mobil:\n\n" + price + "\n" + (lbCurrentPost.desc || '') +
+                        "\n\nLink: " + lbCurrentPost.url;
+                }
+            }
+            window.open("https://wa.me/6289687163314?text=" + encodeURIComponent(waMsg), '_blank');
+            closeLightbox();
+        });
+        lbShare.addEventListener('click', function() {
+            if (!lbCurrentPost) return;
+            var price = lbCurrentPost.discountedPrice || lbCurrentPost.editedPrice || lbCurrentPost.price || '';
+            var shareData = {
+                title: 'Stock Mobil - Akino Store',
+                text: 'Lihat mobil ini: ' + (lbCurrentPost.desc || '') + ' - Harga: ' + price,
+                url: lbCurrentPost.url
+            };
+            if (navigator.share) {
+                navigator.share(shareData).catch(function(e) {});
+            } else {
+                var waMsg = "Halo, lihat mobil ini:\n\n" + shareData.text + "\n\nLink: " + shareData.url;
+                window.open("https://wa.me/?text=" + encodeURIComponent(waMsg), '_blank');
+            }
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && lbEl.classList.contains('active')) closeLightbox();
+        });
+        lbContent.addEventListener('touchstart', function(e) {
+            lbTouchStartY = e.touches[0].clientY;
+        }, { passive: true });
+        lbContent.addEventListener('touchmove', function(e) {
+            if (e.touches[0].clientY - lbTouchStartY > 100 && lbContent.scrollTop <= 0) closeLightbox();
+        }, { passive: true });
+        (function() {
+            var script = document.createElement('script');
+            script.type = 'module';
+            script.textContent = `
+                import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+                import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+                const app = initializeApp({
+                    apiKey: "AIzaSyD4sgRYUhk08Y4oZPR4GXJbSuX1fHjXBtg",
+                    authDomain: "akinowedding-73271.firebaseapp.com",
+                    projectId: "akinowedding-73271",
+                    storageBucket: "akinowedding-73271.appspot.com",
+                    messagingSenderId: "307666594440",
+                    appId: "1:307666594440:web:e7d3496744464f4c6d0d3d"
+                });
+                const db = getFirestore(app);
+                function escLocal(t) { var d=document.createElement('div'); d.textContent=t; return d.innerHTML; }
+                onSnapshot(query(collection(db, "secretCars"), orderBy("addedAt", "desc")), (snap) => {
+                    var cars = [];
+                    snap.forEach((d) => cars.push({ id: d.id, ...d.data() }));
+                    var grid = document.getElementById('secretGrid');
+                    grid.innerHTML = '';
+                    var avail = cars.filter(c => c.status === 'available');
+                    if (!avail.length) {
+                        grid.innerHTML = '<div class="limited-empty"><i class="fas fa-lock"></i>Belum ada secret car tersedia.</div>';
+                        return;
+                    }
+                    avail.forEach((car, i) => {
+                        var code = getCode(car.url);
+                        if (!code) return;
+                        var card = document.createElement('div');
+                        card.className = 'ig-card';
+                        card.style.animationDelay = (i*0.06)+'s';
+                        card.innerHTML =
+                            '<div class="ig-card-embed-wrap">' +
+                            '<iframe class="ig-card-embed" src="https://www.instagram.com/p/'+code+'/embed/" loading="lazy" allowtransparency="true" allowfullscreen="true" scrolling="no" frameborder="0"></iframe>' +
+                            '<div class="ig-card-thumb-overlay"></div>' +
+                            '<div class="ig-card-thumb-price">'+escLocal(car.name)+'</div>' +
+                            '<div class="secret-badge"><i class="fas fa-star"></i> SECRET</div>' +
+                            '</div>';
+                        var iframe = card.querySelector('iframe');
+                        addLoaderToCard(card, iframe);
+                        var openFn = function(e) {
+                            e.stopPropagation();
+                            window.openLightbox({ url: car.url, name: car.name }, { isSecret: true });
+                        };
+                        card.querySelector('.ig-card-thumb-overlay').addEventListener('click', openFn);
+                        card.querySelector('.ig-card-thumb-price').addEventListener('click', openFn);
+                        grid.appendChild(card);
+                    });
+                }, (err) => { console.error("Secret cars error:", err); });
+            `;
+            document.body.appendChild(script);
+        })();
+        (function() {
+            var script = document.createElement('script');
+            script.type = 'module';
+            script.textContent = `
+                import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+                import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+
+                const app = initializeApp({
+                    apiKey: "AIzaSyD4sgRYUhk08Y4oZPR4GXJbSuX1fHjXBtg",
+                    authDomain: "akinowedding-73271.firebaseapp.com",
+                    projectId: "akinowedding-73271",
+                    storageBucket: "akinowedding-73271.appspot.com",
+                    messagingSenderId: "307666594440",
+                    appId: "1:307666594440:web:e7d3496744464f4c6d0d3d"
+                });
+                const db = getFirestore(app);
+
+                var SOLD_HOURS = 24,
+                    POSTS = [],
+                    flashFilterActive = false,
+                    hotFilterActive = false,
+                    currentSort = 'newest',
+                    currentView = 'grid',
+                    showAllActive = false,
+                    PER_PAGE = 10,
+                    currentPage = 0,
+                    soldListOpen = true,
+                    flashTimer = null,
+                    selectedPrice = null;
+
+                function escLocal(t) { var d=document.createElement('div'); d.textContent=t; return d.innerHTML; }
+                function parsePrice(str) { var n=parseInt((str||'').replace(/[^0-9]/g,'')); return isNaN(n)?0:n; }
+                function getEP(p) { return p.editedPrice || p.price || ''; }
+                function toMs(t) { if(!t) return 0; if(typeof t==='number') return t; if(t.seconds) return t.seconds*1000; return new Date(t).getTime(); }
+                function getDiscountedPrice(p) {
+                    if(!p.discount) return null;
+                    var original = p.originalPrice || p.price || '';
+                    var num = parseInt(original.replace(/[^0-9]/g,'')) || 0;
+                    var discounted = Math.round(num*0.8);
+                    return 'Rp '+discounted.toLocaleString('id-ID');
+                }
+                function getFlashRemaining(p) {
+                    if(!p.discount) return 0;
+                    var end = p.flashSaleEnd ? toMs(p.flashSaleEnd) : (Date.now() + 24*3600000);
+                    return Math.max(0, end - Date.now());
+                }
+
+                function getFilteredAvail() {
+                    var allAvail = POSTS.filter(p => p.status === 'available');
+                    var min = parseInt(document.getElementById('priceMin').value) || 0;
+                    var max = parseInt(document.getElementById('priceMax').value) || Infinity;
+                    var rMin = parseInt(document.getElementById('rangeMin').value) || 0;
+                    var rMax = parseInt(document.getElementById('rangeMax').value) || Infinity;
+                    var effectiveMin = Math.max(min, rMin);
+                    var effectiveMax = Math.min(max, rMax);
+
+                    return allAvail.filter(p => {
+                        var price = parsePrice(getEP(p));
+                        var priceOk = price >= effectiveMin && price <= effectiveMax;
+                        var flashOk = !flashFilterActive || (p.discount === true);
+                        var hotOk = !hotFilterActive || (p.isHot === true);
+                        var priceFilterOk = (selectedPrice === null) || (price === selectedPrice);
+                        return priceOk && flashOk && hotOk && priceFilterOk;
+                    });
+                }
+
+                function getSortedFiltered() {
+                    var avail = getFilteredAvail();
+                    if (currentSort === 'newest') {
+                        avail.sort((a,b) => toMs(b.addedAt)-toMs(a.addedAt));
+                        if (!flashFilterActive && !hotFilterActive) {
+                            var hot = avail.filter(p => p.isHot === true);
+                            var non = avail.filter(p => p.isHot !== true);
+                            avail = hot.concat(non);
+                        }
+                    }
+                    else if (currentSort === 'price-asc') avail.sort((a,b) => parsePrice(getEP(a))-parsePrice(getEP(b)));
+                    else if (currentSort === 'price-desc') avail.sort((a,b) => parsePrice(getEP(b))-parsePrice(getEP(a)));
+                    return avail;
+                }
+
+                function updateStats() {
+                    var total = POSTS.length;
+                    var available = POSTS.filter(p => p.status === 'available').length;
+                    var flash = POSTS.filter(p => p.status === 'available' && p.discount === true).length;
+                    var hot = POSTS.filter(p => p.status === 'available' && p.isHot === true).length;
+                    document.getElementById('statTotal').textContent = total;
+                    document.getElementById('statAvailable').textContent = available;
+                    document.getElementById('statFlash').textContent = flash;
+                    document.getElementById('statHot').textContent = hot;
+                }
+
+                function renderFlashSale() {
+                    var flashItems = POSTS.filter(p => p.status === 'available' && p.discount === true);
+                    var section = document.getElementById('flashSection');
+                    var grid = document.getElementById('flashGrid');
+                    var count = document.getElementById('flashCount');
+                    if (!flashItems.length) { section.style.display = 'none'; return; }
+                    section.style.display = 'block';
+                    count.textContent = flashItems.length + ' item';
+                    var minRemaining = Infinity;
+                    flashItems.forEach(p => { var rem = getFlashRemaining(p); if(rem>0 && rem<minRemaining) minRemaining=rem; });
+                    var globalEl = document.getElementById('globalCountdown');
+                    if (minRemaining === Infinity || minRemaining <= 0) globalEl.textContent = '';
+                    else globalEl.textContent = '⏳ Berakhir dalam '+formatCountdown(minRemaining);
+
+                    grid.innerHTML = '';
+                    flashItems.forEach((post,i) => {
+                        var code = getCode(post.url);
+                        if(!code) return;
+                        var price = getEP(post);
+                        var discounted = post.discountedPrice || getDiscountedPrice(post) || price;
+                        var remaining = getFlashRemaining(post);
+                        var timerText = remaining > 0 ? formatCountdown(remaining) : '⏳ Habis';
+                        var card = document.createElement('div');
+                        card.className = 'flash-card';
+                        card.style.animationDelay = (i*0.06)+'s';
+                        card.innerHTML =
+                            '<div class="ig-card-embed-wrap">' +
+                            '<iframe class="ig-card-embed" src="https://www.instagram.com/p/'+code+'/embed/" loading="lazy" allowtransparency="true" allowfullscreen="true" scrolling="no" frameborder="0"></iframe>' +
+                            '<div class="thumb-overlay"></div>' +
+                            '<div class="flash-badge"><i class="fas fa-bolt"></i> FLASH</div>' +
+                            '<div class="price-info"><span class="original">'+escLocal(price)+'</span><span class="discount">'+escLocal(discounted)+'</span></div>' +
+                            '<div class="countdown" data-flashend="'+(post.flashSaleEnd ? toMs(post.flashSaleEnd) : (Date.now()+24*3600000))+'">⏳ '+timerText+'</div>' +
+                            '</div>';
+                        var iframe = card.querySelector('iframe');
+                        addLoaderToCard(card, iframe);
+                        card.querySelector('.thumb-overlay').addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            window.openLightbox(post);
+                        });
+                        grid.appendChild(card);
+                    });
+                    startFlashTimer();
+                }
+
+                function startFlashTimer() {
+                    if (flashTimer) clearInterval(flashTimer);
+                    flashTimer = setInterval(function() {
+                        document.querySelectorAll('.flash-card .countdown[data-flashend]').forEach(el => {
+                            var end = parseInt(el.dataset.flashend);
+                            var rem = Math.max(0, end - Date.now());
+                            el.textContent = rem <= 0 ? '⏳ Berakhir' : '⏳ '+formatCountdown(rem);
+                        });
+                        var flashItems = POSTS.filter(p => p.status === 'available' && p.discount === true);
+                        var minRemaining = Infinity;
+                        flashItems.forEach(p => { var rem = getFlashRemaining(p); if(rem>0 && rem<minRemaining) minRemaining=rem; });
+                        var globalEl = document.getElementById('globalCountdown');
+                        if (minRemaining === Infinity || !flashItems.length) globalEl.textContent = '';
+                        else globalEl.textContent = '⏳ Berakhir dalam '+formatCountdown(minRemaining);
+                    }, 1000);
+                }
+
+                function renderSold() {
+                    var now = Date.now();
+                    var sold = POSTS.filter(p => p.status === 'sold' && (SOLD_HOURS*3600000 - (now - toMs(p.soldAt))) > 0);
+                    var section = document.getElementById('soldSection'), list = document.getElementById('soldList'), countEl = document.getElementById('soldCount');
+                    if(!sold.length){ section.style.display='none'; return; }
+                    section.style.display='block'; countEl.textContent=sold.length+' item';
+                    var h='';
+                    sold.forEach((post,i) => {
+                        var price=getEP(post), code=getCode(post.url), name=getFirstLine(post.desc);
+                        h += '<div class="sold-card" style="animation-delay:'+(i*0.06)+'s">';
+                        if(code){
+                            h += '<div class="sold-card-thumb"><iframe src="https://www.instagram.com/p/'+code+'/embed/" loading="lazy" allowtransparency="true" allowfullscreen="true" scrolling="no" frameborder="0"></iframe><div class="sold-card-thumb-overlay"></div><div class="sold-card-sold-badge"><i class="fas fa-check"></i> TERJUAL</div></div>';
+                        }
+                        h += '<div class="sold-card-body"><a href="'+post.url+'" target="_blank" class="sc-name" title="'+escLocal(name)+'">'+escLocal(name)+'</a><span class="sc-price">'+escLocal(price)+'</span></div></div>';
+                    });
+                    list.innerHTML = h;
+                    list.querySelectorAll('.sold-card .sold-card-thumb-overlay').forEach((el, idx) => {
+                        el.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); window.openLightbox(sold[idx], {isSold: true}); });
+                    });
+                }
+
+                function renderPriceThumbnails() {
+                    var container = document.getElementById('priceThumbnails');
+                    container.innerHTML = '';
+                    var prices = new Set();
+                    POSTS.filter(p => p.status === 'available').forEach(p => {
+                        var priceNum = parsePrice(getEP(p));
+                        if (priceNum > 0) prices.add(priceNum);
+                    });
+                    var sortedPrices = Array.from(prices).sort((a,b) => a - b);
+                    if (sortedPrices.length === 0) {
+                        container.innerHTML = '<div style="color:var(--muted);font-size:0.8rem;">Belum ada data harga</div>';
+                        return;
+                    }
+                    var allBtn = document.createElement('div');
+                    allBtn.className = 'price-thumb' + (selectedPrice === null ? ' active' : '');
+                    allBtn.innerHTML = '<div class="thumb-price"><i class="fas fa-th-list"></i> Semua</div><div class="thumb-count">' + POSTS.filter(p => p.status === 'available').length + ' item</div>';
+                    allBtn.addEventListener('click', function() {
+                        selectedPrice = null;
+                        currentPage = 0;
+                        renderAvailable();
+                        renderPriceThumbnails();
+                    });
+                    container.appendChild(allBtn);
+
+                    sortedPrices.forEach(price => {
+                        var count = POSTS.filter(p => p.status === 'available' && parsePrice(getEP(p)) === price)
+                            .length;
+                        var btn = document.createElement('div');
+                        btn.className = 'price-thumb' + (selectedPrice === price ? ' active' : '');
+                        btn.innerHTML = '<div class="thumb-price">Rp ' + price.toLocaleString('id-ID') +
+                            '</div><div class="thumb-count"><strong>' + count + '</strong> item</div>';
+                        btn.addEventListener('click', function() {
+                            selectedPrice = price;
+                            currentPage = 0;
+                            renderAvailable();
+                            renderPriceThumbnails();
+                        });
+                        container.appendChild(btn);
+                    });
+                }
+
+                function renderAvailable() {
+                    var avail = getSortedFiltered();
+                    var grid = document.getElementById('igGrid');
+                    grid.innerHTML = '';
+                    var total = avail.length;
+                    var totalPages = Math.ceil(total / PER_PAGE);
+                    var showAll = showAllActive;
+                    var start, end, showing;
+                    if(showAll){ start=0; end=total; showing=total; document.getElementById('pagination').style.display='none'; }
+                    else {
+                        if(currentPage >= totalPages && totalPages > 0) currentPage = totalPages-1;
+                        if(currentPage < 0) currentPage = 0;
+                        start = currentPage * PER_PAGE;
+                        end = Math.min(start + PER_PAGE, total);
+                        showing = total > 0 ? end - start : 0;
+                        if(totalPages > 1) document.getElementById('pagination').style.display='flex';
+                        else document.getElementById('pagination').style.display='none';
+                    }
+                    document.getElementById('igCounter').innerHTML = total > 0 ? 'Menampilkan <strong>'+showing+'</strong> dari <strong>'+total+'</strong> mobil tersedia' : '<strong>0</strong> mobil tersedia saat ini';
+                    if(!total){ grid.innerHTML='<div style="text-align:center;padding:2.5rem 1rem;color:var(--muted);grid-column:1/-1"><i class="fas fa-car-side" style="font-size:2.2rem;display:block;margin-bottom:0.8rem;opacity:0.3"></i>Semua stock mobil saat ini kosong.</div>'; return; }
+                    var slice = avail.slice(start, end);
+                    slice.forEach((post,i) => {
+                        var code = getCode(post.url);
+                        if (!code) return;
+                        var price = getEP(post);
+                        var isHot = post.isHot === true;
+                        var hotClass = isHot ? ' hot' : '';
+                        var card = document.createElement('div');
+                        card.className = 'ig-card' + hotClass;
+                        card.style.animationDelay = (i * 0.04) + 's';
+                        var badges = '';
+                        if(isHot) badges += '<div class="status-badge hot-badge"><i class="fas fa-fire"></i> HOT</div>';
+                        if(post.discount) badges += '<div class="status-badge flash-badge" style="background:#fb923c;color:#fff;">🔥 FLASH</div>';
+                        if(currentView === 'list'){
+                            var descLine = getFirstLine(post.desc) || '';
+                            card.innerHTML =
+                                '<div class="ig-card-embed-wrap"><iframe class="ig-card-embed" src="https://www.instagram.com/p/'+code+'/embed/" loading="lazy" allowtransparency="true" allowfullscreen="true" scrolling="no" frameborder="0"></iframe><div class="ig-card-thumb-overlay"></div>'+badges+'</div>'+
+                                '<div class="ig-card-thumb-price"><span class="price-label">Harga</span><span class="price-value">'+escLocal(price)+'</span>'+(descLine ? '<span class="item-desc">'+escLocal(descLine)+'</span>' : '')+'</div>';
+                        } else {
+                            card.innerHTML =
+                                '<div class="ig-card-embed-wrap"><iframe class="ig-card-embed" src="https://www.instagram.com/p/'+code+'/embed/" loading="lazy" allowtransparency="true" allowfullscreen="true" scrolling="no" frameborder="0"></iframe><div class="ig-card-thumb-overlay"></div><div class="ig-card-thumb-price">'+escLocal(price)+'</div>'+badges+'</div>';
+                        }
+                        var iframe = card.querySelector('iframe');
+                        addLoaderToCard(card, iframe);
+                        var overlay = card.querySelector('.ig-card-thumb-overlay');
+                        if(overlay) overlay.addEventListener('click', function(e) { e.stopPropagation(); window.openLightbox(post); });
+                        var priceEl = card.querySelector('.ig-card-thumb-price');
+                        if(priceEl && currentView === 'grid') priceEl.addEventListener('click', function(e) { e.stopPropagation(); window.openLightbox(post); });
+                        if(currentView === 'list') card.addEventListener('click', function(e) { if(!e.target.closest('a')) window.openLightbox(post); });
+                        grid.appendChild(card);
+                    });
+                    if(!showAll && totalPages > 1){
+                        var pag = document.getElementById('pagination');
+                        pag.style.display = 'flex';
+                        document.getElementById('prevBtn').disabled = currentPage === 0;
+                        document.getElementById('nextBtn').disabled = currentPage === totalPages - 1;
+                        var pageNums = buildPageNums(currentPage, totalPages);
+                        var pnEl = document.getElementById('pageNumbers');
+                        pnEl.innerHTML = '';
+                        pageNums.forEach(p => {
+                            if(p === '...'){ var sp=document.createElement('span'); sp.className='page-ellipsis'; sp.textContent='…'; pnEl.appendChild(sp); }
+                            else { var btn=document.createElement('button'); btn.className='page-num'+(p===currentPage?' active':''); btn.textContent=p+1; btn.onclick=(function(pg){ return function(){ goToPage(pg); }; })(p); pnEl.appendChild(btn); }
+                        });
+                    } else {
+                        document.getElementById('pagination').style.display='none';
+                    }
+                }
+
+                function buildPageNums(current, total) {
+                    if(total <= 7) { var a=[]; for(var i=0; i<total; i++) a.push(i); return a; }
+                    var pages=[0];
+                    if(current > 2) pages.push('...');
+                    var s = Math.max(1, current-1), e = Math.min(total-2, current+1);
+                    for(var i=s; i<=e; i++) pages.push(i);
+                    if(current < total-3) pages.push('...');
+                    pages.push(total-1);
+                    return pages;
+                }
+
+                window.prevPage = function(){ if(currentPage > 0){ currentPage--; renderAvailable(); scrollToGrid(); } };
+                window.nextPage = function(){ var tp=Math.ceil(getSortedFiltered().length/PER_PAGE); if(currentPage < tp-1){ currentPage++; renderAvailable(); scrollToGrid(); } };
+                function goToPage(pg){ currentPage=pg; renderAvailable(); scrollToGrid(); }
+                function scrollToGrid(){ var g=document.getElementById('igGrid'); window.scrollTo({ top: g.getBoundingClientRect().top + window.pageYOffset - 80, behavior:'smooth' }); }
+
+                window.toggleFlashFilter = function(){
+                    flashFilterActive = !flashFilterActive;
+                    var btn = document.getElementById('flashFilterBtn');
+                    btn.classList.toggle('active');
+                    btn.textContent = flashFilterActive ? '🔥 Flash Sale' : 'Semua';
+                    currentPage = 0;
+                    renderAvailable();
+                };
+                window.toggleHotFilter = function(){
+                    hotFilterActive = !hotFilterActive;
+                    var btn = document.getElementById('hotFilterBtn');
+                    btn.classList.toggle('active');
+                    btn.innerHTML = hotFilterActive ? '<i class="fas fa-fire"></i> 🔥 Hot Stock' : '<i class="fas fa-fire"></i> Hot Stock';
+                    currentPage = 0;
+                    renderAvailable();
+                };
+                window.setSort = function(sort){
+                    currentSort = sort;
+                    document.querySelectorAll('.sort-btn').forEach(b => b.classList.toggle('active', b.dataset.sort === sort));
+                    currentPage = 0;
+                    renderAvailable();
+                };
+                window.setView = function(view){
+                    currentView = view;
+                    var grid = document.getElementById('igGrid');
+                    var gridBtn = document.getElementById('viewGridBtn');
+                    var listBtn = document.getElementById('viewListBtn');
+                    if(view === 'grid'){ grid.classList.remove('list-view'); gridBtn.classList.add('active'); listBtn.classList.remove('active'); }
+                    else { grid.classList.add('list-view'); listBtn.classList.add('active'); gridBtn.classList.remove('active'); }
+                    renderAvailable();
+                };
+                window.toggleShowAll = function(){
+                    showAllActive = !showAllActive;
+                    var btn = document.getElementById('showAllBtn');
+                    var label = document.getElementById('showAllLabel');
+                    btn.classList.toggle('active');
+                    label.textContent = showAllActive ? 'Sembunyikan' : 'Tampilkan Semua';
+                    currentPage = 0;
+                    renderAvailable();
+                };
+                window.toggleSoldList = function(){
+                    soldListOpen = !soldListOpen;
+                    var list=document.getElementById('soldList'), btn=document.getElementById('soldToggle'), txt=document.getElementById('soldToggleText');
+                    if(soldListOpen){ list.classList.remove('collapsed'); btn.classList.add('open'); txt.textContent='Sembunyikan'; }
+                    else { list.classList.add('collapsed'); btn.classList.remove('open'); txt.textContent='Tampilkan'; }
+                };
+                window.manualRefresh = function(){ renderAvailable(); renderFlashSale(); updateStats(); renderPriceThumbnails(); showToast('🔄 Data diperbarui', 'info'); };
+
+                var rangeMin=document.getElementById('rangeMin'), rangeMax=document.getElementById('rangeMax'), rangeMinLabel=document.getElementById('rangeMinLabel'), rangeMaxLabel=document.getElementById('rangeMaxLabel'), rangeFill=document.getElementById('rangeFill');
+                function updateRangeSlider(){
+                    var minVal=parseInt(rangeMin.value), maxVal=parseInt(rangeMax.value);
+                    if(minVal > maxVal){ rangeMin.value=maxVal; minVal=maxVal; }
+                    var max=parseInt(rangeMax.getAttribute('max')) || 1000000;
+                    var pctMin=(minVal/max)*100, pctMax=(maxVal/max)*100;
+                    rangeFill.style.left=pctMin+'%'; rangeFill.style.width=(pctMax-pctMin)+'%';
+                    rangeMinLabel.textContent='Rp'+(minVal>=1000?(minVal/1000).toFixed(0)+'RB':minVal);
+                    rangeMaxLabel.textContent='Rp'+(maxVal>=1000?(maxVal/1000).toFixed(0)+'RB':maxVal);
+                    document.getElementById('priceMin').value=minVal;
+                    document.getElementById('priceMax').value=maxVal;
+                    clearTimeout(rangeSliderTimeout);
+                    rangeSliderTimeout=setTimeout(function(){ currentPage=0; renderAvailable(); }, 200);
+                }
+                var rangeSliderTimeout;
+                rangeMin.addEventListener('input', updateRangeSlider);
+                rangeMax.addEventListener('input', updateRangeSlider);
+                document.getElementById('priceMin').addEventListener('input', function(){
+                    var val=parseInt(this.value)||0, max=parseInt(rangeMax.getAttribute('max'))||1000000; if(val>max) val=max; rangeMin.value=val; updateRangeSlider();
+                });
+                document.getElementById('priceMax').addEventListener('input', function(){
+                    var val=parseInt(this.value)||0, max=parseInt(rangeMax.getAttribute('max'))||1000000; if(val>max) val=max; rangeMax.value=val; updateRangeSlider();
+                });
+
+                async function cleanupFlashSale(){
+                    var now=Date.now();
+                    var toCleanup = POSTS.filter(p => p.discount === true && (p.status !== 'available' || (p.flashSaleEnd && now > toMs(p.flashSaleEnd))));
+                    if(toCleanup.length===0) return 0;
+                    for(var p of toCleanup){
+                        try { await updateDoc(doc(db, "carStock", p.id), { discount: false, discountedPrice: "", flashSaleEnd: null, originalPrice: "" }); }
+                        catch(e){}
+                    }
+                    return toCleanup.length;
+                }
+                setInterval(cleanupFlashSale, 60000);
+                setTimeout(cleanupFlashSale, 3000);
+
+                onSnapshot(query(collection(db, "carStock"), orderBy("addedAt", "desc")), (snap) => {
+                    POSTS = [];
+                    snap.forEach((d) => POSTS.push({ id: d.id, ...d.data() }));
+                    POSTS.forEach(p => {
+                        if(p.discount === true) p.discountedPrice = getDiscountedPrice(p);
+                        if(p.isHot === undefined) p.isHot = false;
+                    });
+                    updateStats();
+                    renderSold();
+                    renderFlashSale();
+                    renderPriceThumbnails();
+                    renderAvailable();
+                }, (err) => { console.error("Stock listener error:", err); });
+
+                setTimeout(updateRangeSlider, 100);
+            `;
+            document.body.appendChild(script);
+        })();
+    </script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, query, orderBy, limit, serverTimestamp, onSnapshot, startAfter, getDocs } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+
+        const app = initializeApp({
+            apiKey: "AIzaSyD4sgRYUhk08Y4oZPR4GXJbSuX1fHjXBtg",
+            authDomain: "akinowedding-73271.firebaseapp.com",
+            projectId: "akinowedding-73271",
+            storageBucket: "akinowedding-73271.appspot.com",
+            messagingSenderId: "307666594440",
+            appId: "1:307666594440:web:e7d3496744464f4c6d0d3d"
+        });
+        const db = getFirestore(app);
+
+        var gbForm = document.getElementById('messageForm'),
+            gbMsgs = document.getElementById('gbMsgs');
+        var lastVisible = null,
+            loading = false;
+
+        gbForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            var name = document.getElementById('gb-name').value.trim();
+            var message = document.getElementById('gb-msg').value.trim();
+            if (name && message) {
+                await addDoc(collection(db, "messages"), { name, message, timestamp: serverTimestamp() });
+                gbForm.reset();
+                showToast('✅ Komentar berhasil dikirim!', 'success');
+            }
+        });
+
+        function loadMessages() {
+            onSnapshot(query(collection(db, "messages"), orderBy("timestamp", "desc"), limit(10)), (snap) => {
+                gbMsgs.innerHTML = '';
+                snap.forEach((d) => renderMsg(d.data()));
+                gbMsgs.scrollTop = 0;
+                if (snap.docs.length > 0) lastVisible = snap.docs[snap.docs.length - 1];
+            });
+        }
+
+        gbMsgs.addEventListener("scroll", async function() {
+            if (loading) return;
+            if (gbMsgs.scrollTop + gbMsgs.clientHeight >= gbMsgs.scrollHeight - 10) {
+                loading = true;
+                if (lastVisible) {
+                    var snap = await getDocs(query(collection(db, "messages"), orderBy("timestamp", "desc"),
+                        startAfter(lastVisible), limit(10)));
+                    snap.forEach((d) => renderMsg(d.data()));
+                    if (snap.docs.length > 0) lastVisible = snap.docs[snap.docs.length - 1];
+                }
+                loading = false;
+            }
+        });
+
+        function renderMsg(data) {
+            var div = document.createElement("div");
+            div.className = "gb-msg";
+            div.innerHTML = "<strong>" + data.name + "</strong><p>" + data.message + "</p><small>" + (data.timestamp ?
+                new Date(data.timestamp.seconds * 1000).toLocaleString() : "") + "</small>";
+            gbMsgs.appendChild(div);
+        }
+        loadMessages();
+    </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(() => console.log('✅ SW registered'))
+                    .catch(err => console.log('❌ SW failed:', err));
+            });
+        }
+    </script>
+
+    <script>
+  // 🔥 Force update service worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistration().then(reg => {
+      if (reg) {
+        reg.update();
+        reg.addEventListener('updatefound', () => {
+          const newSW = reg.installing;
+          newSW.addEventListener('statechange', () => {
+            if (newSW.state === 'installed') {
+              newSW.postMessage('skipWaiting');
+              // Refresh halaman setelah update
+              setTimeout(() => {
+                window.location.reload();
+              }, 800);
+            }
+          });
+        });
+      }
+    });
+  }
+</script>
+</body>
+</html>
