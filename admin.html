@@ -572,6 +572,10 @@
             .form-actions-row { flex-direction:column; width:100%; }
             .form-actions-row .btn-primary { width:100%; justify-content:center; }
             .wp-thumb { width:50px; height:50px; }
+            .wp-list-item { flex-wrap:wrap; gap:0.4rem; }
+            .wp-list-item .info { width:100%; order:2; }
+            .wp-list-item .info h4 { white-space:normal; font-size:0.75rem; }
+            .wp-list-item .btn-del { order:3; }
         }
         @media(max-width:400px) {
             .item-thumb { width:40px; height:40px; }
@@ -586,6 +590,7 @@
             .batch-bar .bb-btn { font-size:.55rem; padding:.15rem .35rem; min-height:24px; }
             .batch-bar .bb-count { font-size:.55rem; }
             .modal-box h3 { font-size:.95rem; }
+            .wp-list-item .info h4 { font-size:0.7rem; }
         }
     </style>
 </head>
@@ -812,7 +817,6 @@
                     <textarea id="wpDesc" placeholder="Deskripsi singkat tentang wallpaper ini..."></textarea>
                 </div>
 
-                <!-- ===== FIELD HASHTAG (BARU) ===== -->
                 <div class="fr">
                     <label>Hashtag (otomatis dari AI)</label>
                     <input type="text" id="wpHashtag" placeholder="#wallpaper #art #design" />
@@ -828,7 +832,10 @@
             </div>
 
             <div class="sec-title"><i class="fas fa-images"></i> Daftar Wallpaper <span class="count" id="wpCnt">0</span></div>
+            
+            <!-- WALLPAPER LIST WITH PAGINATION -->
             <div id="wpListContainer"><div class="empty"><i class="fas fa-spinner fa-spin"></i> Memuat...</div></div>
+            <div id="wpPagination"></div>
 
             <!-- ===== ANTRIAN PIN PINTEREST (DENGAN LINK DESTINASI) ===== -->
             <div style="margin-top:1.5rem;">
@@ -2600,6 +2607,7 @@
 
         // ============================================================
         // 3. WALLPAPER + PIN QUEUE + CLOUDINARY + OPENROUTER + HASHTAG
+        //    DENGAN PAGINATION
         // ============================================================
         (function() {
             if (typeof db === 'undefined') {
@@ -2610,6 +2618,16 @@
             const WORKER_GENERATE_URL = 'https://wallpaperai.akinostore.workers.dev';
             const CLOUD_NAME = 'dlwwy1f80';
             const UPLOAD_PRESET = 'wallpaper_upload';
+
+            // State untuk pagination
+            let wpCurrentPage = 1;
+            let wpPerPage = 10;
+            let wpAllData = [];
+            let wpFilteredData = [];
+
+            function getWpPerPage() {
+                return window.innerWidth <= 768 ? 5 : 10;
+            }
 
             function getImageResolution(url) {
                 return new Promise((resolve) => {
@@ -2712,7 +2730,6 @@
                             }
                         }
                     }
-                    // ===== HASHTAG OTOMATIS =====
                     if (data.hashtags) {
                         document.getElementById('wpHashtag').value = data.hashtags;
                     }
@@ -2725,7 +2742,7 @@
                 }
             });
 
-            // ===== GENERATE MANUAL (dengan HASHTAG) =====
+            // ===== GENERATE MANUAL =====
             document.getElementById('wpGenerateBtn').addEventListener('click', function() {
                 document.getElementById('aiModal').classList.add('active');
                 document.getElementById('aiTheme').value = '';
@@ -2756,7 +2773,6 @@
                     const data = await response.json();
                     if (data.title) document.getElementById('wpTitle').value = data.title;
                     if (data.description) document.getElementById('wpDesc').value = data.description;
-                    // ===== HASHTAG OTOMATIS =====
                     if (data.hashtags) {
                         document.getElementById('wpHashtag').value = data.hashtags;
                     }
@@ -2769,6 +2785,90 @@
                     this.innerHTML = '<i class="fas fa-sparkles"></i> Generate Manual (Tema)';
                 }
             });
+
+            // ===== RENDER WALLPAPER DENGAN PAGINATION =====
+            function renderWallpapersPage() {
+                const container = document.getElementById('wpListContainer');
+                const pagContainer = document.getElementById('wpPagination');
+                const cntEl = document.getElementById('wpCnt');
+
+                wpPerPage = getWpPerPage();
+                const total = wpFilteredData.length;
+                const totalPages = Math.max(1, Math.ceil(total / wpPerPage));
+                if (wpCurrentPage > totalPages) wpCurrentPage = totalPages;
+
+                const start = (wpCurrentPage - 1) * wpPerPage;
+                const pageItems = wpFilteredData.slice(start, start + wpPerPage);
+
+                cntEl.textContent = total;
+
+                if (total === 0) {
+                    container.innerHTML =
+                        `<div class="empty"><i class="fas fa-image"></i> Belum ada wallpaper.</div>`;
+                    pagContainer.innerHTML = '';
+                    return;
+                }
+
+                const origin = window.location.origin;
+                let html = '';
+                pageItems.forEach(function(item) {
+                    const data = item.data;
+                    const detailUrl = origin + '/wallpaper-detail.html?id=' + item.id;
+                    html += `
+                        <div class="wp-list-item">
+                            <img src="${data.imageUrl}" alt="${data.title}" class="wp-thumb" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23222%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23555%22 font-size=%2212%22%3ENo%20Image%3C/text%3E%3C/svg%3E'" />
+                            <div class="info">
+                                <h4>${esc(data.title)}</h4>
+                                <span>${data.category} • ${data.resolution || 'Auto'} • ${data.downloads || 0} downloads</span>
+                                ${data.hashtags ? `<br><span style="font-size:0.6rem;color:var(--muted-light);">${esc(data.hashtags)}</span>` : ''}
+                            </div>
+                            <button class="btn-sm" style="background:transparent;border:1px solid var(--border);color:var(--fg-muted);padding:0.2rem 0.5rem;border-radius:4px;font-size:0.65rem;cursor:pointer;" onclick="copyToClipboard('${detailUrl}')" title="Salin link wallpaper">
+                                <i class="fas fa-copy"></i> Salin Link
+                            </button>
+                            <button class="btn-del" data-id="${item.id}"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+
+                // Event delete
+                container.querySelectorAll('.btn-del').forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        const id = this.dataset.id;
+                        if (confirm('Hapus wallpaper ini?')) {
+                            db.collection('wallpapers').doc(id).delete()
+                                .then(function() {
+                                    toast('✅ Wallpaper dihapus.', 'ok');
+                                    window.loadWallpapers();
+                                    if (window.renderPinQueue) window.renderPinQueue();
+                                })
+                                .catch(function(err) {
+                                    toast('❌ Gagal hapus: ' + err.message, 'err');
+                                });
+                        }
+                    });
+                });
+
+                // Pagination
+                if (totalPages <= 1) {
+                    pagContainer.innerHTML = '';
+                    return;
+                }
+
+                let pagHtml = '<div class="pagination">';
+                pagHtml += `<button class="pg-btn" ${wpCurrentPage <= 1 ? 'disabled' : ''} onclick="window.wpGoPage(${wpCurrentPage - 1})"><i class="fas fa-chevron-left"></i></button>`;
+                pagHtml +=
+                    `<span class="pg-info">${wpCurrentPage}/${totalPages}</span>`;
+                pagHtml +=
+                    `<button class="pg-btn" ${wpCurrentPage >= totalPages ? 'disabled' : ''} onclick="window.wpGoPage(${wpCurrentPage + 1})"><i class="fas fa-chevron-right"></i></button>`;
+                pagHtml += '</div>';
+                pagContainer.innerHTML = pagHtml;
+            }
+
+            window.wpGoPage = function(page) {
+                wpCurrentPage = page;
+                renderWallpapersPage();
+            };
 
             // ===== LOAD WALLPAPER =====
             window.loadWallpapers = function() {
@@ -2786,62 +2886,25 @@
                     .orderBy('createdAt', 'desc')
                     .get()
                     .then(function(snapshot) {
-                        if (snapshot.empty) {
-                            container.innerHTML =
-                                `<div class="empty"><i class="fas fa-image"></i> Belum ada wallpaper.</div>`;
-                            cntEl.textContent = '0';
-                            if (window.renderPinQueue) window.renderPinQueue();
-                            return;
-                        }
-                        let html = '';
-                        let count = 0;
-                        const origin = window.location.origin;
+                        wpAllData = [];
                         snapshot.forEach(function(doc) {
-                            const data = doc.data();
-                            const detailUrl = origin + '/wallpaper-detail.html?id=' + doc.id;
-                            html += `
-                                <div class="wp-list-item">
-                                    <img src="${data.imageUrl}" alt="${data.title}" class="wp-thumb" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23222%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23555%22 font-size=%2212%22%3ENo%20Image%3C/text%3E%3C/svg%3E'" />
-                                    <div class="info">
-                                        <h4>${data.title}</h4>
-                                        <span>${data.category} • ${data.resolution || 'Auto'} • ${data.downloads || 0} downloads</span>
-                                    </div>
-                                    <button class="btn-sm" style="background:transparent;border:1px solid var(--border);color:var(--fg-muted);padding:0.2rem 0.5rem;border-radius:4px;font-size:0.65rem;cursor:pointer;" onclick="copyToClipboard('${detailUrl}')" title="Salin link wallpaper">
-                                        <i class="fas fa-copy"></i> Salin Link
-                                    </button>
-                                    <button class="btn-del" data-id="${doc.id}"><i class="fas fa-trash-alt"></i></button>
-                                </div>
-                            `;
-                            count++;
+                            wpAllData.push({ id: doc.id, data: doc.data() });
                         });
-                        container.innerHTML = html;
-                        cntEl.textContent = count;
+                        wpFilteredData = wpAllData;
+                        wpCurrentPage = 1;
+                        renderWallpapersPage();
 
-                        container.querySelectorAll('.btn-del').forEach(function(btn) {
-                            btn.addEventListener('click', function() {
-                                const id = this.dataset.id;
-                                if (confirm('Hapus wallpaper ini?')) {
-                                    db.collection('wallpapers').doc(id).delete()
-                                        .then(function() {
-                                            toast('✅ Wallpaper dihapus.', 'ok');
-                                            window.loadWallpapers();
-                                            if (window.renderPinQueue) window.renderPinQueue();
-                                        })
-                                        .catch(function(err) {
-                                            toast('❌ Gagal hapus: ' + err.message, 'err');
-                                        });
-                                }
-                            });
-                        });
-
+                        // Stats
                         const statsEl = document.getElementById('wpStats');
                         if (statsEl) {
+                            const count = wpAllData.length;
                             statsEl.innerHTML = `
                                 <div class="stat-card"><div class="sv yellow">${count}</div><div class="sl">Total Wallpaper</div></div>
                                 <div class="stat-card"><div class="sv green">${count}</div><div class="sl">Tersedia</div></div>
                                 <div class="stat-card"><div class="sv blue">${count}</div><div class="sl">Downloads</div></div>
                             `;
                         }
+
                         if (window.renderPinQueue) window.renderPinQueue();
                     })
                     .catch(function(err) {
@@ -2851,7 +2914,7 @@
                     });
             };
 
-            // ===== PIN QUEUE (DENGAN LINK KE WALLPAPER-DETAIL + HASHTAG) =====
+            // ===== PIN QUEUE =====
             window.renderPinQueue = function() {
                 const container = document.getElementById('pinQueueList');
                 const countEl = document.getElementById('pinQueueCount');
@@ -2874,13 +2937,11 @@
                                 count++;
                                 const title = data.title || 'Untitled';
                                 const imageUrl = data.imageUrl;
-                                // Gabungkan deskripsi + hashtag (jika ada di Firestore)
                                 let desc = data.description || title;
                                 if (data.hashtags) {
                                     desc += '\n\n' + data.hashtags;
                                 }
                                 const detailUrl = origin + '/wallpaper-detail.html?id=' + doc.id;
-                                // PIN URL dengan destination link
                                 const pinUrl =
                                     `https://www.pinterest.com/pin/create/button/?media=${encodeURIComponent(imageUrl)}&description=${encodeURIComponent(desc)}&url=${encodeURIComponent(detailUrl)}`;
 
@@ -2888,8 +2949,8 @@
                                     <div class="wp-list-item" style="border-bottom:1px solid var(--border-color); padding:0.5rem 0;">
                                         <img src="${imageUrl}" class="wp-thumb" style="width:40px;height:40px;object-fit:cover;border-radius:4px;" />
                                         <div class="info" style="flex:1;margin-left:0.5rem;">
-                                            <h4 style="font-size:0.8rem;">${title}</h4>
-                                            ${data.hashtags ? `<span style="font-size:0.6rem;color:var(--fg-muted);">${data.hashtags}</span>` : ''}
+                                            <h4 style="font-size:0.8rem;">${esc(title)}</h4>
+                                            ${data.hashtags ? `<span style="font-size:0.6rem;color:var(--muted-light);">${esc(data.hashtags)}</span>` : ''}
                                         </div>
                                         <button class="btn-sm" style="background:transparent;border:1px solid var(--border);color:var(--fg-muted);padding:0.2rem 0.5rem;border-radius:4px;font-size:0.65rem;cursor:pointer;" onclick="copyToClipboard('${detailUrl}')" title="Salin link wallpaper">
                                             <i class="fas fa-copy"></i> Salin Link
@@ -2920,9 +2981,7 @@
 
             window.markAsPinned = function(docId) {
                 if (confirm('Tandai wallpaper ini sudah di-pin ke Pinterest?')) {
-                    db.collection('wallpapers').doc(docId).update({
-                            pinned: true
-                        })
+                    db.collection('wallpapers').doc(docId).update({ pinned: true })
                         .then(() => {
                             toast('✅ Ditandai sudah di-pin!', 'ok');
                             if (window.renderPinQueue) window.renderPinQueue();
@@ -2933,7 +2992,7 @@
                 }
             };
 
-            // ===== UPLOAD KE FIRESTORE (dengan HASHTAG) =====
+            // ===== UPLOAD KE FIRESTORE =====
             document.getElementById('wpUploadBtn').addEventListener('click', async function() {
                 const title = document.getElementById('wpTitle').value.trim();
                 const category = document.getElementById('wpCategory').value;
@@ -2991,6 +3050,17 @@
                     document.getElementById('wpUploadBtn').disabled = false;
                     document.getElementById('wpUploadBtn').innerHTML = '<i class="fas fa-upload"></i> Simpan ke Database';
                 });
+            });
+
+            // ===== RESIZE HANDLER =====
+            let wpResizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(wpResizeTimer);
+                wpResizeTimer = setTimeout(function() {
+                    wpPerPage = getWpPerPage();
+                    wpCurrentPage = 1;
+                    renderWallpapersPage();
+                }, 300);
             });
 
             // ===== LOAD AWAL =====
