@@ -18,6 +18,7 @@
   <link rel="apple-touch-icon" sizes="167x167" href="https://res.cloudinary.com/d39mdjct/image/upload/w_167,h_167,c_fit/v1783493763/apk_pgxcmo.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/d39mdjct/image/upload/w_180,h_180,c_fit/v1783493763/apk_pgxcmo.png" />
   <style>
+    /* ===== SAMA SEPERTI SEBELUMNYA (saya salin lengkap dari jawaban sebelumnya) ===== */
     :root {
       --bg: #07070d;
       --bg-card: rgba(255,255,255,0.04);
@@ -213,6 +214,42 @@
       color:var(--accent);
       font-size:0.8rem;
       font-weight:500;
+    }
+
+    /* ===== HARGA TAMBAHAN ===== */
+    .price-display {
+      background:var(--bg-card);
+      border:1px solid var(--border);
+      border-radius:var(--radius-sm);
+      padding:0.8rem 1.2rem;
+      margin:0.8rem auto 1.2rem;
+      max-width:400px;
+      text-align:center;
+      font-family:var(--font-display);
+    }
+    .price-display .price-label {
+      font-size:0.7rem;
+      color:var(--muted-dim);
+      font-weight:500;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+    }
+    .price-display .price-value {
+      font-size:1.5rem;
+      font-weight:700;
+      color:var(--accent);
+      margin-top:0.2rem;
+    }
+    .price-display .price-value .price-myr {
+      font-size:0.85rem;
+      color:var(--muted-dim);
+      font-weight:400;
+      margin-left:0.4rem;
+    }
+    .price-display .price-method {
+      font-size:0.75rem;
+      color:var(--muted);
+      margin-top:0.2rem;
     }
 
     .form-wrap {
@@ -445,6 +482,12 @@
     <div class="service-badge" id="serviceBadge">
       <i class="fas fa-cube"></i> <span id="serviceLabel">Car Parking Multiplayer</span>
     </div>
+    <!-- === TAMBAHAN HARGA === -->
+    <div class="price-display" id="priceDisplay">
+      <div class="price-label">Harga</div>
+      <div class="price-value" id="priceValue">—</div>
+      <div class="price-method" id="priceMethod"></div>
+    </div>
   </header>
 
   <div class="form-wrap">
@@ -455,7 +498,7 @@
         <span>Pastikan Sign Out sebelum proses dilakukan.</span>
       </div>
 
-      <!-- SUB OPSI (muncul dinamis) -->
+      <!-- SUB OPSI -->
       <div id="subOptions" class="hidden-fields"></div>
 
       <div id="loginSection" class="form-group">
@@ -539,7 +582,7 @@
       toast._timeout = setTimeout(() => toast.classList.remove('show'), 3500);
     }
 
-    // ===== NAVBAR, THEME =====
+    // ===== NAVBAR & THEME =====
     window.addEventListener('scroll', () => {
       document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
     });
@@ -580,6 +623,78 @@
       localStorage.setItem('theme', isLight ? 'light' : 'dark');
     });
 
+    // ===== DATA HARGA LAYANAN (hardcode, sinkron dengan DEFAULT_SERVICES) =====
+    const EXCHANGE_RATE = 3400;
+    function formatIDR(amount) { return 'Rp ' + amount.toLocaleString('id-ID'); }
+    function formatMYR(amount) { return '≈ RM ' + (amount / EXCHANGE_RATE).toFixed(2); }
+
+    // Harga untuk setiap layanan (hanya yang memiliki dual price atau onlyRoom)
+    const SERVICE_PRICES = {
+      // Layanan error – tidak digunakan karena tidak bisa dipesan, tapi tetap kita masukkan
+      "Tune Up": { login: 3000, room: 5000 },
+      "Tune Up Suara Asli / ECU": { login: 3000, room: 5000 },
+      "FFA / Ghoib": { login: 3000, room: 5000 },
+      "FFA / Ghoib Suara Asli / ECU": { login: 3000, room: 5000 },
+      "Glitch": { login: 3000, room: 5000 },
+      "Glitch Suara Asli / ECU": { login: 3000, room: 5000 },
+      "Spek Brake Boost": { login: 3000, room: 5000 },
+      "Chrome / Bakar Body / Velg": { login: 3000, room: 5000 },
+      "Custom Spoiler / Trondol": { login: 3000, room: 5000 },
+      "Alis Nyala / Kaliper": { login: 3000, room: 5000 },
+      "Unlock Paid / Premium Car": { room: 5000, onlyRoom: true },
+      "Unlock Premium Car + Sirine": { room: 8000, onlyRoom: true },
+      "Unlock Premium Body": { login: 3000, room: 3000 },
+      "Isi Koin Bebas Request": { login: 5000, onlyLogin: true }, // hanya login
+      "Isi 50.000.000 Uang": { login: 4000, room: 5000 },
+      "Bundle Uang + Koin (bebas req koin)": { login: 8000, onlyLogin: true },
+      "Akun King Baru (Free Koin+Uang+unlock W16)": { login: 15000, onlyLogin: true },
+      "Request Livery Mobil": { login: 20000, room: 20000 }, // range, kita pakai harga minimum
+      "Stock Mobil Murah dan Secret Car": { special: true },
+      // Paket-paket
+      "Paket Alis nyala + Kaliper": { login: 5000, room: 8000 },
+      "Paket Chrome Velg atau Body + Alis atau Kaliper": { login: 5000, room: 8000 },
+      "Paket Chrome Velg atau Body + Alis + Kaliper": { login: 7000, room: 10000 },
+      "Paket rubah Spek mesin + (pilihan Chrome Velg/Body, Alis/Kaliper)": { login: 5000, room: 8000 },
+      "Paket Lengkap rubah Spek mesin + Chrome velg atau Body + Alis + Kaliper nyala": { login: 9000, room: 12000 },
+      "Paket Custom Spoiler + Trondol": { login: 5000, room: 8000 }
+    };
+
+    function updatePrice(method) {
+      const serviceName = document.getElementById('selected-service').value;
+      const priceData = SERVICE_PRICES[serviceName];
+      if (!priceData || priceData.special) {
+        document.getElementById('priceValue').textContent = '—';
+        document.getElementById('priceMethod').textContent = '';
+        return;
+      }
+      let price = 0;
+      let methodText = '';
+      if (priceData.onlyRoom) {
+        price = priceData.room;
+        methodText = 'Hanya via Room';
+      } else if (priceData.onlyLogin) {
+        price = priceData.login;
+        methodText = 'Hanya via Login Akun';
+      } else {
+        if (method === 'Login Akun') {
+          price = priceData.login;
+          methodText = 'via Login Akun';
+        } else if (method === 'Lewat Room') {
+          price = priceData.room;
+          methodText = 'via Room';
+        } else {
+          // belum pilih metode, tampilkan keduanya
+          document.getElementById('priceValue').innerHTML = 
+            formatIDR(priceData.login) + ' <span class="price-myr">' + formatMYR(priceData.login) + '</span> / ' +
+            formatIDR(priceData.room) + ' <span class="price-myr">' + formatMYR(priceData.room) + '</span>';
+          document.getElementById('priceMethod').textContent = 'Login / Room';
+          return;
+        }
+      }
+      document.getElementById('priceValue').innerHTML = formatIDR(price) + ' <span class="price-myr">' + formatMYR(price) + '</span>';
+      document.getElementById('priceMethod').textContent = methodText;
+    }
+
     // ===== ORDER LOGIC =====
     const service = new URLSearchParams(window.location.search).get('service');
     const serviceLabel = document.getElementById('serviceLabel');
@@ -590,7 +705,6 @@
     const noteBox = document.getElementById('noteBox');
     const subOptionsDiv = document.getElementById('subOptions');
 
-    // Mapping opsi (sama dengan data di halaman utama)
     const serviceOptionsMap = {
       "Chrome / Bakar Body / Velg": { type: ['Chrome', 'Bakar'], part: ['Body', 'Velg'] },
       "Custom Spoiler / Trondol": { type: ['Custom Spoiler', 'Trondol'] },
@@ -646,23 +760,28 @@
         subOptionsDiv.innerHTML = '';
       }
 
-      // Atur metode berdasarkan layanan
+      // Atur metode & harga awal
       if (onlyRoomServices.includes(service)) {
         loginSelect.innerHTML = '<option value="Lewat Room">Lewat Room</option>';
         loginSelect.value = 'Lewat Room';
         toggleFields('Lewat Room');
         submitBtn.disabled = false;
         noteBox.classList.add('hidden');
+        // update harga
+        updatePrice('Lewat Room');
       } else if (requireLoginServices.includes(service)) {
         loginSelect.innerHTML = '<option value="Login Akun">Login Akun</option>';
         loginSelect.value = 'Login Akun';
         toggleFields('Login Akun');
         submitBtn.disabled = false;
+        updatePrice('Login Akun');
       } else {
         loginSelect.innerHTML = '<option value="">-- Harap Pilih --</option><option value="Login Akun">Login Akun</option><option value="Lewat Room">Lewat Room</option>';
         loginSelect.value = '';
         toggleFields('');
         submitBtn.disabled = true;
+        // tampilkan kedua harga
+        updatePrice('');
       }
 
       // Field khusus
@@ -678,6 +797,7 @@
         document.getElementById('liveryFields').classList.add('visible');
         document.getElementById('loginSection').classList.add('hidden');
         submitBtn.disabled = false;
+        updatePrice('Login Akun'); // default
       } else {
         document.getElementById('liveryFields').classList.remove('visible');
         document.getElementById('loginSection').classList.remove('hidden');
@@ -687,8 +807,17 @@
         document.getElementById('stockFields').classList.add('visible');
         document.getElementById('loginSection').classList.add('hidden');
         submitBtn.disabled = false;
+        document.getElementById('priceValue').textContent = 'Lihat Stock';
+        document.getElementById('priceMethod').textContent = '';
       } else {
         document.getElementById('stockFields').classList.remove('visible');
+      }
+
+      // Jika layanan error (tidak mungkin sampai sini karena tombol tidak aktif), tapi antisipasi
+      const errorServices = ["Tune Up", "Tune Up Suara Asli / ECU", "FFA / Ghoib", "FFA / Ghoib Suara Asli / ECU", "Glitch", "Glitch Suara Asli / ECU"];
+      if (errorServices.includes(service)) {
+        showToast('⚠️ Layanan ini sedang tidak tersedia.');
+        submitBtn.disabled = true;
       }
     }
 
@@ -702,6 +831,7 @@
 
       const serviceName = selectedService.value;
       if (onlyRoomServices.includes(serviceName) || requireLoginServices.includes(serviceName)) {
+        // sudah diatur di atas
         return;
       }
 
@@ -709,9 +839,13 @@
         noteBox.classList.remove('hidden');
         loginFields.classList.add('visible');
         submitBtn.disabled = false;
+        updatePrice('Login Akun');
       } else if (value === 'Lewat Room') {
         roomField.classList.add('visible');
         submitBtn.disabled = false;
+        updatePrice('Lewat Room');
+      } else {
+        updatePrice('');
       }
     }
 
