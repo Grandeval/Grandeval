@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   <link rel="manifest" href="/manifest.json?v=4.2" />
-<script src="firebase-init.js?v=4.2"></script>
+  <script src="firebase-init.js?v=4.2"></script>
   <meta name="theme-color" content="#3B82F6" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -89,6 +89,43 @@
       transition: background var(--transition), color var(--transition);
       -webkit-tap-highlight-color: transparent;
     }
+    /* ===== TOAST NOTIFICATION ===== */
+    .toast {
+      position: fixed;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      background: #ef4444;
+      color: #fff;
+      padding: 0.8rem 1.8rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      z-index: 9999;
+      box-shadow: 0 8px 32px rgba(239, 68, 68, 0.35);
+      opacity: 0;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      pointer-events: none;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      max-width: 90%;
+      text-align: center;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: auto;
+    }
+    .toast i { font-size: 1.1rem; }
+    body.light-theme .toast {
+      background: #dc2626;
+      box-shadow: 0 8px 32px rgba(220, 38, 38, 0.3);
+    }
+    /* ===== AMBIENT GLOWS ===== */
     .ambient-glows { position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
     .ambient-glows .glow {
       position:absolute; border-radius:50%; filter:blur(120px);
@@ -101,6 +138,7 @@
     @keyframes glowFloat1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(60px,40px)} }
     @keyframes glowFloat2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-40px,-60px)} }
     @keyframes glowFloat3 { 0%,100%{transform:translate(-50%,-50%) scale(1)} 50%{transform:translate(-50%,-50%) scale(1.2)} }
+    /* ===== NAVBAR ===== */
     .navbar {
       position:fixed; top:0; left:0; right:0; z-index:100;
       display:flex; justify-content:space-between; align-items:center;
@@ -183,6 +221,7 @@
       align-items:center;
     }
     .dropdown-menu a:hover { background:var(--accent-dim); color:var(--accent); }
+    /* ===== BREADCRUMB ===== */
     .breadcrumb {
       max-width:1100px;
       margin: 4.5rem auto 0.5rem;
@@ -193,6 +232,7 @@
     .breadcrumb a { color:var(--muted-dim); text-decoration:none; transition:color 0.2s; }
     .breadcrumb a:hover { color:var(--accent); }
     .breadcrumb span { color:var(--fg); }
+    /* ===== HERO ===== */
     .page-hero {
       padding:0.5rem 1rem 1.5rem;
       text-align:center;
@@ -207,6 +247,7 @@
       color:var(--muted); font-size:0.9rem;
       max-width:480px; margin:0 auto; line-height:1.6;
     }
+    /* ===== SLIDER ===== */
     .slider-wrap { max-width:900px; margin:0.5rem auto; padding:0 1rem; }
     .slider {
       position:relative; overflow:hidden; border-radius:var(--radius);
@@ -224,6 +265,7 @@
       min-width:12px;
     }
     .slider-dots span.active { background:var(--accent); width:32px; border-radius:8px; }
+    /* ===== PROMO BANNER ===== */
     .promo-banner {
       max-width:900px; margin:0.5rem auto 1rem;
       padding:0.7rem 1rem;
@@ -244,6 +286,7 @@
       padding:0.2rem 0.7rem; border-radius:50px;
       border:1px solid rgba(251,146,60,0.2); white-space:nowrap;
     }
+    /* ===== TOOLBAR ===== */
     .toolbar {
       max-width:1100px;
       margin:0 auto 1rem;
@@ -310,6 +353,7 @@
     .sort-select:focus { border-color:var(--accent); }
     .sort-select option { background:#0e0e18; color:var(--fg); }
     body.light-theme .sort-select option { background:#f5f5fa; }
+    /* ===== SERVICES ===== */
     .services-section { max-width:1100px; margin:0 auto 2rem; padding:0 1rem; }
     .section-title {
       font-family:var(--font-display); font-size:1.3rem; font-weight:600;
@@ -322,7 +366,7 @@
       .services-grid { grid-template-columns:repeat(2, 1fr); }
     }
     @media (min-width:768px) {
-      .services-grid { grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:1.25rem; }
+      .services-grid { grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:1.25rem; }
     }
     .service-card {
       background:var(--bg-card); border:1px solid var(--border);
@@ -363,6 +407,14 @@
       display:block; font-size:0.6rem; color:#fb923c; font-weight:600;
       margin-top:0.1rem;
     }
+    .service-card .price .price-myr {
+      font-size:0.65rem; color:var(--muted-dim); font-weight:400;
+      margin-left:0.3rem;
+    }
+    .service-card .price .price-options {
+      display:block; font-size:0.7rem; color:var(--muted); font-weight:400;
+      margin-top:0.1rem;
+    }
     .service-card .note {
       color:#f87171; font-size:0.75rem; margin-bottom:0.4rem;
     }
@@ -379,6 +431,16 @@
       background:var(--accent-dim); color:var(--accent);
       margin-bottom:0.3rem; letter-spacing:0.3px;
     }
+    /* ===== BADGE PILIHAN (BARU) ===== */
+    .service-card .option-badge {
+      display:inline-block; font-size:0.55rem; font-weight:600;
+      padding:0.1rem 0.5rem; border-radius:50px;
+      background:rgba(96, 165, 250, 0.15); color:#60a5fa;
+      border:1px solid rgba(96, 165, 250, 0.2);
+      margin-left:0.3rem;
+      letter-spacing:0.3px;
+    }
+    .service-card .option-badge i { font-size:0.5rem; margin-right:0.2rem; }
     .service-card.promo {
       border-color:rgba(251,146,60,0.4);
       background:rgba(251,146,60,0.04);
@@ -389,6 +451,13 @@
       padding:0.15rem 0.6rem; border-radius:50px;
       display:flex; align-items:center; gap:0.2rem; z-index:2;
     }
+    .service-card .error-badge {
+      position:absolute; top:10px; left:10px;
+      background:#ef4444; color:#fff; font-size:0.6rem; font-weight:700;
+      padding:0.15rem 0.6rem; border-radius:50px;
+      display:flex; align-items:center; gap:0.2rem; z-index:2;
+    }
+    /* ===== BUTTONS ===== */
     .btn-order {
       display:inline-flex; align-items:center; gap:.4rem;
       padding:0.6rem 1.1rem; border-radius:10px;
@@ -412,29 +481,24 @@
       background:#25D366; color:#fff; border-color:#25D366;
       box-shadow:0 4px 20px rgba(37,211,102,0.3);
     }
+    .btn-order.error {
+      opacity:0.5; cursor:pointer;
+      background:rgba(239,68,68,0.1); color:#ef4444;
+      border-color:rgba(239,68,68,0.2);
+    }
+    .btn-order.error:hover {
+      background:rgba(239,68,68,0.2); color:#ef4444;
+      box-shadow:none; transform:none;
+    }
     .btn-order-group {
       display:flex; gap:0.4rem; flex-wrap:wrap; margin-top:0.3rem;
     }
     .btn-order-group .btn-order { flex:1; min-width:80px; }
-    .btn-submit-gradient {
-      background:linear-gradient(145deg, #FFDD57, #f5c842);
-      color:#0a0a0f; border:none;
-      padding:0.7rem 1.5rem; border-radius:12px;
-      font-family:var(--font-body); font-size:0.9rem; font-weight:700;
-      cursor:pointer; transition:all .3s ease;
-      display:inline-flex; align-items:center; gap:.5rem;
-      min-height:48px; justify-content:center;
-      box-shadow:0 4px 16px rgba(255,221,87,0.25);
-    }
-    .btn-submit-gradient:hover {
-      transform:translateY(-2px);
-      box-shadow:0 8px 28px rgba(255,221,87,0.35);
-    }
-    .btn-submit-gradient:active { transform:scale(0.95); }
     .empty-state {
       text-align:center; padding:3rem 1rem; color:var(--muted); grid-column:1/-1;
     }
     .empty-state i { font-size:3rem; display:block; margin-bottom:1rem; opacity:0.3; }
+    /* ===== GUESTBOOK ===== */
     .guestbook-section { max-width:700px; margin:2rem auto; padding:0 1rem; }
     .guestbook {
       background:var(--bg-card); border:1px solid var(--border);
@@ -489,6 +553,7 @@
     .message strong { display:block; font-size:0.85rem; margin-bottom:0.2rem; }
     .message p { font-size:0.82rem; color:var(--muted); line-height:1.5; }
     .message small { font-size:0.65rem; color:var(--muted-dim); display:block; margin-top:0.2rem; }
+    /* ===== SOCIAL ===== */
     .social-row {
       display:flex; justify-content:center; gap:0.6rem; padding:1rem;
     }
@@ -500,6 +565,7 @@
       transition:all .3s; text-decoration:none;
     }
     .social-row a:active { transform:scale(0.92); }
+    /* ===== FOOTER ===== */
     .footer {
       padding:2rem 1rem 1rem;
       border-top:1px solid var(--border);
@@ -527,6 +593,7 @@
       border-top:1px solid var(--border); padding-top:1rem;
       text-align:center; font-size:0.65rem; color:var(--muted);
     }
+    /* ===== FLOAT CHAT & BACK TO TOP ===== */
     .chat-float {
       position:fixed; bottom:1.2rem; right:1.2rem; z-index:99;
       display:flex; flex-direction:column; align-items:flex-end; gap:0.4rem;
@@ -592,11 +659,15 @@
   </style>
 </head>
 <body>
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast" id="toast"><i class="fas fa-exclamation-circle"></i> <span id="toastMessage"></span></div>
+
   <div class="ambient-glows" aria-hidden="true">
     <div class="glow glow-1"></div>
     <div class="glow glow-2"></div>
     <div class="glow glow-3"></div>
   </div>
+
   <nav class="navbar" id="navbar" aria-label="Navigasi utama">
     <a href="index.html" class="nav-brand"><i class="fas fa-store"></i> Akino Store</a>
     <div class="nav-actions">
@@ -613,20 +684,23 @@
           <li><a href="SosialMedia.html">Layanan Sosial Media</a></li>
           <li><a href="designedit.html">Design / Edit Foto</a></li>
           <li><a href="manga.html">Manga</a></li>
-          <li><a href="wallpaper.html">Wallpaper/a></li>
+          <li><a href="wallpaper.html">Wallpaper</a></li>
         </ul>
       </li>
       <li><a href="https://wa.me/6289687163314" target="_blank">Contact</a></li>
     </ul>
   </nav>
+
   <nav class="breadcrumb" aria-label="Breadcrumb">
     <a href="index.html">Home</a> <i class="fas fa-chevron-right" style="font-size:0.5rem;margin:0 0.4rem;color:var(--muted-dim);"></i>
     <span>Car Parking Multiplayer</span>
   </nav>
+
   <header class="page-hero">
     <h1>Car Parking <span class="accent">Multiplayer</span></h1>
     <p>Layanan lengkap untuk CPM — tune up, glitch, coin, premium car, sirine, dan lainnya. Harga mulai 3rb, proses cepat via WhatsApp.</p>
   </header>
+
   <div class="promo-banner" id="promoBanner" style="display:none">
     <div class="promo-icon"><i class="fas fa-bolt"></i></div>
     <div class="promo-text">
@@ -634,6 +708,7 @@
     </div>
     <div class="promo-timer" id="promoTimer">⏳ Berakhir dalam 2j 45m</div>
   </div>
+
   <div class="slider-wrap" aria-label="Galeri layanan CPM">
     <div class="slider">
       <div class="slides" id="slides">
@@ -646,6 +721,7 @@
     </div>
     <div class="slider-dots" id="sliderDots" role="tablist"></div>
   </div>
+
   <div class="toolbar" role="toolbar" aria-label="Filter dan urutan layanan">
     <div class="filter-group">
       <label><i class="fas fa-tags"></i></label>
@@ -656,6 +732,7 @@
       <button class="filter-btn" data-category="Livery" onclick="setCategory('Livery')">Livery</button>
       <button class="filter-btn" data-category="Premium Car" onclick="setCategory('Premium Car')">Premium</button>
       <button class="filter-btn" data-category="Sirine" onclick="setCategory('Sirine')">Sirine</button>
+      <button class="filter-btn" data-category="Paket" onclick="setCategory('Paket')">Paket</button>
       <button class="filter-btn" data-category="Lainnya" onclick="setCategory('Lainnya')">Lainnya</button>
     </div>
     <div class="filter-group">
@@ -667,10 +744,12 @@
       </select>
     </div>
   </div>
+
   <section class="services-section" aria-label="Daftar layanan Car Parking Multiplayer">
     <h2 class="section-title">Daftar Layanan CPM</h2>
     <div class="services-grid" id="servicesGrid"></div>
   </section>
+
   <section class="guestbook-section" aria-label="Kolom komentar">
     <div class="guestbook">
       <h2><i class="fas fa-comments" style="color:var(--accent);margin-right:.5rem"></i>Kolom Komentar</h2>
@@ -684,12 +763,14 @@
       <div id="messages" class="messages"></div>
     </div>
   </section>
+
   <div class="social-row">
     <a href="https://www.tiktok.com/@akinolaset_?_t=8pbChkK23O6&_r=1" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
     <a href="https://www.instagram.com/akinostore_?igsh=MWxqbGpham5ocjhyOA==" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
     <a href="https://youtube.com/@akinolaset?si=e4NLLQrgN0R3BPi4" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
     <a href="https://wa.me/6289687163314" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
   </div>
+
   <footer class="footer" aria-label="Footer">
     <div class="footer-grid">
       <div>
@@ -722,6 +803,7 @@
     </div>
     <div class="footer-bottom">&copy; 2022 Akino Store. All Rights Reserved.</div>
   </footer>
+
   <div class="chat-float">
     <div class="chat-float-label">Chat Admin: <span>089687163314</span></div>
     <a href="https://wa.me/6289687163314" target="_blank" rel="noopener" class="chat-float-btn" aria-label="Chat Admin WhatsApp">
@@ -733,6 +815,17 @@
   </button>
 
   <script>
+    // ===== TOAST FUNCTION =====
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMessage');
+      toastMsg.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toast._timeout);
+      toast._timeout = setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+
+    // ===== NAVBAR, SLIDER, THEME =====
     window.addEventListener('scroll', () => {
       document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
     });
@@ -826,27 +919,79 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+    const EXCHANGE_RATE = 3400;
+
+    function formatIDR(amount) {
+      return 'Rp ' + amount.toLocaleString('id-ID');
+    }
+
+    function formatMYR(amountIDR) {
+      const myr = amountIDR / EXCHANGE_RATE;
+      return '≈ RM ' + myr.toFixed(2);
+    }
+
+    function priceDisplay(idrAmount) {
+      return formatIDR(idrAmount) + ' <span class="price-myr">' + formatMYR(idrAmount) + '</span>';
+    }
+
+    // ===== DATA LAYANAN LENGKAP =====
     const DEFAULT_SERVICES = [
-      { name: "Tune Up", price: "Rp 3.000", image: "Error.png", desc: "Kecepatan seperti standard tapi lebih kencang. <span class='highlight'>Race 400m ±5/6 detik.</span>", note: "", kategori: "Tune Up" },
-      { name: "Tune Up Suara Asli / ECU", price: "Rp 4.000", image: "Error.png", desc: "Tune up dengan suara asli + performa. <span class='highlight'>Race 400m ±5/6 detik.</span>", note: "", kategori: "Tune Up" },
-      { name: "FFA / Ghoib", price: "Rp 3.000", image: "Error.png", desc: "Bisa jalan auto (jalan biasa) jika gas ditinggal, dan saat balap berubah menjadi glitch. <span class='highlight'>Race 300m ±4/5 detik.</span>", note: "", kategori: "Tune Up" },
-      { name: "FFA / Ghoib Suara Asli / ECU", price: "Rp 4.000", image: "Error.png", desc: "FFA dengan suara asli + performa glitch. <span class='highlight'>Race 300m ±4/5 detik.</span>", note: "", kategori: "Tune Up" },
-      { name: "Glitch", price: "Rp 3.000", image: "Error.png", desc: "Mode cepat (manual) untuk balapan. <span class='highlight'>Race 400m ±4/5 detik.</span>", note: "", kategori: "Glitch" },
-      { name: "Glitch Suara Asli / ECU", price: "Rp 4.000", image: "Error.png", desc: "Glitch dengan suara asli + performa maksimal. <span class='highlight'>Race 400m ±4/5 detik.</span>", note: "", kategori: "Glitch" },
-      { name: "Chrome / Bakar Body / Velg", price: "Rp 3.000", image: "20240911_122655_0000.png", desc: "Cat chrome atau bakar pada body/velg", note: "", kategori: "Lainnya" },
-      { name: "Custom Spoiler / Trondol", price: "Rp 3.000", image: "20240911_122743_0000.png", desc: "Pasang spoiler custom", note: "", kategori: "Lainnya" },
-      { name: "Alis Nyala / Kaliper", price: "Rp 3.000", image: "20240911_122808_0000.png", desc: "Alis nyala atau kaliper", note: "", kategori: "Lainnya" },
-      { name: "Custom ID", price: "Rp 5.000", image: "Screenshot_20260619-210721.png", desc: "Ganti ID mobil sesuai keinginan", note: "", kategori: "Lainnya" },
-      { name: "Unlock Sirine", price: "Rp 5.000", image: "sirine.png", desc: "Buka kunci semua sirine", note: "", kategori: "Sirine" },
-      { name: "Unlock Paid / Premium Car", price: "Rp 5.000", image: "Screenshot_20260720-131345.png", desc: "Buka mobil premium berbayar", note: "", kategori: "Premium Car" },
-      { name: "Unlock Premium Car + Sirine", price: "Rp 8.000", image: "Screenshot_20260720-131345.png", desc: "Buka premium car + sirine", note: "", kategori: "Premium Car" },
-      { name: "Unlock Premium Body", price: "Rp 3.000", image: "Screenshot_20260720-122331.png", desc: "Premium Body", note: "", kategori: "Premium Car" },
-      { name: "Isi Koin Bebas Request", price: "Rp 5.000", image: "20240911_122850_0000.png", desc: "Isi koin sesuai request (maks 500.000).", note: "Wajib pilih metode login akun", kategori: "Coin/Uang" },
-      { name: "Isi 50.000.000 Uang", price: "Rp 4.000", image: "20240911_122850_0000.png", desc: "Isi 50 juta uang", note: "", kategori: "Coin/Uang" },
-      { name: "Bundle Uang + Koin (bebas req koin)", price: "Rp 8.000", image: "20240911_122850_0000.png", desc: "Paket hemat uang + koin (request jumlah koin).", note: "Wajib pilih metode login akun", kategori: "Coin/Uang" },
-      { name: "Akun King Baru (Free Koin+Uang+unlock W16)", price: "Rp 15.000", image: "20240911_125220_0000.png", desc: "Bonus isi uang + koin + W16 (stock/akun baru/belum terdaftar)", note: "Wajib pilih metode login akun", kategori: "Lainnya" },
-      { name: "Request Livery Mobil", price: "Rp 20.000 — Rp 50.000", image: "20240911_123629_0000.png", desc: "Desain livery sesuai request", note: "Tergantung tingkat kesulitan", kategori: "Livery" },
-      { name: "Stock Mobil Murah dan Secret Car", price: "Lihat Stock", image: "20240911_125134_0000.png", desc: "Pilih sendiri mobil dari stok", note: "", kategori: "Lainnya", isSpecial: true }  
+      // === LAYANAN ERROR ===
+      { name: "Tune Up", price: 3000, image: "Error.png", desc: "Kecepatan seperti standard tapi lebih kencang. <span class='highlight'>Race 400m ±5/6 detik.</span>", note: "", kategori: "Tune Up", error: true, priceLogin: 3000, priceRoom: 5000 },
+      { name: "Tune Up Suara Asli / ECU", price: 3000, image: "Error.png", desc: "Tune up dengan suara asli + performa. <span class='highlight'>Race 400m ±5/6 detik.</span>", note: "", kategori: "Tune Up", error: true, priceLogin: 3000, priceRoom: 5000 },
+      { name: "FFA / Ghoib", price: 3000, image: "Error.png", desc: "Bisa jalan auto (jalan biasa) jika gas ditinggal, dan saat balap berubah menjadi glitch. <span class='highlight'>Race 300m ±4/5 detik.</span>", note: "", kategori: "Tune Up", error: true, priceLogin: 3000, priceRoom: 5000 },
+      { name: "FFA / Ghoib Suara Asli / ECU", price: 3000, image: "Error.png", desc: "FFA dengan suara asli + performa glitch. <span class='highlight'>Race 300m ±4/5 detik.</span>", note: "", kategori: "Tune Up", error: true, priceLogin: 3000, priceRoom: 5000 },
+      { name: "Glitch", price: 3000, image: "Error.png", desc: "Mode cepat (manual) untuk balapan. <span class='highlight'>Race 400m ±4/5 detik.</span>", note: "", kategori: "Glitch", error: true, priceLogin: 3000, priceRoom: 5000 },
+      { name: "Glitch Suara Asli / ECU", price: 3000, image: "Error.png", desc: "Glitch dengan suara asli + performa maksimal. <span class='highlight'>Race 400m ±4/5 detik.</span>", note: "", kategori: "Glitch", error: true, priceLogin: 3000, priceRoom: 5000 },
+
+      // === SPEK BRAKE BOOST ===
+      { name: "Spek Brake Boost", price: 3000, image: "20240911_122112_0000.png", desc: "Spek seperti FFA, jalan biasa D, berhenti pakai hand brake ditekan (tahan) digeser atas, pas balap geser ke P, permanen speknya semua mobil bisa. <span class='highlight'>Race 402m 4/5/6 detik (tiap mobil beda karena berat).</span>", note: "", kategori: "Glitch", priceLogin: 3000, priceRoom: 5000 },
+
+      // === LAYANAN DENGAN SUB- OPSI (memiliki badge "Pilihan") ===
+      { name: "Chrome / Bakar Body / Velg", price: 3000, image: "20240911_122655_0000.png", desc: "Cat chrome atau bakar pada body/velg", note: "", kategori: "Lainnya", priceLogin: 3000, priceRoom: 5000, options: { type: ['Chrome', 'Bakar'], part: ['Body', 'Velg'] } },
+      { name: "Custom Spoiler / Trondol", price: 3000, image: "20240911_122743_0000.png", desc: "Pasang spoiler custom", note: "", kategori: "Lainnya", priceLogin: 3000, priceRoom: 5000, options: { type: ['Custom Spoiler', 'Trondol'] } },
+      { name: "Alis Nyala / Kaliper", price: 3000, image: "20240911_122808_0000.png", desc: "Alis nyala atau kaliper", note: "", kategori: "Lainnya", priceLogin: 3000, priceRoom: 5000, options: { type: ['Alis Nyala', 'Kaliper'] } },
+
+      // === PREMIUM CAR ===
+      { 
+        name: "Unlock Paid / Premium Car", 
+        price: 5000, 
+        image: "Screenshot_20260720-131345.png", 
+        desc: "Unlock/membeli mobil yang cash (uang asli). <span class='highlight'>Mesin W16 / Brake Boost, bodykit rata kanan.</span>", 
+        note: "Hanya via Room", 
+        kategori: "Premium Car", 
+        priceRoom: 5000, 
+        onlyRoom: true 
+      },
+      { 
+        name: "Unlock Premium Car + Sirine", 
+        price: 8000, 
+        image: "Screenshot_20260720-131345.png", 
+        desc: "Unlock/membeli mobil cash + sirine. <span class='highlight'>Mesin W16 / Brake Boost, bodykit rata kanan.</span>", 
+        note: "Hanya via Room", 
+        kategori: "Premium Car", 
+        priceRoom: 8000, 
+        onlyRoom: true 
+      },
+      { name: "Unlock Premium Body", price: 3000, image: "Screenshot_20260720-122331.png", desc: "Premium Body", note: "", kategori: "Premium Car" },
+
+      // === COIN / UANG ===
+      { name: "Isi Koin Bebas Request", price: 5000, image: "20240911_122850_0000.png", desc: "Isi koin sesuai request (maks 500.000).", note: "Wajib pilih metode login akun", kategori: "Coin/Uang" },
+      { name: "Isi 50.000.000 Uang", price: 4000, image: "20240911_122850_0000.png", desc: "Isi 50 juta uang", note: "", kategori: "Coin/Uang", priceLogin: 4000, priceRoom: 5000 },
+      { name: "Bundle Uang + Koin (bebas req koin)", price: 8000, image: "20240911_122850_0000.png", desc: "Paket hemat uang + koin (request jumlah koin).", note: "Wajib pilih metode login akun", kategori: "Coin/Uang" },
+      { name: "Akun King Baru (Free Koin+Uang+unlock W16)", price: 15000, image: "20240911_125220_0000.png", desc: "Bonus isi uang + koin + W16 (stock/akun baru/belum terdaftar)", note: "Wajib pilih metode login akun", kategori: "Lainnya" },
+
+      // === LIVERY & STOCK ===
+      { name: "Request Livery Mobil", price: 20000, image: "20240911_123629_0000.png", desc: "Desain livery sesuai request", note: "Tergantung tingkat kesulitan", kategori: "Livery", priceRange: true },
+      { name: "Stock Mobil Murah dan Secret Car", price: 0, image: "20240911_125134_0000.png", desc: "Pilih sendiri mobil dari stok", note: "", kategori: "Lainnya", isSpecial: true },
+
+      // === PAKET-PAKET (beberapa memiliki opsi) ===
+      { name: "Paket Alis nyala + Kaliper", price: 5000, image: "20240911_122808_0000.png", desc: "Pasang Alis nyala dan Kaliper", note: "", kategori: "Paket", priceLogin: 5000, priceRoom: 8000 },
+      { name: "Paket Chrome Velg atau Body + Alis atau Kaliper", price: 5000, image: "20240911_122655_0000.png", desc: "Chrome pada Velg/Body + Alis atau Kaliper", note: "", kategori: "Paket", priceLogin: 5000, priceRoom: 8000, options: { chromePart: ['Velg', 'Body'], extra: ['Alis', 'Kaliper'] } },
+      { name: "Paket Chrome Velg atau Body + Alis + Kaliper", price: 7000, image: "20240911_122655_0000.png", desc: "Chrome Velg/Body + Alis + Kaliper", note: "", kategori: "Paket", priceLogin: 7000, priceRoom: 10000, options: { chromePart: ['Velg', 'Body'] } },
+      { name: "Paket rubah Spek mesin + (pilihan Chrome Velg/Body, Alis/Kaliper)", price: 5000, image: "20240911_122112_0000.png", desc: "Rubah spek mesin + tambahan pilihan Chrome atau Alis/Kaliper", note: "", kategori: "Paket", priceLogin: 5000, priceRoom: 8000, options: { tambahan: ['Chrome Velg/Body', 'Alis/Kaliper'] } },
+      { name: "Paket Lengkap rubah Spek mesin + Chrome velg atau Body + Alis + Kaliper nyala", price: 9000, image: "20240911_122112_0000.png", desc: "Rubah spek mesin + Chrome + Alis + Kaliper", note: "", kategori: "Paket", priceLogin: 9000, priceRoom: 12000 },
+      { name: "Paket Custom Spoiler + Trondol", price: 5000, image: "20240911_122743_0000.png", desc: "Pasang Custom Spoiler dan Trondol", note: "", kategori: "Paket", priceLogin: 5000, priceRoom: 8000, options: { type: ['Custom Spoiler', 'Trondol'] } }
     ];
 
     const SERVICES_COLLECTION = 'services';
@@ -880,6 +1025,25 @@
       return `${s}s`;
     }
 
+    function getPriceDisplay(service) {
+      let priceHtml = '';
+      if (service.isSpecial) {
+        priceHtml = 'Lihat Stock';
+      } else if (service.priceRange) {
+        priceHtml = 'Rp 20.000 - 50.000 <span class="price-myr">≈ RM 5.88 - 14.70</span>';
+      } else if (service.priceLogin !== undefined && service.priceRoom !== undefined && !service.onlyRoom) {
+        const loginStr = formatIDR(service.priceLogin) + ' <span class="price-myr">' + formatMYR(service.priceLogin) + '</span>';
+        const roomStr = formatIDR(service.priceRoom) + ' <span class="price-myr">' + formatMYR(service.priceRoom) + '</span>';
+        priceHtml = '<span class="price-options">Login: ' + loginStr + ' | Room: ' + roomStr + '</span>';
+        priceHtml = formatIDR(service.price) + ' <span class="price-myr">' + formatMYR(service.price) + '</span><br>' + priceHtml;
+      } else if (service.onlyRoom) {
+        priceHtml = formatIDR(service.priceRoom) + ' <span class="price-myr">' + formatMYR(service.priceRoom) + '</span> <span class="price-options">(Hanya via Room)</span>';
+      } else {
+        priceHtml = formatIDR(service.price) + ' <span class="price-myr">' + formatMYR(service.price) + '</span>';
+      }
+      return priceHtml;
+    }
+
     function renderServices(services, promos = []) {
       const grid = document.getElementById('servicesGrid');
       grid.innerHTML = '';
@@ -892,14 +1056,14 @@
       const sorted = [...filtered];
       if (currentSort === 'price-asc') {
         sorted.sort((a, b) => {
-          const priceA = parseInt(a.price.replace(/[^0-9]/g, '')) || 0;
-          const priceB = parseInt(b.price.replace(/[^0-9]/g, '')) || 0;
+          const priceA = parseInt(a.price) || 0;
+          const priceB = parseInt(b.price) || 0;
           return priceA - priceB;
         });
       } else if (currentSort === 'price-desc') {
         sorted.sort((a, b) => {
-          const priceA = parseInt(a.price.replace(/[^0-9]/g, '')) || 0;
-          const priceB = parseInt(b.price.replace(/[^0-9]/g, '')) || 0;
+          const priceA = parseInt(a.price) || 0;
+          const priceB = parseInt(b.price) || 0;
           return priceB - priceA;
         });
       }
@@ -967,18 +1131,28 @@
         let originalDisplay = '';
         let promoDisplay = '';
         if (isPromo && promo.promoPrice) {
-          originalDisplay = `<span class="original">${service.price}</span>`;
-          promoDisplay = `<span class="discount">${promo.promoPrice}</span>`;
+          originalDisplay = `<span class="original">${formatIDR(service.price)}</span>`;
+          promoDisplay = `<span class="discount">${formatIDR(promo.promoPrice)} <span class="price-myr">${formatMYR(promo.promoPrice)}</span></span>`;
         }
-        const waMsg = `Halo admin, saya mau pesan *${service.name}* - ${service.price}\n\n${service.desc || ''}\n${service.note || ''}`.trim();
+        const priceHtml = getPriceDisplay(service);
+        const isError = service.error === true;
+        const hasOptions = service.options && Object.keys(service.options).length > 0;
+        const waMsg = `Halo admin, saya mau pesan *${service.name}*\n\n${service.desc || ''}\n${service.note || ''}`.trim();
         const waLink = `https://wa.me/6289687163314?text=${encodeURIComponent(waMsg)}`;
         let btnHtml = '';
         if (service.isSpecial) {
           btnHtml = `<a href="stockmobil.html" class="btn-order" style="margin-top:0.5rem;"><i class="fas fa-car"></i> Lihat Stock</a>`;
-        } else {
+        } else if (isError) {
           btnHtml = `
             <div class="btn-order-group">
-              <a href="order.html?service=${encodeURIComponent(service.name)}" class="btn-order"><i class="fas fa-cart-plus"></i> Pesan</a>
+              <button class="btn-order error" onclick="showToast('⚠️ Layanan ini sedang tidak tersedia / error.')"><i class="fas fa-exclamation-triangle"></i> Tidak Tersedia</button>
+            </div>
+          `;
+        } else {
+          const orderUrl = `order.html?service=${encodeURIComponent(service.name)}`;
+          btnHtml = `
+            <div class="btn-order-group">
+              <a href="${orderUrl}" class="btn-order"><i class="fas fa-cart-plus"></i> Pesan</a>
               <a href="${waLink}" target="_blank" rel="noopener" class="btn-order quick"><i class="fab fa-whatsapp"></i> Cepat</a>
             </div>
           `;
@@ -988,13 +1162,15 @@
         card.style.animationDelay = (index * 0.02) + 's';
         card.innerHTML = `
           ${isPromo ? '<div class="promo-badge"><i class="fas fa-bolt"></i> PROMO</div>' : ''}
+          ${isError ? '<div class="error-badge"><i class="fas fa-times-circle"></i> Error</div>' : ''}
           <img src="${service.image || 'placeholder.png'}" alt="${service.name}" loading="lazy" onerror="this.src='placeholder.png'">
           <div class="card-body">
             <span class="badge-category">${service.kategori || 'Lainnya'}</span>
+            ${hasOptions ? '<span class="option-badge"><i class="fas fa-list"></i> Pilihan</span>' : ''}
             <h3>${service.name}</h3>
             <div class="price">
               ${originalDisplay}
-              ${promoDisplay || service.price}
+              ${promoDisplay || priceHtml}
               ${timerHtml}
             </div>
             ${service.desc ? `<div class="desc">${service.desc}</div>` : ''}
@@ -1040,6 +1216,7 @@
       renderServices(allServices, []);
     });
 
+    // ===== GUESTBOOK =====
     const form = document.getElementById('messageForm');
     const messagesDiv = document.getElementById('messages');
     const submitBtn = document.getElementById('submitBtn');
@@ -1071,7 +1248,7 @@
           form.reset();
         } catch (e) {
           console.error('Error sending message:', e);
-          alert('Gagal mengirim komentar. Silakan coba lagi.');
+          showToast('Gagal mengirim komentar. Silakan coba lagi.');
         } finally {
           isSubmitting = false;
           submitBtn.disabled = false;
@@ -1157,26 +1334,25 @@
   </script>
 
   <script>
-  // 🔥 Force update service worker
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistration().then(reg => {
-      if (reg) {
-        reg.update();
-        reg.addEventListener('updatefound', () => {
-          const newSW = reg.installing;
-          newSW.addEventListener('statechange', () => {
-            if (newSW.state === 'installed') {
-              newSW.postMessage('skipWaiting');
-              // Refresh halaman setelah update
-              setTimeout(() => {
-                window.location.reload();
-              }, 800);
-            }
+    // Force update service worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistration().then(reg => {
+        if (reg) {
+          reg.update();
+          reg.addEventListener('updatefound', () => {
+            const newSW = reg.installing;
+            newSW.addEventListener('statechange', () => {
+              if (newSW.state === 'installed') {
+                newSW.postMessage('skipWaiting');
+                setTimeout(() => {
+                  window.location.reload();
+                }, 800);
+              }
+            });
           });
-        });
-      }
-    });
-  }
-</script>
+        }
+      });
+    }
+  </script>
 </body>
 </html>
