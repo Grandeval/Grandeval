@@ -18,7 +18,6 @@
   <link rel="apple-touch-icon" sizes="167x167" href="https://res.cloudinary.com/d39mdjct/image/upload/w_167,h_167,c_fit/v1783493763/apk_pgxcmo.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/d39mdjct/image/upload/w_180,h_180,c_fit/v1783493763/apk_pgxcmo.png" />
   <style>
-    /* ===== SAMA SEPERTI SEBELUMNYA (saya salin lengkap dari jawaban sebelumnya) ===== */
     :root {
       --bg: #07070d;
       --bg-card: rgba(255,255,255,0.04);
@@ -66,7 +65,6 @@
       transition: background var(--transition), color var(--transition);
       -webkit-tap-highlight-color: transparent;
     }
-    /* ===== TOAST ===== */
     .toast {
       position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-20px);
       background: #ef4444; color: #fff; padding: 0.8rem 1.8rem;
@@ -216,7 +214,7 @@
       font-weight:500;
     }
 
-    /* ===== HARGA TAMBAHAN ===== */
+    /* PRICE DISPLAY */
     .price-display {
       background:var(--bg-card);
       border:1px solid var(--border);
@@ -438,7 +436,6 @@
   </style>
 </head>
 <body>
-  <!-- TOAST -->
   <div class="toast" id="toast"><i class="fas fa-exclamation-circle"></i> <span id="toastMessage"></span></div>
 
   <div class="ambient-glows" aria-hidden="true">
@@ -482,7 +479,6 @@
     <div class="service-badge" id="serviceBadge">
       <i class="fas fa-cube"></i> <span id="serviceLabel">Car Parking Multiplayer</span>
     </div>
-    <!-- === TAMBAHAN HARGA === -->
     <div class="price-display" id="priceDisplay">
       <div class="price-label">Harga</div>
       <div class="price-value" id="priceValue">—</div>
@@ -498,7 +494,6 @@
         <span>Pastikan Sign Out sebelum proses dilakukan.</span>
       </div>
 
-      <!-- SUB OPSI -->
       <div id="subOptions" class="hidden-fields"></div>
 
       <div id="loginSection" class="form-group">
@@ -572,17 +567,15 @@
   <footer class="footer">&copy; 2022 Akino Store. All rights reserved.</footer>
 
   <script>
-    // ===== TOAST =====
-    function showToast(message) {
-      const toast = document.getElementById('toast');
-      const toastMsg = document.getElementById('toastMessage');
-      toastMsg.textContent = message;
-      toast.classList.add('show');
-      clearTimeout(toast._timeout);
-      toast._timeout = setTimeout(() => toast.classList.remove('show'), 3500);
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      document.getElementById('toastMessage').textContent = msg;
+      t.classList.add('show');
+      clearTimeout(t._timeout);
+      t._timeout = setTimeout(() => t.classList.remove('show'), 3500);
     }
 
-    // ===== NAVBAR & THEME =====
+    // === NAVBAR, THEME (sama) ===
     window.addEventListener('scroll', () => {
       document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
     });
@@ -623,14 +616,12 @@
       localStorage.setItem('theme', isLight ? 'light' : 'dark');
     });
 
-    // ===== DATA HARGA LAYANAN (hardcode, sinkron dengan DEFAULT_SERVICES) =====
+    // ===== DATA HARGA =====
     const EXCHANGE_RATE = 3400;
     function formatIDR(amount) { return 'Rp ' + amount.toLocaleString('id-ID'); }
     function formatMYR(amount) { return '≈ RM ' + (amount / EXCHANGE_RATE).toFixed(2); }
 
-    // Harga untuk setiap layanan (hanya yang memiliki dual price atau onlyRoom)
     const SERVICE_PRICES = {
-      // Layanan error – tidak digunakan karena tidak bisa dipesan, tapi tetap kita masukkan
       "Tune Up": { login: 3000, room: 5000 },
       "Tune Up Suara Asli / ECU": { login: 3000, room: 5000 },
       "FFA / Ghoib": { login: 3000, room: 5000 },
@@ -644,13 +635,11 @@
       "Unlock Paid / Premium Car": { room: 5000, onlyRoom: true },
       "Unlock Premium Car + Sirine": { room: 8000, onlyRoom: true },
       "Unlock Premium Body": { login: 3000, room: 3000 },
-      "Isi Koin Bebas Request": { login: 5000, onlyLogin: true }, // hanya login
+      "Isi Koin Bebas Request": { login: 5000, onlyLogin: true },
       "Isi 50.000.000 Uang": { login: 4000, room: 5000 },
       "Bundle Uang + Koin (bebas req koin)": { login: 8000, onlyLogin: true },
       "Akun King Baru (Free Koin+Uang+unlock W16)": { login: 15000, onlyLogin: true },
-      "Request Livery Mobil": { login: 20000, room: 20000 }, // range, kita pakai harga minimum
-      "Stock Mobil Murah dan Secret Car": { special: true },
-      // Paket-paket
+      "Request Livery Mobil": { login: 20000, room: 20000 },
       "Paket Alis nyala + Kaliper": { login: 5000, room: 8000 },
       "Paket Chrome Velg atau Body + Alis atau Kaliper": { login: 5000, room: 8000 },
       "Paket Chrome Velg atau Body + Alis + Kaliper": { login: 7000, room: 10000 },
@@ -660,33 +649,37 @@
     };
 
     function updatePrice(method) {
-      const serviceName = document.getElementById('selected-service').value;
-      const priceData = SERVICE_PRICES[serviceName];
-      if (!priceData || priceData.special) {
+      const name = document.getElementById('selected-service').value;
+      const data = SERVICE_PRICES[name];
+      if (!data) {
         document.getElementById('priceValue').textContent = '—';
         document.getElementById('priceMethod').textContent = '';
         return;
       }
-      let price = 0;
-      let methodText = '';
-      if (priceData.onlyRoom) {
-        price = priceData.room;
+      if (data.special) {
+        document.getElementById('priceValue').textContent = 'Lihat Stock';
+        document.getElementById('priceMethod').textContent = '';
+        return;
+      }
+      let price = 0, methodText = '';
+      if (data.onlyRoom) {
+        price = data.room;
         methodText = 'Hanya via Room';
-      } else if (priceData.onlyLogin) {
-        price = priceData.login;
+      } else if (data.onlyLogin) {
+        price = data.login;
         methodText = 'Hanya via Login Akun';
       } else {
         if (method === 'Login Akun') {
-          price = priceData.login;
+          price = data.login;
           methodText = 'via Login Akun';
         } else if (method === 'Lewat Room') {
-          price = priceData.room;
+          price = data.room;
           methodText = 'via Room';
         } else {
-          // belum pilih metode, tampilkan keduanya
-          document.getElementById('priceValue').innerHTML = 
-            formatIDR(priceData.login) + ' <span class="price-myr">' + formatMYR(priceData.login) + '</span> / ' +
-            formatIDR(priceData.room) + ' <span class="price-myr">' + formatMYR(priceData.room) + '</span>';
+          // belum pilih, tampilkan keduanya
+          document.getElementById('priceValue').innerHTML =
+            formatIDR(data.login) + ' <span class="price-myr">' + formatMYR(data.login) + '</span> / ' +
+            formatIDR(data.room) + ' <span class="price-myr">' + formatMYR(data.room) + '</span>';
           document.getElementById('priceMethod').textContent = 'Login / Room';
           return;
         }
@@ -723,7 +716,7 @@
       serviceLabel.textContent = service;
       serviceBadge.innerHTML = `<i class="fas fa-cube"></i> ${service}`;
 
-      // Tampilkan sub opsi
+      // Sub opsi
       const options = serviceOptionsMap[service];
       if (options) {
         subOptionsDiv.classList.add('visible');
@@ -760,60 +753,59 @@
         subOptionsDiv.innerHTML = '';
       }
 
-      // Atur metode & harga awal
+      // ===== ATUR METODE DAN FIELD =====
+      const loginFields = document.getElementById('loginFields');
+      const roomField = document.getElementById('roomField');
+
+      // Reset semua
+      loginFields.classList.remove('visible');
+      roomField.classList.remove('visible');
+      noteBox.classList.add('hidden');
+      submitBtn.disabled = true;
+
       if (onlyRoomServices.includes(service)) {
+        // Hanya Room
         loginSelect.innerHTML = '<option value="Lewat Room">Lewat Room</option>';
         loginSelect.value = 'Lewat Room';
-        toggleFields('Lewat Room');
+        roomField.classList.add('visible');
         submitBtn.disabled = false;
-        noteBox.classList.add('hidden');
-        // update harga
         updatePrice('Lewat Room');
       } else if (requireLoginServices.includes(service)) {
+        // Hanya Login
         loginSelect.innerHTML = '<option value="Login Akun">Login Akun</option>';
         loginSelect.value = 'Login Akun';
-        toggleFields('Login Akun');
+        loginFields.classList.add('visible');
+        noteBox.classList.remove('hidden');
         submitBtn.disabled = false;
         updatePrice('Login Akun');
-      } else {
-        loginSelect.innerHTML = '<option value="">-- Harap Pilih --</option><option value="Login Akun">Login Akun</option><option value="Lewat Room">Lewat Room</option>';
-        loginSelect.value = '';
-        toggleFields('');
-        submitBtn.disabled = true;
-        // tampilkan kedua harga
-        updatePrice('');
-      }
-
-      // Field khusus
-      const isCoinService = service.includes('Coin') || service.includes('Koin') || service === 'Isi 50.000.000 Uang' || service === 'Bundle Uang + Koin (bebas req koin)';
-      const coinFields = document.getElementById('coinFields');
-      if (isCoinService) {
-        coinFields.classList.add('visible');
-      } else {
-        coinFields.classList.remove('visible');
-      }
-
-      if (service === 'Request Livery Mobil') {
-        document.getElementById('liveryFields').classList.add('visible');
+      } else if (service === 'Request Livery Mobil') {
+        // Livery -> sembunyikan loginSection, aktifkan tombol
         document.getElementById('loginSection').classList.add('hidden');
         submitBtn.disabled = false;
-        updatePrice('Login Akun'); // default
-      } else {
-        document.getElementById('liveryFields').classList.remove('visible');
-        document.getElementById('loginSection').classList.remove('hidden');
-      }
-
-      if (service === 'Stock Mobil Murah' || service.includes('Stock')) {
-        document.getElementById('stockFields').classList.add('visible');
+        updatePrice('Login Akun');
+      } else if (service === 'Stock Mobil Murah' || service.includes('Stock')) {
         document.getElementById('loginSection').classList.add('hidden');
         submitBtn.disabled = false;
         document.getElementById('priceValue').textContent = 'Lihat Stock';
         document.getElementById('priceMethod').textContent = '';
       } else {
-        document.getElementById('stockFields').classList.remove('visible');
+        // Layanan normal: user bisa pilih
+        loginSelect.innerHTML = '<option value="">-- Harap Pilih --</option><option value="Login Akun">Login Akun</option><option value="Lewat Room">Lewat Room</option>';
+        loginSelect.value = '';
+        submitBtn.disabled = true;
+        updatePrice('');
       }
 
-      // Jika layanan error (tidak mungkin sampai sini karena tombol tidak aktif), tapi antisipasi
+      // Field khusus coin
+      const isCoin = service.includes('Coin') || service.includes('Koin') || service === 'Isi 50.000.000 Uang' || service === 'Bundle Uang + Koin (bebas req koin)';
+      document.getElementById('coinFields').classList.toggle('visible', isCoin);
+
+      // Livery upload
+      document.getElementById('liveryFields').classList.toggle('visible', service === 'Request Livery Mobil');
+      // Stock
+      document.getElementById('stockFields').classList.toggle('visible', service === 'Stock Mobil Murah' || service.includes('Stock'));
+
+      // Cek layanan error
       const errorServices = ["Tune Up", "Tune Up Suara Asli / ECU", "FFA / Ghoib", "FFA / Ghoib Suara Asli / ECU", "Glitch", "Glitch Suara Asli / ECU"];
       if (errorServices.includes(service)) {
         showToast('⚠️ Layanan ini sedang tidak tersedia.');
@@ -821,19 +813,23 @@
       }
     }
 
+    // ===== TOGGLE FUNGSI =====
     function toggleFields(value) {
       const loginFields = document.getElementById('loginFields');
       const roomField = document.getElementById('roomField');
-      noteBox.classList.add('hidden');
-      loginFields.classList.remove('visible');
-      roomField.classList.remove('visible');
-      submitBtn.disabled = true;
+      const noteBox = document.getElementById('noteBox');
+      const submitBtn = document.getElementById('submitBtn');
+      const serviceName = document.getElementById('selected-service').value;
 
-      const serviceName = selectedService.value;
+      // Jika layanan sudah dipaksa (onlyRoom / requireLogin), jangan ubah
       if (onlyRoomServices.includes(serviceName) || requireLoginServices.includes(serviceName)) {
-        // sudah diatur di atas
         return;
       }
+
+      loginFields.classList.remove('visible');
+      roomField.classList.remove('visible');
+      noteBox.classList.add('hidden');
+      submitBtn.disabled = true;
 
       if (value === 'Login Akun') {
         noteBox.classList.remove('hidden');
@@ -849,13 +845,13 @@
       }
     }
 
+    // ===== SUBMIT =====
     function submitOrder() {
       const s = document.getElementById('selected-service').value;
       const m = document.getElementById('login-type').value;
       const p = document.getElementById('payment').value;
       let msg = `Order Layanan: ${s}\nMetode: ${m}\nPembayaran: ${p}`;
 
-      // Ambil pilihan sub
       const subType = document.getElementById('sub-type');
       const subPart = document.getElementById('sub-part');
       const subChromePart = document.getElementById('sub-chromePart');
@@ -871,28 +867,26 @@
         const email = document.getElementById('email').value.trim();
         const pass = document.getElementById('password').value.trim();
         if (!email || !pass) {
-          showToast('⚠️ Mohon isi Email dan Password terlebih dahulu.');
+          showToast('⚠️ Mohon isi Email dan Password.');
           return;
         }
         msg += `\nEmail: ${email}\nPassword: ${pass}`;
       } else if (m === 'Lewat Room') {
         const id = document.getElementById('room-id').value.trim();
         if (!id) {
-          showToast('⚠️ Mohon isi ID Akun terlebih dahulu.');
+          showToast('⚠️ Mohon isi ID Akun.');
           return;
         }
         msg += `\nID Akun: ${id}`;
       } else {
-        showToast('⚠️ Silakan pilih metode terlebih dahulu.');
+        showToast('⚠️ Silakan pilih metode.');
         return;
       }
 
       const coinField = document.getElementById('coinFields');
       if (coinField.classList.contains('visible')) {
-        const coinAmount = document.getElementById('coin-amount').value;
-        if (coinAmount) {
-          msg += `\nJumlah Koin: ${coinAmount}`;
-        }
+        const coin = document.getElementById('coin-amount').value;
+        if (coin) msg += `\nJumlah Koin: ${coin}`;
       }
 
       msg += `\n\nHarap unggah foto/dokumen yang diperlukan secara manual di chat ini.`;
@@ -909,9 +903,7 @@
       });
     }
   </script>
-
   <script>
-    // Force update service worker
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistration().then(reg => {
         if (reg) {
@@ -921,9 +913,7 @@
             newSW.addEventListener('statechange', () => {
               if (newSW.state === 'installed') {
                 newSW.postMessage('skipWaiting');
-                setTimeout(() => {
-                  window.location.reload();
-                }, 800);
+                setTimeout(() => window.location.reload(), 800);
               }
             });
           });
