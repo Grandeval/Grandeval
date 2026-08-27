@@ -1,10 +1,13 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   <link rel="manifest" href="/manifest.json?v=4.2" />
-  <script src="firebase-init.js?v=4.2"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-init.js?v=4.3"></script>
   <meta name="theme-color" content="#3B82F6" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -657,6 +660,7 @@
       .service-card img { height:160px; }
     }
   </style>
+  <link rel="stylesheet" href="jastip-cta.css">
 </head>
 <body>
   <!-- TOAST NOTIFICATION -->
@@ -764,6 +768,8 @@
     </div>
   </section>
 
+  <section class="jastip-cta" aria-label="Layanan Jastip"><div class="jastip-cta-inner"><div class="jastip-cta-copy"><span class="jastip-cta-kicker"><i class="fas fa-box-open"></i> Layanan baru Akino Store</span><h2>Punya item game atau barang koleksi?</h2><p>Titipkan untuk dijual dengan jangkauan lebih luas dan proses yang lebih aman.</p><div class="jastip-cta-points"><span><i class="fas fa-check-circle"></i> Tampil sampai laku</span><span><i class="fas fa-bolt"></i> Cepat dipasang</span></div></div><a class="jastip-cta-link" href="jastip.html">Titip Sekarang <i class="fas fa-arrow-right"></i></a></div></section>
+
   <div class="social-row">
     <a href="https://www.tiktok.com/@akinolaset_?_t=8pbChkK23O6&_r=1" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
     <a href="https://www.instagram.com/akinostore_?igsh=MWxqbGpham5ocjhyOA==" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
@@ -823,6 +829,36 @@
       toast.classList.add('show');
       clearTimeout(toast._timeout);
       toast._timeout = setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+
+    // ===== SHARE FUNCTION =====
+    function shareService(serviceName) {
+      const url = `https://akinocpm.my.id/order.html?service=${encodeURIComponent(serviceName)}`;
+      const text = `Saya mau pesan layanan "${serviceName}" di Akino Store. Yuk cek!`;
+
+      if (navigator.share) {
+        navigator.share({
+          title: 'Akino Store - ' + serviceName,
+          text: text,
+          url: url
+        }).catch(() => {});
+      } else {
+        // Fallback: copy link ke clipboard, lalu beri notifikasi
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(() => {
+            showToast('Link layanan disalin! Bagikan ke teman Anda.');
+          }).catch(() => {
+            fallbackShare(url, text);
+          });
+        } else {
+          fallbackShare(url, text);
+        }
+      }
+    }
+
+    function fallbackShare(url, text) {
+      const waMsg = encodeURIComponent(text + '\n\n' + url);
+      window.open(`https://wa.me/?text=${waMsg}`, '_blank');
     }
 
     // ===== NAVBAR, SLIDER, THEME =====
@@ -1146,6 +1182,7 @@
           btnHtml = `
             <div class="btn-order-group">
               <button class="btn-order error" onclick="showToast('⚠️ Layanan ini sedang tidak tersedia / error.')"><i class="fas fa-exclamation-triangle"></i> Tidak Tersedia</button>
+              <button class="btn-order" onclick="shareService('${service.name}')"><i class="fas fa-share-alt"></i> Bagikan</button>
             </div>
           `;
         } else {
@@ -1153,7 +1190,7 @@
           btnHtml = `
             <div class="btn-order-group">
               <a href="${orderUrl}" class="btn-order"><i class="fas fa-cart-plus"></i> Pesan</a>
-              <a href="${waLink}" target="_blank" rel="noopener" class="btn-order quick"><i class="fab fa-whatsapp"></i> Cepat</a>
+              <button class="btn-order" onclick="shareService('${service.name}')"><i class="fas fa-share-alt"></i> Bagikan</button>
             </div>
           `;
         }
@@ -1354,5 +1391,6 @@
       });
     }
   </script>
+  <script src="jastip-cta.js?v=4.7"></script>
 </body>
 </html>

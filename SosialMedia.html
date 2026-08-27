@@ -4,7 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   <link rel="manifest" href="/manifest.json?v=4.2" />
-<script src="firebase-init.js?v=4.2"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="firebase-init.js?v=4.3"></script>
   <meta name="theme-color" content="#3B82F6" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -886,6 +889,7 @@
       .sec { padding-left: 2rem; padding-right: 2rem; }
     }
   </style>
+  <link rel="stylesheet" href="jastip-cta.css">
 </head>
 <body>
   <nav class="navbar" id="navbar" aria-label="Navigasi utama">
@@ -988,6 +992,8 @@
       </div>
     </div>
   </section>
+  <section class="jastip-cta" aria-label="Layanan Jastip"><div class="jastip-cta-inner"><div class="jastip-cta-copy"><span class="jastip-cta-kicker"><i class="fas fa-box-open"></i> Layanan baru Akino Store</span><h2>Punya barang yang ingin cepat ditemukan?</h2><p>Pasang di Jastip dan biarkan pembeli melihatnya di satu tempat yang praktis.</p><div class="jastip-cta-points"><span><i class="fas fa-check-circle"></i> Tampil sampai laku</span><span><i class="fas fa-headset"></i> Dibantu admin</span></div></div><a class="jastip-cta-link" href="jastip.html">Pasang Barang <i class="fas fa-arrow-right"></i></a></div></section>
+
   <div class="social-row">
     <a href="https://www.tiktok.com/@akinolaset_?_t=8pbChkK23O6&_r=1" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
     <a href="https://www.instagram.com/akinostore_/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
@@ -1610,5 +1616,6 @@
     });
   }
 </script>
+  <script src="jastip-cta.js?v=4.7"></script>
 </body>
 </html>

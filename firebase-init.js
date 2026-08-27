@@ -16,6 +16,8 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
+window.db = db;
+window.auth = auth;
 
 // 🔥 KONFIGURASI CLOUDINARY
 const CLOUDINARY_CLOUD_NAME = 'qdbqjpcw';
@@ -213,4 +215,4 @@ function getSession() {
 
 function clearSession() {
   localStorage.removeItem('currentUser');
-}s
+}

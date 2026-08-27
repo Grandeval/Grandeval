@@ -35,6 +35,7 @@
         const db = firebase.firestore();
         window.db = db;
         window.auth = auth;
+        console.log('Firebase auth origin:', window.location.origin);
         console.log('✅ Firebase initialized, db ready');
     </script>
 
@@ -604,6 +605,31 @@
             .modal-box h3 { font-size:.95rem; }
             .wp-list-item .info h4 { font-size:0.7rem; }
         }
+        .jastip-item { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--rs); padding:.8rem; margin-bottom:.6rem; display:flex; flex-wrap:wrap; align-items:center; gap:.8rem; transition:border-color var(--transition); }
+        .jastip-item:hover { border-color:var(--border-hover); }
+        .jastip-thumb { width:60px; height:60px; border-radius:6px; object-fit:cover; background:var(--bg-card); border:1px solid var(--border); flex-shrink:0; }
+        .jastip-info { flex:1; min-width:180px; }
+        .jastip-name { font-weight:600; font-size:.85rem; }
+        .jastip-meta { font-size:.7rem; color:var(--muted); }
+        .jastip-meta span { margin-right:.6rem; }
+        .jastip-status { padding:.15rem .5rem; border-radius:50px; font-size:.6rem; font-weight:600; text-transform:uppercase; letter-spacing:.3px; }
+        .jastip-status.pending { background:rgba(251,146,60,.15); color:#fb923c; }
+        .jastip-status.active { background:rgba(74,222,128,.15); color:#4ade80; }
+        .jastip-status.sold { background:rgba(248,113,113,.15); color:#f87171; }
+        .jastip-actions { display:flex; gap:.3rem; flex-wrap:wrap; }
+        .jastip-actions .btn-sm.activate { color:#4ade80; border-color:rgba(74,222,128,.2); }
+        .jastip-actions .btn-sm.activate:hover { background:rgba(74,222,128,.1); }
+        .jastip-actions .btn-sm.sold-btn { color:#f87171; border-color:rgba(248,113,113,.2); }
+        .jastip-actions .btn-sm.sold-btn:hover { background:rgba(248,113,113,.1); }
+        .jastip-actions .btn-sm.delete { color:#ef4444; border-color:rgba(239,68,68,.2); }
+        .jastip-actions .btn-sm.delete:hover { background:rgba(239,68,68,.1); }
+        .jastip-empty { text-align:center; padding:2rem 1rem; color:var(--muted); font-size:.8rem; }
+        .jastip-empty i { font-size:1.8rem; display:block; margin-bottom:.4rem; opacity:.3; }
+        @media(max-width:768px) {
+            .jastip-item { flex-direction:column; align-items:stretch; }
+            .jastip-thumb { width:100%; height:150px; }
+            .jastip-actions { justify-content:center; }
+        }
     </style>
 </head>
 <body>
@@ -618,9 +644,8 @@
             <div class="lc-icon"><i class="fas fa-shield-halved"></i></div>
             <h1>Admin Panel</h1>
             <p>Kelola stock mobil, secret car, pesanan sosial media & wallpaper.</p>
-            <input type="password" id="passInput" placeholder="Masukkan password..." onkeydown="if(event.key==='Enter')doLogin()" />
             <div class="login-error" id="loginErr"></div>
-            <button class="btn-login" onclick="doLogin()"><i class="fas fa-arrow-right-to-bracket"></i> Masuk</button>
+            <button class="btn-login" onclick="doLogin()"><i class="fab fa-google"></i> Masuk dengan Google</button>
         </div>
     </div>
 
@@ -641,6 +666,7 @@
             <button class="tab-btn" onclick="switchTab('limited')"><i class="fas fa-star"></i> Secret Car</button>
             <button class="tab-btn" onclick="switchTab('sosmed')"><i class="fas fa-share-nodes"></i> Sosmed</button>
             <button class="tab-btn" onclick="switchTab('wallpaper')"><i class="fas fa-image"></i> Wallpaper</button>
+            <button class="tab-btn" onclick="switchTab('jastip')"><i class="fas fa-box"></i> Jastip</button>
         </div>
 
         <!-- ===== TAB STOCK ===== -->
@@ -861,6 +887,18 @@
             </div>
         </div>
         <!-- END WALLPAPER -->
+
+        <!-- ===== TAB JASTIP ===== -->
+        <div class="tab-panel" id="tabJastip">
+            <div class="stats" id="jastipStats">
+                <div class="stat-card"><div class="sv yellow">0</div><div class="sl">Total</div></div>
+                <div class="stat-card"><div class="sv orange">0</div><div class="sl">Pending</div></div>
+                <div class="stat-card"><div class="sv green">0</div><div class="sl">Aktif</div></div>
+                <div class="stat-card"><div class="sv red">0</div><div class="sl">Terjual</div></div>
+            </div>
+            <div class="sec-title"><i class="fas fa-box"></i> Daftar Titipan <span class="count" id="jastipCount">0</span></div>
+            <div id="jastipList"><div class="jastip-empty"><i class="fas fa-box-open"></i> Belum dimuat.</div></div>
+        </div>
     </div>
 
     <!-- ===== MODALS ===== -->
@@ -968,9 +1006,9 @@
         // ============================================================
         // 1. ADMIN LOGIN + GLOBAL
         // ============================================================
-        var PASS = 'bajingan011';
         var sosmedFilter = 'all';
         var sosmedOrders = [];
+        var jastipUnsubscribe = null;
 
         var DESC_TEMPLATES = {
             '1': '🔥 Gratis Request Spek Mesinnya (Tune Up, FFA, atau Glitch) ‼️',
@@ -1021,36 +1059,132 @@
             toast('✅ Link disalin: ' + text, 'ok');
         }
 
-        function doLogin() {
-            if (document.getElementById('passInput').value.trim() === PASS) {
-                document.getElementById('loginWrap').style.display = 'none';
-                document.getElementById('dash').classList.add('active');
-                if (window.initStock) window.initStock();
-                if (window.loadWallpapers) setTimeout(window.loadWallpapers, 300);
-                if (window.renderPinQueue) setTimeout(window.renderPinQueue, 400);
-            } else { document.getElementById('loginErr').textContent = 'Password salah!'; }
+        function showDashboard() {
+            document.getElementById('loginWrap').style.display = 'none';
+            document.getElementById('dash').classList.add('active');
+            if (window.initStock) window.initStock();
+            if (window.loadWallpapers) setTimeout(window.loadWallpapers, 300);
+            if (window.renderPinQueue) setTimeout(window.renderPinQueue, 400);
+            loadJastip();
+        }
+
+        async function doLogin() {
+            var loginButton = document.querySelector('.btn-login');
+            var loginError = document.getElementById('loginErr');
+            loginButton.disabled = true;
+            loginButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menghubungkan...';
+            loginError.textContent = '';
+            try {
+                var provider = new firebase.auth.GoogleAuthProvider();
+                await auth.signInWithPopup(provider);
+                showDashboard();
+            } catch (error) {
+                console.error('Google admin login error:', {
+                    code: error.code,
+                    message: error.message,
+                    origin: window.location.origin
+                });
+                if (error.code === 'auth/popup-closed-by-user') {
+                    loginError.textContent = 'Login dibatalkan.';
+                } else if (error.code === 'auth/unauthorized-domain') {
+                    loginError.textContent = 'Domain ' + window.location.hostname + ' belum diizinkan Firebase.';
+                } else if (error.code === 'auth/operation-not-allowed') {
+                    loginError.textContent = 'Login Google belum diaktifkan di Firebase Authentication.';
+                } else if (error.code === 'auth/popup-blocked') {
+                    loginError.textContent = 'Popup login diblokir browser. Izinkan popup lalu coba lagi.';
+                } else if (error.code === 'auth/cancelled-popup-request') {
+                    loginError.textContent = 'Permintaan login sebelumnya masih berjalan.';
+                } else {
+                    loginError.textContent = 'Firebase [' + (error.code || 'unknown') + '] gagal. Coba lagi.';
+                }
+                loginButton.disabled = false;
+                loginButton.innerHTML = '<i class="fab fa-google"></i> Masuk dengan Google';
+            }
         }
 
         function doLogout() {
             document.getElementById('dash').classList.remove('active');
             document.getElementById('loginWrap').style.display = '';
-            document.getElementById('passInput').value = '';
             document.getElementById('loginErr').textContent = '';
             if (window.destroyStockTimer) window.destroyStockTimer();
+            if (jastipUnsubscribe) { jastipUnsubscribe(); jastipUnsubscribe = null; }
+            auth.signOut().catch(function(error) { console.error('Firebase logout error:', error); });
         }
 
         function switchTab(tab) {
-            var idx = tab === 'stock' ? 0 : tab === 'limited' ? 1 : tab === 'sosmed' ? 2 : 3;
+            var idx = tab === 'stock' ? 0 : tab === 'limited' ? 1 : tab === 'sosmed' ? 2 : tab === 'wallpaper' ? 3 : 4;
             document.querySelectorAll('.tab-btn').forEach(function(b, i) { b.classList.toggle('active', i === idx) });
             document.getElementById('tabStock').classList.toggle('active', tab === 'stock');
             document.getElementById('tabLimited').classList.toggle('active', tab === 'limited');
             document.getElementById('tabSosmed').classList.toggle('active', tab === 'sosmed');
             document.getElementById('tabWallpaper').classList.toggle('active', tab === 'wallpaper');
+            document.getElementById('tabJastip').classList.toggle('active', tab === 'jastip');
             if (tab === 'wallpaper') {
                 setTimeout(window.loadWallpapers, 200);
                 setTimeout(window.renderPinQueue, 300);
             }
+            if (tab === 'jastip') loadJastip();
         }
+
+        function escJastip(value) {
+            var element = document.createElement('div');
+            element.textContent = value == null ? '' : String(value);
+            return element.innerHTML;
+        }
+
+        function jastipDate(value) {
+            if (!value) return '-';
+            var date = value.toDate ? value.toDate() : value.seconds ? new Date(value.seconds * 1000) : new Date(value);
+            return isNaN(date.getTime()) ? '-' : date.toLocaleString('id-ID');
+        }
+
+        function loadJastip() {
+            var list = document.getElementById('jastipList');
+            if (!list || typeof db === 'undefined') return;
+            if (jastipUnsubscribe) jastipUnsubscribe();
+            list.innerHTML = '<div class="jastip-empty"><i class="fas fa-spinner fa-spin"></i> Memuat...</div>';
+            jastipUnsubscribe = db.collection('jastip').orderBy('createdAt', 'desc').onSnapshot(function(snapshot) {
+                var items = [];
+                snapshot.forEach(function(doc) { items.push({ id: doc.id, data: doc.data() }); });
+                var counts = { pending: 0, active: 0, sold: 0 };
+                items.forEach(function(item) { if (counts[item.data.status] !== undefined) counts[item.data.status]++; });
+                document.querySelector('#jastipStats .stat-card:nth-child(1) .sv').textContent = items.length;
+                document.querySelector('#jastipStats .stat-card:nth-child(2) .sv').textContent = counts.pending;
+                document.querySelector('#jastipStats .stat-card:nth-child(3) .sv').textContent = counts.active;
+                document.querySelector('#jastipStats .stat-card:nth-child(4) .sv').textContent = counts.sold;
+                document.getElementById('jastipCount').textContent = items.length;
+                if (!items.length) {
+                    list.innerHTML = '<div class="jastip-empty"><i class="fas fa-box-open"></i> Belum ada titipan.</div>';
+                    return;
+                }
+                list.innerHTML = items.map(function(item) {
+                    var data = item.data;
+                    var status = ['pending', 'active', 'sold'].indexOf(data.status) >= 0 ? data.status : 'pending';
+                    var image = data.gambar ? '<img src="' + escJastip(data.gambar) + '" alt="" class="jastip-thumb" loading="lazy" onerror="this.style.display=\'none\'">' : '<div class="jastip-thumb" style="display:flex;align-items:center;justify-content:center;color:var(--muted);"><i class="fas fa-image"></i></div>';
+                    var actions = status === 'pending' ? '<button class="btn-sm activate" onclick="activateJastip(\'' + item.id + '\')"><i class="fas fa-check"></i> Aktifkan</button>' : status === 'active' ? '<button class="btn-sm sold-btn" onclick="markSoldJastip(\'' + item.id + '\')"><i class="fas fa-tag"></i> Terjual</button>' : '<button class="btn-sm" onclick="activateJastip(\'' + item.id + '\')" style="color:#60a5fa;border-color:rgba(96,165,250,.2)"><i class="fas fa-undo"></i> Batalkan</button>';
+                    actions += '<button class="btn-sm delete" onclick="deleteJastip(\'' + item.id + '\')"><i class="fas fa-trash"></i> Hapus</button>';
+                    return '<div class="jastip-item">' + image + '<div class="jastip-info"><div class="jastip-name">' + escJastip(data.namaBarang) + '</div><div class="jastip-meta"><span><i class="fas fa-user"></i> ' + escJastip(data.penjual) + '</span><span><i class="fas fa-money-bill"></i> ' + escJastip(data.harga) + '</span><span><i class="fas fa-clock"></i> ' + jastipDate(data.createdAt) + '</span></div>' + (data.deskripsi ? '<div class="jastip-meta">' + escJastip(data.deskripsi) + '</div>' : '') + '</div><span class="jastip-status ' + status + '">' + status + '</span><div class="jastip-actions">' + actions + '</div></div>';
+                }).join('');
+            }, function(error) {
+                console.error('Jastip listener error:', error);
+                list.innerHTML = '<div class="jastip-empty"><i class="fas fa-exclamation-triangle"></i> Gagal memuat data.</div>';
+            });
+        }
+
+        window.activateJastip = function(id) {
+            if (!confirm('Aktifkan titipan ini?')) return;
+            db.collection('jastip').doc(id).update({ status: 'active' }).then(function() { toast('Titipan diaktifkan', 'ok'); }).catch(function(error) { toast('Gagal: ' + error.message, 'err'); });
+        };
+
+        window.markSoldJastip = function(id) {
+            if (!confirm('Tandai barang ini sebagai terjual?')) return;
+            db.collection('jastip').doc(id).update({ status: 'sold' }).then(function() { toast('Titipan ditandai terjual', 'ok'); }).catch(function(error) { toast('Gagal: ' + error.message, 'err'); });
+        };
+
+        window.deleteJastip = function(id) {
+            if (!confirm('Hapus titipan ini secara permanen?')) return;
+            db.collection('jastip').doc(id).delete().then(function() { toast('Titipan dihapus', 'ok'); }).catch(function(error) { toast('Gagal: ' + error.message, 'err'); });
+        };
 
         window.addEventListener('scroll', function() {
             var topbar = document.getElementById('topbar');

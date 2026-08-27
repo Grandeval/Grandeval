@@ -4,7 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   <link rel="manifest" href="/manifest.json?v=4.2" />
-<script src="firebase-init.js?v=4.2"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-init.js?v=4.3"></script>
   <meta name="theme-color" content="#3B82F6" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -692,6 +695,7 @@
       .sec { padding-left:2rem; padding-right:2rem; }
     }
   </style>
+  <link rel="stylesheet" href="jastip-cta.css">
 </head>
 <body>
   <div class="ambient-glows" aria-hidden="true">
@@ -966,6 +970,8 @@
       <a href="https://wa.me/6289687163314?text=Halo,%20saya%20ingin%20konsultasi%20project%20design" target="_blank" rel="noopener" class="btn btn-primary"><i class="fab fa-whatsapp"></i> Chat WhatsApp Sekarang</a>
     </div>
   </section>
+  <section class="jastip-cta" aria-label="Layanan Jastip"><div class="jastip-cta-inner"><div class="jastip-cta-copy"><span class="jastip-cta-kicker"><i class="fas fa-box-open"></i> Layanan baru Akino Store</span><h2>Barang bagus layak punya panggung.</h2><p>Jual barangmu lewat Jastip Akino Store dengan tampilan rapi dan bantuan transaksi.</p><div class="jastip-cta-points"><span><i class="fas fa-check-circle"></i> Biaya mulai Rp5.000</span><span><i class="fas fa-shield-halved"></i> Aman & terpercaya</span></div></div><a class="jastip-cta-link" href="jastip.html">Mulai Jastip <i class="fas fa-arrow-right"></i></a></div></section>
+
   <div class="social-row">
     <a href="https://www.tiktok.com/@akinolaset_?_t=8pbChkK23O6&_r=1" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
     <a href="https://www.instagram.com/akinostore_?igsh=MWxqbGpham5ocjhyOA==" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
@@ -1274,5 +1280,6 @@
     });
   }
 </script>
+  <script src="jastip-cta.js?v=4.7"></script>
 </body>
 </html>

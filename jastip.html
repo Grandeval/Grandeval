@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Jastip - Titip Jualan | Akino Store</title>
+  <meta name="description" content="Titip jual barangmu di Akino Store mulai Rp5.000. Tampil sampai laku dengan bantuan rekber dan admin.">
+  <link rel="canonical" href="https://akinocpm.my.id/jastip.html">
+  <meta property="og:title" content="Jastip Akino Store - Titip Jualan">
+  <meta property="og:description" content="Jual barangmu lebih mudah. Titipkan di Akino Store mulai Rp5.000 dan tampil sampai laku.">
+  <meta property="og:image" content="https://res.cloudinary.com/d39mdjct/image/upload/v1783493763/apk_pgxcmo.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://akinocpm.my.id/jastip.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="manifest" href="/manifest.json?v=4.2" />
+  <link rel="stylesheet" href="jastip-cta.css">
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-init.js?v=4.2"></script>
+  <meta name="theme-color" content="#3B82F6" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="apple-touch-icon" href="https://res.cloudinary.com/d39mdjct/image/upload/w_180,h_180,c_fit/v1783493763/apk_pgxcmo.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="https://res.cloudinary.com/d39mdjct/image/upload/w_152,h_152,c_fit/v1783493763/apk_pgxcmo.png" />
+  <link rel="apple-touch-icon" sizes="167x167" href="https://res.cloudinary.com/d39mdjct/image/upload/w_167,h_167,c_fit/v1783493763/apk_pgxcmo.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/d39mdjct/image/upload/w_180,h_180,c_fit/v1783493763/apk_pgxcmo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" href="https://res.cloudinary.com/d39mdjct/image/upload/v1783478697/icon_tnzy32.ico" />
+  <style>
+    /* ===== SAME STYLES AS BEFORE ===== */
+    :root {
+      --bg: #07070d;
+      --bg-card: rgba(255,255,255,0.04);
+      --bg-card-hover: rgba(255,255,255,0.08);
+      --fg: #f0f0f5;
+      --muted: #a0a0b8;
+      --muted-dim: #6a6a82;
+      --accent: #FFDD57;
+      --accent-dim: rgba(255,221,87,0.15);
+      --border: rgba(255,255,255,0.07);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --shadow-card: 0 8px 32px rgba(0,0,0,0.3);
+      --shadow-card-hover: 0 16px 48px rgba(0,0,0,0.5);
+      --nav-bg: rgba(7,7,13,0.6);
+      --nav-scrolled: rgba(7,7,13,0.92);
+      --transition: 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+      --touch-size: 48px;
+      --glow-opacity: 0.06;
+    }
+    body.light-theme {
+      --bg: #f5f5fa;
+      --bg-card: rgba(0,0,0,0.04);
+      --bg-card-hover: rgba(0,0,0,0.08);
+      --fg: #1a1a24;
+      --muted: #5a5a70;
+      --muted-dim: #3a3a4a;
+      --border: rgba(0,0,0,0.08);
+      --shadow-card: 0 8px 32px rgba(0,0,0,0.08);
+      --shadow-card-hover: 0 16px 48px rgba(0,0,0,0.12);
+      --nav-bg: rgba(245,245,250,0.7);
+      --nav-scrolled: rgba(245,245,250,0.95);
+      --glow-opacity: 0.08;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--fg);
+      overflow-x:hidden;
+      min-height:100vh;
+      transition: background var(--transition), color var(--transition);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .toast {
+      position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-20px);
+      background: #ef4444; color: #fff; padding: 0.8rem 1.8rem;
+      border-radius: 12px; font-weight: 600; font-size: 0.9rem;
+      z-index: 9999; box-shadow: 0 8px 32px rgba(239,68,68,0.35);
+      opacity: 0; transition: opacity 0.35s ease, transform 0.35s ease;
+      pointer-events: none; backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; gap: 0.6rem;
+      max-width: 90%; text-align: center;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+    .toast i { font-size: 1.1rem; }
+    body.light-theme .toast { background: #dc2626; box-shadow: 0 8px 32px rgba(220,38,38,0.3); }
+
+    .ambient-glows { position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+    .ambient-glows .glow {
+      position:absolute; border-radius:50%; filter:blur(120px);
+      opacity: var(--glow-opacity);
+      transition: opacity 0.3s;
+    }
+    .ambient-glows .glow-1 { width:400px; height:400px; top:-150px; left:-100px; background:#FFDD57; animation:glowFloat1 12s ease-in-out infinite; }
+    .ambient-glows .glow-2 { width:350px; height:350px; bottom:-100px; right:-80px; background:#FFA726; animation:glowFloat2 15s ease-in-out infinite; }
+    .ambient-glows .glow-3 { width:300px; height:300px; top:50%; left:50%; transform:translate(-50%,-50%); background:#FFDD57; animation:glowFloat3 18s ease-in-out infinite; }
+    @keyframes glowFloat1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(60px,40px)} }
+    @keyframes glowFloat2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-40px,-60px)} }
+    @keyframes glowFloat3 { 0%,100%{transform:translate(-50%,-50%) scale(1)} 50%{transform:translate(-50%,-50%) scale(1.2)} }
+
+    .navbar {
+      position:fixed; top:0; left:0; right:0; z-index:100;
+      display:flex; justify-content:space-between; align-items:center;
+      padding:0.5rem 1rem;
+      background:var(--nav-bg);
+      backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+      border-bottom:1px solid var(--border);
+      transition: background 0.3s, box-shadow 0.3s, border-color 0.3s;
+      min-height: var(--touch-size);
+    }
+    .navbar.scrolled { background:var(--nav-scrolled); box-shadow:0 2px 20px rgba(0,0,0,0.2); }
+    .nav-brand {
+      font-family:var(--font-display); font-size:1.1rem; font-weight:700;
+      color:var(--accent); text-decoration:none; letter-spacing:-0.3px;
+      display:flex; align-items:center; gap:0.3rem;
+    }
+    .nav-brand i { font-size:0.9rem; opacity:0.7; }
+    .nav-actions { display:flex; align-items:center; gap:0.3rem; }
+    .theme-toggle {
+      background:var(--bg-card); border:1px solid var(--border);
+      color:var(--muted); width:var(--touch-size); height:var(--touch-size);
+      border-radius:var(--radius-sm); cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      font-size:0.9rem; transition:all 0.25s ease;
+    }
+    .theme-toggle:hover { color:var(--accent); border-color:var(--accent); background:var(--accent-dim); }
+    .theme-toggle:active { transform:scale(0.92); }
+    .menu-toggle {
+      display:flex; background:var(--bg-card); border:1px solid var(--border);
+      color:var(--fg); font-size:1.2rem; cursor:pointer;
+      width:var(--touch-size); height:var(--touch-size);
+      border-radius:var(--radius-sm);
+      align-items:center; justify-content:center;
+      transition:all 0.25s;
+    }
+    .menu-toggle:active { transform:scale(0.92); }
+    .nav-links {
+      list-style:none; display:none; flex-direction:column;
+      position:absolute; top:100%; left:0; right:0;
+      background:rgba(7,7,13,0.97);
+      backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+      border-bottom:1px solid var(--border);
+      padding:0.5rem 0;
+      gap:0.1rem;
+    }
+    body.light-theme .nav-links { background:rgba(245,245,250,0.98); }
+    .nav-links.active { display:flex; }
+    .nav-links a {
+      color:var(--muted); text-decoration:none;
+      padding:0.6rem 1rem;
+      font-size:0.9rem; font-weight:500;
+      transition:all 0.2s ease;
+      display:block;
+      min-height:var(--touch-size);
+      display:flex;
+      align-items:center;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      color:var(--fg); background:var(--bg-card);
+    }
+    .nav-links a.active { color:var(--accent); background:var(--accent-dim); }
+    .dropdown { position:relative; }
+    .dropdown-menu {
+      display:none;
+      background:rgba(15,15,25,0.96); backdrop-filter:blur(20px);
+      -webkit-backdrop-filter:blur(20px);
+      border:1px solid var(--border); border-radius:12px;
+      padding:0.3rem;
+      box-shadow:0 24px 64px rgba(0,0,0,0.5);
+      margin:0.2rem 0.5rem;
+    }
+    body.light-theme .dropdown-menu { background:rgba(245,245,250,0.98); }
+    .dropdown.active .dropdown-menu { display:block; }
+    .dropdown-menu a {
+      display:block; padding:0.6rem 0.9rem; border-radius:8px;
+      font-size:0.85rem;
+      color:var(--muted); transition:all 0.2s;
+      min-height:var(--touch-size);
+      display:flex;
+      align-items:center;
+    }
+    .dropdown-menu a:hover { background:var(--accent-dim); color:var(--accent); }
+
+    .breadcrumb {
+      max-width:1100px;
+      margin: 4.5rem auto 0.5rem;
+      padding:0 1rem;
+      font-size:0.7rem;
+      color:var(--muted-dim);
+    }
+    .breadcrumb a { color:var(--muted-dim); text-decoration:none; transition:color 0.2s; }
+    .breadcrumb a:hover { color:var(--accent); }
+    .breadcrumb span { color:var(--fg); }
+
+    .page-hero {
+      padding:0.5rem 1rem 1.5rem;
+      text-align:center;
+    }
+    .page-hero h1 {
+      font-family:var(--font-display);
+      font-size:clamp(1.6rem, 6vw, 2.6rem);
+      font-weight:700; letter-spacing:-0.5px; margin-bottom:0.2rem;
+    }
+    .page-hero h1 .accent { color:var(--accent); }
+    .page-hero p {
+      color:var(--muted); font-size:0.9rem;
+      max-width:480px; margin:0 auto; line-height:1.6;
+    }
+    .page-hero .sub-badge {
+      display:inline-block;
+      margin-top:0.5rem;
+      padding:0.3rem 1rem;
+      background:var(--accent-dim);
+      border:1px solid rgba(255,221,87,0.2);
+      border-radius:50px;
+      color:var(--accent);
+      font-size:0.8rem;
+      font-weight:500;
+    }
+
+    .jastip-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
+      gap:1.2rem;
+      max-width:1100px;
+      margin:0 auto 2rem;
+      padding:0 1rem;
+    }
+    .jastip-card {
+      background:var(--bg-card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      overflow:hidden;
+      transition:all var(--transition);
+      position:relative;
+      animation:fadeUp 0.5s ease both;
+    }
+    .jastip-card:hover {
+      transform:translateY(-6px);
+      border-color:rgba(255,221,87,0.25);
+      box-shadow:var(--shadow-card-hover);
+    }
+    .jastip-card.sold {
+      opacity:0.6;
+      border-color:#f87171;
+    }
+    .jastip-card.shared-item {
+      border-color:var(--accent);
+      box-shadow:0 0 0 3px var(--accent-dim), 0 12px 32px rgba(255,221,87,.2);
+      animation:sharedItemPulse 1.8s ease-out;
+    }
+    @keyframes sharedItemPulse {
+      0%, 100% { transform:translateY(0); }
+      35% { transform:translateY(-4px); }
+    }
+    .jastip-card .card-image {
+      width:100%;
+      aspect-ratio:1/1;
+      object-fit:cover;
+      background:#0a0a12;
+      border-bottom:1px solid var(--border);
+    }
+    .jastip-card .card-body {
+      padding:1rem;
+    }
+    .jastip-card .card-body .item-name {
+      font-family:var(--font-display);
+      font-size:1rem;
+      font-weight:600;
+      margin-bottom:0.2rem;
+      line-height:1.3;
+    }
+    .jastip-card .card-body .seller {
+      font-size:0.75rem;
+      color:var(--muted);
+      margin-bottom:0.3rem;
+    }
+    .jastip-card .card-body .seller i {
+      color:var(--accent);
+      margin-right:0.2rem;
+    }
+    .jastip-card .card-body .desc {
+      font-size:0.8rem;
+      color:var(--muted);
+      line-height:1.5;
+      margin-bottom:0.4rem;
+      display:-webkit-box;
+      -webkit-line-clamp:3;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+    .jastip-card .card-body .price {
+      font-family:var(--font-display);
+      font-size:1.1rem;
+      font-weight:700;
+      color:var(--accent);
+      margin-bottom:0.4rem;
+    }
+    .jastip-card .card-body .price .sold-badge {
+      font-size:0.6rem;
+      background:#f87171;
+      color:#fff;
+      padding:0.1rem 0.4rem;
+      border-radius:4px;
+      margin-left:0.4rem;
+      vertical-align:middle;
+    }
+    .btn-group {
+      display:flex;
+      gap:0.4rem;
+      margin-top:0.3rem;
+      flex-wrap:wrap;
+    }
+    .btn-jastip {
+      flex:1;
+      padding:0.5rem 0.8rem;
+      border-radius:var(--radius-sm);
+      font-family:var(--font-body);
+      font-size:0.75rem;
+      font-weight:600;
+      cursor:pointer;
+      transition:all var(--transition);
+      border:1px solid transparent;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:0.3rem;
+      min-height:40px;
+      text-decoration:none;
+      background:var(--bg-card);
+      color:var(--muted);
+      border-color:var(--border);
+    }
+    .btn-jastip:hover {
+      border-color:var(--border-hover);
+      color:var(--fg);
+    }
+    .btn-jastip.primary {
+      background:var(--accent-dim);
+      color:var(--accent);
+      border-color:rgba(255,221,87,0.2);
+    }
+    .btn-jastip.primary:hover {
+      background:var(--accent);
+      color:#0a0a0f;
+      border-color:var(--accent);
+      box-shadow:0 4px 20px rgba(255,221,87,0.25);
+    }
+    .btn-jastip.secondary {
+      background:rgba(96,165,250,0.1);
+      color:#60a5fa;
+      border-color:rgba(96,165,250,0.2);
+    }
+    .btn-jastip.secondary:hover {
+      background:#60a5fa;
+      color:#0a0a0f;
+      border-color:#60a5fa;
+      box-shadow:0 4px 20px rgba(96,165,250,0.25);
+    }
+    .btn-jastip.share {
+      background:rgba(74,222,128,0.1);
+      color:#4ade80;
+      border-color:rgba(74,222,128,0.2);
+    }
+    .btn-jastip.share:hover {
+      background:#4ade80;
+      color:#0a0a0f;
+      border-color:#4ade80;
+      box-shadow:0 4px 20px rgba(74,222,128,0.25);
+    }
+    .btn-jastip.sold-btn {
+      opacity:0.5;
+      cursor:default;
+      pointer-events:none;
+    }
+    .btn-jastip:active { transform:scale(0.96); }
+    .jastip-comments {
+      max-width:900px;
+      margin:2rem auto 0;
+      padding:1.2rem;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      background:var(--bg-card);
+    }
+    .jastip-comments h2 { font-family:var(--font-display); font-size:1.05rem; margin-bottom:.25rem; }
+    .jastip-comments .comments-sub { color:var(--muted); font-size:.78rem; margin-bottom:1rem; }
+    .jastip-comment-form { display:grid; gap:.6rem; margin-bottom:1rem; }
+    .jastip-comment-form input, .jastip-comment-form textarea { width:100%; padding:.7rem .8rem; border:1px solid var(--border); border-radius:var(--radius-sm); background:rgba(255,255,255,.03); color:var(--fg); font:inherit; font-size:.82rem; outline:none; }
+    .jastip-comment-form input:focus, .jastip-comment-form textarea:focus { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-dim); }
+    .jastip-comment-form button { justify-self:start; min-height:42px; padding:.6rem 1rem; border:0; border-radius:var(--radius-sm); background:var(--accent); color:#0a0a0f; font:600 .8rem var(--font-body); cursor:pointer; }
+    .jastip-comment-form button:disabled { opacity:.6; cursor:wait; }
+    .jastip-comment-list { display:grid; gap:.55rem; max-height:360px; overflow:auto; }
+    .jastip-comment { padding:.7rem .8rem; border-left:3px solid var(--accent); background:rgba(255,255,255,.025); border-radius:0 var(--radius-sm) var(--radius-sm) 0; }
+    .jastip-comment strong { font-size:.78rem; }
+    .jastip-comment p { margin:.2rem 0; color:var(--fg); font-size:.8rem; white-space:pre-wrap; overflow-wrap:anywhere; }
+    .jastip-comment small { color:var(--muted); font-size:.65rem; }
+    .jastip-comment-empty { padding:1rem; color:var(--muted); font-size:.78rem; text-align:center; }
+    .jastip-skeleton { overflow:hidden; border:1px solid var(--border); border-radius:var(--radius); background:var(--bg-card); }
+    .jastip-skeleton::before, .jastip-skeleton::after { content:""; display:block; background:linear-gradient(90deg, rgba(255,255,255,.04) 25%, rgba(255,255,255,.1) 50%, rgba(255,255,255,.04) 75%); background-size:200% 100%; animation:jastipSkeleton 1.4s infinite; }
+    .jastip-skeleton::before { aspect-ratio:1/1; }
+    .jastip-skeleton::after { height:92px; margin:1rem; border-radius:6px; }
+    @keyframes jastipSkeleton { from { background-position:200% 0; } to { background-position:-200% 0; } }
+    .jastip-filter-bar { max-width:1120px; margin:0 auto 1rem; display:flex; justify-content:flex-end; gap:.5rem; }
+    .jastip-filter-bar select { min-height:40px; padding:.55rem .75rem; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg-card); color:var(--fg); font:500 .78rem var(--font-body); }
+    @media (max-width:480px) { .jastip-filter-bar { justify-content:stretch; } .jastip-filter-bar select { flex:1; min-width:0; } }
+
+    .empty-state {
+      text-align:center;
+      padding:3rem 1rem;
+      color:var(--muted);
+      grid-column:1/-1;
+    }
+    .empty-state i {
+      font-size:3rem;
+      display:block;
+      margin-bottom:1rem;
+      opacity:0.3;
+    }
+
+    .action-bar {
+      max-width:1100px;
+      margin:1rem auto 1.5rem;
+      padding:0 1rem;
+      display:flex;
+      justify-content:center;
+    }
+    .action-bar .btn-titip {
+      padding:0.7rem 2.5rem;
+      border-radius:var(--radius-sm);
+      background:linear-gradient(145deg, #FFDD57, #f5c842);
+      color:#0a0a0f;
+      font-family:var(--font-body);
+      font-size:0.95rem;
+      font-weight:700;
+      border:none;
+      cursor:pointer;
+      transition:all var(--transition);
+      box-shadow:0 4px 20px rgba(255,221,87,0.25);
+      display:inline-flex;
+      align-items:center;
+      gap:0.5rem;
+    }
+    .action-bar .btn-titip:hover {
+      transform:translateY(-2px);
+      box-shadow:0 8px 32px rgba(255,221,87,0.35);
+    }
+    .action-bar .btn-titip:active { transform:scale(0.96); }
+
+    /* modal */
+    .modal-overlay {
+      display:none;
+      position:fixed;
+      inset:0;
+      z-index:300;
+      background:rgba(0,0,0,0.7);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      align-items:center;
+      justify-content:center;
+      padding:1.5rem;
+    }
+    .modal-overlay.active { display:flex; animation:fadeIn 0.2s ease; }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    .modal-card {
+      background:var(--bg-secondary);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:2rem;
+      width:100%;
+      max-width:480px;
+      max-height:92vh;
+      overflow-y:auto;
+      animation:scaleIn 0.3s cubic-bezier(0.32,0.72,0,1);
+      scrollbar-width:thin;
+      scrollbar-color:var(--border) transparent;
+    }
+    .modal-card::-webkit-scrollbar { width:3px; }
+    .modal-card::-webkit-scrollbar-thumb { background:var(--border); border-radius:10px; }
+    .modal-close {
+      float:right;
+      width:34px; height:34px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.05);
+      border:1px solid var(--border);
+      color:var(--fg);
+      font-size:1rem;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition:all var(--transition);
+    }
+    .modal-close:hover { background:rgba(255,255,255,0.1); }
+    .modal-card h3 {
+      font-family:var(--font-display);
+      font-size:1.2rem;
+      font-weight:600;
+      margin-bottom:0.25rem;
+      padding-right:2.5rem;
+    }
+    .modal-card p.sub {
+      font-size:0.85rem;
+      color:var(--muted);
+      margin-bottom:1.25rem;
+    }
+    .form-group {
+      margin-bottom:1rem;
+    }
+    .form-group label {
+      display:block;
+      font-size:0.78rem;
+      font-weight:500;
+      color:var(--muted);
+      margin-bottom:0.3rem;
+    }
+    .form-group input, .form-group textarea, .form-group select {
+      width:100%;
+      padding:0.65rem 1rem;
+      background:rgba(255,255,255,0.03);
+      border:1px solid var(--border);
+      border-radius:var(--radius-sm);
+      color:var(--fg);
+      font-family:var(--font-body);
+      font-size:0.88rem;
+      outline:none;
+      transition:border-color var(--transition);
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+      border-color:var(--accent);
+      box-shadow:0 0 0 2px var(--accent-dim);
+    }
+    .form-group textarea { resize:vertical; min-height:70px; }
+    .form-group .hint {
+      font-size:0.7rem;
+      color:var(--muted-dim);
+      margin-top:0.2rem;
+    }
+    .form-group .file-input-wrap {
+      position:relative;
+      overflow:hidden;
+      display:inline-block;
+      width:100%;
+    }
+    .form-group .file-input-wrap input[type="file"] {
+      position:absolute;
+      left:0;
+      top:0;
+      opacity:0;
+      width:100%;
+      height:100%;
+      cursor:pointer;
+    }
+    .form-group .file-label {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:0.5rem;
+      padding:0.65rem 1rem;
+      background:rgba(255,255,255,0.03);
+      border:1px solid var(--border);
+      border-radius:var(--radius-sm);
+      color:var(--muted);
+      cursor:pointer;
+      transition:all var(--transition);
+      font-size:0.88rem;
+      min-height:48px;
+    }
+    .form-group .file-label:hover {
+      border-color:var(--accent);
+      background:var(--accent-dim);
+      color:var(--fg);
+    }
+    .form-group .file-label i { font-size:0.9rem; }
+    .form-group .file-preview {
+      margin-top:0.5rem;
+      display:none;
+    }
+    .form-group .file-preview img {
+      max-width:100%;
+      max-height:150px;
+      border-radius:var(--radius-sm);
+      border:1px solid var(--border);
+    }
+    .btn-submit-form {
+      width:100%;
+      padding:0.75rem;
+      border-radius:var(--radius-sm);
+      background:var(--accent);
+      color:#0a0a0f;
+      border:none;
+      font-family:var(--font-body);
+      font-size:0.88rem;
+      font-weight:600;
+      cursor:pointer;
+      transition:all var(--transition);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:0.5rem;
+    }
+    .btn-submit-form:hover {
+      box-shadow:0 4px 20px rgba(255,221,87,0.3);
+      transform:translateY(-1px);
+    }
+    .btn-submit-form:disabled {
+      opacity:0.5;
+      cursor:not-allowed;
+      transform:none;
+      box-shadow:none;
+    }
+    .form-msg {
+      font-size:0.82rem;
+      padding:0.5rem 0.75rem;
+      border-radius:8px;
+      margin-top:0.6rem;
+      display:none;
+    }
+    .form-msg.show { display:block; }
+    .form-msg.ok { background:rgba(34,197,94,0.08); border:1px solid rgba(34,197,94,0.2); color:#4ade80; }
+    .form-msg.err { background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.2); color:#f87171; }
+
+    .social-row {
+      display:flex; justify-content:center; gap:0.6rem; padding:1rem;
+    }
+    .social-row a {
+      width:44px; height:44px; border-radius:12px;
+      background:var(--bg-card); border:1px solid var(--border);
+      display:flex; align-items:center; justify-content:center;
+      color:var(--muted); font-size:0.9rem;
+      transition:all .3s; text-decoration:none;
+    }
+    .social-row a:hover {
+      color:var(--accent); border-color:var(--accent);
+      background:var(--accent-dim); transform:translateY(-3px);
+    }
+
+    .footer {
+      padding:2rem 1rem 1rem;
+      border-top:1px solid var(--border);
+      margin-top:0.5rem;
+    }
+    .footer-grid {
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:1.5rem; max-width:1000px; margin:0 auto 1.5rem;
+    }
+    @media (min-width:600px) {
+      .footer-grid { grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); }
+    }
+    .footer-grid h4 {
+      font-family:var(--font-display);
+      font-size:0.85rem; color:var(--fg); margin-bottom:0.5rem;
+    }
+    .footer-grid p, .footer-grid a {
+      font-size:0.8rem; color:var(--muted); line-height:1.8;
+    }
+    .footer-grid a { display:block; text-decoration:none; transition:color 0.2s; }
+    .footer-grid a:hover { color:var(--accent); }
+    .footer-grid .brand-footer { font-weight:600; color:var(--accent); }
+    .footer-bottom {
+      max-width:1000px; margin:0 auto;
+      border-top:1px solid var(--border); padding-top:1rem;
+      text-align:center; font-size:0.65rem; color:var(--muted);
+    }
+
+    .chat-float {
+      position:fixed; bottom:1.2rem; right:1.2rem; z-index:99;
+      display:flex; flex-direction:column; align-items:flex-end; gap:0.4rem;
+    }
+    .chat-float-label {
+      background:rgba(15,15,25,0.92); backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      border:1px solid var(--border); border-radius:10px;
+      padding:0.4rem 0.8rem;
+      font-size:0.7rem; color:var(--muted); white-space:nowrap;
+      opacity:0; transform:translateY(6px) scale(0.95);
+      transition:all 0.3s ease; pointer-events:none;
+    }
+    body.light-theme .chat-float-label { background:rgba(245,245,250,0.95); }
+    .chat-float-label span { color:var(--accent); font-weight:600; }
+    .chat-float:hover .chat-float-label { opacity:1; transform:translateY(0) scale(1); }
+    .chat-float-btn {
+      width:54px; height:54px; border-radius:16px;
+      background:linear-gradient(145deg, #25D366, #1da851);
+      border:none; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      color:#fff; font-size:1.5rem;
+      box-shadow:0 4px 24px rgba(37,211,102,0.35);
+      transition:all 0.3s ease; text-decoration:none;
+    }
+    .chat-float-btn:active { transform:scale(0.92); }
+
+    .back-to-top {
+      position:fixed; bottom:1.2rem; left:1.2rem; z-index:99;
+      width:44px; height:44px; border-radius:12px;
+      background:var(--bg-card); border:1px solid var(--border);
+      color:var(--muted); font-size:0.9rem; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      opacity:0; transform:translateY(10px); pointer-events:none;
+      transition:all 0.3s ease; backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+    }
+    .back-to-top.show { opacity:1; transform:translateY(0); pointer-events:auto; }
+    .back-to-top:active { transform:scale(0.92); }
+
+    @media (min-width:768px) {
+      .navbar { padding:0.8rem 2rem; }
+      .menu-toggle { display:none; }
+      .nav-links {
+        display:flex !important;
+        position:static; flex-direction:row; background:transparent;
+        backdrop-filter:none; border:none; padding:0;
+        gap:0.2rem;
+      }
+      .nav-links a { padding:0.4rem 0.9rem; font-size:0.85rem; min-height:auto; }
+      .dropdown-menu {
+        position:absolute; top:calc(100% + 6px); left:50%;
+        transform:translateX(-50%);
+        min-width:220px; padding:0.4rem;
+        display:none;
+      }
+      .dropdown:hover .dropdown-menu { display:block; }
+      .dropdown.active .dropdown-menu { display:none; }
+      .dropdown-menu a { min-height:auto; padding:0.5rem 0.9rem; }
+      .page-hero { padding:0.5rem 2rem 2rem; }
+      .breadcrumb { margin-top:5rem; padding:0 2rem; }
+      .jastip-grid { grid-template-columns:repeat(3,1fr); gap:1.5rem; }
+    }
+    @media (max-width:480px) {
+      .jastip-grid { grid-template-columns:1fr; }
+      .btn-group { flex-direction:column; }
+      .btn-jastip { flex:auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="toast" id="toast"><i class="fas fa-exclamation-circle"></i> <span id="toastMessage"></span></div>
+
+  <div class="ambient-glows" aria-hidden="true">
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    <div class="glow glow-3"></div>
+  </div>
+
+  <nav class="navbar" id="navbar" aria-label="Navigasi utama">
+    <a href="index.html" class="nav-brand"><i class="fas fa-store"></i> Akino Store</a>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle tema"><i class="fas fa-moon"></i></button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li class="dropdown" id="dropdownService">
+        <a href="#" id="dropdownToggle">Service <i class="fas fa-chevron-down" style="font-size:0.5rem;margin-left:4px;"></i></a>
+        <ul class="dropdown-menu">
+          <li><a href="CarParkingMultiplayer.html">Car Parking Multiplayer</a></li>
+          <li><a href="SosialMedia.html">Layanan Sosial Media</a></li>
+          <li><a href="designedit.html">Design / Edit Foto</a></li>
+          <li><a href="manga.html">Manga</a></li>
+          <li><a href="wallpaper.html">Wallpaper</a></li>
+        </ul>
+      </li>
+      <li><a href="jastip.html" class="active">Jastip</a></li>
+      <li><a href="https://wa.me/6289687163314" target="_blank">Contact</a></li>
+    </ul>
+  </nav>
+
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="index.html">Home</a> <i class="fas fa-chevron-right" style="font-size:0.5rem;margin:0 0.4rem;color:var(--muted-dim);"></i>
+    <span>Jastip</span>
+  </nav>
+
+  <header class="page-hero">
+    <h1>🛒 Titip Jualan <span class="accent">(Jastip)</span></h1>
+    <p>Titipkan barang jualanmu di sini. Hanya 5rb, tampil sampai laku. Gratis Rekber/Midman.</p>
+    <div class="sub-badge">Ready Stock mulai 2rban</div>
+  </header>
+
+  <div class="action-bar">
+    <button class="btn-titip" id="btnTitip"><i class="fas fa-plus-circle"></i> Titip Jualan Sekarang</button>
+  </div>
+
+  <div class="jastip-filter-bar" aria-label="Filter Jastip">
+    <select id="jastipStatusFilter" aria-label="Filter status Jastip">
+      <option value="all">Semua Status</option>
+      <option value="active">Masih Aktif</option>
+      <option value="sold">Terjual</option>
+    </select>
+    <select id="jastipCategoryFilter" aria-label="Filter kategori Jastip">
+      <option value="all">Semua Kategori</option>
+    </select>
+    <select id="jastipSortFilter" aria-label="Urutan Jastip">
+      <option value="newest">Terbaru</option>
+      <option value="priceAsc">Harga Terendah</option>
+      <option value="priceDesc">Harga Tertinggi</option>
+    </select>
+  </div>
+
+  <div class="jastip-grid" id="jastipGrid">
+    <div class="jastip-skeleton" aria-hidden="true"></div>
+    <div class="jastip-skeleton" aria-hidden="true"></div>
+    <div class="jastip-skeleton" aria-hidden="true"></div>
+  </div>
+
+  <section class="jastip-comments" aria-label="Komentar Jastip">
+    <h2><i class="fas fa-comments" style="color:var(--accent);margin-right:.35rem"></i> Komentar Jastip</h2>
+    <p class="comments-sub">Bagikan pengalaman atau pendapatmu tentang layanan Jastip.</p>
+    <form class="jastip-comment-form" id="jastipCommentForm">
+      <input type="text" id="jastipCommentName" placeholder="Nama kamu" maxlength="50" required>
+      <textarea id="jastipCommentMessage" rows="3" placeholder="Tulis komentar..." maxlength="500" required></textarea>
+      <button type="submit" id="jastipCommentSubmit"><i class="fas fa-paper-plane"></i> Kirim Komentar</button>
+    </form>
+    <div class="jastip-comment-list" id="jastipCommentList"><div class="jastip-comment-empty">Memuat komentar...</div></div>
+  </section>
+
+  <div class="social-row">
+    <a href="https://www.tiktok.com/@akinolaset_?_t=8pbChkK23O6&_r=1" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+    <a href="https://www.instagram.com/akinostore_?igsh=MWxqbGpham5ocjhyOA==" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://youtube.com/@akinolaset?si=e4NLLQrgN0R3BPi4" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+    <a href="https://wa.me/6289687163314" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+  </div>
+
+  <footer class="footer" aria-label="Footer">
+    <div class="footer-grid">
+      <div><h4 class="brand-footer">Akino Store</h4><p>Jasa digital & game terpercaya sejak 2022.</p></div>
+      <div><h4>Layanan</h4><a href="CarParkingMultiplayer.html">Car Parking</a><a href="SosialMedia.html">Sosial Media</a><a href="designedit.html">Design / Edit</a></div>
+      <div><h4>Tentang</h4><a href="about.html">About Us</a><a href="https://wa.me/6289687163314" target="_blank">Contact</a><a href="stockmobil.html">Stock Mobil</a></div>
+      <div><h4>Legal</h4><a href="privacy.html">Kebijakan Privasi</a><a href="terms.html">Syarat &amp; Ketentuan</a></div>
+      <div><h4>Follow</h4><a href="https://www.tiktok.com/@akinolaset_" target="_blank">TikTok</a><a href="https://www.instagram.com/akinostore_" target="_blank">Instagram</a><a href="https://youtube.com/@akinolaset" target="_blank">YouTube</a></div>
+    </div>
+    <div class="footer-bottom">&copy; 2022 Akino Store. All Rights Reserved.</div>
+  </footer>
+
+  <div class="chat-float">
+    <div class="chat-float-label">Chat Admin: <span>089687163314</span></div>
+    <a href="https://wa.me/6289687163314" target="_blank" rel="noopener" class="chat-float-btn" aria-label="Chat Admin WhatsApp"><i class="fab fa-whatsapp"></i></a>
+  </div>
+  <button class="back-to-top" id="backToTop" aria-label="Kembali ke atas"><i class="fas fa-arrow-up"></i></button>
+
+  <!-- ===== MODAL TITIP ===== -->
+  <div class="modal-overlay" id="modalTitip">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('modalTitip')"><i class="fas fa-xmark"></i></button>
+      <h3><i class="fas fa-plus-circle" style="color:var(--accent);"></i> Titip Jualan</h3>
+      <p class="sub">Isi data dengan benar. Biaya titip <strong>Rp 5.000</strong> (dibayar via WA admin). Postingan akan tampil setelah pembayaran dikonfirmasi.</p>
+      <form id="formTitip">
+        <div class="form-group">
+          <label>Nama Penjual <span style="color:#f87171;">*</span></label>
+          <input type="text" id="tNama" placeholder="Nama kamu" required>
+        </div>
+        <div class="form-group">
+          <label>Nama Barang <span style="color:#f87171;">*</span></label>
+          <input type="text" id="tBarang" placeholder="Contoh: Action Figure One Piece" required>
+        </div>
+        <div class="form-group">
+          <label>Deskripsi Barang</label>
+          <textarea id="tDeskripsi" rows="3" placeholder="Kondisi, kelengkapan, dll."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Harga Jual <span style="color:#f87171;">*</span></label>
+          <input type="text" id="tHarga" placeholder="Rp 150.000" required>
+        </div>
+        <div class="form-group">
+          <label>Kategori / Nama Game</label>
+          <input type="text" id="tKategori" placeholder="Contoh: Car Parking Multiplayer" maxlength="60" required>
+        </div>
+        <div class="form-group">
+          <label>Foto Barang <span style="color:#f87171;">*</span></label>
+          <div class="file-input-wrap">
+            <div class="file-label" id="fileLabel"><i class="fas fa-cloud-upload-alt"></i> Pilih Gambar</div>
+            <input type="file" id="tFoto" accept="image/*" required>
+          </div>
+          <div class="file-preview" id="filePreview"><img id="previewImg" src="#" alt="Preview"></div>
+          <div class="hint">Upload gambar barang (maks 5MB).</div>
+        </div>
+        <div class="form-group" id="uploadProgress" style="display:none; font-size:0.8rem; color:var(--accent);">
+          <i class="fas fa-spinner fa-spin"></i> Mengupload gambar...
+        </div>
+        <div class="form-msg" id="formMsg"></div>
+        <button type="submit" class="btn-submit-form" id="submitTitip"><i class="fas fa-paper-plane"></i> Kirim Titipan</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== MODAL TAWAR HARGA ===== -->
+  <div class="modal-overlay" id="modalTawar">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('modalTawar')"><i class="fas fa-xmark"></i></button>
+      <h3><i class="fas fa-gavel" style="color:var(--accent);"></i> Tawarkan Harga</h3>
+      <p class="sub">Kirim tawaranmu untuk barang ini. Admin akan menghubungkan dengan penjual.</p>
+      <form id="formTawar">
+        <input type="hidden" id="tawarItemId">
+        <input type="hidden" id="tawarItemName">
+        <div class="form-group">
+          <label>Nama Pembeli <span style="color:#f87171;">*</span></label>
+          <input type="text" id="tNamaPembeli" placeholder="Nama kamu" required>
+        </div>
+        <div class="form-group">
+          <label>No. WhatsApp <span style="color:#f87171;">*</span></label>
+          <input type="text" id="tWaPembeli" placeholder="08xxxxxxxxxx" required>
+        </div>
+        <div class="form-group">
+          <label>Harga Tawar <span style="color:#f87171;">*</span></label>
+          <input type="text" id="tHargaTawar" placeholder="Rp 120.000" required>
+        </div>
+        <div class="form-msg" id="tawarMsg"></div>
+        <button type="submit" class="btn-submit-form" id="submitTawar"><i class="fas fa-paper-plane"></i> Kirim Tawaran</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // ============================================================
+    // FUNGSI MODAL (GLOBAL)
+    // ============================================================
+    function openModal(id) {
+      var modal = document.getElementById(id);
+      if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        console.log('✅ Modal opened:', id);
+      } else {
+        console.error('❌ Modal not found:', id);
+      }
+    }
+
+    function closeModal(id) {
+      var modal = document.getElementById(id);
+      if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+        console.log('✅ Modal closed:', id);
+      }
+    }
+
+    // ============================================================
+    // TOAST
+    // ============================================================
+    function showToast(msg) {
+      var t = document.getElementById('toast');
+      document.getElementById('toastMessage').textContent = msg;
+      t.classList.add('show');
+      clearTimeout(t._timeout);
+      t._timeout = setTimeout(function() { t.classList.remove('show'); }, 3500);
+    }
+
+    // ============================================================
+    // DOMContentLoaded
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('🚀 Jastip page loaded');
+
+      // ===== BUTTON TITIP =====
+      var btnTitip = document.getElementById('btnTitip');
+      if (btnTitip) {
+        btnTitip.addEventListener('click', function() {
+          console.log('🖱️ Tombol Titip diklik');
+          openModal('modalTitip');
+        });
+      } else {
+        console.error('❌ Tombol #btnTitip tidak ditemukan');
+      }
+
+      // ===== CLOSE MODAL VIA BACKDROP =====
+      document.querySelectorAll('.modal-overlay').forEach(function(el) {
+        el.addEventListener('click', function(e) {
+          if (e.target === this) {
+            this.classList.remove('active');
+            document.body.style.overflow = '';
+          }
+        });
+      });
+
+      // ===== UPLOAD PREVIEW =====
+      var fotoInput = document.getElementById('tFoto');
+      if (fotoInput) {
+        fotoInput.addEventListener('change', function(e) {
+          var file = this.files[0];
+          var preview = document.getElementById('filePreview');
+          var img = document.getElementById('previewImg');
+          if (file) {
+            var reader = new FileReader();
+            reader.onload = function(ev) {
+              img.src = ev.target.result;
+              preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+          } else {
+            preview.style.display = 'none';
+          }
+        });
+      }
+
+      // ===== FORM TITIP =====
+      var formTitip = document.getElementById('formTitip');
+      if (formTitip) {
+        formTitip.addEventListener('submit', function(e) {
+          e.preventDefault();
+          submitTitip();
+        });
+      }
+
+      // ===== FORM TAWAR =====
+      var formTawar = document.getElementById('formTawar');
+      if (formTawar) {
+        formTawar.addEventListener('submit', function(e) {
+          e.preventDefault();
+          submitTawar();
+        });
+      }
+
+      setupJastipComments();
+
+      // ===== RENDER JASTIP =====
+      renderJastip();
+
+      // ===== NAVBAR & THEME =====
+      setupThemeAndNavbar();
+    });
+
+    // ============================================================
+    // THEME & NAVBAR
+    // ============================================================
+    function setupThemeAndNavbar() {
+      window.addEventListener('scroll', function() {
+        var navbar = document.getElementById('navbar');
+        if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 40);
+        var btn = document.getElementById('backToTop');
+        if (btn) btn.classList.toggle('show', window.scrollY > 400);
+      });
+      var backBtn = document.getElementById('backToTop');
+      if (backBtn) {
+        backBtn.addEventListener('click', function() {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+
+      var menuToggle = document.getElementById('menuToggle');
+      var navLinks = document.getElementById('navLinks');
+      if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', function() {
+          navLinks.classList.toggle('active');
+          var icon = menuToggle.querySelector('i');
+          icon.className = navLinks.classList.contains('active') ? 'fas fa-xmark' : 'fas fa-bars';
+        });
+      }
+
+      var dropdownToggle = document.getElementById('dropdownToggle');
+      var dropdownService = document.getElementById('dropdownService');
+      if (dropdownToggle && dropdownService) {
+        dropdownToggle.addEventListener('click', function(e) {
+          if (window.innerWidth <= 768) {
+            e.preventDefault();
+            dropdownService.classList.toggle('active');
+          }
+        });
+      }
+
+      if (navLinks) {
+        navLinks.querySelectorAll('a').forEach(function(link) {
+          link.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              navLinks.classList.remove('active');
+              if (menuToggle) {
+                var icon = menuToggle.querySelector('i');
+                icon.className = 'fas fa-bars';
+              }
+            }
+          });
+        });
+      }
+
+      var themeToggle = document.getElementById('themeToggle');
+      var themeIcon = themeToggle ? themeToggle.querySelector('i') : null;
+      var currentTheme = localStorage.getItem('theme') || 'dark';
+      if (currentTheme === 'light') {
+        document.body.classList.add('light-theme');
+        if (themeIcon) themeIcon.className = 'fas fa-sun';
+      }
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+          document.body.classList.toggle('light-theme');
+          var isLight = document.body.classList.contains('light-theme');
+          if (themeIcon) themeIcon.className = isLight ? 'fas fa-sun' : 'fas fa-moon';
+          localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        });
+      }
+    }
+
+    function setupJastipComments() {
+      var form = document.getElementById('jastipCommentForm');
+      var list = document.getElementById('jastipCommentList');
+      var submit = document.getElementById('jastipCommentSubmit');
+      if (!form || !list || typeof db === 'undefined') return;
+      var escapeComment = function(value) {
+        var element = document.createElement('div');
+        element.textContent = value == null ? '' : String(value);
+        return element.innerHTML;
+      };
+
+      var comments = {};
+      var renderComments = function() {
+        var items = Object.keys(comments).map(function(key) { return comments[key]; });
+        items.sort(function(first, second) { return second.time - first.time; });
+        if (!items.length) {
+          list.innerHTML = '<div class="jastip-comment-empty">Belum ada komentar. Jadilah yang pertama!</div>';
+          return;
+        }
+        list.innerHTML = items.map(function(item) {
+          return '<article class="jastip-comment"><strong>' + escapeComment(item.name || 'Anonim') + '</strong><p>' + escapeComment(item.message || '') + '</p><small>' + escapeComment(item.date || '') + '</small></article>';
+        }).join('');
+      };
+      var listen = function(collectionName, prefix) {
+        db.collection(collectionName).orderBy('timestamp', 'desc').limit(10).onSnapshot(function(snapshot) {
+          snapshot.forEach(function(doc) {
+            var data = doc.data();
+            var timestamp = data.timestamp && data.timestamp.seconds ? data.timestamp.seconds * 1000 : 0;
+            comments[prefix + doc.id] = { name: data.name, message: data.message, time: timestamp, date: timestamp ? new Date(timestamp).toLocaleString('id-ID') : '' };
+          });
+          renderComments();
+        }, function(error) {
+          console.warn('Komentar ' + collectionName + ' tidak tersedia:', error.message);
+          renderComments();
+        });
+      };
+
+      listen('messages', 'messages:');
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        var name = document.getElementById('jastipCommentName').value.trim();
+        var message = document.getElementById('jastipCommentMessage').value.trim();
+        if (!name || !message || submit.disabled) return;
+        submit.disabled = true;
+        submit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
+        db.collection('messages').add({ name: name, message: message, timestamp: firebase.firestore.FieldValue.serverTimestamp() }).then(function() {
+          form.reset();
+          showToast('Komentar berhasil dikirim.');
+        }).catch(function(error) {
+          console.error('Gagal mengirim komentar Jastip:', error);
+          showToast('Komentar gagal dikirim.');
+        }).then(function() {
+          submit.disabled = false;
+          submit.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim Komentar';
+        });
+      });
+    }
+
+    // ============================================================
+    // CLOUDINARY UPLOAD
+    // ============================================================
+    var CLOUD_NAME = 'dlwwy1f80';
+    var UPLOAD_PRESET = 'wallpaper_upload';
+
+    async function uploadToCloudinary(file) {
+      var url = 'https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/image/upload';
+      var formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', UPLOAD_PRESET);
+
+      var response = await fetch(url, {
+        method: 'POST',
+        body: formData
+      });
+      if (!response.ok) {
+        var errorData = await response.json();
+        throw new Error(errorData.error?.message || 'Upload gagal');
+      }
+      var data = await response.json();
+      return data.secure_url;
+    }
+
+    // ============================================================
+    // SUBMIT TITIP
+    // ============================================================
+    async function submitTitip() {
+      var nama = document.getElementById('tNama').value.trim();
+      var barang = document.getElementById('tBarang').value.trim();
+      var deskripsi = document.getElementById('tDeskripsi').value.trim();
+      var harga = document.getElementById('tHarga').value.trim();
+      var kategori = document.getElementById('tKategori').value;
+      var fotoFile = document.getElementById('tFoto').files[0];
+      var msgEl = document.getElementById('formMsg');
+      var submitBtn = document.getElementById('submitTitip');
+
+      if (!nama || !barang || !harga || !kategori || !fotoFile) {
+        msgEl.className = 'form-msg err show';
+        msgEl.textContent = '⚠️ Semua field wajib diisi!';
+        return;
+      }
+
+      var progress = document.getElementById('uploadProgress');
+      progress.style.display = 'block';
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengupload...';
+
+      try {
+        var imageUrl = await uploadToCloudinary(fotoFile);
+        progress.style.display = 'none';
+
+        if (typeof db === 'undefined') {
+          throw new Error('Database tidak tersedia. Refresh halaman.');
+        }
+
+        var docRef = await db.collection('jastip').add({
+          penjual: nama,
+          namaBarang: barang,
+          deskripsi: deskripsi || '',
+          harga: harga,
+          kategori: kategori || 'Lainnya',
+          gambar: imageUrl,
+          status: 'pending',
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        var waMsg = '*🆕 Titipan Baru!*\n\nNama Penjual: ' + nama + '\nBarang: ' + barang + '\nHarga: ' + harga + '\nDeskripsi: ' + (deskripsi || '-') + '\n\nKode: ' + docRef.id + '\n\n✅ Segera konfirmasi pembayaran Rp 5.000 untuk mengaktifkan.';
+        window.open('https://wa.me/6289687163314?text=' + encodeURIComponent(waMsg), '_blank');
+
+        msgEl.className = 'form-msg ok show';
+        msgEl.innerHTML = '✅ Titipan berhasil! Tunggu konfirmasi admin via WhatsApp.';
+        document.getElementById('formTitip').reset();
+        document.getElementById('filePreview').style.display = 'none';
+        setTimeout(function() { closeModal('modalTitip'); }, 2000);
+
+      } catch (err) {
+        console.error(err);
+        msgEl.className = 'form-msg err show';
+        msgEl.textContent = '❌ Gagal: ' + err.message;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim Titipan';
+        progress.style.display = 'none';
+      }
+    }
+
+    // ============================================================
+    // SUBMIT TAWAR
+    // ============================================================
+    function submitTawar() {
+      var id = document.getElementById('tawarItemId').value;
+      var namaBarang = document.getElementById('tawarItemName').value;
+      var namaPembeli = document.getElementById('tNamaPembeli').value.trim();
+      var wa = document.getElementById('tWaPembeli').value.trim();
+      var hargaTawar = document.getElementById('tHargaTawar').value.trim();
+      var msgEl = document.getElementById('tawarMsg');
+
+      if (!namaPembeli || !wa || !hargaTawar) {
+        msgEl.className = 'form-msg err show';
+        msgEl.textContent = '⚠️ Semua field wajib diisi!';
+        return;
+      }
+
+      var waMsg = '💬 *Tawaran Baru!*\n\nBarang: ' + namaBarang + '\nPembeli: ' + namaPembeli + '\nWA: ' + wa + '\nHarga Tawar: ' + hargaTawar + '\nKode: ' + id;
+      window.open('https://wa.me/6289687163314?text=' + encodeURIComponent(waMsg), '_blank');
+      msgEl.className = 'form-msg ok show';
+      msgEl.textContent = '✅ Tawaran terkirim! Admin akan menghubungkan dengan penjual.';
+      setTimeout(function() { closeModal('modalTawar'); }, 1500);
+    }
+
+    // ============================================================
+    // FUNGSI PESAN & TAWAR (global)
+    // ============================================================
+    window.pesanItem = function(id, namaBarang, penjual) {
+      var msg = 'Halo admin, saya tertarik dengan barang *' + namaBarang + '* dari *' + penjual + '*. Saya mau beli. Kode: ' + id;
+      window.open('https://wa.me/6289687163314?text=' + encodeURIComponent(msg), '_blank');
+    };
+
+    window.bukaTawar = function(id, namaBarang) {
+      document.getElementById('tawarItemId').value = id;
+      document.getElementById('tawarItemName').value = namaBarang;
+      document.getElementById('tNamaPembeli').value = '';
+      document.getElementById('tWaPembeli').value = '';
+      document.getElementById('tHargaTawar').value = '';
+      document.getElementById('tawarMsg').className = 'form-msg';
+      document.getElementById('tawarMsg').textContent = '';
+      openModal('modalTawar');
+    };
+
+    window.bagikanItem = function(id, namaBarang, penjual, harga) {
+      var shareUrl = new URL('jastip.html', window.location.href);
+      shareUrl.searchParams.set('item', id);
+      var shareData = {
+        title: namaBarang + ' - Jastip Akino Store',
+        text: namaBarang + ' dari ' + penjual + ' - ' + harga,
+        url: shareUrl.href
+      };
+
+      if (navigator.share) {
+        navigator.share(shareData).catch(function(error) {
+          if (error.name !== 'AbortError') showToast('Gagal membagikan post.');
+        });
+        return;
+      }
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(shareUrl.href).then(function() {
+          showToast('Link post berhasil disalin.');
+        }).catch(function() { salinLinkJastip(shareUrl.href); });
+      } else {
+        salinLinkJastip(shareUrl.href);
+      }
+    };
+
+    function salinLinkJastip(url) {
+      var input = document.createElement('input');
+      input.value = url;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      input.remove();
+      showToast('Link post berhasil disalin.');
+    }
+
+    function focusSharedItem() {
+      var itemId = new URLSearchParams(window.location.search).get('item');
+      if (!itemId) return;
+      var card = document.getElementById('jastip-' + itemId);
+      if (!card) return;
+      card.classList.add('shared-item');
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(function() { card.classList.remove('shared-item'); }, 2500);
+    }
+
+    // ============================================================
+    // RENDER JASTIP
+    // ============================================================
+    var jastipItems = [];
+    var jastipStatusFilter = 'all';
+    var jastipCategoryFilter = 'all';
+    var jastipSortFilter = 'newest';
+
+    function escapeHtml(value) {
+      var element = document.createElement('div');
+      element.textContent = value == null ? '' : String(value);
+      return element.innerHTML;
+    }
+
+    function updateJastipCategoryOptions() {
+      var select = document.getElementById('jastipCategoryFilter');
+      var categories = {};
+      jastipItems.forEach(function(item) {
+        var category = String(item.data.kategori || '').trim();
+        if (category) categories[category] = true;
+      });
+      var values = Object.keys(categories).sort(function(first, second) { return first.localeCompare(second); });
+      select.innerHTML = '<option value="all">Semua Kategori</option>' + values.map(function(category) {
+        return '<option value="' + escapeHtml(category) + '">' + escapeHtml(category) + '</option>';
+      }).join('');
+      select.value = values.indexOf(jastipCategoryFilter) >= 0 ? jastipCategoryFilter : 'all';
+      jastipCategoryFilter = select.value;
+    }
+
+    function renderJastipCards() {
+      var grid = document.getElementById('jastipGrid');
+      updateJastipCategoryOptions();
+      var items = jastipItems.filter(function(item) {
+        var category = item.data.kategori || 'Lainnya';
+        var statusMatches = jastipStatusFilter === 'all' || item.data.status === jastipStatusFilter;
+        var categoryMatches = jastipCategoryFilter === 'all' || category === jastipCategoryFilter;
+        return statusMatches && categoryMatches;
+      });
+      items.sort(function(first, second) {
+        if (jastipSortFilter === 'priceAsc' || jastipSortFilter === 'priceDesc') {
+          var firstPrice = parseInt(String(first.data.harga || '').replace(/[^0-9]/g, ''), 10) || 0;
+          var secondPrice = parseInt(String(second.data.harga || '').replace(/[^0-9]/g, ''), 10) || 0;
+          return jastipSortFilter === 'priceAsc' ? firstPrice - secondPrice : secondPrice - firstPrice;
+        }
+        return (second.time || 0) - (first.time || 0);
+      });
+      if (!items.length) {
+        grid.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i> Tidak ada titipan sesuai filter.</div>';
+        return;
+      }
+      var html = '';
+      items.forEach(function(item) {
+        var data = item.data;
+        var id = item.id;
+        var isSold = data.status === 'sold';
+        var soldClass = isSold ? 'sold' : '';
+        var soldBadge = isSold ? '<span class="sold-badge">TERJUAL</span>' : '';
+        var btnDisabled = isSold ? 'sold-btn' : '';
+        html += `
+        <div class="jastip-card ${soldClass}" id="jastip-${id}">
+          <img src="${data.gambar}" alt="${data.namaBarang}" class="card-image" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Crect width=%22200%22 height=%22200%22 fill=%22%231a1a2e%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23555%22 font-size=%2220%22%3ENo%20Image%3C/text%3E%3C/svg%3E'">
+          <div class="card-body">
+            <div class="item-name">${data.namaBarang}</div>
+            <div class="seller"><i class="fas fa-tag"></i> ${data.kategori || 'Lainnya'}</div>
+            <div class="seller"><i class="fas fa-user"></i> Dijual oleh: ${data.penjual}</div>
+            ${data.deskripsi ? `<div class="desc">${data.deskripsi}</div>` : ''}
+            <div class="price">${data.harga} ${soldBadge}</div>
+            <div class="btn-group">
+              <button class="btn-jastip primary" onclick="pesanItem('${id}','${data.namaBarang}','${data.penjual}')" ${btnDisabled}><i class="fas fa-comment"></i> Pesan</button>
+              <button class="btn-jastip secondary" onclick="bukaTawar('${id}','${data.namaBarang}')" ${btnDisabled}><i class="fas fa-gavel"></i> Tawar</button>
+              <button class="btn-jastip share" onclick="bagikanItem('${id}','${data.namaBarang}','${data.penjual}','${data.harga}')"><i class="fas fa-share-nodes"></i> Bagikan</button>
+            </div>
+          </div>
+        </div>`;
+      });
+      grid.innerHTML = html;
+      setTimeout(focusSharedItem, 50);
+    }
+
+    function renderJastip() {
+      var grid = document.getElementById('jastipGrid');
+      if (typeof db === 'undefined') {
+        grid.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i> Database tidak tersedia.</div>';
+        return;
+      }
+
+      db.collection('jastip')
+        .where('status', 'in', ['active', 'sold'])
+        .onSnapshot(function(snap) {
+          var docs = [];
+          snap.forEach(function(doc) { docs.push(doc); });
+          jastipItems = docs.map(function(doc) {
+            var createdAt = doc.data().createdAt;
+            return { id: doc.id, data: doc.data(), time: createdAt && createdAt.seconds ? createdAt.seconds * 1000 : 0 };
+          });
+          renderJastipCards();
+        }, function(err) {
+          console.error('Jastip listener error:', err);
+          grid.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i> Gagal memuat data.</div>';
+        });
+    }
+  </script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js')
+          .then(function() { console.log('✅ SW registered'); })
+          .catch(function(err) { console.log('❌ SW failed:', err); });
+      });
+    }
+
+    document.getElementById('jastipStatusFilter').addEventListener('change', function() {
+      jastipStatusFilter = this.value;
+      renderJastipCards();
+    });
+    document.getElementById('jastipSortFilter').addEventListener('change', function() {
+      jastipSortFilter = this.value;
+      renderJastipCards();
+    });
+    document.getElementById('jastipCategoryFilter').addEventListener('change', function() {
+      jastipCategoryFilter = this.value;
+      renderJastipCards();
+    });
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistration().then(function(reg) {
+        if (reg) {
+          reg.update();
+          reg.addEventListener('updatefound', function() {
+            var newSW = reg.installing;
+            newSW.addEventListener('statechange', function() {
+              if (newSW.state === 'installed') {
+                newSW.postMessage('skipWaiting');
+                setTimeout(function() { window.location.reload(); }, 800);
+              }
+            });
+          });
+        }
+      });
+    }
+  </script>
+  <script src="jastip-cta.js?v=4.7"></script>
+</body>
+</html>
