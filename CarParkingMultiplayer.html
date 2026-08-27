@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
@@ -18,13 +18,13 @@
   <title>Car Parking Multiplayer - Akino Store</title>
   <meta name="description" content="Layanan lengkap Car Parking Multiplayer: Tune Up, Glitch, Coin, Premium Car, Sirine, dan lainnya. Harga mulai 3rb, proses cepat via WhatsApp.">
   <meta name="keywords" content="Car Parking Multiplayer, CPM, tune up, glitch, coin, uang, premium car, sirine, livery, jasa CPM, Akino Store">
-  <link rel="canonical" href="https://akinocpm.my.id/CarParkingMultiplayer.html">
+  <link rel="canonical" href="https://akinoch.my.id/CarParkingMultiplayer.html">
   <link rel="icon" href="https://res.cloudinary.com/d39mdjct/image/upload/v1783478697/icon_tnzy32.ico" />
   <meta property="og:title" content="Car Parking Multiplayer - Akino Store">
   <meta property="og:description" content="Layanan lengkap CPM: Tune Up, Glitch, Coin, Premium Car, Sirine, dan lainnya. Harga bersahabat, proses cepat.">
   <meta property="og:image" content="https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png">
   <meta property="og:type" content="product">
-  <meta property="og:url" content="https://akinocpm.my.id/CarParkingMultiplayer.html">
+  <meta property="og:url" content="https://akinoch.my.id/CarParkingMultiplayer.html">
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -45,6 +45,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
+    /* ===== STYLE ===== */
     :root {
       --bg: #07070d;
       --bg-card: rgba(255,255,255,0.04);
@@ -63,7 +64,7 @@
       --shadow-card-hover: 0 16px 48px rgba(0,0,0,0.5);
       --nav-bg: rgba(7,7,13,0.6);
       --nav-scrolled: rgba(7,7,13,0.92);
-      --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --transition: 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
       --touch-size: 48px;
       --glow-opacity: 0.06;
     }
@@ -348,7 +349,7 @@
       transition:border-color .2s;
       appearance:none;
       -webkit-appearance:none;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236a6a82' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236a6a82' stroke-width='1.5' fill='none'%3E%3C/path%3E%3C/svg%3E");
       background-repeat:no-repeat;
       background-position:right 0.6rem center;
       min-height:30px;
@@ -434,7 +435,6 @@
       background:var(--accent-dim); color:var(--accent);
       margin-bottom:0.3rem; letter-spacing:0.3px;
     }
-    /* ===== BADGE PILIHAN (BARU) ===== */
     .service-card .option-badge {
       display:inline-block; font-size:0.55rem; font-weight:600;
       padding:0.1rem 0.5rem; border-radius:50px;
@@ -820,6 +820,9 @@
     <i class="fas fa-arrow-up"></i>
   </button>
 
+  <!-- ============================================================ -->
+  <!-- ===== SCRIPT UTAMA ===== -->
+  <!-- ============================================================ -->
   <script>
     // ===== TOAST FUNCTION =====
     function showToast(message) {
@@ -831,34 +834,39 @@
       toast._timeout = setTimeout(() => toast.classList.remove('show'), 3500);
     }
 
-    // ===== SHARE FUNCTION =====
+    // ===== SHARE SERVICE (dengan worker untuk thumbnail) =====
     function shareService(serviceName) {
-      const url = `https://akinocpm.my.id/order.html?service=${encodeURIComponent(serviceName)}`;
-      const text = `Saya mau pesan layanan "${serviceName}" di Akino Store. Yuk cek!`;
+      // 🔥 Gunakan worker untuk thumbnail
+      const shareUrl = `https://cpm.akinostore.workers.dev/?service=${encodeURIComponent(serviceName)}`;
 
       if (navigator.share) {
         navigator.share({
-          title: 'Akino Store - ' + serviceName,
-          text: text,
-          url: url
+          title: serviceName + ' - Car Parking Multiplayer | Akino Store',
+          url: shareUrl
         }).catch(() => {});
+        return;
+      }
+
+      // Fallback: copy link ke clipboard (tanpa teks tambahan)
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          showToast('Link layanan disalin!');
+        }).catch(() => {
+          fallbackShare(shareUrl);
+        });
       } else {
-        // Fallback: copy link ke clipboard, lalu beri notifikasi
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(url).then(() => {
-            showToast('Link layanan disalin! Bagikan ke teman Anda.');
-          }).catch(() => {
-            fallbackShare(url, text);
-          });
-        } else {
-          fallbackShare(url, text);
-        }
+        fallbackShare(shareUrl);
       }
     }
 
-    function fallbackShare(url, text) {
-      const waMsg = encodeURIComponent(text + '\n\n' + url);
-      window.open(`https://wa.me/?text=${waMsg}`, '_blank');
+    function fallbackShare(url) {
+      const input = document.createElement('input');
+      input.value = url;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      input.remove();
+      showToast('Link layanan disalin!');
     }
 
     // ===== NAVBAR, SLIDER, THEME =====
@@ -937,6 +945,9 @@
     }
   </script>
 
+  <!-- ============================================================ -->
+  <!-- ===== FIREBASE + RENDER SERVICES ===== -->
+  <!-- ============================================================ -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
     import {
@@ -1358,6 +1369,170 @@
       }
     }
     loadInitialMessages();
+  </script>
+
+  <!-- ============================================================ -->
+  <!-- ===== DETEKSI PARAMETER ?service= UNTUK AUTO SCROLL & POPUP ===== -->
+  <!-- ============================================================ -->
+  <script>
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      const serviceName = params.get('service');
+
+      if (!serviceName) return;
+
+      console.log('🎯 Layanan yang dipilih:', serviceName);
+
+      // Fungsi untuk membuka popup detail layanan
+      function openServicePopup(serviceName) {
+        // Cari data layanan dari card yang sudah dirender
+        const cards = document.querySelectorAll('.service-card');
+        let serviceData = null;
+        for (const card of cards) {
+          const titleEl = card.querySelector('h3');
+          if (titleEl && titleEl.textContent.trim() === serviceName) {
+            const priceEl = card.querySelector('.price');
+            const descEl = card.querySelector('.desc');
+            const imgEl = card.querySelector('img');
+            const btnOrder = card.querySelector('.btn-order');
+            serviceData = {
+              name: serviceName,
+              price: priceEl ? priceEl.textContent.trim() : '',
+              desc: descEl ? descEl.innerHTML : '',
+              image: imgEl ? imgEl.src : '',
+              orderUrl: btnOrder ? btnOrder.href : `order.html?service=${encodeURIComponent(serviceName)}`
+            };
+            break;
+          }
+        }
+
+        if (!serviceData) {
+          showToast('Layanan tidak ditemukan.', 'error');
+          return;
+        }
+
+        // Hapus popup yang sudah ada
+        const existing = document.getElementById('service-popup');
+        if (existing) existing.remove();
+
+        const overlay = document.createElement('div');
+        overlay.id = 'service-popup';
+        overlay.style.cssText = `
+          position: fixed; inset: 0; z-index: 9999;
+          background: rgba(0,0,0,0.85); backdrop-filter: blur(16px);
+          display: flex; align-items: center; justify-content: center;
+          padding: 1.5rem; animation: fadeIn 0.3s ease;
+        `;
+
+        overlay.innerHTML = `
+          <div style="
+            max-width: 460px; width: 100%;
+            background: var(--bg-card, #1a1a2e);
+            border: 1px solid var(--border, rgba(255,255,255,0.06));
+            border-radius: 16px; overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            animation: scaleIn 0.35s cubic-bezier(0.32,0.72,0,1);
+          ">
+            <div style="position:relative; padding:0.5rem; background:#0a0a12;">
+              <img src="${serviceData.image}" alt="${serviceData.name}" style="width:100%; height:180px; object-fit:cover; border-radius:8px;" onerror="this.src='placeholder.png'">
+              <button onclick="document.getElementById('service-popup').remove()" style="
+                position:absolute; top:8px; right:8px;
+                width:34px; height:34px; border-radius:50%;
+                background:rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.08);
+                color:#fff; font-size:1.1rem; cursor:pointer;
+                display:flex; align-items:center; justify-content:center;
+              "><i class="fas fa-xmark"></i></button>
+            </div>
+            <div style="padding:1.2rem 1.5rem 1.5rem;">
+              <h3 style="font-family:var(--font-display); font-size:1.1rem; font-weight:600; margin-bottom:0.2rem;">${serviceData.name}</h3>
+              <div style="font-family:var(--font-display); font-size:1.1rem; font-weight:700; color:var(--accent, #FFDD57); margin-bottom:0.4rem;">${serviceData.price}</div>
+              <div style="font-size:0.85rem; color:var(--muted, #a0a0b8); line-height:1.6; margin-bottom:1rem;">${serviceData.desc}</div>
+              <div style="display:flex; gap:0.5rem;">
+                <a href="${serviceData.orderUrl}" class="btn-order" style="flex:1; justify-content:center;"><i class="fas fa-cart-plus"></i> Pesan</a>
+                <button onclick="document.getElementById('service-popup').remove()" style="
+                  flex:0.5; padding:0.6rem 1rem; border-radius:10px;
+                  background:var(--bg-card, rgba(255,255,255,0.04));
+                  border:1px solid var(--border, rgba(255,255,255,0.06));
+                  color:var(--muted, #a0a0b8); font-size:0.85rem;
+                  cursor:pointer;
+                ">Tutup</button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        document.body.appendChild(overlay);
+
+        // Close on backdrop click
+        overlay.addEventListener('click', (e) => {
+          if (e.target === overlay) overlay.remove();
+        });
+
+        // Close on Escape
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && document.getElementById('service-popup')) {
+            document.getElementById('service-popup').remove();
+          }
+        }, { once: true });
+      }
+
+      // Tunggu hingga grid selesai di-render
+      let attempts = 0;
+      const maxAttempts = 30; // 30 x 300ms = 9 detik
+
+      function findAndScrollToService() {
+        const cards = document.querySelectorAll('.service-card');
+        let found = false;
+
+        for (const card of cards) {
+          const titleEl = card.querySelector('h3');
+          if (titleEl && titleEl.textContent.trim() === serviceName) {
+            found = true;
+            // Scroll ke card dengan offset navbar
+            const yOffset = -80;
+            const y = card.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+
+            // Tambahkan highlight/glow
+            card.style.transition = 'box-shadow 0.5s ease, border-color 0.5s ease';
+            card.style.borderColor = '#FFDD57';
+            card.style.boxShadow = '0 0 40px rgba(255, 221, 87, 0.5), 0 8px 32px rgba(255, 221, 87, 0.3)';
+
+            // Hilangkan highlight setelah 5 detik
+            setTimeout(() => {
+              card.style.borderColor = '';
+              card.style.boxShadow = '';
+            }, 5000);
+
+            // 🔥 Buka popup detail setelah scroll
+            setTimeout(() => {
+              openServicePopup(serviceName);
+            }, 600);
+
+            break;
+          }
+        }
+
+        if (!found) {
+          attempts++;
+          if (attempts < maxAttempts) {
+            setTimeout(findAndScrollToService, 300);
+          } else {
+            console.warn('⚠️ Layanan tidak ditemukan:', serviceName);
+            showToast('Layanan "' + serviceName + '" tidak ditemukan.', 'error');
+          }
+        }
+      }
+
+      // Mulai pencarian setelah halaman siap
+      if (document.readyState === 'complete') {
+        setTimeout(findAndScrollToService, 800);
+      } else {
+        window.addEventListener('load', () => {
+          setTimeout(findAndScrollToService, 1000);
+        });
+      }
+    })();
   </script>
 
   <script>

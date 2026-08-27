@@ -5,13 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   <title>Jastip - Titip Jualan | Akino Store</title>
   <meta name="description" content="Titip jual barangmu di Akino Store mulai Rp5.000. Tampil sampai laku dengan bantuan rekber dan admin.">
-  <link rel="canonical" href="https://akinocpm.my.id/jastip.html">
-  <meta property="og:title" content="Jastip Akino Store - Titip Jualan">
-  <meta property="og:description" content="Jual barangmu lebih mudah. Titipkan di Akino Store mulai Rp5.000 dan tampil sampai laku.">
+  <link rel="canonical" href="https://akinoch.my.id/jastip.html">
+
+  <!-- ===== OPEN GRAPH (static fallback, akan di-update oleh JS) ===== -->
+  <meta property="og:title" content="Jastip - Titip Jualan | Akino Store">
+  <meta property="og:description" content="Titip jual barangmu di Akino Store mulai Rp5.000. Tampil sampai laku dengan bantuan rekber dan admin.">
   <meta property="og:image" content="https://res.cloudinary.com/d39mdjct/image/upload/v1783493763/apk_pgxcmo.png">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://akinocpm.my.id/jastip.html">
+  <meta property="og:url" content="https://akinoch.my.id/jastip.html">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Jastip - Titip Jualan | Akino Store">
+  <meta name="twitter:description" content="Titip jual barangmu di Akino Store mulai Rp5.000. Tampil sampai laku dengan bantuan rekber dan admin.">
+  <meta name="twitter:image" content="https://res.cloudinary.com/d39mdjct/image/upload/v1783493763/apk_pgxcmo.png">
+
   <link rel="manifest" href="/manifest.json?v=4.2" />
   <link rel="stylesheet" href="jastip-cta.css">
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -30,7 +36,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="icon" href="https://res.cloudinary.com/d39mdjct/image/upload/v1783478697/icon_tnzy32.ico" />
   <style>
-    /* ===== SAME STYLES AS BEFORE ===== */
+    /* ===== SEMUA STYLE SAMA SEPERTI SEBELUMNYA ===== */
+    /* (saya singkat agar tidak terlalu panjang, tapi tetap lengkap) */
     :root {
       --bg: #07070d;
       --bg-card: rgba(255,255,255,0.04);
@@ -1026,6 +1033,9 @@
 
       // ===== NAVBAR & THEME =====
       setupThemeAndNavbar();
+
+      // ===== DYNAMIC OPEN GRAPH UNTUK SHARE (browser) =====
+      updateDynamicOG();
     });
 
     // ============================================================
@@ -1243,7 +1253,7 @@
     }
 
     // ============================================================
-    // SUBMIT TAWAR
+    // SUBMIT TAWAR (dengan link postingan)
     // ============================================================
     function submitTawar() {
       var id = document.getElementById('tawarItemId').value;
@@ -1259,7 +1269,10 @@
         return;
       }
 
-      var waMsg = '💬 *Tawaran Baru!*\n\nBarang: ' + namaBarang + '\nPembeli: ' + namaPembeli + '\nWA: ' + wa + '\nHarga Tawar: ' + hargaTawar + '\nKode: ' + id;
+      // 🔥 BUAT LINK LENGKAP KE POSTINGAN (gunakan URL web utama)
+      var detailUrl = 'https://akinoch.my.id/jastip.html?item=' + encodeURIComponent(id);
+
+      var waMsg = '💬 *Tawaran Baru!*\n\nBarang: ' + namaBarang + '\nPembeli: ' + namaPembeli + '\nWA: ' + wa + '\nHarga Tawar: ' + hargaTawar + '\n\nLink postingan: ' + detailUrl;
       window.open('https://wa.me/6289687163314?text=' + encodeURIComponent(waMsg), '_blank');
       msgEl.className = 'form-msg ok show';
       msgEl.textContent = '✅ Tawaran terkirim! Admin akan menghubungkan dengan penjual.';
@@ -1285,28 +1298,30 @@
       openModal('modalTawar');
     };
 
+    // ============================================================
+    // BAGIKAN ITEM - menggunakan worker untuk thumbnail
+    // ============================================================
     window.bagikanItem = function(id, namaBarang, penjual, harga) {
-      var shareUrl = new URL('jastip.html', window.location.href);
-      shareUrl.searchParams.set('item', id);
-      var shareData = {
-        title: namaBarang + ' - Jastip Akino Store',
-        text: namaBarang + ' dari ' + penjual + ' - ' + harga,
-        url: shareUrl.href
-      };
+      // 🔥 GUNKAN WORKER UNTUK THUMBNAIL
+      var shareUrl = 'https://jastip.akinostore.workers.dev/?item=' + encodeURIComponent(id);
 
       if (navigator.share) {
-        navigator.share(shareData).catch(function(error) {
+        navigator.share({
+          title: namaBarang + ' - Jastip Akino Store',
+          text: namaBarang + ' dari ' + penjual + ' - ' + harga,
+          url: shareUrl
+        }).catch(function(error) {
           if (error.name !== 'AbortError') showToast('Gagal membagikan post.');
         });
         return;
       }
 
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(shareUrl.href).then(function() {
+        navigator.clipboard.writeText(shareUrl).then(function() {
           showToast('Link post berhasil disalin.');
-        }).catch(function() { salinLinkJastip(shareUrl.href); });
+        }).catch(function() { salinLinkJastip(shareUrl); });
       } else {
-        salinLinkJastip(shareUrl.href);
+        salinLinkJastip(shareUrl);
       }
     };
 
@@ -1328,6 +1343,50 @@
       card.classList.add('shared-item');
       card.scrollIntoView({ behavior: 'smooth', block: 'center' });
       setTimeout(function() { card.classList.remove('shared-item'); }, 2500);
+    }
+
+    // ============================================================
+    // DYNAMIC OPEN GRAPH UNTUK BROWSER (saat user buka link langsung)
+    // ============================================================
+    function updateDynamicOG() {
+      var itemId = new URLSearchParams(window.location.search).get('item');
+      if (!itemId) return;
+
+      if (typeof db === 'undefined') {
+        console.warn('Firestore tidak tersedia, OG tidak dapat diupdate.');
+        return;
+      }
+
+      db.collection('jastip').doc(itemId).get()
+        .then(function(doc) {
+          if (!doc.exists) return;
+          var data = doc.data();
+          var title = data.namaBarang || 'Jastip - Akino Store';
+          var description = data.deskripsi || 'Dijual oleh ' + (data.penjual || '') + ' | Harga: ' + (data.harga || '');
+          var image = data.gambar || 'https://res.cloudinary.com/d39mdjct/image/upload/v1783493763/apk_pgxcmo.png';
+          var url = 'https://akinoch.my.id/jastip.html?item=' + itemId;
+
+          var ogTitle = document.querySelector('meta[property="og:title"]');
+          var ogDesc = document.querySelector('meta[property="og:description"]');
+          var ogImage = document.querySelector('meta[property="og:image"]');
+          var ogUrl = document.querySelector('meta[property="og:url"]');
+          var twitterTitle = document.querySelector('meta[name="twitter:title"]');
+          var twitterDesc = document.querySelector('meta[name="twitter:description"]');
+          var twitterImage = document.querySelector('meta[name="twitter:image"]');
+          var pageTitle = document.querySelector('title');
+
+          if (ogTitle) ogTitle.setAttribute('content', title + ' - Jastip Akino Store');
+          if (ogDesc) ogDesc.setAttribute('content', description);
+          if (ogImage) ogImage.setAttribute('content', image);
+          if (ogUrl) ogUrl.setAttribute('content', url);
+          if (twitterTitle) twitterTitle.setAttribute('content', title + ' - Jastip Akino Store');
+          if (twitterDesc) twitterDesc.setAttribute('content', description);
+          if (twitterImage) twitterImage.setAttribute('content', image);
+          if (pageTitle) pageTitle.textContent = title + ' - Jastip Akino Store';
+        })
+        .catch(function(err) {
+          console.warn('Gagal update OG:', err);
+        });
     }
 
     // ============================================================

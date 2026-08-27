@@ -3,11 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <title>Order CPM - Akino Store</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="icon" href="https://res.cloudinary.com/d39mdjct/image/upload/v1783478697/icon_tnzy32.ico" />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="manifest" href="/manifest.json?v=4.2" />
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -20,20 +15,25 @@
   <link rel="apple-touch-icon" sizes="152x152" href="https://res.cloudinary.com/d39mdjct/image/upload/w_152,h_152,c_fit/v1783493763/apk_pgxcmo.png" />
   <link rel="apple-touch-icon" sizes="167x167" href="https://res.cloudinary.com/d39mdjct/image/upload/w_167,h_167,c_fit/v1783493763/apk_pgxcmo.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/d39mdjct/image/upload/w_180,h_180,c_fit/v1783493763/apk_pgxcmo.png" />
+  <title>Order Layanan - Akino Store</title>
+  <meta name="description" content="Pesan layanan Car Parking Multiplayer dengan mudah dan cepat. Harga mulai Rp 3.000.">
+  <link rel="canonical" href="https://akinoch.my.id/order.html">
 
-  <!-- ===== OPEN GRAPH META TAGS (STATIS FALLBACK) ===== -->
-  <meta property="og:title" content="Order Layanan CPM - Akino Store" />
-  <meta property="og:description" content="Pesan layanan Car Parking Multiplayer dengan mudah dan cepat. Harga mulai Rp 3.000." />
-  <meta property="og:image" content="https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://akinocpm.my.id/order.html" />
-  <meta property="og:site_name" content="Akino Store" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Order Layanan CPM - Akino Store" />
-  <meta name="twitter:description" content="Pesan layanan Car Parking Multiplayer dengan mudah dan cepat. Harga mulai Rp 3.000." />
-  <meta name="twitter:image" content="https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png" />
+  <!-- Open Graph (akan di-update oleh JS) -->
+  <meta property="og:title" content="Order Layanan - Akino Store">
+  <meta property="og:description" content="Pesan layanan Car Parking Multiplayer dengan mudah dan cepat.">
+  <meta property="og:image" content="https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://akinoch.my.id/order.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Order Layanan - Akino Store">
+  <meta name="twitter:description" content="Pesan layanan Car Parking Multiplayer dengan mudah dan cepat.">
+  <meta name="twitter:image" content="https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" href="https://res.cloudinary.com/d39mdjct/image/upload/v1783478697/icon_tnzy32.ico" />
 
   <style>
     :root {
@@ -54,7 +54,7 @@
       --shadow-card-hover: 0 16px 48px rgba(0,0,0,0.5);
       --nav-bg: rgba(7,7,13,0.6);
       --nav-scrolled: rgba(7,7,13,0.92);
-      --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --transition: 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
       --touch-size: 48px;
       --glow-opacity: 0.06;
     }
@@ -196,7 +196,7 @@
     .dropdown-menu a:hover { background:var(--accent-dim); color:var(--accent); }
 
     .breadcrumb {
-      max-width:600px;
+      max-width:1100px;
       margin: 4.5rem auto 0.5rem;
       padding:0 1rem;
       font-size:0.7rem;
@@ -232,7 +232,51 @@
       font-weight:500;
     }
 
-    /* PRICE DISPLAY */
+    /* THUMBNAIL */
+    .service-thumbnail {
+      max-width:560px;
+      margin:0.5rem auto 1rem;
+      padding:0 1rem;
+    }
+    .service-thumbnail .thumb-wrap {
+      background:var(--bg-card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      gap:1rem;
+      padding:0.8rem 1rem;
+    }
+    .service-thumbnail .thumb-wrap img {
+      width:80px;
+      height:80px;
+      object-fit:cover;
+      border-radius:var(--radius-sm);
+      background:#0a0a12;
+      flex-shrink:0;
+    }
+    .service-thumbnail .thumb-wrap .thumb-info {
+      flex:1;
+      min-width:0;
+    }
+    .service-thumbnail .thumb-wrap .thumb-info .thumb-name {
+      font-family:var(--font-display);
+      font-size:0.95rem;
+      font-weight:600;
+      margin-bottom:0.05rem;
+    }
+    .service-thumbnail .thumb-wrap .thumb-info .thumb-price {
+      font-family:var(--font-display);
+      font-size:0.85rem;
+      font-weight:700;
+      color:var(--accent);
+    }
+    .service-thumbnail .thumb-wrap .thumb-info .thumb-cat {
+      font-size:0.65rem;
+      color:var(--muted-dim);
+    }
+
     .price-display {
       background:var(--bg-card);
       border:1px solid var(--border);
@@ -419,6 +463,70 @@
       box-shadow:none !important;
     }
     .btn-submit i { font-size:1rem; }
+
+    .btn-back {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:0.4rem;
+      padding:0.6rem 1.2rem;
+      margin-top:0.8rem;
+      border-radius:var(--radius-sm);
+      background:var(--bg-card);
+      border:1px solid var(--border);
+      color:var(--muted);
+      font-family:var(--font-body);
+      font-size:0.85rem;
+      font-weight:500;
+      cursor:pointer;
+      transition:all 0.3s ease;
+      text-decoration:none;
+      min-height:44px;
+      width:100%;
+    }
+    .btn-back:hover {
+      border-color:var(--border-hover);
+      color:var(--fg);
+      background:var(--bg-card-hover);
+    }
+    .btn-back:active {
+      transform:scale(0.96);
+    }
+
+    .share-section-order {
+      display:flex;
+      flex-wrap:wrap;
+      gap:0.5rem;
+      margin-top:1rem;
+      padding-top:1rem;
+      border-top:1px solid var(--border);
+    }
+    .share-section-order .share-label {
+      font-size:0.7rem;
+      color:var(--muted-dim);
+      width:100%;
+      font-weight:500;
+      letter-spacing:0.3px;
+    }
+    .share-section-order .share-btn {
+      padding:0.4rem 0.8rem;
+      border-radius:var(--radius-sm);
+      background:var(--bg-card);
+      border:1px solid var(--border);
+      color:var(--muted);
+      font-size:0.75rem;
+      cursor:pointer;
+      transition:all var(--transition);
+      display:inline-flex;
+      align-items:center;
+      gap:0.3rem;
+    }
+    .share-section-order .share-btn:hover {
+      border-color:var(--accent);
+      color:var(--fg);
+      background:var(--accent-dim);
+    }
+
     .footer {
       padding:2rem 1rem 1rem;
       border-top:1px solid var(--border);
@@ -427,6 +535,34 @@
       font-size:0.7rem;
       color:var(--muted);
     }
+
+    .social-row {
+      display:flex;
+      justify-content:center;
+      gap:0.6rem;
+      padding:0.5rem 1rem 1rem;
+    }
+    .social-row a {
+      width:42px;
+      height:42px;
+      border-radius:var(--radius-sm);
+      background:var(--bg-card);
+      border:1px solid var(--border);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--muted);
+      font-size:0.95rem;
+      transition:all var(--transition);
+      text-decoration:none;
+    }
+    .social-row a:hover {
+      color:var(--accent);
+      border-color:var(--accent);
+      background:var(--accent-dim);
+      transform:translateY(-3px);
+    }
+
     @media (min-width:768px) {
       .navbar { padding:0.8rem 2rem; }
       .menu-toggle { display:none; }
@@ -473,7 +609,7 @@
       <li><a href="index.html">Home</a></li>
       <li><a href="about.html">About</a></li>
       <li class="dropdown" id="dropdownService">
-        <a href="#" id="dropdownToggle">Service <i class="fas fa-chevron-down" style="font-size:0.5rem;margin-left:4px;"></i></a>
+        <a href="#" class="active" id="dropdownToggle">Service <i class="fas fa-chevron-down" style="font-size:0.5rem;margin-left:4px;"></i></a>
         <ul class="dropdown-menu">
           <li><a href="CarParkingMultiplayer.html">Car Parking Multiplayer</a></li>
           <li><a href="SosialMedia.html">Layanan Sosial Media</a></li>
@@ -504,6 +640,18 @@
       <div class="price-method" id="priceMethod"></div>
     </div>
   </header>
+
+  <!-- THUMBNAIL LAYANAN -->
+  <div class="service-thumbnail" id="serviceThumbnail" style="display:none;">
+    <div class="thumb-wrap">
+      <img id="thumbImage" src="" alt="Thumbnail" onerror="this.style.display='none'">
+      <div class="thumb-info">
+        <div class="thumb-name" id="thumbName">Nama Layanan</div>
+        <div class="thumb-price" id="thumbPrice">Rp 0</div>
+        <div class="thumb-cat" id="thumbCat">Kategori</div>
+      </div>
+    </div>
+  </div>
 
   <div class="form-wrap">
     <div class="order-form">
@@ -580,170 +728,34 @@
       <button type="button" id="submitBtn" class="btn-submit" disabled onclick="submitOrder()">
         <i class="fab fa-whatsapp"></i> Kirim Pesanan via WhatsApp
       </button>
+
+      <a href="CarParkingMultiplayer.html" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Kembali ke Layanan
+      </a>
+
+      <!-- SHARE SECTION -->
+      <div class="share-section-order" id="shareSection" style="display:none;">
+        <span class="share-label"><i class="fas fa-share-alt"></i> Bagikan layanan ini:</span>
+        <button class="share-btn" onclick="copyShareLink()"><i class="fas fa-copy"></i> Copy Link</button>
+        <button class="share-btn" onclick="shareWALink()"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+        <button class="share-btn" onclick="shareTwitterLink()"><i class="fab fa-twitter"></i> Twitter</button>
+      </div>
     </div>
   </div>
 
   <section class="jastip-cta" aria-label="Layanan Jastip"><div class="jastip-cta-inner"><div class="jastip-cta-copy"><span class="jastip-cta-kicker"><i class="fas fa-box-open"></i> Layanan baru</span><h2>Jual barangmu tanpa ribet.</h2><p>Gunakan Jastip Akino Store untuk menjangkau pembeli dan mengatur transaksi dengan lebih aman.</p><div class="jastip-cta-points"><span><i class="fas fa-check-circle"></i> Biaya mulai Rp5.000</span><span><i class="fas fa-headset"></i> Dibantu admin</span></div></div><a class="jastip-cta-link" href="jastip.html">Titip Jualan <i class="fas fa-arrow-right"></i></a></div></section>
 
+  <div class="social-row">
+    <a href="https://www.tiktok.com/@akinolaset_?_t=8pbChkK23O6&_r=1" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+    <a href="https://www.instagram.com/akinostore_?igsh=MWxqbGpham5ocjhyOA==" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://youtube.com/@akinolaset?si=e4NLLQrgN0R3BPi4" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+    <a href="https://wa.me/6289687163314" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+  </div>
+
   <footer class="footer">&copy; 2022 Akino Store. All rights reserved.</footer>
 
   <script>
-    // ===== OPEN GRAPH DYNAMIC UPDATE =====
-    function updateOpenGraph(serviceName) {
-      const SERVICE_OG_DATA = {
-        "Tune Up": {
-          title: "Tune Up CPM - Akino Store",
-          desc: "Pesan layanan Tune Up untuk Car Parking Multiplayer. Kecepatan seperti standard tapi lebih kencang. Race 400m ±5/6 detik.",
-          image: "https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png"
-        },
-        "Tune Up Suara Asli / ECU": {
-          title: "Tune Up Suara Asli / ECU - Akino Store",
-          desc: "Pesan layanan Tune Up Suara Asli / ECU untuk Car Parking Multiplayer. Performa maksimal dengan suara asli.",
-          image: "https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png"
-        },
-        "FFA / Ghoib": {
-          title: "FFA / Ghoib CPM - Akino Store",
-          desc: "Pesan layanan FFA / Ghoib untuk Car Parking Multiplayer. Bisa jalan auto dan saat balap berubah menjadi glitch.",
-          image: "https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png"
-        },
-        "FFA / Ghoib Suara Asli / ECU": {
-          title: "FFA / Ghoib Suara Asli / ECU - Akino Store",
-          desc: "Pesan layanan FFA / Ghoib Suara Asli / ECU untuk Car Parking Multiplayer. Performa glitch dengan suara asli.",
-          image: "https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png"
-        },
-        "Glitch": {
-          title: "Glitch CPM - Akino Store",
-          desc: "Pesan layanan Glitch untuk Car Parking Multiplayer. Mode cepat (manual) untuk balapan. Race 400m ±4/5 detik.",
-          image: "https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png"
-        },
-        "Glitch Suara Asli / ECU": {
-          title: "Glitch Suara Asli / ECU - Akino Store",
-          desc: "Pesan layanan Glitch Suara Asli / ECU untuk Car Parking Multiplayer. Glitch dengan suara asli + performa maksimal.",
-          image: "https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png"
-        },
-        "Spek Brake Boost": {
-          title: "Spek Brake Boost CPM - Akino Store",
-          desc: "Pesan layanan Spek Brake Boost untuk Car Parking Multiplayer. Spek seperti FFA, permanen untuk semua mobil.",
-          image: "https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png"
-        },
-        "Chrome / Bakar Body / Velg": {
-          title: "Chrome / Bakar Body / Velg - Akino Store",
-          desc: "Pesan layanan Chrome / Bakar Body / Velg untuk Car Parking Multiplayer. Cat chrome atau bakar pada body/velg.",
-          image: "https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png"
-        },
-        "Custom Spoiler / Trondol": {
-          title: "Custom Spoiler / Trondol - Akino Store",
-          desc: "Pesan layanan Custom Spoiler / Trondol untuk Car Parking Multiplayer. Pasang spoiler custom sesuai keinginan.",
-          image: "https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png"
-        },
-        "Alis Nyala / Kaliper": {
-          title: "Alis Nyala / Kaliper - Akino Store",
-          desc: "Pesan layanan Alis Nyala / Kaliper untuk Car Parking Multiplayer. Tambahkan alis nyala atau kaliper pada mobil.",
-          image: "https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png"
-        },
-        "Unlock Paid / Premium Car": {
-          title: "Unlock Premium Car CPM - Akino Store",
-          desc: "Pesan layanan Unlock Paid / Premium Car untuk Car Parking Multiplayer. Unlock mobil cash dengan mesin W16 / Brake Boost.",
-          image: "https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png"
-        },
-        "Unlock Premium Car + Sirine": {
-          title: "Unlock Premium Car + Sirine - Akino Store",
-          desc: "Pesan layanan Unlock Premium Car + Sirine untuk Car Parking Multiplayer. Dapatkan mobil premium plus sirine.",
-          image: "https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png"
-        },
-        "Unlock Premium Body": {
-          title: "Unlock Premium Body - Akino Store",
-          desc: "Pesan layanan Unlock Premium Body untuk Car Parking Multiplayer. Dapatkan body premium untuk mobil Anda.",
-          image: "https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png"
-        },
-        "Isi Koin Bebas Request": {
-          title: "Isi Koin Bebas Request - Akino Store",
-          desc: "Pesan layanan Isi Koin Bebas Request untuk Car Parking Multiplayer. Isi koin sesuai request (maks 500.000).",
-          image: "https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png"
-        },
-        "Isi 50.000.000 Uang": {
-          title: "Isi 50.000.000 Uang CPM - Akino Store",
-          desc: "Pesan layanan Isi 50.000.000 Uang untuk Car Parking Multiplayer. Top up uang 50 juta dengan cepat.",
-          image: "https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png"
-        },
-        "Bundle Uang + Koin (bebas req koin)": {
-          title: "Bundle Uang + Koin - Akino Store",
-          desc: "Pesan layanan Bundle Uang + Koin untuk Car Parking Multiplayer. Paket hemat uang + koin (request jumlah koin).",
-          image: "https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png"
-        },
-        "Akun King Baru (Free Koin+Uang+unlock W16)": {
-          title: "Akun King Baru CPM - Akino Store",
-          desc: "Pesan layanan Akun King Baru untuk Car Parking Multiplayer. Bonus isi uang + koin + W16 (stock/akun baru).",
-          image: "https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png"
-        },
-        "Request Livery Mobil": {
-          title: "Request Livery Mobil - Akino Store",
-          desc: "Pesan layanan Request Livery Mobil untuk Car Parking Multiplayer. Desain livery sesuai permintaan Anda.",
-          image: "https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png"
-        },
-        "Stock Mobil Murah dan Secret Car": {
-          title: "Stock Mobil Murah & Secret Car - Akino Store",
-          desc: "Lihat stock mobil murah dan secret car untuk Car Parking Multiplayer. Pilih sendiri dari stok yang tersedia.",
-          image: "https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png"
-        },
-        "Paket Alis nyala + Kaliper": {
-          title: "Paket Alis Nyala + Kaliper - Akino Store",
-          desc: "Pesan layanan Paket Alis Nyala + Kaliper untuk Car Parking Multiplayer. Pasang alis nyala dan kaliper sekaligus.",
-          image: "https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png"
-        },
-        "Paket Chrome Velg atau Body + Alis atau Kaliper": {
-          title: "Paket Chrome + Alis/Kaliper - Akino Store",
-          desc: "Pesan layanan Paket Chrome Velg/Body + Alis/Kaliper untuk Car Parking Multiplayer. Paket hemat untuk tampilan keren.",
-          image: "https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png"
-        },
-        "Paket Chrome Velg atau Body + Alis + Kaliper": {
-          title: "Paket Chrome + Alis + Kaliper - Akino Store",
-          desc: "Pesan layanan Paket Chrome Velg/Body + Alis + Kaliper untuk Car Parking Multiplayer. Paket lengkap styling mobil.",
-          image: "https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png"
-        },
-        "Paket rubah Spek mesin + (pilihan Chrome Velg/Body, Alis/Kaliper)": {
-          title: "Paket Rubah Spek + Chrome/Alis - Akino Store",
-          desc: "Pesan layanan Paket Rubah Spek mesin + pilihan Chrome/Alis/Kaliper untuk Car Parking Multiplayer.",
-          image: "https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png"
-        },
-        "Paket Lengkap rubah Spek mesin + Chrome velg atau Body + Alis + Kaliper nyala": {
-          title: "Paket Lengkap CPM - Akino Store",
-          desc: "Pesan layanan Paket Lengkap untuk Car Parking Multiplayer. Rubah spek + Chrome + Alis + Kaliper nyala.",
-          image: "https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png"
-        },
-        "Paket Custom Spoiler + Trondol": {
-          title: "Paket Custom Spoiler + Trondol - Akino Store",
-          desc: "Pesan layanan Paket Custom Spoiler + Trondol untuk Car Parking Multiplayer. Pasang spoiler dan trondol custom.",
-          image: "https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png"
-        }
-      };
-
-      const data = SERVICE_OG_DATA[serviceName];
-      if (!data) return;
-
-      // Update meta tags
-      const ogTitle = document.querySelector('meta[property="og:title"]');
-      const ogDesc = document.querySelector('meta[property="og:description"]');
-      const ogImage = document.querySelector('meta[property="og:image"]');
-      const ogUrl = document.querySelector('meta[property="og:url"]');
-      const twitterTitle = document.querySelector('meta[name="twitter:title"]');
-      const twitterDesc = document.querySelector('meta[name="twitter:description"]');
-      const twitterImage = document.querySelector('meta[name="twitter:image"]');
-      const pageTitle = document.querySelector('title');
-
-      const url = window.location.href;
-
-      if (ogTitle) ogTitle.setAttribute('content', data.title);
-      if (ogDesc) ogDesc.setAttribute('content', data.desc);
-      if (ogImage) ogImage.setAttribute('content', data.image);
-      if (ogUrl) ogUrl.setAttribute('content', url);
-      if (twitterTitle) twitterTitle.setAttribute('content', data.title);
-      if (twitterDesc) twitterDesc.setAttribute('content', data.desc);
-      if (twitterImage) twitterImage.setAttribute('content', data.image);
-      if (pageTitle) pageTitle.textContent = data.title;
-    }
-
-    // ===== SHOW TOAST FUNCTION =====
+    // ===== SHOW TOAST =====
     function showToast(msg) {
       const t = document.getElementById('toast');
       document.getElementById('toastMessage').textContent = msg;
@@ -752,7 +764,7 @@
       t._timeout = setTimeout(() => t.classList.remove('show'), 3500);
     }
 
-    // === NAVBAR, THEME ===
+    // ===== NAVBAR / THEME =====
     window.addEventListener('scroll', () => {
       document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
     });
@@ -788,16 +800,19 @@
     }
     themeToggle.addEventListener('click', () => {
       document.body.classList.toggle('light-theme');
-      const isLight = document.body.classList.contains('light-theme');
+      const isLight = body.classList.contains('light-theme');
       themeIcon.className = isLight ? 'fas fa-sun' : 'fas fa-moon';
       localStorage.setItem('theme', isLight ? 'light' : 'dark');
     });
 
-    // ===== DATA HARGA =====
+    // ============================================================
+    // DATA HARGA & LAYANAN
+    // ============================================================
     const EXCHANGE_RATE = 3400;
     function formatIDR(amount) { return 'Rp ' + amount.toLocaleString('id-ID'); }
     function formatMYR(amount) { return '≈ RM ' + (amount / EXCHANGE_RATE).toFixed(2); }
 
+    // SERVICE_PRICES untuk price display
     const SERVICE_PRICES = {
       "Tune Up": { login: 3000, room: 5000 },
       "Tune Up Suara Asli / ECU": { login: 3000, room: 5000 },
@@ -825,166 +840,133 @@
       "Paket Custom Spoiler + Trondol": { login: 5000, room: 8000 }
     };
 
+    // SERVICE_IMAGES untuk thumbnail
+    const SERVICE_IMAGES = {
+      "Tune Up": "Error.png",
+      "Tune Up Suara Asli / ECU": "Error.png",
+      "FFA / Ghoib": "Error.png",
+      "FFA / Ghoib Suara Asli / ECU": "Error.png",
+      "Glitch": "Error.png",
+      "Glitch Suara Asli / ECU": "Error.png",
+      "Spek Brake Boost": "20240911_122112_0000.png",
+      "Chrome / Bakar Body / Velg": "20240911_122655_0000.png",
+      "Custom Spoiler / Trondol": "20240911_122743_0000.png",
+      "Alis Nyala / Kaliper": "20240911_122808_0000.png",
+      "Unlock Paid / Premium Car": "Screenshot_20260720-131345.png",
+      "Unlock Premium Car + Sirine": "Screenshot_20260720-131345.png",
+      "Unlock Premium Body": "Screenshot_20260720-122331.png",
+      "Isi Koin Bebas Request": "20240911_122850_0000.png",
+      "Isi 50.000.000 Uang": "20240911_122850_0000.png",
+      "Bundle Uang + Koin (bebas req koin)": "20240911_122850_0000.png",
+      "Akun King Baru (Free Koin+Uang+unlock W16)": "20240911_125220_0000.png",
+      "Request Livery Mobil": "20240911_123629_0000.png",
+      "Paket Alis nyala + Kaliper": "20240911_122808_0000.png",
+      "Paket Chrome Velg atau Body + Alis atau Kaliper": "20240911_122655_0000.png",
+      "Paket Chrome Velg atau Body + Alis + Kaliper": "20240911_122655_0000.png",
+      "Paket rubah Spek mesin + (pilihan Chrome Velg/Body, Alis/Kaliper)": "20240911_122112_0000.png",
+      "Paket Lengkap rubah Spek mesin + Chrome velg atau Body + Alis + Kaliper nyala": "20240911_122112_0000.png",
+      "Paket Custom Spoiler + Trondol": "20240911_122743_0000.png"
+    };
+
+    // SERVICE_DESC untuk deskripsi
+    const SERVICE_DESC = {
+      "Tune Up": "Kecepatan seperti standard tapi lebih kencang. Race 400m ±5/6 detik.",
+      "Tune Up Suara Asli / ECU": "Tune up dengan suara asli + performa. Race 400m ±5/6 detik.",
+      "FFA / Ghoib": "Bisa jalan auto (jalan biasa) jika gas ditinggal, dan saat balap berubah menjadi glitch. Race 300m ±4/5 detik.",
+      "FFA / Ghoib Suara Asli / ECU": "FFA dengan suara asli + performa glitch. Race 300m ±4/5 detik.",
+      "Glitch": "Mode cepat (manual) untuk balapan. Race 400m ±4/5 detik.",
+      "Glitch Suara Asli / ECU": "Glitch dengan suara asli + performa maksimal. Race 400m ±4/5 detik.",
+      "Spek Brake Boost": "Spek seperti FFA, jalan biasa D, berhenti pakai hand brake ditekan (tahan) digeser atas, pas balap geser ke P, permanen speknya semua mobil bisa. Race 402m 4/5/6 detik (tiap mobil beda karena berat).",
+      "Chrome / Bakar Body / Velg": "Cat chrome atau bakar pada body/velg",
+      "Custom Spoiler / Trondol": "Pasang spoiler custom",
+      "Alis Nyala / Kaliper": "Alis nyala atau kaliper",
+      "Unlock Paid / Premium Car": "Unlock/membeli mobil yang cash (uang asli). Mesin W16 / Brake Boost, bodykit rata kanan.",
+      "Unlock Premium Car + Sirine": "Unlock/membeli mobil cash + sirine. Mesin W16 / Brake Boost, bodykit rata kanan.",
+      "Unlock Premium Body": "Premium Body",
+      "Isi Koin Bebas Request": "Isi koin sesuai request (maks 500.000).",
+      "Isi 50.000.000 Uang": "Isi 50 juta uang",
+      "Bundle Uang + Koin (bebas req koin)": "Paket hemat uang + koin (request jumlah koin).",
+      "Akun King Baru (Free Koin+Uang+unlock W16)": "Bonus isi uang + koin + W16 (stock/akun baru/belum terdaftar)",
+      "Request Livery Mobil": "Desain livery sesuai request (tergantung tingkat kesulitan)",
+      "Paket Alis nyala + Kaliper": "Pasang Alis nyala dan Kaliper",
+      "Paket Chrome Velg atau Body + Alis atau Kaliper": "Chrome pada Velg/Body + Alis atau Kaliper",
+      "Paket Chrome Velg atau Body + Alis + Kaliper": "Chrome Velg/Body + Alis + Kaliper",
+      "Paket rubah Spek mesin + (pilihan Chrome Velg/Body, Alis/Kaliper)": "Rubah spek mesin + tambahan pilihan Chrome atau Alis/Kaliper",
+      "Paket Lengkap rubah Spek mesin + Chrome velg atau Body + Alis + Kaliper nyala": "Rubah spek mesin + Chrome + Alis + Kaliper",
+      "Paket Custom Spoiler + Trondol": "Pasang Custom Spoiler dan Trondol"
+    };
+
+    // SERVICE_CATEGORY
+    const SERVICE_CATEGORY = {
+      "Tune Up": "Tune Up",
+      "Tune Up Suara Asli / ECU": "Tune Up",
+      "FFA / Ghoib": "Tune Up",
+      "FFA / Ghoib Suara Asli / ECU": "Tune Up",
+      "Glitch": "Glitch",
+      "Glitch Suara Asli / ECU": "Glitch",
+      "Spek Brake Boost": "Glitch",
+      "Chrome / Bakar Body / Velg": "Lainnya",
+      "Custom Spoiler / Trondol": "Lainnya",
+      "Alis Nyala / Kaliper": "Lainnya",
+      "Unlock Paid / Premium Car": "Premium Car",
+      "Unlock Premium Car + Sirine": "Premium Car",
+      "Unlock Premium Body": "Premium Car",
+      "Isi Koin Bebas Request": "Coin/Uang",
+      "Isi 50.000.000 Uang": "Coin/Uang",
+      "Bundle Uang + Koin (bebas req koin)": "Coin/Uang",
+      "Akun King Baru (Free Koin+Uang+unlock W16)": "Lainnya",
+      "Request Livery Mobil": "Livery",
+      "Paket Alis nyala + Kaliper": "Paket",
+      "Paket Chrome Velg atau Body + Alis atau Kaliper": "Paket",
+      "Paket Chrome Velg atau Body + Alis + Kaliper": "Paket",
+      "Paket rubah Spek mesin + (pilihan Chrome Velg/Body, Alis/Kaliper)": "Paket",
+      "Paket Lengkap rubah Spek mesin + Chrome velg atau Body + Alis + Kaliper nyala": "Paket",
+      "Paket Custom Spoiler + Trondol": "Paket"
+    };
+
+    const onlyRoomServices = ["Unlock Paid / Premium Car", "Unlock Premium Car + Sirine"];
+    const requireLoginServices = ["Isi Koin Bebas Request", "Bundle Uang + Koin (bebas req koin)", "Akun King Baru (Free Koin+Uang+unlock W16)"];
+
     function updatePrice(method) {
       const name = document.getElementById('selected-service').value;
       const data = SERVICE_PRICES[name];
+      const priceVal = document.getElementById('priceValue');
+      const methodEl = document.getElementById('priceMethod');
       if (!data) {
-        document.getElementById('priceValue').textContent = '—';
-        document.getElementById('priceMethod').textContent = '';
-        return;
-      }
-      if (data.special) {
-        document.getElementById('priceValue').textContent = 'Lihat Stock';
-        document.getElementById('priceMethod').textContent = '';
+        priceVal.textContent = '—';
+        methodEl.textContent = '';
         return;
       }
       let price = 0, methodText = '';
       if (data.onlyRoom) {
         price = data.room;
         methodText = 'Hanya via Room';
+        priceVal.innerHTML = formatIDR(price) + ' <span class="price-myr">' + formatMYR(price) + '</span>';
+        methodEl.textContent = methodText;
       } else if (data.onlyLogin) {
         price = data.login;
         methodText = 'Hanya via Login Akun';
+        priceVal.innerHTML = formatIDR(price) + ' <span class="price-myr">' + formatMYR(price) + '</span>';
+        methodEl.textContent = methodText;
       } else {
         if (method === 'Login Akun') {
           price = data.login;
           methodText = 'via Login Akun';
+          priceVal.innerHTML = formatIDR(price) + ' <span class="price-myr">' + formatMYR(price) + '</span>';
+          methodEl.textContent = methodText;
         } else if (method === 'Lewat Room') {
           price = data.room;
           methodText = 'via Room';
+          priceVal.innerHTML = formatIDR(price) + ' <span class="price-myr">' + formatMYR(price) + '</span>';
+          methodEl.textContent = methodText;
         } else {
-          document.getElementById('priceValue').innerHTML =
-            formatIDR(data.login) + ' <span class="price-myr">' + formatMYR(data.login) + '</span> / ' +
-            formatIDR(data.room) + ' <span class="price-myr">' + formatMYR(data.room) + '</span>';
-          document.getElementById('priceMethod').textContent = 'Login / Room';
-          return;
+          priceVal.innerHTML = formatIDR(data.login) + ' <span class="price-myr">' + formatMYR(data.login) + '</span> / ' +
+                               formatIDR(data.room) + ' <span class="price-myr">' + formatMYR(data.room) + '</span>';
+          methodEl.textContent = 'Login / Room';
         }
-      }
-      document.getElementById('priceValue').innerHTML = formatIDR(price) + ' <span class="price-myr">' + formatMYR(price) + '</span>';
-      document.getElementById('priceMethod').textContent = methodText;
-    }
-
-    // ===== ORDER LOGIC =====
-    const service = new URLSearchParams(window.location.search).get('service');
-    const serviceLabel = document.getElementById('serviceLabel');
-    const serviceBadge = document.getElementById('serviceBadge');
-    const selectedService = document.getElementById('selected-service');
-    const submitBtn = document.getElementById('submitBtn');
-    const loginSelect = document.getElementById('login-type');
-    const noteBox = document.getElementById('noteBox');
-    const subOptionsDiv = document.getElementById('subOptions');
-
-    const serviceOptionsMap = {
-      "Chrome / Bakar Body / Velg": { type: ['Chrome', 'Bakar'], part: ['Body', 'Velg'] },
-      "Custom Spoiler / Trondol": { type: ['Custom Spoiler', 'Trondol'] },
-      "Alis Nyala / Kaliper": { type: ['Alis Nyala', 'Kaliper'] },
-      "Paket Chrome Velg atau Body + Alis atau Kaliper": { chromePart: ['Velg', 'Body'], extra: ['Alis', 'Kaliper'] },
-      "Paket Chrome Velg atau Body + Alis + Kaliper": { chromePart: ['Velg', 'Body'] },
-      "Paket rubah Spek mesin + (pilihan Chrome Velg/Body, Alis/Kaliper)": { tambahan: ['Chrome Velg/Body', 'Alis/Kaliper'] },
-      "Paket Custom Spoiler + Trondol": { type: ['Custom Spoiler', 'Trondol'] }
-    };
-
-    const onlyRoomServices = ["Unlock Paid / Premium Car", "Unlock Premium Car + Sirine"];
-    const requireLoginServices = ["Isi Koin Bebas Request", "Bundle Uang + Koin (bebas req koin)", "Akun King Baru (Free Koin+Uang+unlock W16)"];
-
-    if (service) {
-      selectedService.value = service;
-      serviceLabel.textContent = service;
-      serviceBadge.innerHTML = `<i class="fas fa-cube"></i> ${service}`;
-
-      // ===== UPDATE OPEN GRAPH =====
-      updateOpenGraph(service);
-
-      // Sub opsi
-      const options = serviceOptionsMap[service];
-      if (options) {
-        subOptionsDiv.classList.add('visible');
-        let html = '<div class="form-group"><label>Pilihan Tambahan</label>';
-        if (options.type) {
-          html += `<select id="sub-type" style="width:100%;padding:0.7rem 1rem;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--fg);font-family:var(--font-body);font-size:0.9rem;outline:none;min-height:48px;">`;
-          options.type.forEach(opt => { html += `<option value="${opt}">${opt}</option>`; });
-          html += `</select>`;
-        }
-        if (options.part) {
-          html += `<select id="sub-part" style="width:100%;margin-top:0.5rem;padding:0.7rem 1rem;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--fg);font-family:var(--font-body);font-size:0.9rem;outline:none;min-height:48px;">`;
-          options.part.forEach(opt => { html += `<option value="${opt}">${opt}</option>`; });
-          html += `</select>`;
-        }
-        if (options.chromePart) {
-          html += `<select id="sub-chromePart" style="width:100%;margin-top:0.5rem;padding:0.7rem 1rem;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--fg);font-family:var(--font-body);font-size:0.9rem;outline:none;min-height:48px;">`;
-          options.chromePart.forEach(opt => { html += `<option value="${opt}">${opt}</option>`; });
-          html += `</select>`;
-        }
-        if (options.extra) {
-          html += `<select id="sub-extra" style="width:100%;margin-top:0.5rem;padding:0.7rem 1rem;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--fg);font-family:var(--font-body);font-size:0.9rem;outline:none;min-height:48px;">`;
-          options.extra.forEach(opt => { html += `<option value="${opt}">${opt}</option>`; });
-          html += `</select>`;
-        }
-        if (options.tambahan) {
-          html += `<select id="sub-tambahan" style="width:100%;margin-top:0.5rem;padding:0.7rem 1rem;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--fg);font-family:var(--font-body);font-size:0.9rem;outline:none;min-height:48px;">`;
-          options.tambahan.forEach(opt => { html += `<option value="${opt}">${opt}</option>`; });
-          html += `</select>`;
-        }
-        html += '</div>';
-        subOptionsDiv.innerHTML = html;
-      } else {
-        subOptionsDiv.classList.remove('visible');
-        subOptionsDiv.innerHTML = '';
-      }
-
-      // ===== ATUR METODE DAN FIELD =====
-      const loginFields = document.getElementById('loginFields');
-      const roomField = document.getElementById('roomField');
-
-      loginFields.classList.remove('visible');
-      roomField.classList.remove('visible');
-      noteBox.classList.add('hidden');
-      submitBtn.disabled = true;
-
-      if (onlyRoomServices.includes(service)) {
-        loginSelect.innerHTML = '<option value="Lewat Room">Lewat Room</option>';
-        loginSelect.value = 'Lewat Room';
-        roomField.classList.add('visible');
-        submitBtn.disabled = false;
-        updatePrice('Lewat Room');
-      } else if (requireLoginServices.includes(service)) {
-        loginSelect.innerHTML = '<option value="Login Akun">Login Akun</option>';
-        loginSelect.value = 'Login Akun';
-        loginFields.classList.add('visible');
-        noteBox.classList.remove('hidden');
-        submitBtn.disabled = false;
-        updatePrice('Login Akun');
-      } else if (service === 'Request Livery Mobil') {
-        document.getElementById('loginSection').classList.add('hidden');
-        submitBtn.disabled = false;
-        updatePrice('Login Akun');
-      } else if (service === 'Stock Mobil Murah' || service.includes('Stock')) {
-        document.getElementById('loginSection').classList.add('hidden');
-        submitBtn.disabled = false;
-        document.getElementById('priceValue').textContent = 'Lihat Stock';
-        document.getElementById('priceMethod').textContent = '';
-      } else {
-        loginSelect.innerHTML = '<option value="">-- Harap Pilih --</option><option value="Login Akun">Login Akun</option><option value="Lewat Room">Lewat Room</option>';
-        loginSelect.value = '';
-        submitBtn.disabled = true;
-        updatePrice('');
-      }
-
-      // Field koin: hanya untuk layanan yang memang butuh koin
-      const isCoin = service.includes('Coin') || service.includes('Koin') || service === 'Bundle Uang + Koin (bebas req koin)';
-      document.getElementById('coinFields').classList.toggle('visible', isCoin);
-
-      document.getElementById('liveryFields').classList.toggle('visible', service === 'Request Livery Mobil');
-      document.getElementById('stockFields').classList.toggle('visible', service === 'Stock Mobil Murah' || service.includes('Stock'));
-
-      const errorServices = ["Tune Up", "Tune Up Suara Asli / ECU", "FFA / Ghoib", "FFA / Ghoib Suara Asli / ECU", "Glitch", "Glitch Suara Asli / ECU"];
-      if (errorServices.includes(service)) {
-        showToast('⚠️ Layanan ini sedang tidak tersedia.');
-        submitBtn.disabled = true;
       }
     }
 
-    // ===== TOGGLE FUNGSI =====
     function toggleFields(value) {
       const loginFields = document.getElementById('loginFields');
       const roomField = document.getElementById('roomField');
@@ -1015,7 +997,6 @@
       }
     }
 
-    // ===== SUBMIT =====
     function submitOrder() {
       const s = document.getElementById('selected-service').value;
       const m = document.getElementById('login-type').value;
@@ -1061,6 +1042,181 @@
 
       msg += `\n\nHarap unggah foto/dokumen yang diperlukan secara manual di chat ini.`;
       window.open(`https://api.whatsapp.com/send?phone=6289687163314&text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    // ============================================================
+    // THUMBNAIL & SHARE FUNCTIONS
+    // ============================================================
+    let currentService = '';
+
+    function updateThumbnail(serviceName) {
+      const container = document.getElementById('serviceThumbnail');
+      const img = document.getElementById('thumbImage');
+      const name = document.getElementById('thumbName');
+      const price = document.getElementById('thumbPrice');
+      const cat = document.getElementById('thumbCat');
+
+      if (!serviceName || !SERVICE_IMAGES[serviceName]) {
+        container.style.display = 'none';
+        return;
+      }
+
+      container.style.display = 'block';
+      currentService = serviceName;
+
+      // Gambar
+      const imgUrl = 'https://akinoch.my.id/' + SERVICE_IMAGES[serviceName];
+      img.src = imgUrl;
+      img.style.display = 'block';
+
+      // Nama
+      name.textContent = serviceName;
+
+      // Harga
+      const priceData = SERVICE_PRICES[serviceName];
+      if (priceData) {
+        if (priceData.onlyRoom) {
+          price.textContent = formatIDR(priceData.room);
+        } else if (priceData.onlyLogin) {
+          price.textContent = formatIDR(priceData.login);
+        } else {
+          price.textContent = formatIDR(priceData.login) + ' / ' + formatIDR(priceData.room);
+        }
+      } else {
+        price.textContent = 'Rp 0';
+      }
+
+      // Kategori
+      cat.textContent = SERVICE_CATEGORY[serviceName] || 'Layanan';
+
+      // Tampilkan share section
+      document.getElementById('shareSection').style.display = 'flex';
+
+      // Update Open Graph
+      const title = serviceName + ' - Order Car Parking Multiplayer | Akino Store';
+      const desc = SERVICE_DESC[serviceName] || 'Pesan layanan ' + serviceName + ' untuk Car Parking Multiplayer.';
+      document.querySelector('title').textContent = title;
+      document.querySelector('meta[property="og:title"]').setAttribute('content', title);
+      document.querySelector('meta[property="og:description"]').setAttribute('content', desc);
+      document.querySelector('meta[property="og:image"]').setAttribute('content', imgUrl);
+      document.querySelector('meta[name="twitter:title"]').setAttribute('content', title);
+      document.querySelector('meta[name="twitter:description"]').setAttribute('content', desc);
+      document.querySelector('meta[name="twitter:image"]').setAttribute('content', imgUrl);
+    }
+
+    function getShareUrl() {
+      return 'https://cpm.akinostore.workers.dev/?service=' + encodeURIComponent(currentService);
+    }
+
+    function copyShareLink() {
+      const url = getShareUrl();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(() => {
+          showToast('Link berhasil disalin!');
+        }).catch(() => fallbackCopy(url));
+      } else {
+        fallbackCopy(url);
+      }
+    }
+    function fallbackCopy(text) {
+      const input = document.createElement('input');
+      input.value = text;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      input.remove();
+      showToast('Link berhasil disalin!');
+    }
+
+    function shareWALink() {
+      const url = getShareUrl();
+      const text = encodeURIComponent('📸 ' + currentService + ' - Layanan Car Parking Multiplayer\n' + url);
+      window.open('https://wa.me/?text=' + text, '_blank');
+    }
+
+    function shareTwitterLink() {
+      const url = getShareUrl();
+      const text = encodeURIComponent('📸 ' + currentService + ' - Layanan Car Parking Multiplayer');
+      window.open('https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent(url), '_blank');
+    }
+
+    // ============================================================
+    // INIT - Ambil parameter service dari URL
+    // ============================================================
+    const params = new URLSearchParams(window.location.search);
+    const serviceParam = params.get('service');
+
+    if (serviceParam) {
+      // Set service
+      document.getElementById('selected-service').value = serviceParam;
+      document.getElementById('serviceLabel').textContent = serviceParam;
+      document.getElementById('serviceBadge').innerHTML = '<i class="fas fa-cube"></i> ' + serviceParam;
+
+      // Update thumbnail
+      updateThumbnail(serviceParam);
+
+      // Atur metode
+      const loginSelect = document.getElementById('login-type');
+      const loginFields = document.getElementById('loginFields');
+      const roomField = document.getElementById('roomField');
+      const noteBox = document.getElementById('noteBox');
+      const submitBtn = document.getElementById('submitBtn');
+
+      loginFields.classList.remove('visible');
+      roomField.classList.remove('visible');
+      noteBox.classList.add('hidden');
+      submitBtn.disabled = true;
+
+      if (onlyRoomServices.includes(serviceParam)) {
+        loginSelect.innerHTML = '<option value="Lewat Room">Lewat Room</option>';
+        loginSelect.value = 'Lewat Room';
+        roomField.classList.add('visible');
+        submitBtn.disabled = false;
+        updatePrice('Lewat Room');
+      } else if (requireLoginServices.includes(serviceParam)) {
+        loginSelect.innerHTML = '<option value="Login Akun">Login Akun</option>';
+        loginSelect.value = 'Login Akun';
+        loginFields.classList.add('visible');
+        noteBox.classList.remove('hidden');
+        submitBtn.disabled = false;
+        updatePrice('Login Akun');
+      } else if (serviceParam === 'Request Livery Mobil') {
+        document.getElementById('loginSection').classList.add('hidden');
+        submitBtn.disabled = false;
+        updatePrice('Login Akun');
+      } else if (serviceParam === 'Stock Mobil Murah' || serviceParam.includes('Stock')) {
+        document.getElementById('loginSection').classList.add('hidden');
+        submitBtn.disabled = false;
+        document.getElementById('priceValue').textContent = 'Lihat Stock';
+        document.getElementById('priceMethod').textContent = '';
+      } else {
+        loginSelect.innerHTML = '<option value="">-- Harap Pilih --</option><option value="Login Akun">Login Akun</option><option value="Lewat Room">Lewat Room</option>';
+        loginSelect.value = '';
+        submitBtn.disabled = true;
+        updatePrice('');
+      }
+
+      // Field koin
+      const isCoin = serviceParam.includes('Coin') || serviceParam.includes('Koin') || serviceParam === 'Bundle Uang + Koin (bebas req koin)';
+      document.getElementById('coinFields').classList.toggle('visible', isCoin);
+
+      document.getElementById('liveryFields').classList.toggle('visible', serviceParam === 'Request Livery Mobil');
+      document.getElementById('stockFields').classList.toggle('visible', serviceParam === 'Stock Mobil Murah' || serviceParam.includes('Stock'));
+
+      // Error services
+      const errorServices = ["Tune Up", "Tune Up Suara Asli / ECU", "FFA / Ghoib", "FFA / Ghoib Suara Asli / ECU", "Glitch", "Glitch Suara Asli / ECU"];
+      if (errorServices.includes(serviceParam)) {
+        showToast('⚠️ Layanan ini sedang tidak tersedia.');
+        submitBtn.disabled = true;
+      }
+
+    } else {
+      // Tidak ada service
+      document.getElementById('serviceThumbnail').style.display = 'none';
+      document.getElementById('shareSection').style.display = 'none';
+      document.getElementById('priceValue').textContent = '—';
+      document.getElementById('priceMethod').textContent = '';
+      document.getElementById('serviceBadge').innerHTML = '<i class="fas fa-cube"></i> Pilih layanan terlebih dahulu';
     }
   </script>
 
