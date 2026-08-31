@@ -4,18 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   <title>Jastip - Titip Jualan | Akino Store</title>
-  <meta name="description" content="Titip jual barangmu di Akino Store mulai Rp5.000. Tampil sampai laku dengan bantuan rekber dan admin.">
+  <meta name="description" content="Titip jual barangmu di Akino Store mulai Rp5.000. Upload foto & video. Tampil sampai laku dengan bantuan rekber dan admin.">
   <link rel="canonical" href="https://akinoch.my.id/jastip.html">
 
-  <!-- ===== OPEN GRAPH (static fallback, akan di-update oleh JS) ===== -->
   <meta property="og:title" content="Jastip - Titip Jualan | Akino Store">
-  <meta property="og:description" content="Titip jual barangmu di Akino Store mulai Rp5.000. Tampil sampai laku dengan bantuan rekber dan admin.">
+  <meta property="og:description" content="Titip jual barangmu di Akino Store mulai Rp5.000. Upload foto & video. Tampil sampai laku.">
   <meta property="og:image" content="https://res.cloudinary.com/d39mdjct/image/upload/v1783493763/apk_pgxcmo.png">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://akinoch.my.id/jastip.html">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Jastip - Titip Jualan | Akino Store">
-  <meta name="twitter:description" content="Titip jual barangmu di Akino Store mulai Rp5.000. Tampil sampai laku dengan bantuan rekber dan admin.">
+  <meta name="twitter:description" content="Titip jual barangmu di Akino Store mulai Rp5.000. Upload foto & video.">
   <meta name="twitter:image" content="https://res.cloudinary.com/d39mdjct/image/upload/v1783493763/apk_pgxcmo.png">
 
   <link rel="manifest" href="/manifest.json?v=4.2" />
@@ -35,9 +34,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="icon" href="https://res.cloudinary.com/d39mdjct/image/upload/v1783478697/icon_tnzy32.ico" />
+  
+  <!-- ===== LIGHTBOX UNTUK FOTO/VIDEO ===== -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox-plus-jquery.min.js"></script>
+
   <style>
     /* ===== SEMUA STYLE SAMA SEPERTI SEBELUMNYA ===== */
-    /* (saya singkat agar tidak terlalu panjang, tapi tetap lengkap) */
     :root {
       --bg: #07070d;
       --bg-card: rgba(255,255,255,0.04);
@@ -234,9 +237,10 @@
       font-weight:500;
     }
 
+    /* ===== MEDIA GRID ===== */
     .jastip-grid {
       display:grid;
-      grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
+      grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
       gap:1.2rem;
       max-width:1100px;
       margin:0 auto 2rem;
@@ -269,13 +273,132 @@
       0%, 100% { transform:translateY(0); }
       35% { transform:translateY(-4px); }
     }
-    .jastip-card .card-image {
+
+    /* ===== MEDIA SLIDER / GALLERY ===== */
+    .jastip-card .media-slider {
+      position:relative;
       width:100%;
       aspect-ratio:1/1;
-      object-fit:cover;
+      overflow:hidden;
       background:#0a0a12;
-      border-bottom:1px solid var(--border);
     }
+    .jastip-card .media-slider .slides-wrapper {
+      display:flex;
+      transition:transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+      height:100%;
+    }
+    .jastip-card .media-slider .slide-item {
+      min-width:100%;
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#0a0a12;
+      cursor:pointer;
+    }
+    .jastip-card .media-slider .slide-item img {
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+    .jastip-card .media-slider .slide-item video {
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+    .jastip-card .media-slider .slide-item .video-play-icon {
+      position:absolute;
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-50%);
+      width:56px;
+      height:56px;
+      border-radius:50%;
+      background:rgba(0,0,0,0.6);
+      backdrop-filter:blur(8px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#fff;
+      font-size:1.6rem;
+      pointer-events:none;
+      border:2px solid rgba(255,255,255,0.15);
+    }
+    .jastip-card .media-slider .slide-item .media-badge {
+      position:absolute;
+      bottom:10px;
+      right:10px;
+      z-index:2;
+      font-size:0.55rem;
+      font-weight:600;
+      padding:0.15rem 0.5rem;
+      border-radius:4px;
+      background:rgba(0,0,0,0.6);
+      backdrop-filter:blur(4px);
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.08);
+      display:flex;
+      align-items:center;
+      gap:0.2rem;
+    }
+    .jastip-card .media-slider .slide-item .media-badge i {
+      font-size:0.5rem;
+    }
+    .jastip-card .media-slider .slider-dots {
+      position:absolute;
+      bottom:12px;
+      left:50%;
+      transform:translateX(-50%);
+      display:flex;
+      gap:5px;
+      z-index:3;
+    }
+    .jastip-card .media-slider .slider-dots span {
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.3);
+      cursor:pointer;
+      transition:all 0.3s;
+    }
+    .jastip-card .media-slider .slider-dots span.active {
+      background:var(--accent);
+      width:20px;
+      border-radius:4px;
+    }
+    .jastip-card .media-slider .nav-arrow {
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      z-index:4;
+      width:30px;
+      height:30px;
+      border-radius:50%;
+      background:rgba(0,0,0,0.5);
+      backdrop-filter:blur(4px);
+      border:1px solid rgba(255,255,255,0.08);
+      color:#fff;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:0.7rem;
+      transition:all 0.3s;
+      opacity:0;
+    }
+    .jastip-card:hover .media-slider .nav-arrow {
+      opacity:1;
+    }
+    .jastip-card .media-slider .nav-arrow:hover {
+      background:rgba(255,255,255,0.15);
+    }
+    .jastip-card .media-slider .nav-arrow.prev {
+      left:6px;
+    }
+    .jastip-card .media-slider .nav-arrow.next {
+      right:6px;
+    }
+
     .jastip-card .card-body {
       padding:1rem;
     }
@@ -321,6 +444,15 @@
       margin-left:0.4rem;
       vertical-align:middle;
     }
+    .jastip-card .card-body .media-count {
+      font-size:0.65rem;
+      color:var(--muted-dim);
+      margin-bottom:0.3rem;
+    }
+    .jastip-card .card-body .media-count i {
+      margin-right:0.2rem;
+    }
+
     .btn-group {
       display:flex;
       gap:0.4rem;
@@ -390,48 +522,6 @@
       pointer-events:none;
     }
     .btn-jastip:active { transform:scale(0.96); }
-    .jastip-comments {
-      max-width:900px;
-      margin:2rem auto 0;
-      padding:1.2rem;
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      background:var(--bg-card);
-    }
-    .jastip-comments h2 { font-family:var(--font-display); font-size:1.05rem; margin-bottom:.25rem; }
-    .jastip-comments .comments-sub { color:var(--muted); font-size:.78rem; margin-bottom:1rem; }
-    .jastip-comment-form { display:grid; gap:.6rem; margin-bottom:1rem; }
-    .jastip-comment-form input, .jastip-comment-form textarea { width:100%; padding:.7rem .8rem; border:1px solid var(--border); border-radius:var(--radius-sm); background:rgba(255,255,255,.03); color:var(--fg); font:inherit; font-size:.82rem; outline:none; }
-    .jastip-comment-form input:focus, .jastip-comment-form textarea:focus { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-dim); }
-    .jastip-comment-form button { justify-self:start; min-height:42px; padding:.6rem 1rem; border:0; border-radius:var(--radius-sm); background:var(--accent); color:#0a0a0f; font:600 .8rem var(--font-body); cursor:pointer; }
-    .jastip-comment-form button:disabled { opacity:.6; cursor:wait; }
-    .jastip-comment-list { display:grid; gap:.55rem; max-height:360px; overflow:auto; }
-    .jastip-comment { padding:.7rem .8rem; border-left:3px solid var(--accent); background:rgba(255,255,255,.025); border-radius:0 var(--radius-sm) var(--radius-sm) 0; }
-    .jastip-comment strong { font-size:.78rem; }
-    .jastip-comment p { margin:.2rem 0; color:var(--fg); font-size:.8rem; white-space:pre-wrap; overflow-wrap:anywhere; }
-    .jastip-comment small { color:var(--muted); font-size:.65rem; }
-    .jastip-comment-empty { padding:1rem; color:var(--muted); font-size:.78rem; text-align:center; }
-    .jastip-skeleton { overflow:hidden; border:1px solid var(--border); border-radius:var(--radius); background:var(--bg-card); }
-    .jastip-skeleton::before, .jastip-skeleton::after { content:""; display:block; background:linear-gradient(90deg, rgba(255,255,255,.04) 25%, rgba(255,255,255,.1) 50%, rgba(255,255,255,.04) 75%); background-size:200% 100%; animation:jastipSkeleton 1.4s infinite; }
-    .jastip-skeleton::before { aspect-ratio:1/1; }
-    .jastip-skeleton::after { height:92px; margin:1rem; border-radius:6px; }
-    @keyframes jastipSkeleton { from { background-position:200% 0; } to { background-position:-200% 0; } }
-    .jastip-filter-bar { max-width:1120px; margin:0 auto 1rem; display:flex; justify-content:flex-end; gap:.5rem; }
-    .jastip-filter-bar select { min-height:40px; padding:.55rem .75rem; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg-card); color:var(--fg); font:500 .78rem var(--font-body); }
-    @media (max-width:480px) { .jastip-filter-bar { justify-content:stretch; } .jastip-filter-bar select { flex:1; min-width:0; } }
-
-    .empty-state {
-      text-align:center;
-      padding:3rem 1rem;
-      color:var(--muted);
-      grid-column:1/-1;
-    }
-    .empty-state i {
-      font-size:3rem;
-      display:block;
-      margin-bottom:1rem;
-      opacity:0.3;
-    }
 
     .action-bar {
       max-width:1100px;
@@ -462,7 +552,7 @@
     }
     .action-bar .btn-titip:active { transform:scale(0.96); }
 
-    /* modal */
+    /* ===== MODAL ===== */
     .modal-overlay {
       display:none;
       position:fixed;
@@ -483,7 +573,7 @@
       border-radius:var(--radius);
       padding:2rem;
       width:100%;
-      max-width:480px;
+      max-width:520px;
       max-height:92vh;
       overflow-y:auto;
       animation:scaleIn 0.3s cubic-bezier(0.32,0.72,0,1);
@@ -551,52 +641,109 @@
       color:var(--muted-dim);
       margin-top:0.2rem;
     }
-    .form-group .file-input-wrap {
+
+    /* ===== FILE UPLOAD ===== */
+    .file-upload-area {
+      border:2px dashed var(--border);
+      border-radius:var(--radius-sm);
+      padding:1.5rem 1rem;
+      text-align:center;
+      cursor:pointer;
+      transition:all var(--transition);
       position:relative;
-      overflow:hidden;
-      display:inline-block;
-      width:100%;
     }
-    .form-group .file-input-wrap input[type="file"] {
+    .file-upload-area:hover {
+      border-color:var(--accent);
+      background:var(--accent-dim);
+    }
+    .file-upload-area.dragover {
+      border-color:var(--accent);
+      background:rgba(255,221,87,0.08);
+    }
+    .file-upload-area input[type="file"] {
       position:absolute;
-      left:0;
-      top:0;
+      inset:0;
       opacity:0;
-      width:100%;
-      height:100%;
       cursor:pointer;
     }
-    .form-group .file-label {
+    .file-upload-area .upload-icon {
+      font-size:2rem;
+      color:var(--muted);
+      margin-bottom:0.3rem;
+    }
+    .file-upload-area .upload-text {
+      font-size:0.85rem;
+      color:var(--muted);
+    }
+    .file-upload-area .upload-sub {
+      font-size:0.7rem;
+      color:var(--muted-dim);
+      margin-top:0.1rem;
+    }
+
+    .file-preview-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill, minmax(80px, 1fr));
+      gap:0.5rem;
+      margin-top:0.5rem;
+    }
+    .file-preview-grid .preview-item {
+      position:relative;
+      border-radius:var(--radius-sm);
+      overflow:hidden;
+      background:var(--bg-card);
+      border:1px solid var(--border);
+      aspect-ratio:1/1;
+    }
+    .file-preview-grid .preview-item img,
+    .file-preview-grid .preview-item video {
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+    .file-preview-grid .preview-item .remove-btn {
+      position:absolute;
+      top:2px;
+      right:2px;
+      width:20px;
+      height:20px;
+      border-radius:50%;
+      background:rgba(239,68,68,0.85);
+      color:#fff;
+      border:none;
+      cursor:pointer;
+      font-size:0.55rem;
       display:flex;
       align-items:center;
       justify-content:center;
-      gap:0.5rem;
-      padding:0.65rem 1rem;
-      background:rgba(255,255,255,0.03);
-      border:1px solid var(--border);
-      border-radius:var(--radius-sm);
-      color:var(--muted);
-      cursor:pointer;
-      transition:all var(--transition);
-      font-size:0.88rem;
-      min-height:48px;
+      transition:all 0.2s;
     }
-    .form-group .file-label:hover {
-      border-color:var(--accent);
-      background:var(--accent-dim);
-      color:var(--fg);
+    .file-preview-grid .preview-item .remove-btn:hover {
+      transform:scale(1.1);
     }
-    .form-group .file-label i { font-size:0.9rem; }
-    .form-group .file-preview {
-      margin-top:0.5rem;
+    .file-preview-grid .preview-item .file-type-badge {
+      position:absolute;
+      bottom:4px;
+      left:4px;
+      font-size:0.5rem;
+      padding:0.1rem 0.3rem;
+      border-radius:4px;
+      background:rgba(0,0,0,0.6);
+      color:#fff;
+      backdrop-filter:blur(4px);
+    }
+
+    .form-msg {
+      font-size:0.82rem;
+      padding:0.5rem 0.75rem;
+      border-radius:8px;
+      margin-top:0.6rem;
       display:none;
     }
-    .form-group .file-preview img {
-      max-width:100%;
-      max-height:150px;
-      border-radius:var(--radius-sm);
-      border:1px solid var(--border);
-    }
+    .form-msg.show { display:block; }
+    .form-msg.ok { background:rgba(34,197,94,0.08); border:1px solid rgba(34,197,94,0.2); color:#4ade80; }
+    .form-msg.err { background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.2); color:#f87171; }
+
     .btn-submit-form {
       width:100%;
       padding:0.75rem;
@@ -613,6 +760,7 @@
       align-items:center;
       justify-content:center;
       gap:0.5rem;
+      margin-top:1rem;
     }
     .btn-submit-form:hover {
       box-shadow:0 4px 20px rgba(255,221,87,0.3);
@@ -624,16 +772,40 @@
       transform:none;
       box-shadow:none;
     }
-    .form-msg {
-      font-size:0.82rem;
-      padding:0.5rem 0.75rem;
-      border-radius:8px;
-      margin-top:0.6rem;
-      display:none;
+
+    /* ===== JASTIP COMMENTS ===== */
+    .jastip-comments {
+      max-width:900px;
+      margin:2rem auto 0;
+      padding:1.2rem;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      background:var(--bg-card);
     }
-    .form-msg.show { display:block; }
-    .form-msg.ok { background:rgba(34,197,94,0.08); border:1px solid rgba(34,197,94,0.2); color:#4ade80; }
-    .form-msg.err { background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.2); color:#f87171; }
+    .jastip-comments h2 { font-family:var(--font-display); font-size:1.05rem; margin-bottom:.25rem; }
+    .jastip-comments .comments-sub { color:var(--muted); font-size:.78rem; margin-bottom:1rem; }
+    .jastip-comment-form { display:grid; gap:.6rem; margin-bottom:1rem; }
+    .jastip-comment-form input, .jastip-comment-form textarea { width:100%; padding:.7rem .8rem; border:1px solid var(--border); border-radius:var(--radius-sm); background:rgba(255,255,255,.03); color:var(--fg); font:inherit; font-size:.82rem; outline:none; }
+    .jastip-comment-form input:focus, .jastip-comment-form textarea:focus { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-dim); }
+    .jastip-comment-form button { justify-self:start; min-height:42px; padding:.6rem 1rem; border:0; border-radius:var(--radius-sm); background:var(--accent); color:#0a0a0f; font:600 .8rem var(--font-body); cursor:pointer; }
+    .jastip-comment-form button:disabled { opacity:.6; cursor:wait; }
+    .jastip-comment-list { display:grid; gap:.55rem; max-height:360px; overflow:auto; }
+    .jastip-comment { padding:.7rem .8rem; border-left:3px solid var(--accent); background:rgba(255,255,255,.025); border-radius:0 var(--radius-sm) var(--radius-sm) 0; }
+    .jastip-comment strong { font-size:.78rem; }
+    .jastip-comment p { margin:.2rem 0; color:var(--fg); font-size:.8rem; white-space:pre-wrap; overflow-wrap:anywhere; }
+    .jastip-comment small { color:var(--muted); font-size:.65rem; }
+    .jastip-comment-empty { padding:1rem; color:var(--muted); font-size:.78rem; text-align:center; }
+
+    /* ===== LIGHTBOX OVERRIDE ===== */
+    .lb-caption {
+      background:rgba(0,0,0,0.7) !important;
+      color:#fff !important;
+      padding:0.8rem 1rem !important;
+      font-size:0.85rem !important;
+    }
+    .lb-data .lb-close {
+      display:none !important;
+    }
 
     .social-row {
       display:flex; justify-content:center; gap:0.6rem; padding:1rem;
@@ -718,6 +890,14 @@
     .back-to-top.show { opacity:1; transform:translateY(0); pointer-events:auto; }
     .back-to-top:active { transform:scale(0.92); }
 
+    .jastip-filter-bar { max-width:1120px; margin:0 auto 1rem; display:flex; justify-content:flex-end; gap:.5rem; }
+    .jastip-filter-bar select { min-height:40px; padding:.55rem .75rem; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg-card); color:var(--fg); font:500 .78rem var(--font-body); }
+    @media (max-width:480px) { 
+      .jastip-filter-bar { justify-content:stretch; } 
+      .jastip-filter-bar select { flex:1; min-width:0; } 
+      .jastip-grid { grid-template-columns:1fr; }
+    }
+
     @media (min-width:768px) {
       .navbar { padding:0.8rem 2rem; }
       .menu-toggle { display:none; }
@@ -745,6 +925,7 @@
       .jastip-grid { grid-template-columns:1fr; }
       .btn-group { flex-direction:column; }
       .btn-jastip { flex:auto; }
+      .file-preview-grid { grid-template-columns:repeat(auto-fill, minmax(60px, 1fr)); }
     }
   </style>
 </head>
@@ -789,8 +970,8 @@
 
   <header class="page-hero">
     <h1>🛒 Titip Jualan <span class="accent">(Jastip)</span></h1>
-    <p>Titipkan barang jualanmu di sini. Hanya 5rb, tampil sampai laku. Gratis Rekber/Midman.</p>
-    <div class="sub-badge">Ready Stock mulai 2rban</div>
+    <p>Titipkan barang jualanmu di sini. Bisa upload <strong>foto &amp; video</strong> (multiple). Hanya 5rb, tampil sampai laku.</p>
+    <div class="sub-badge">📸 Foto &amp; 🎬 Video Support</div>
   </header>
 
   <div class="action-bar">
@@ -814,9 +995,10 @@
   </div>
 
   <div class="jastip-grid" id="jastipGrid">
-    <div class="jastip-skeleton" aria-hidden="true"></div>
-    <div class="jastip-skeleton" aria-hidden="true"></div>
-    <div class="jastip-skeleton" aria-hidden="true"></div>
+    <div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--muted);">
+      <i class="fas fa-spinner fa-spin" style="font-size:2rem;display:block;margin-bottom:0.5rem;"></i>
+      Memuat data...
+    </div>
   </div>
 
   <section class="jastip-comments" aria-label="Komentar Jastip">
@@ -859,7 +1041,7 @@
     <div class="modal-card">
       <button class="modal-close" onclick="closeModal('modalTitip')"><i class="fas fa-xmark"></i></button>
       <h3><i class="fas fa-plus-circle" style="color:var(--accent);"></i> Titip Jualan</h3>
-      <p class="sub">Isi data dengan benar. Biaya titip <strong>Rp 5.000</strong> (dibayar via WA admin). Postingan akan tampil setelah pembayaran dikonfirmasi.</p>
+      <p class="sub">Isi data dengan benar. Biaya titip <strong>Rp 5.000</strong> (dibayar via WA admin). Upload foto atau video barangmu (bisa lebih dari 1).</p>
       <form id="formTitip">
         <div class="form-group">
           <label>Nama Penjual <span style="color:#f87171;">*</span></label>
@@ -879,20 +1061,24 @@
         </div>
         <div class="form-group">
           <label>Kategori / Nama Game</label>
-          <input type="text" id="tKategori" placeholder="Contoh: Car Parking Multiplayer" maxlength="60" required>
+          <input type="text" id="tKategori" placeholder="Contoh: Car Parking Multiplayer" maxlength="60">
         </div>
+
+        <!-- ===== UPLOAD AREA ===== -->
         <div class="form-group">
-          <label>Foto Barang <span style="color:#f87171;">*</span></label>
-          <div class="file-input-wrap">
-            <div class="file-label" id="fileLabel"><i class="fas fa-cloud-upload-alt"></i> Pilih Gambar</div>
-            <input type="file" id="tFoto" accept="image/*" required>
+          <label>Upload Foto &amp; Video <span style="color:#f87171;">*</span> (bisa pilih banyak)</label>
+          <div class="file-upload-area" id="uploadArea">
+            <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+            <div class="upload-text">Klik atau drag &amp; drop untuk upload</div>
+            <div class="upload-sub">Support: JPG, PNG, GIF, MP4, MOV, AVI (maks 20MB per file)</div>
+            <input type="file" id="tMedia" accept="image/*,video/*" multiple>
           </div>
-          <div class="file-preview" id="filePreview"><img id="previewImg" src="#" alt="Preview"></div>
-          <div class="hint">Upload gambar barang (maks 5MB).</div>
+          <div class="file-preview-grid" id="filePreviewGrid"></div>
+          <div class="hint" id="uploadProgress" style="display:none; color:var(--accent);">
+            <i class="fas fa-spinner fa-spin"></i> Mengupload ke Cloudinary...
+          </div>
         </div>
-        <div class="form-group" id="uploadProgress" style="display:none; font-size:0.8rem; color:var(--accent);">
-          <i class="fas fa-spinner fa-spin"></i> Mengupload gambar...
-        </div>
+
         <div class="form-msg" id="formMsg"></div>
         <button type="submit" class="btn-submit-form" id="submitTitip"><i class="fas fa-paper-plane"></i> Kirim Titipan</button>
       </form>
@@ -965,7 +1151,7 @@
     // DOMContentLoaded
     // ============================================================
     document.addEventListener('DOMContentLoaded', function() {
-      console.log('🚀 Jastip page loaded');
+      console.log('🚀 Jastip page loaded (multi media)');
 
       // ===== BUTTON TITIP =====
       var btnTitip = document.getElementById('btnTitip');
@@ -974,8 +1160,6 @@
           console.log('🖱️ Tombol Titip diklik');
           openModal('modalTitip');
         });
-      } else {
-        console.error('❌ Tombol #btnTitip tidak ditemukan');
       }
 
       // ===== CLOSE MODAL VIA BACKDROP =====
@@ -988,25 +1172,8 @@
         });
       });
 
-      // ===== UPLOAD PREVIEW =====
-      var fotoInput = document.getElementById('tFoto');
-      if (fotoInput) {
-        fotoInput.addEventListener('change', function(e) {
-          var file = this.files[0];
-          var preview = document.getElementById('filePreview');
-          var img = document.getElementById('previewImg');
-          if (file) {
-            var reader = new FileReader();
-            reader.onload = function(ev) {
-              img.src = ev.target.result;
-              preview.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-          } else {
-            preview.style.display = 'none';
-          }
-        });
-      }
+      // ===== FILE UPLOAD HANDLING =====
+      setupFileUpload();
 
       // ===== FORM TITIP =====
       var formTitip = document.getElementById('formTitip');
@@ -1033,10 +1200,334 @@
 
       // ===== NAVBAR & THEME =====
       setupThemeAndNavbar();
-
-      // ===== DYNAMIC OPEN GRAPH UNTUK SHARE (browser) =====
-      updateDynamicOG();
     });
+
+    // ============================================================
+    // FILE UPLOAD SETUP
+    // ============================================================
+    var uploadedFiles = [];
+
+    function setupFileUpload() {
+      var uploadArea = document.getElementById('uploadArea');
+      var fileInput = document.getElementById('tMedia');
+      var previewGrid = document.getElementById('filePreviewGrid');
+
+      if (!uploadArea || !fileInput) return;
+
+      // Click to upload
+      uploadArea.addEventListener('click', function(e) {
+        if (e.target === this || e.target.closest('.upload-icon') || e.target.closest('.upload-text') || e.target.closest('.upload-sub')) {
+          fileInput.click();
+        }
+      });
+
+      // File selection
+      fileInput.addEventListener('change', function(e) {
+        var files = Array.from(this.files);
+        if (files.length === 0) return;
+
+        // Validate & add
+        files.forEach(function(file) {
+          var isValid = validateFile(file);
+          if (isValid) {
+            uploadedFiles.push(file);
+          }
+        });
+
+        renderPreviews();
+        this.value = ''; // reset agar bisa upload file yang sama lagi
+      });
+
+      // Drag & Drop
+      uploadArea.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        this.classList.add('dragover');
+      });
+      uploadArea.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        this.classList.remove('dragover');
+      });
+      uploadArea.addEventListener('drop', function(e) {
+        e.preventDefault();
+        this.classList.remove('dragover');
+        var files = Array.from(e.dataTransfer.files);
+        if (files.length === 0) return;
+
+        files.forEach(function(file) {
+          var isValid = validateFile(file);
+          if (isValid) {
+            uploadedFiles.push(file);
+          }
+        });
+
+        renderPreviews();
+      });
+    }
+
+    function validateFile(file) {
+      var maxSize = 20 * 1024 * 1024; // 20MB
+      var validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'video/mp4', 'video/quicktime', 'video/x-msvideo', 'video/webm'];
+
+      if (!validTypes.includes(file.type)) {
+        showToast('❌ Format file tidak didukung: ' + file.name);
+        return false;
+      }
+      if (file.size > maxSize) {
+        showToast('❌ File terlalu besar (maks 20MB): ' + file.name);
+        return false;
+      }
+      return true;
+    }
+
+    function renderPreviews() {
+      var grid = document.getElementById('filePreviewGrid');
+      grid.innerHTML = '';
+
+      if (uploadedFiles.length === 0) {
+        grid.innerHTML = '';
+        return;
+      }
+
+      uploadedFiles.forEach(function(file, index) {
+        var item = document.createElement('div');
+        item.className = 'preview-item';
+
+        var isVideo = file.type.startsWith('video/');
+        var url = URL.createObjectURL(file);
+
+        if (isVideo) {
+          item.innerHTML = `
+            <video src="${url}" muted playsinline></video>
+            <span class="file-type-badge"><i class="fas fa-video"></i> ${file.name.split('.').pop()}</span>
+            <button class="remove-btn" data-index="${index}"><i class="fas fa-times"></i></button>
+          `;
+        } else {
+          item.innerHTML = `
+            <img src="${url}" alt="${file.name}" />
+            <span class="file-type-badge"><i class="fas fa-image"></i> ${file.name.split('.').pop()}</span>
+            <button class="remove-btn" data-index="${index}"><i class="fas fa-times"></i></button>
+          `;
+        }
+
+        item.querySelector('.remove-btn').addEventListener('click', function(e) {
+          e.stopPropagation();
+          var idx = parseInt(this.dataset.index);
+          uploadedFiles.splice(idx, 1);
+          renderPreviews();
+          // Update preview URLs
+          document.querySelectorAll('.preview-item').forEach(function(el, i) {
+            var urlObj = URL.createObjectURL(uploadedFiles[i]);
+            var mediaEl = el.querySelector('img') || el.querySelector('video');
+            if (mediaEl) mediaEl.src = urlObj;
+            el.querySelector('.remove-btn').dataset.index = i;
+          });
+        });
+
+        grid.appendChild(item);
+      });
+    }
+
+    // ============================================================
+    // CLOUDINARY UPLOAD (SUPPORT MULTI)
+    // ============================================================
+    var CLOUD_NAME = 'dlwwy1f80';
+    var UPLOAD_PRESET = 'wallpaper_upload';
+
+    async function uploadToCloudinary(file) {
+      var url = 'https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/auto/upload';
+      var formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', UPLOAD_PRESET);
+
+      var response = await fetch(url, {
+        method: 'POST',
+        body: formData
+      });
+      if (!response.ok) {
+        var errorData = await response.json();
+        throw new Error(errorData.error?.message || 'Upload gagal');
+      }
+      var data = await response.json();
+      return data.secure_url;
+    }
+
+    // ============================================================
+    // SUBMIT TITIP (DENGAN MULTI UPLOAD)
+    // ============================================================
+    async function submitTitip() {
+      var nama = document.getElementById('tNama').value.trim();
+      var barang = document.getElementById('tBarang').value.trim();
+      var deskripsi = document.getElementById('tDeskripsi').value.trim();
+      var harga = document.getElementById('tHarga').value.trim();
+      var kategori = document.getElementById('tKategori').value.trim() || 'Lainnya';
+      var msgEl = document.getElementById('formMsg');
+      var submitBtn = document.getElementById('submitTitip');
+      var progressEl = document.getElementById('uploadProgress');
+
+      if (!nama || !barang || !harga) {
+        msgEl.className = 'form-msg err show';
+        msgEl.textContent = '⚠️ Nama, Barang, dan Harga wajib diisi!';
+        return;
+      }
+
+      if (uploadedFiles.length === 0) {
+        msgEl.className = 'form-msg err show';
+        msgEl.textContent = '⚠️ Upload minimal 1 foto atau video!';
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengupload...';
+      progressEl.style.display = 'block';
+
+      var uploadedUrls = [];
+      var uploadErrors = [];
+
+      try {
+        for (var i = 0; i < uploadedFiles.length; i++) {
+          try {
+            var url = await uploadToCloudinary(uploadedFiles[i]);
+            uploadedUrls.push(url);
+            progressEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Upload ' + (i + 1) + '/' + uploadedFiles.length + ' selesai...';
+          } catch (err) {
+            uploadErrors.push('File ' + (i + 1) + ': ' + err.message);
+          }
+        }
+
+        progressEl.style.display = 'none';
+
+        if (uploadedUrls.length === 0) {
+          msgEl.className = 'form-msg err show';
+          msgEl.textContent = '❌ Gagal upload semua file: ' + uploadErrors.join('; ');
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim Titipan';
+          return;
+        }
+
+        if (typeof db === 'undefined') {
+          throw new Error('Database tidak tersedia. Refresh halaman.');
+        }
+
+        // Simpan ke Firestore dengan array media
+        var docRef = await db.collection('jastip').add({
+          penjual: nama,
+          namaBarang: barang,
+          deskripsi: deskripsi || '',
+          harga: harga,
+          kategori: kategori,
+          media: uploadedUrls, // 🔥 ARRAY URL MEDIA
+          status: 'pending',
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        var waMsg = '*🆕 Titipan Baru! (Multi Media)*\n\nNama Penjual: ' + nama + '\nBarang: ' + barang + '\nHarga: ' + harga + '\nDeskripsi: ' + (deskripsi || '-') + '\nJumlah Media: ' + uploadedUrls.length + '\n\nKode: ' + docRef.id + '\n\n✅ Segera konfirmasi pembayaran Rp 5.000 untuk mengaktifkan.';
+        window.open('https://wa.me/6289687163314?text=' + encodeURIComponent(waMsg), '_blank');
+
+        msgEl.className = 'form-msg ok show';
+        msgEl.innerHTML = '✅ Titipan berhasil! ' + uploadedUrls.length + ' media terupload. Tunggu konfirmasi admin via WhatsApp.';
+        document.getElementById('formTitip').reset();
+        uploadedFiles = [];
+        document.getElementById('filePreviewGrid').innerHTML = '';
+        setTimeout(function() { closeModal('modalTitip'); }, 2000);
+
+      } catch (err) {
+        console.error(err);
+        msgEl.className = 'form-msg err show';
+        msgEl.textContent = '❌ Gagal: ' + err.message;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim Titipan';
+        progressEl.style.display = 'none';
+      }
+    }
+
+    // ============================================================
+    // SUBMIT TAWAR
+    // ============================================================
+    function submitTawar() {
+      var id = document.getElementById('tawarItemId').value;
+      var namaBarang = document.getElementById('tawarItemName').value;
+      var namaPembeli = document.getElementById('tNamaPembeli').value.trim();
+      var wa = document.getElementById('tWaPembeli').value.trim();
+      var hargaTawar = document.getElementById('tHargaTawar').value.trim();
+      var msgEl = document.getElementById('tawarMsg');
+
+      if (!namaPembeli || !wa || !hargaTawar) {
+        msgEl.className = 'form-msg err show';
+        msgEl.textContent = '⚠️ Semua field wajib diisi!';
+        return;
+      }
+
+      var detailUrl = 'https://akinoch.my.id/jastip.html?item=' + encodeURIComponent(id);
+      var waMsg = '💬 *Tawaran Baru!*\n\nBarang: ' + namaBarang + '\nPembeli: ' + namaPembeli + '\nWA: ' + wa + '\nHarga Tawar: ' + hargaTawar + '\n\nLink postingan: ' + detailUrl;
+      window.open('https://wa.me/6289687163314?text=' + encodeURIComponent(waMsg), '_blank');
+      msgEl.className = 'form-msg ok show';
+      msgEl.textContent = '✅ Tawaran terkirim! Admin akan menghubungkan dengan penjual.';
+      setTimeout(function() { closeModal('modalTawar'); }, 1500);
+    }
+
+    // ============================================================
+    // FUNGSI PESAN & TAWAR (global)
+    // ============================================================
+    window.pesanItem = function(id, namaBarang, penjual) {
+      var msg = 'Halo admin, saya tertarik dengan barang *' + namaBarang + '* dari *' + penjual + '*. Saya mau beli. Kode: ' + id;
+      window.open('https://wa.me/6289687163314?text=' + encodeURIComponent(msg), '_blank');
+    };
+
+    window.bukaTawar = function(id, namaBarang) {
+      document.getElementById('tawarItemId').value = id;
+      document.getElementById('tawarItemName').value = namaBarang;
+      document.getElementById('tNamaPembeli').value = '';
+      document.getElementById('tWaPembeli').value = '';
+      document.getElementById('tHargaTawar').value = '';
+      document.getElementById('tawarMsg').className = 'form-msg';
+      document.getElementById('tawarMsg').textContent = '';
+      openModal('modalTawar');
+    };
+
+    // ============================================================
+    // BAGIKAN ITEM
+    // ============================================================
+    window.bagikanItem = function(id, namaBarang, penjual, harga) {
+      var shareUrl = 'https://jastip.akinostore.workers.dev/?item=' + encodeURIComponent(id);
+      if (navigator.share) {
+        navigator.share({
+          title: namaBarang + ' - Jastip Akino Store',
+          text: namaBarang + ' dari ' + penjual + ' - ' + harga,
+          url: shareUrl
+        }).catch(function(error) {
+          if (error.name !== 'AbortError') showToast('Gagal membagikan post.');
+        });
+        return;
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(shareUrl).then(function() {
+          showToast('Link post berhasil disalin.');
+        }).catch(function() { salinLinkJastip(shareUrl); });
+      } else {
+        salinLinkJastip(shareUrl);
+      }
+    };
+
+    function salinLinkJastip(url) {
+      var input = document.createElement('input');
+      input.value = url;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      input.remove();
+      showToast('Link post berhasil disalin.');
+    }
+
+    function focusSharedItem() {
+      var itemId = new URLSearchParams(window.location.search).get('item');
+      if (!itemId) return;
+      var card = document.getElementById('jastip-' + itemId);
+      if (!card) return;
+      card.classList.add('shared-item');
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(function() { card.classList.remove('shared-item'); }, 2500);
+    }
 
     // ============================================================
     // THEME & NAVBAR
@@ -1107,6 +1598,9 @@
       }
     }
 
+    // ============================================================
+    // JASTIP COMMENTS
+    // ============================================================
     function setupJastipComments() {
       var form = document.getElementById('jastipCommentForm');
       var list = document.getElementById('jastipCommentList');
@@ -1166,231 +1660,7 @@
     }
 
     // ============================================================
-    // CLOUDINARY UPLOAD
-    // ============================================================
-    var CLOUD_NAME = 'dlwwy1f80';
-    var UPLOAD_PRESET = 'wallpaper_upload';
-
-    async function uploadToCloudinary(file) {
-      var url = 'https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/image/upload';
-      var formData = new FormData();
-      formData.append('file', file);
-      formData.append('upload_preset', UPLOAD_PRESET);
-
-      var response = await fetch(url, {
-        method: 'POST',
-        body: formData
-      });
-      if (!response.ok) {
-        var errorData = await response.json();
-        throw new Error(errorData.error?.message || 'Upload gagal');
-      }
-      var data = await response.json();
-      return data.secure_url;
-    }
-
-    // ============================================================
-    // SUBMIT TITIP
-    // ============================================================
-    async function submitTitip() {
-      var nama = document.getElementById('tNama').value.trim();
-      var barang = document.getElementById('tBarang').value.trim();
-      var deskripsi = document.getElementById('tDeskripsi').value.trim();
-      var harga = document.getElementById('tHarga').value.trim();
-      var kategori = document.getElementById('tKategori').value;
-      var fotoFile = document.getElementById('tFoto').files[0];
-      var msgEl = document.getElementById('formMsg');
-      var submitBtn = document.getElementById('submitTitip');
-
-      if (!nama || !barang || !harga || !kategori || !fotoFile) {
-        msgEl.className = 'form-msg err show';
-        msgEl.textContent = '⚠️ Semua field wajib diisi!';
-        return;
-      }
-
-      var progress = document.getElementById('uploadProgress');
-      progress.style.display = 'block';
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengupload...';
-
-      try {
-        var imageUrl = await uploadToCloudinary(fotoFile);
-        progress.style.display = 'none';
-
-        if (typeof db === 'undefined') {
-          throw new Error('Database tidak tersedia. Refresh halaman.');
-        }
-
-        var docRef = await db.collection('jastip').add({
-          penjual: nama,
-          namaBarang: barang,
-          deskripsi: deskripsi || '',
-          harga: harga,
-          kategori: kategori || 'Lainnya',
-          gambar: imageUrl,
-          status: 'pending',
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
-        var waMsg = '*🆕 Titipan Baru!*\n\nNama Penjual: ' + nama + '\nBarang: ' + barang + '\nHarga: ' + harga + '\nDeskripsi: ' + (deskripsi || '-') + '\n\nKode: ' + docRef.id + '\n\n✅ Segera konfirmasi pembayaran Rp 5.000 untuk mengaktifkan.';
-        window.open('https://wa.me/6289687163314?text=' + encodeURIComponent(waMsg), '_blank');
-
-        msgEl.className = 'form-msg ok show';
-        msgEl.innerHTML = '✅ Titipan berhasil! Tunggu konfirmasi admin via WhatsApp.';
-        document.getElementById('formTitip').reset();
-        document.getElementById('filePreview').style.display = 'none';
-        setTimeout(function() { closeModal('modalTitip'); }, 2000);
-
-      } catch (err) {
-        console.error(err);
-        msgEl.className = 'form-msg err show';
-        msgEl.textContent = '❌ Gagal: ' + err.message;
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim Titipan';
-        progress.style.display = 'none';
-      }
-    }
-
-    // ============================================================
-    // SUBMIT TAWAR (dengan link postingan)
-    // ============================================================
-    function submitTawar() {
-      var id = document.getElementById('tawarItemId').value;
-      var namaBarang = document.getElementById('tawarItemName').value;
-      var namaPembeli = document.getElementById('tNamaPembeli').value.trim();
-      var wa = document.getElementById('tWaPembeli').value.trim();
-      var hargaTawar = document.getElementById('tHargaTawar').value.trim();
-      var msgEl = document.getElementById('tawarMsg');
-
-      if (!namaPembeli || !wa || !hargaTawar) {
-        msgEl.className = 'form-msg err show';
-        msgEl.textContent = '⚠️ Semua field wajib diisi!';
-        return;
-      }
-
-      // 🔥 BUAT LINK LENGKAP KE POSTINGAN (gunakan URL web utama)
-      var detailUrl = 'https://akinoch.my.id/jastip.html?item=' + encodeURIComponent(id);
-
-      var waMsg = '💬 *Tawaran Baru!*\n\nBarang: ' + namaBarang + '\nPembeli: ' + namaPembeli + '\nWA: ' + wa + '\nHarga Tawar: ' + hargaTawar + '\n\nLink postingan: ' + detailUrl;
-      window.open('https://wa.me/6289687163314?text=' + encodeURIComponent(waMsg), '_blank');
-      msgEl.className = 'form-msg ok show';
-      msgEl.textContent = '✅ Tawaran terkirim! Admin akan menghubungkan dengan penjual.';
-      setTimeout(function() { closeModal('modalTawar'); }, 1500);
-    }
-
-    // ============================================================
-    // FUNGSI PESAN & TAWAR (global)
-    // ============================================================
-    window.pesanItem = function(id, namaBarang, penjual) {
-      var msg = 'Halo admin, saya tertarik dengan barang *' + namaBarang + '* dari *' + penjual + '*. Saya mau beli. Kode: ' + id;
-      window.open('https://wa.me/6289687163314?text=' + encodeURIComponent(msg), '_blank');
-    };
-
-    window.bukaTawar = function(id, namaBarang) {
-      document.getElementById('tawarItemId').value = id;
-      document.getElementById('tawarItemName').value = namaBarang;
-      document.getElementById('tNamaPembeli').value = '';
-      document.getElementById('tWaPembeli').value = '';
-      document.getElementById('tHargaTawar').value = '';
-      document.getElementById('tawarMsg').className = 'form-msg';
-      document.getElementById('tawarMsg').textContent = '';
-      openModal('modalTawar');
-    };
-
-    // ============================================================
-    // BAGIKAN ITEM - menggunakan worker untuk thumbnail
-    // ============================================================
-    window.bagikanItem = function(id, namaBarang, penjual, harga) {
-      // 🔥 GUNKAN WORKER UNTUK THUMBNAIL
-      var shareUrl = 'https://jastip.akinostore.workers.dev/?item=' + encodeURIComponent(id);
-
-      if (navigator.share) {
-        navigator.share({
-          title: namaBarang + ' - Jastip Akino Store',
-          text: namaBarang + ' dari ' + penjual + ' - ' + harga,
-          url: shareUrl
-        }).catch(function(error) {
-          if (error.name !== 'AbortError') showToast('Gagal membagikan post.');
-        });
-        return;
-      }
-
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(shareUrl).then(function() {
-          showToast('Link post berhasil disalin.');
-        }).catch(function() { salinLinkJastip(shareUrl); });
-      } else {
-        salinLinkJastip(shareUrl);
-      }
-    };
-
-    function salinLinkJastip(url) {
-      var input = document.createElement('input');
-      input.value = url;
-      document.body.appendChild(input);
-      input.select();
-      document.execCommand('copy');
-      input.remove();
-      showToast('Link post berhasil disalin.');
-    }
-
-    function focusSharedItem() {
-      var itemId = new URLSearchParams(window.location.search).get('item');
-      if (!itemId) return;
-      var card = document.getElementById('jastip-' + itemId);
-      if (!card) return;
-      card.classList.add('shared-item');
-      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      setTimeout(function() { card.classList.remove('shared-item'); }, 2500);
-    }
-
-    // ============================================================
-    // DYNAMIC OPEN GRAPH UNTUK BROWSER (saat user buka link langsung)
-    // ============================================================
-    function updateDynamicOG() {
-      var itemId = new URLSearchParams(window.location.search).get('item');
-      if (!itemId) return;
-
-      if (typeof db === 'undefined') {
-        console.warn('Firestore tidak tersedia, OG tidak dapat diupdate.');
-        return;
-      }
-
-      db.collection('jastip').doc(itemId).get()
-        .then(function(doc) {
-          if (!doc.exists) return;
-          var data = doc.data();
-          var title = data.namaBarang || 'Jastip - Akino Store';
-          var description = data.deskripsi || 'Dijual oleh ' + (data.penjual || '') + ' | Harga: ' + (data.harga || '');
-          var image = data.gambar || 'https://res.cloudinary.com/d39mdjct/image/upload/v1783493763/apk_pgxcmo.png';
-          var url = 'https://akinoch.my.id/jastip.html?item=' + itemId;
-
-          var ogTitle = document.querySelector('meta[property="og:title"]');
-          var ogDesc = document.querySelector('meta[property="og:description"]');
-          var ogImage = document.querySelector('meta[property="og:image"]');
-          var ogUrl = document.querySelector('meta[property="og:url"]');
-          var twitterTitle = document.querySelector('meta[name="twitter:title"]');
-          var twitterDesc = document.querySelector('meta[name="twitter:description"]');
-          var twitterImage = document.querySelector('meta[name="twitter:image"]');
-          var pageTitle = document.querySelector('title');
-
-          if (ogTitle) ogTitle.setAttribute('content', title + ' - Jastip Akino Store');
-          if (ogDesc) ogDesc.setAttribute('content', description);
-          if (ogImage) ogImage.setAttribute('content', image);
-          if (ogUrl) ogUrl.setAttribute('content', url);
-          if (twitterTitle) twitterTitle.setAttribute('content', title + ' - Jastip Akino Store');
-          if (twitterDesc) twitterDesc.setAttribute('content', description);
-          if (twitterImage) twitterImage.setAttribute('content', image);
-          if (pageTitle) pageTitle.textContent = title + ' - Jastip Akino Store';
-        })
-        .catch(function(err) {
-          console.warn('Gagal update OG:', err);
-        });
-    }
-
-    // ============================================================
-    // RENDER JASTIP
+    // RENDER JASTIP (DENGAN SLIDER MEDIA)
     // ============================================================
     var jastipItems = [];
     var jastipStatusFilter = 'all';
@@ -1446,28 +1716,130 @@
         var isSold = data.status === 'sold';
         var soldClass = isSold ? 'sold' : '';
         var soldBadge = isSold ? '<span class="sold-badge">TERJUAL</span>' : '';
-        var btnDisabled = isSold ? 'sold-btn' : '';
+
+        var media = data.media || [];
+        var mediaCount = media.length;
+        var firstMedia = media.length > 0 ? media[0] : '';
+
+        // Build slider
+        var sliderHtml = '';
+        if (media.length > 0) {
+          sliderHtml = '<div class="media-slider" data-id="' + id + '">' +
+            '<div class="slides-wrapper" style="transform:translateX(0%)">';
+          media.forEach(function(url, idx) {
+            var isVideo = url.match(/\.(mp4|mov|avi|webm)$/i);
+            var badgeHtml = isVideo ? '<span class="media-badge"><i class="fas fa-video"></i> VIDEO</span>' : '<span class="media-badge"><i class="fas fa-image"></i> FOTO</span>';
+            var mediaHtml = isVideo ?
+              '<video src="' + escapeHtml(url) + '" muted playsinline></video>' :
+              '<img src="' + escapeHtml(url) + '" alt="' + escapeHtml(data.namaBarang) + '" loading="lazy" />';
+            sliderHtml += '<div class="slide-item" data-index="' + idx + '" data-url="' + escapeHtml(url) + '" data-isvideo="' + (isVideo ? 'true' : 'false') + '">' +
+              mediaHtml +
+              badgeHtml +
+              (isVideo ? '<div class="video-play-icon"><i class="fas fa-play"></i></div>' : '') +
+              '</div>';
+          });
+          sliderHtml += '</div>';
+          if (media.length > 1) {
+            sliderHtml += '<button class="nav-arrow prev" onclick="slideMedia(\'' + id + '\', -1)"><i class="fas fa-chevron-left"></i></button>' +
+              '<button class="nav-arrow next" onclick="slideMedia(\'' + id + '\', 1)"><i class="fas fa-chevron-right"></i></button>';
+            sliderHtml += '<div class="slider-dots">';
+            for (var d = 0; d < media.length; d++) {
+              sliderHtml += '<span class="' + (d === 0 ? 'active' : '') + '" onclick="goToSlide(\'' + id + '\',' + d + ')"></span>';
+            }
+            sliderHtml += '</div>';
+          }
+          sliderHtml += '</div>';
+        } else {
+          sliderHtml = '<div class="media-slider" style="display:flex;align-items:center;justify-content:center;background:#0a0a12;color:var(--muted);font-size:0.8rem;"><i class="fas fa-image" style="font-size:2rem;opacity:0.3;"></i></div>';
+        }
+
         html += `
         <div class="jastip-card ${soldClass}" id="jastip-${id}">
-          <img src="${data.gambar}" alt="${data.namaBarang}" class="card-image" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Crect width=%22200%22 height=%22200%22 fill=%22%231a1a2e%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23555%22 font-size=%2220%22%3ENo%20Image%3C/text%3E%3C/svg%3E'">
+          ${sliderHtml}
           <div class="card-body">
-            <div class="item-name">${data.namaBarang}</div>
-            <div class="seller"><i class="fas fa-tag"></i> ${data.kategori || 'Lainnya'}</div>
-            <div class="seller"><i class="fas fa-user"></i> Dijual oleh: ${data.penjual}</div>
-            ${data.deskripsi ? `<div class="desc">${data.deskripsi}</div>` : ''}
-            <div class="price">${data.harga} ${soldBadge}</div>
+            <div class="item-name">${escapeHtml(data.namaBarang)}</div>
+            <div class="seller"><i class="fas fa-tag"></i> ${escapeHtml(data.kategori || 'Lainnya')}</div>
+            <div class="seller"><i class="fas fa-user"></i> Dijual oleh: ${escapeHtml(data.penjual)}</div>
+            ${data.deskripsi ? `<div class="desc">${escapeHtml(data.deskripsi)}</div>` : ''}
+            <div class="media-count"><i class="fas fa-images"></i> ${mediaCount} media</div>
+            <div class="price">${escapeHtml(data.harga)} ${soldBadge}</div>
             <div class="btn-group">
-              <button class="btn-jastip primary" onclick="pesanItem('${id}','${data.namaBarang}','${data.penjual}')" ${btnDisabled}><i class="fas fa-comment"></i> Pesan</button>
-              <button class="btn-jastip secondary" onclick="bukaTawar('${id}','${data.namaBarang}')" ${btnDisabled}><i class="fas fa-gavel"></i> Tawar</button>
-              <button class="btn-jastip share" onclick="bagikanItem('${id}','${data.namaBarang}','${data.penjual}','${data.harga}')"><i class="fas fa-share-nodes"></i> Bagikan</button>
+              <button class="btn-jastip primary" onclick="pesanItem('${id}','${escapeHtml(data.namaBarang)}','${escapeHtml(data.penjual)}')" ${isSold ? 'disabled' : ''}><i class="fas fa-comment"></i> Pesan</button>
+              <button class="btn-jastip secondary" onclick="bukaTawar('${id}','${escapeHtml(data.namaBarang)}')" ${isSold ? 'disabled' : ''}><i class="fas fa-gavel"></i> Tawar</button>
+              <button class="btn-jastip share" onclick="bagikanItem('${id}','${escapeHtml(data.namaBarang)}','${escapeHtml(data.penjual)}','${escapeHtml(data.harga)}')"><i class="fas fa-share-nodes"></i> Bagikan</button>
             </div>
           </div>
         </div>`;
       });
       grid.innerHTML = html;
+
+      // Setup click on media to open lightbox
+      document.querySelectorAll('.slide-item').forEach(function(el) {
+        el.addEventListener('click', function(e) {
+          var url = this.dataset.url;
+          var isVideo = this.dataset.isvideo === 'true';
+          if (url) {
+            if (isVideo) {
+              // For video, open in new tab or use lightbox
+              window.open(url, '_blank');
+            } else {
+              // Use lightbox
+              if (typeof lightbox !== 'undefined') {
+                lightbox.open({
+                  image: url,
+                  title: document.querySelector('.jastip-card .item-name')?.textContent || 'Foto'
+                });
+              } else {
+                window.open(url, '_blank');
+              }
+            }
+          }
+        });
+      });
+
       setTimeout(focusSharedItem, 50);
     }
 
+    // ===== SLIDER FUNCTIONS =====
+    window.slideMedia = function(id, direction) {
+      var card = document.getElementById('jastip-' + id);
+      if (!card) return;
+      var slider = card.querySelector('.media-slider');
+      var wrapper = slider.querySelector('.slides-wrapper');
+      var slides = wrapper.querySelectorAll('.slide-item');
+      var dots = slider.querySelectorAll('.slider-dots span');
+      var total = slides.length;
+      if (total <= 1) return;
+
+      var current = parseInt(slider.dataset.current || '0');
+      var next = (current + direction + total) % total;
+      slider.dataset.current = next;
+      wrapper.style.transform = 'translateX(-' + (next * 100) + '%)';
+
+      dots.forEach(function(dot, idx) {
+        dot.classList.toggle('active', idx === next);
+      });
+    };
+
+    window.goToSlide = function(id, index) {
+      var card = document.getElementById('jastip-' + id);
+      if (!card) return;
+      var slider = card.querySelector('.media-slider');
+      var wrapper = slider.querySelector('.slides-wrapper');
+      var dots = slider.querySelectorAll('.slider-dots span');
+      var total = dots.length;
+      if (index < 0 || index >= total) return;
+
+      slider.dataset.current = index;
+      wrapper.style.transform = 'translateX(-' + (index * 100) + '%)';
+      dots.forEach(function(dot, idx) {
+        dot.classList.toggle('active', idx === index);
+      });
+    };
+
+    // ============================================================
+    // RENDER JASTIP (LISTENER FIRESTORE)
+    // ============================================================
     function renderJastip() {
       var grid = document.getElementById('jastipGrid');
       if (typeof db === 'undefined') {
@@ -1490,17 +1862,10 @@
           grid.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i> Gagal memuat data.</div>';
         });
     }
-  </script>
 
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/sw.js')
-          .then(function() { console.log('✅ SW registered'); })
-          .catch(function(err) { console.log('❌ SW failed:', err); });
-      });
-    }
-
+    // ============================================================
+    // FILTER EVENT
+    // ============================================================
     document.getElementById('jastipStatusFilter').addEventListener('change', function() {
       jastipStatusFilter = this.value;
       renderJastipCards();
@@ -1513,8 +1878,18 @@
       jastipCategoryFilter = this.value;
       renderJastipCards();
     });
-  </script>
-  <script>
+
+    // ============================================================
+    // SERVICE WORKER
+    // ============================================================
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js')
+          .then(function() { console.log('✅ SW registered'); })
+          .catch(function(err) { console.log('❌ SW failed:', err); });
+      });
+    }
+
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistration().then(function(reg) {
         if (reg) {
