@@ -800,19 +800,19 @@
     }
     themeToggle.addEventListener('click', () => {
       document.body.classList.toggle('light-theme');
-      const isLight = body.classList.contains('light-theme');
+      const isLight = document.body.classList.contains('light-theme');
       themeIcon.className = isLight ? 'fas fa-sun' : 'fas fa-moon';
       localStorage.setItem('theme', isLight ? 'light' : 'dark');
     });
 
     // ============================================================
-    // DATA HARGA & LAYANAN
+    // DATA HARGA & LAYANAN (UPDATED)
     // ============================================================
     const EXCHANGE_RATE = 3400;
     function formatIDR(amount) { return 'Rp ' + amount.toLocaleString('id-ID'); }
     function formatMYR(amount) { return '≈ RM ' + (amount / EXCHANGE_RATE).toFixed(2); }
 
-    // SERVICE_PRICES untuk price display
+    // ===== SERVICE_PRICES =====
     const SERVICE_PRICES = {
       "Tune Up": { login: 3000, room: 5000 },
       "Tune Up Suara Asli / ECU": { login: 3000, room: 5000 },
@@ -824,13 +824,23 @@
       "Chrome / Bakar Body / Velg": { login: 3000, room: 5000 },
       "Custom Spoiler / Trondol": { login: 3000, room: 5000 },
       "Alis Nyala / Kaliper": { login: 3000, room: 5000 },
-      "Unlock Paid / Premium Car": { room: 5000, onlyRoom: true },
-      "Unlock Premium Car + Sirine": { room: 8000, onlyRoom: true },
+
+      // 🔥 UNLOCK PREMIUM CAR – SEKARANG PUNYA LOGIN + ROOM (tanpa onlyRoom)
+      "Unlock Paid / Premium Car": { login: 3000, room: 5000 },
+
+      // "Unlock Premium Car + Sirine" DIHAPUS
+
       "Unlock Premium Body": { login: 3000, room: 3000 },
       "Isi Koin Bebas Request": { login: 5000, onlyLogin: true },
       "Isi 50.000.000 Uang": { login: 4000, room: 5000 },
       "Bundle Uang + Koin (bebas req koin)": { login: 8000, onlyLogin: true },
-      "Akun King Baru (Free Koin+Uang+unlock W16)": { login: 15000, onlyLogin: true },
+
+      // 🔥 AKUN KING – 4 VARIAN (SEMUA ONLY LOGIN)
+      "Akun King (Suntik Rank)": { login: 10000, onlyLogin: true },
+      "Akun King + Coin + Uang": { login: 15000, onlyLogin: true },
+      "Akun King + Coin + Uang + Custom ID": { login: 20000, onlyLogin: true },
+      "Akun King + Coin + Uang + All Premium Car + Event Car": { login: 35000, onlyLogin: true },
+
       "Request Livery Mobil": { login: 20000, room: 20000 },
       "Paket Alis nyala + Kaliper": { login: 5000, room: 8000 },
       "Paket Chrome Velg atau Body + Alis atau Kaliper": { login: 5000, room: 8000 },
@@ -840,7 +850,7 @@
       "Paket Custom Spoiler + Trondol": { login: 5000, room: 8000 }
     };
 
-    // SERVICE_IMAGES untuk thumbnail
+    // ===== SERVICE_IMAGES =====
     const SERVICE_IMAGES = {
       "Tune Up": "Error.png",
       "Tune Up Suara Asli / ECU": "Error.png",
@@ -853,12 +863,15 @@
       "Custom Spoiler / Trondol": "20240911_122743_0000.png",
       "Alis Nyala / Kaliper": "20240911_122808_0000.png",
       "Unlock Paid / Premium Car": "Screenshot_20260720-131345.png",
-      "Unlock Premium Car + Sirine": "Screenshot_20260720-131345.png",
+      // "Unlock Premium Car + Sirine" DIHAPUS
       "Unlock Premium Body": "Screenshot_20260720-122331.png",
       "Isi Koin Bebas Request": "20240911_122850_0000.png",
       "Isi 50.000.000 Uang": "20240911_122850_0000.png",
       "Bundle Uang + Koin (bebas req koin)": "20240911_122850_0000.png",
-      "Akun King Baru (Free Koin+Uang+unlock W16)": "20240911_125220_0000.png",
+      "Akun King (Suntik Rank)": "20240911_125220_0000.png",
+      "Akun King + Coin + Uang": "20240911_125220_0000.png",
+      "Akun King + Coin + Uang + Custom ID": "20240911_125220_0000.png",
+      "Akun King + Coin + Uang + All Premium Car + Event Car": "20240911_125220_0000.png",
       "Request Livery Mobil": "20240911_123629_0000.png",
       "Paket Alis nyala + Kaliper": "20240911_122808_0000.png",
       "Paket Chrome Velg atau Body + Alis atau Kaliper": "20240911_122655_0000.png",
@@ -868,7 +881,7 @@
       "Paket Custom Spoiler + Trondol": "20240911_122743_0000.png"
     };
 
-    // SERVICE_DESC untuk deskripsi
+    // ===== SERVICE_DESC =====
     const SERVICE_DESC = {
       "Tune Up": "Kecepatan seperti standard tapi lebih kencang. Race 400m ±5/6 detik.",
       "Tune Up Suara Asli / ECU": "Tune up dengan suara asli + performa. Race 400m ±5/6 detik.",
@@ -880,13 +893,16 @@
       "Chrome / Bakar Body / Velg": "Cat chrome atau bakar pada body/velg",
       "Custom Spoiler / Trondol": "Pasang spoiler custom",
       "Alis Nyala / Kaliper": "Alis nyala atau kaliper",
-      "Unlock Paid / Premium Car": "Unlock/membeli mobil yang cash (uang asli). Mesin W16 / Brake Boost, bodykit rata kanan.",
-      "Unlock Premium Car + Sirine": "Unlock/membeli mobil cash + sirine. Mesin W16 / Brake Boost, bodykit rata kanan.",
+      "Unlock Paid / Premium Car": "Unlock/membeli mobil cash. Via Login: 3rb (tanpa W16 & sirine). Via Room: 5rb (dengan W16 & sirine). Gratis request spek (bisa pilih brake boost atau tidak).",
+      // "Unlock Premium Car + Sirine" DIHAPUS
       "Unlock Premium Body": "Premium Body",
       "Isi Koin Bebas Request": "Isi koin sesuai request (maks 500.000).",
       "Isi 50.000.000 Uang": "Isi 50 juta uang",
       "Bundle Uang + Koin (bebas req koin)": "Paket hemat uang + koin (request jumlah koin).",
-      "Akun King Baru (Free Koin+Uang+unlock W16)": "Bonus isi uang + koin + W16 (stock/akun baru/belum terdaftar)",
+      "Akun King (Suntik Rank)": "Suntik rank akun ke King (tanpa coin, uang, atau item tambahan).",
+      "Akun King + Coin + Uang": "Suntik akun ke King + isi koin bebas request (maks 500rb) + uang 50 juta.",
+      "Akun King + Coin + Uang + Custom ID": "Suntik akun ke King + isi koin bebas request + uang 50 juta + custom ID sesuai request.",
+      "Akun King + Coin + Uang + All Premium Car + Event Car": "Suntik akun ke King + isi koin bebas request + uang 50 juta + unlock SEMUA premium car + event car.",
       "Request Livery Mobil": "Desain livery sesuai request (tergantung tingkat kesulitan)",
       "Paket Alis nyala + Kaliper": "Pasang Alis nyala dan Kaliper",
       "Paket Chrome Velg atau Body + Alis atau Kaliper": "Chrome pada Velg/Body + Alis atau Kaliper",
@@ -896,7 +912,7 @@
       "Paket Custom Spoiler + Trondol": "Pasang Custom Spoiler dan Trondol"
     };
 
-    // SERVICE_CATEGORY
+    // ===== SERVICE_CATEGORY =====
     const SERVICE_CATEGORY = {
       "Tune Up": "Tune Up",
       "Tune Up Suara Asli / ECU": "Tune Up",
@@ -909,12 +925,15 @@
       "Custom Spoiler / Trondol": "Lainnya",
       "Alis Nyala / Kaliper": "Lainnya",
       "Unlock Paid / Premium Car": "Premium Car",
-      "Unlock Premium Car + Sirine": "Premium Car",
+      // "Unlock Premium Car + Sirine" DIHAPUS
       "Unlock Premium Body": "Premium Car",
       "Isi Koin Bebas Request": "Coin/Uang",
       "Isi 50.000.000 Uang": "Coin/Uang",
       "Bundle Uang + Koin (bebas req koin)": "Coin/Uang",
-      "Akun King Baru (Free Koin+Uang+unlock W16)": "Lainnya",
+      "Akun King (Suntik Rank)": "Lainnya",
+      "Akun King + Coin + Uang": "Lainnya",
+      "Akun King + Coin + Uang + Custom ID": "Lainnya",
+      "Akun King + Coin + Uang + All Premium Car + Event Car": "Lainnya",
       "Request Livery Mobil": "Livery",
       "Paket Alis nyala + Kaliper": "Paket",
       "Paket Chrome Velg atau Body + Alis atau Kaliper": "Paket",
@@ -924,8 +943,18 @@
       "Paket Custom Spoiler + Trondol": "Paket"
     };
 
-    const onlyRoomServices = ["Unlock Paid / Premium Car", "Unlock Premium Car + Sirine"];
-    const requireLoginServices = ["Isi Koin Bebas Request", "Bundle Uang + Koin (bebas req koin)", "Akun King Baru (Free Koin+Uang+unlock W16)"];
+    // 🔥 ONLY ROOM – sekarang kosong karena "Unlock Premium Car + Sirine" dihapus
+    const onlyRoomServices = [];
+
+    // 🔥 ONLY LOGIN – layanan yang wajib via Login Akun
+    const requireLoginServices = [
+      "Isi Koin Bebas Request",
+      "Bundle Uang + Koin (bebas req koin)",
+      "Akun King (Suntik Rank)",
+      "Akun King + Coin + Uang",
+      "Akun King + Coin + Uang + Custom ID",
+      "Akun King + Coin + Uang + All Premium Car + Event Car"
+    ];
 
     function updatePrice(method) {
       const name = document.getElementById('selected-service').value;
@@ -974,6 +1003,7 @@
       const submitBtn = document.getElementById('submitBtn');
       const serviceName = document.getElementById('selected-service').value;
 
+      // Jika layanan ada di onlyRoomServices atau requireLoginServices, tidak perlu toggle
       if (onlyRoomServices.includes(serviceName) || requireLoginServices.includes(serviceName)) {
         return;
       }
@@ -1030,14 +1060,26 @@
         }
         msg += `\nID Akun: ${id}`;
       } else {
+        // Cek apakah layanan hanya Login
+        const data = SERVICE_PRICES[s];
+        if (data && data.onlyLogin) {
+          // Jika onlyLogin dan metode tidak dipilih, kita set default ke Login Akun
+          // Tapi lebih baik minta user pilih.
+          showToast('⚠️ Silakan pilih metode.');
+          return;
+        }
         showToast('⚠️ Silakan pilih metode.');
         return;
       }
 
-      const coinField = document.getElementById('coinFields');
-      if (coinField.classList.contains('visible')) {
-        const coin = document.getElementById('coin-amount').value;
-        if (coin) msg += `\nJumlah Koin: ${coin}`;
+      // Cek apakah layanan Akun King (jangan tampilkan coin)
+      const isAkunKing = s.startsWith('Akun King');
+      if (!isAkunKing) {
+        const coinField = document.getElementById('coinFields');
+        if (coinField.classList.contains('visible')) {
+          const coin = document.getElementById('coin-amount').value;
+          if (coin) msg += `\nJumlah Koin: ${coin}`;
+        }
       }
 
       msg += `\n\nHarap unggah foto/dokumen yang diperlukan secara manual di chat ini.`;
@@ -1146,6 +1188,9 @@
     const params = new URLSearchParams(window.location.search);
     const serviceParam = params.get('service');
 
+    // Daftar layanan error (tidak tersedia)
+    const errorServices = ["Tune Up", "Tune Up Suara Asli / ECU", "FFA / Ghoib", "FFA / Ghoib Suara Asli / ECU", "Glitch", "Glitch Suara Asli / ECU"];
+
     if (serviceParam) {
       // Set service
       document.getElementById('selected-service').value = serviceParam;
@@ -1167,44 +1212,58 @@
       noteBox.classList.add('hidden');
       submitBtn.disabled = true;
 
+      // CEK: Apakah layanan hanya Room?
       if (onlyRoomServices.includes(serviceParam)) {
         loginSelect.innerHTML = '<option value="Lewat Room">Lewat Room</option>';
         loginSelect.value = 'Lewat Room';
         roomField.classList.add('visible');
         submitBtn.disabled = false;
         updatePrice('Lewat Room');
-      } else if (requireLoginServices.includes(serviceParam)) {
+      }
+      // CEK: Apakah layanan hanya Login?
+      else if (requireLoginServices.includes(serviceParam)) {
         loginSelect.innerHTML = '<option value="Login Akun">Login Akun</option>';
         loginSelect.value = 'Login Akun';
         loginFields.classList.add('visible');
         noteBox.classList.remove('hidden');
         submitBtn.disabled = false;
         updatePrice('Login Akun');
-      } else if (serviceParam === 'Request Livery Mobil') {
+      }
+      // CEK: Apakah layanan "Request Livery Mobil" (khusus)
+      else if (serviceParam === 'Request Livery Mobil') {
         document.getElementById('loginSection').classList.add('hidden');
         submitBtn.disabled = false;
         updatePrice('Login Akun');
-      } else if (serviceParam === 'Stock Mobil Murah' || serviceParam.includes('Stock')) {
+      }
+      // CEK: Apakah layanan "Stock Mobil Murah" (khusus)
+      else if (serviceParam === 'Stock Mobil Murah' || serviceParam.includes('Stock')) {
         document.getElementById('loginSection').classList.add('hidden');
         submitBtn.disabled = false;
         document.getElementById('priceValue').textContent = 'Lihat Stock';
         document.getElementById('priceMethod').textContent = '';
-      } else {
+      }
+      // Layanan normal (Login + Room) – misal Unlock Paid / Premium Car
+      else {
         loginSelect.innerHTML = '<option value="">-- Harap Pilih --</option><option value="Login Akun">Login Akun</option><option value="Lewat Room">Lewat Room</option>';
         loginSelect.value = '';
         submitBtn.disabled = true;
         updatePrice('');
       }
 
-      // Field koin
-      const isCoin = serviceParam.includes('Coin') || serviceParam.includes('Koin') || serviceParam === 'Bundle Uang + Koin (bebas req koin)';
+      // 🔥 CEK APAKAH LAYANAN AKUN KING? Jika iya, jangan tampilkan coinFields
+      const isAkunKing = serviceParam.startsWith('Akun King');
+      
+      // Field koin (kecuali untuk Akun King)
+      const isCoin = (serviceParam.includes('Coin') || serviceParam.includes('Koin') || serviceParam === 'Bundle Uang + Koin (bebas req koin)') && !isAkunKing;
       document.getElementById('coinFields').classList.toggle('visible', isCoin);
 
+      // Livery fields
       document.getElementById('liveryFields').classList.toggle('visible', serviceParam === 'Request Livery Mobil');
+      
+      // Stock fields
       document.getElementById('stockFields').classList.toggle('visible', serviceParam === 'Stock Mobil Murah' || serviceParam.includes('Stock'));
 
       // Error services
-      const errorServices = ["Tune Up", "Tune Up Suara Asli / ECU", "FFA / Ghoib", "FFA / Ghoib Suara Asli / ECU", "Glitch", "Glitch Suara Asli / ECU"];
       if (errorServices.includes(serviceParam)) {
         showToast('⚠️ Layanan ini sedang tidak tersedia.');
         submitBtn.disabled = true;

@@ -106,7 +106,7 @@
       font-weight: 600;
       font-size: 0.9rem;
       z-index: 9999;
-      box-shadow: 0 8px 32px rgba(239, 68, 68, 0.35);
+      box-shadow: 0 8px 32px rgba(239,68,68,0.35);
       opacity: 0;
       transition: opacity 0.35s ease, transform 0.35s ease;
       pointer-events: none;
@@ -127,7 +127,7 @@
     .toast i { font-size: 1.1rem; }
     body.light-theme .toast {
       background: #dc2626;
-      box-shadow: 0 8px 32px rgba(220, 38, 38, 0.3);
+      box-shadow: 0 8px 32px rgba(220,38,38,0.3);
     }
     /* ===== AMBIENT GLOWS ===== */
     .ambient-glows { position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
@@ -836,9 +836,7 @@
 
     // ===== SHARE SERVICE (dengan worker untuk thumbnail) =====
     function shareService(serviceName) {
-      // 🔥 Gunakan worker untuk thumbnail
       const shareUrl = `https://cpm.akinostore.workers.dev/?service=${encodeURIComponent(serviceName)}`;
-
       if (navigator.share) {
         navigator.share({
           title: serviceName + ' - Car Parking Multiplayer | Akino Store',
@@ -846,8 +844,6 @@
         }).catch(() => {});
         return;
       }
-
-      // Fallback: copy link ke clipboard (tanpa teks tambahan)
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(shareUrl).then(() => {
           showToast('Link layanan disalin!');
@@ -981,7 +977,7 @@
       return formatIDR(idrAmount) + ' <span class="price-myr">' + formatMYR(idrAmount) + '</span>';
     }
 
-    // ===== DATA LAYANAN LENGKAP =====
+    // ===== DATA LAYANAN LENGKAP (DENGAN PERUBAHAN) =====
     const DEFAULT_SERVICES = [
       // === LAYANAN ERROR ===
       { name: "Tune Up", price: 3000, image: "Error.png", desc: "Kecepatan seperti standard tapi lebih kencang. <span class='highlight'>Race 400m ±5/6 detik.</span>", note: "", kategori: "Tune Up", error: true, priceLogin: 3000, priceRoom: 5000 },
@@ -999,34 +995,66 @@
       { name: "Custom Spoiler / Trondol", price: 3000, image: "20240911_122743_0000.png", desc: "Pasang spoiler custom", note: "", kategori: "Lainnya", priceLogin: 3000, priceRoom: 5000, options: { type: ['Custom Spoiler', 'Trondol'] } },
       { name: "Alis Nyala / Kaliper", price: 3000, image: "20240911_122808_0000.png", desc: "Alis nyala atau kaliper", note: "", kategori: "Lainnya", priceLogin: 3000, priceRoom: 5000, options: { type: ['Alis Nyala', 'Kaliper'] } },
 
-      // === PREMIUM CAR ===
+      // === PREMIUM CAR – UNLOCK PAID / PREMIUM CAR SEKARANG PUNYA LOGIN + ROOM ===
+      // LAYANAN "Unlock Premium Car + Sirine" DIHAPUS
       { 
         name: "Unlock Paid / Premium Car", 
-        price: 5000, 
+        price: 3000, 
         image: "Screenshot_20260720-131345.png", 
-        desc: "Unlock/membeli mobil yang cash (uang asli). <span class='highlight'>Mesin W16 / Brake Boost, bodykit rata kanan.</span>", 
-        note: "Hanya via Room", 
+        desc: "Unlock/membeli mobil cash. <span class='highlight'>Via Login: 3rb (tanpa W16 & sirine). Via Room: 5rb (dengan W16 & sirine).</span> Gratis request spek (bisa pilih brake boost atau tidak).", 
+        note: "", 
         kategori: "Premium Car", 
-        priceRoom: 5000, 
-        onlyRoom: true 
-      },
-      { 
-        name: "Unlock Premium Car + Sirine", 
-        price: 8000, 
-        image: "Screenshot_20260720-131345.png", 
-        desc: "Unlock/membeli mobil cash + sirine. <span class='highlight'>Mesin W16 / Brake Boost, bodykit rata kanan.</span>", 
-        note: "Hanya via Room", 
-        kategori: "Premium Car", 
-        priceRoom: 8000, 
-        onlyRoom: true 
+        priceLogin: 3000, 
+        priceRoom: 5000
       },
       { name: "Unlock Premium Body", price: 3000, image: "Screenshot_20260720-122331.png", desc: "Premium Body", note: "", kategori: "Premium Car" },
 
       // === COIN / UANG ===
-      { name: "Isi Koin Bebas Request", price: 5000, image: "20240911_122850_0000.png", desc: "Isi koin sesuai request (maks 500.000).", note: "Wajib pilih metode login akun", kategori: "Coin/Uang" },
+      { name: "Isi Koin Bebas Request", price: 5000, image: "20240911_122850_0000.png", desc: "Isi koin sesuai request (maks 500.000).", note: "Wajib pilih metode login akun", kategori: "Coin/Uang", priceLogin: 5000, onlyLogin: true },
       { name: "Isi 50.000.000 Uang", price: 4000, image: "20240911_122850_0000.png", desc: "Isi 50 juta uang", note: "", kategori: "Coin/Uang", priceLogin: 4000, priceRoom: 5000 },
-      { name: "Bundle Uang + Koin (bebas req koin)", price: 8000, image: "20240911_122850_0000.png", desc: "Paket hemat uang + koin (request jumlah koin).", note: "Wajib pilih metode login akun", kategori: "Coin/Uang" },
-      { name: "Akun King Baru (Free Koin+Uang+unlock W16)", price: 15000, image: "20240911_125220_0000.png", desc: "Bonus isi uang + koin + W16 (stock/akun baru/belum terdaftar)", note: "Wajib pilih metode login akun", kategori: "Lainnya" },
+      { name: "Bundle Uang + Koin (bebas req koin)", price: 8000, image: "20240911_122850_0000.png", desc: "Paket hemat uang + koin (request jumlah koin).", note: "Wajib pilih metode login akun", kategori: "Coin/Uang", priceLogin: 8000, onlyLogin: true },
+
+      // === AKUN KING – 4 VARIAN (SEMUA ONLY LOGIN) ===
+      { 
+        name: "Akun King (Suntik Rank)", 
+        price: 10000, 
+        image: "20240911_125220_0000.png", 
+        desc: "Suntik rank akun ke King (tanpa coin, uang, atau item tambahan).", 
+        note: "Wajib pilih metode login akun", 
+        kategori: "Lainnya", 
+        priceLogin: 10000, 
+        onlyLogin: true 
+      },
+      { 
+        name: "Akun King + Coin + Uang", 
+        price: 15000, 
+        image: "20240911_125220_0000.png", 
+        desc: "Suntik akun ke King + isi koin bebas request (maks 500rb) + uang 50 juta.", 
+        note: "Wajib pilih metode login akun", 
+        kategori: "Lainnya", 
+        priceLogin: 15000, 
+        onlyLogin: true 
+      },
+      { 
+        name: "Akun King + Coin + Uang + Custom ID", 
+        price: 20000, 
+        image: "20240911_125220_0000.png", 
+        desc: "Suntik akun ke King + isi koin bebas request + uang 50 juta + custom ID sesuai request.", 
+        note: "Wajib pilih metode login akun", 
+        kategori: "Lainnya", 
+        priceLogin: 20000, 
+        onlyLogin: true 
+      },
+      { 
+        name: "Akun King + Coin + Uang + All Premium Car + Event Car", 
+        price: 35000, 
+        image: "20240911_125220_0000.png", 
+        desc: "Suntik akun ke King + isi koin bebas request + uang 50 juta + unlock SEMUA premium car + event car.", 
+        note: "Wajib pilih metode login akun", 
+        kategori: "Lainnya", 
+        priceLogin: 35000, 
+        onlyLogin: true 
+      },
 
       // === LIVERY & STOCK ===
       { name: "Request Livery Mobil", price: 20000, image: "20240911_123629_0000.png", desc: "Desain livery sesuai request", note: "Tergantung tingkat kesulitan", kategori: "Livery", priceRange: true },
@@ -1085,6 +1113,8 @@
         priceHtml = formatIDR(service.price) + ' <span class="price-myr">' + formatMYR(service.price) + '</span><br>' + priceHtml;
       } else if (service.onlyRoom) {
         priceHtml = formatIDR(service.priceRoom) + ' <span class="price-myr">' + formatMYR(service.priceRoom) + '</span> <span class="price-options">(Hanya via Room)</span>';
+      } else if (service.onlyLogin) {
+        priceHtml = formatIDR(service.priceLogin) + ' <span class="price-myr">' + formatMYR(service.priceLogin) + '</span> <span class="price-options">(Hanya via Login Akun)</span>';
       } else {
         priceHtml = formatIDR(service.price) + ' <span class="price-myr">' + formatMYR(service.price) + '</span>';
       }
