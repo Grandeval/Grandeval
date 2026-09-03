@@ -1068,39 +1068,62 @@
             loadJastip();
         }
 
-        async function doLogin() {
-            var loginButton = document.querySelector('.btn-login');
-            var loginError = document.getElementById('loginErr');
-            loginButton.disabled = true;
-            loginButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menghubungkan...';
-            loginError.textContent = '';
-            try {
-                var provider = new firebase.auth.GoogleAuthProvider();
-                await auth.signInWithPopup(provider);
-                showDashboard();
-            } catch (error) {
-                console.error('Google admin login error:', {
-                    code: error.code,
-                    message: error.message,
-                    origin: window.location.origin
-                });
-                if (error.code === 'auth/popup-closed-by-user') {
-                    loginError.textContent = 'Login dibatalkan.';
-                } else if (error.code === 'auth/unauthorized-domain') {
-                    loginError.textContent = 'Domain ' + window.location.hostname + ' belum diizinkan Firebase.';
-                } else if (error.code === 'auth/operation-not-allowed') {
-                    loginError.textContent = 'Login Google belum diaktifkan di Firebase Authentication.';
-                } else if (error.code === 'auth/popup-blocked') {
-                    loginError.textContent = 'Popup login diblokir browser. Izinkan popup lalu coba lagi.';
-                } else if (error.code === 'auth/cancelled-popup-request') {
-                    loginError.textContent = 'Permintaan login sebelumnya masih berjalan.';
-                } else {
-                    loginError.textContent = 'Firebase [' + (error.code || 'unknown') + '] gagal. Coba lagi.';
-                }
-                loginButton.disabled = false;
-                loginButton.innerHTML = '<i class="fab fa-google"></i> Masuk dengan Google';
-            }
+        // ============================================================
+// 🔥 CEK STATUS LOGIN (HANYA ADMIN YANG BOLEH MASUK)
+// ============================================================
+const ADMIN_UID = "g2wfEDQ6niUfI3UEjRFh4GUtxvp1";
+
+firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        // User login, cek apakah UID-nya admin
+        if (user.uid === ADMIN_UID) {
+            // Admin, tampilkan dashboard
+            showDashboard();
+        } else {
+            // Bukan admin, logout paksa dan tampilkan error
+            firebase.auth().signOut().then(() => {
+                document.getElementById('loginErr').textContent = '❌ Akses ditolak. Hanya admin yang bisa masuk.';
+                document.getElementById('loginWrap').style.display = '';
+                document.getElementById('dash').classList.remove('active');
+            });
         }
+    } else {
+        // User belum login, tampilkan halaman login
+        document.getElementById('loginWrap').style.display = '';
+        document.getElementById('dash').classList.remove('active');
+    }
+});
+
+async function doLogin() {
+  var loginButton = document.querySelector('.btn-login');
+  var loginError = document.getElementById('loginErr');
+  loginButton.disabled = true;
+  loginButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menghubungkan...';
+  loginError.textContent = '';
+
+  try {
+    var provider = new firebase.auth.GoogleAuthProvider();
+    var result = await auth.signInWithPopup(provider);
+    var user = result.user;
+
+    // 🔥 CEK UID
+    if (user.uid !== ADMIN_UID) {
+      await auth.signOut();
+      loginError.textContent = '❌ Akses ditolak. Hanya admin yang bisa masuk.';
+      loginButton.disabled = false;
+      loginButton.innerHTML = '<i class="fab fa-google"></i> Masuk dengan Google';
+      return;
+    }
+
+    showDashboard();
+
+  } catch (error) {
+    console.error('Google admin login error:', error);
+    loginError.textContent = 'Login gagal: ' + error.message;
+    loginButton.disabled = false;
+    loginButton.innerHTML = '<i class="fab fa-google"></i> Masuk dengan Google';
+  }
+}
 
         function doLogout() {
             document.getElementById('dash').classList.remove('active');
