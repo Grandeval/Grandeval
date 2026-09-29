@@ -782,7 +782,7 @@
     <div class="gate-card">
       <div class="gate-icon"><i class="fas fa-key"></i></div>
       <h2>Setup OpenRouter API Key</h2>
-      <p class="center">MetaStock AI memakai <strong>OpenRouter</strong> (multi-model AI) untuk generate metadata. Bisa gratis, tinggal pakai model `:free`.</p>
+      <p class="center">MetaStock AI memakai <strong>OpenRouter</strong> (multi-model AI) untuk generate metadata. Bisa gratis, tinggal pakai model <code>:free</code>.</p>
 
       <div class="helper-steps">
         <strong>Cara dapat API Key gratis:</strong>
@@ -876,13 +876,13 @@
         <div class="field">
           <label>Model AI (OpenRouter)</label>
           <select id="modelSelect">
-            <option value="meta-llama/llama-3.2-11b-vision-instruct:free" selected>Llama 3.2 11B Vision (GRATIS)</option>
+            <option value="openrouter/free" selected>Auto (openrouter/free) — paling stabil</option>
+            <option value="meta-llama/llama-3.2-11b-vision-instruct:free">Llama 3.2 11B Vision (GRATIS)</option>
             <option value="qwen/qwen-2-vl-7b-instruct:free">Qwen 2 VL 7B (GRATIS)</option>
             <option value="google/gemini-flash-1.5-8b">Gemini Flash 1.5 8B (murah, cepat)</option>
             <option value="google/gemini-flash-1.5">Gemini Flash 1.5 (murah, bagus)</option>
             <option value="openai/gpt-4o-mini">GPT-4o mini (murah, akurat)</option>
             <option value="anthropic/claude-3.5-haiku">Claude 3.5 Haiku (bagus)</option>
-            <option value="openrouter/free">Auto (openrouter/free)</option>
           </select>
         </div>
 
@@ -1004,13 +1004,12 @@
     // KONFIGURASI
     // ============================================================
     const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
-    const OPENROUTER_KEYS_URL = 'https://openrouter.ai/keys';
     const LS_API_KEY = 'akino_openrouter_api_key';
     const LS_HISTORY = 'akino_metastock_history';
     const MAX_FILES = 8;
     const MAX_FILE_SIZE = 5 * 1024 * 1024;
     const MAX_IMG_DIM = 1024;
-    const DELAY_BETWEEN_REQUESTS = 800;
+    const DELAY_BETWEEN_REQUESTS = 1000;
 
     // ============================================================
     // STATE
@@ -1036,7 +1035,7 @@
         toast.style.opacity = '0';
         toast.style.transform = 'translateX(40px) scale(0.9)';
         setTimeout(() => toast.remove(), 300);
-      }, 3500);
+      }, 4000);
     }
 
     function escHtml(str) {
@@ -1044,13 +1043,6 @@
       const d = document.createElement('div');
       d.textContent = String(str);
       return d.innerHTML;
-    }
-
-    function formatBytes(bytes) {
-      if (!bytes) return '0 B';
-      if (bytes < 1024) return bytes + ' B';
-      if (bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
-      return (bytes/(1024*1024)).toFixed(2) + ' MB';
     }
 
     function timeAgo(ts) {
@@ -1183,7 +1175,6 @@
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memverifikasi...';
 
       try {
-        // Verifikasi pakai endpoint /key (dapat info saldo/limit)
         const res = await fetch('https://openrouter.ai/api/v1/key', {
           method: 'GET',
           headers: { 'Authorization': 'Bearer ' + key }
@@ -1430,7 +1421,7 @@
     }
 
     // ============================================================
-    // CALL OPENROUTER (direct from browser)
+    // CALL OPENROUTER (IMPROVED ERROR HANDLING)
     // ============================================================
     async function callOpenRouter(apiKey, model, prompt, imageDataUrl) {
       const content = imageDataUrl
@@ -1458,18 +1449,70 @@
         body: JSON.stringify(body)
       });
 
+      // Baca response sebagai text dulu untuk debug
+      const rawText = await res.text();
+      console.log('🔍 OpenRouter response [' + res.status + ']:', rawText.substring(0, 500));
+
+      let data;
+      try {
+        data = JSON.parse(rawText);
+      } catch (e) {
+        throw new Error('Response OpenRouter tidak valid (bukan JSON). Status: ' + res.status);
+      }
+
+      // Cek error HTTP
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        let errMsg = data.error?.message || ('HTTP ' + res.status + ' ' + res.statusText);
+        let errMsg = data.error?.message || ('HTTP ' + res.status);
         if (res.status === 401) errMsg = 'API Key tidak valid atau expired.';
-        else if (res.status === 402) errMsg = 'Saldo OpenRouter tidak cukup. Silakan top up atau gunakan model :free.';
-        else if (res.status === 429) errMsg = 'Rate limit. Tunggu beberapa detik lalu coba lagi.';
+        else if (res.status === 402) errMsg = 'Saldo OpenRouter tidak cukup. Pakai model :free.';
+        else if (res.status === 429) errMsg = 'Rate limit dari OpenRouter. Tunggu 10-30 detik lalu coba lagi.';
+        else if (res.status === 404) errMsg = 'Model tidak tersedia. Ganti model di dropdown.';
+        else if (res.status === 400) errMsg = 'Request tidak valid. Mungkin model tidak support gambar/vision.';
         throw new Error(errMsg);
       }
 
-      const data = await res.json();
-      const raw = data.choices?.[0]?.message?.content || '';
-      if (!raw) throw new Error('AI tidak mengembalikan konten.');
+      // Cek error yang dikirim dalam body (status 200 tapi ada error)
+      if (data.error) {
+        const errMsg = data.error.message || JSON.stringify(data.error);
+        if (/rate.?limit/i.test(errMsg)) {
+          throw new Error('Model sedang rate limit. Tunggu sebentar atau ganti model lain di dropdown.');
+        }
+        if (/no.?endpoint|not found|does not exist/i.test(errMsg)) {
+          throw new Error('Model tidak tersedia. Ganti model lain di dropdown.');
+        }
+        if (/image|vision|multimodal/i.test(errMsg)) {
+          throw new Error('Model ini tidak support analisis gambar. Ganti ke model vision (lihat dropdown).');
+        }
+        throw new Error('OpenRouter: ' + errMsg);
+      }
+
+      // Cek choices
+      if (!data.choices || !Array.isArray(data.choices) || data.choices.length === 0) {
+        console.error('❌ Tidak ada choices. Response lengkap:', data);
+        throw new Error('AI tidak mengembalikan choices. Kemungkinan model sedang down/rate limit. Coba ganti model atau tunggu 30 detik.');
+      }
+
+      const message = data.choices[0].message || {};
+      let raw = message.content || '';
+
+      // Fallback: kadang model reasoning simpan di .reasoning
+      if (!raw && message.reasoning) {
+        raw = message.reasoning;
+      }
+
+      // Kalau content berupa array (kadang ada)
+      if (Array.isArray(raw)) {
+        raw = raw.map(part => (typeof part === 'string' ? part : part.text || '')).join('');
+      }
+
+      // Trim markdown code block
+      raw = String(raw).trim();
+      if (!raw) {
+        console.error('❌ Content kosong. Response:', data);
+        const finishReason = data.choices[0].finish_reason || 'unknown';
+        throw new Error('AI tidak mengembalikan konten (finish_reason: ' + finishReason + '). Coba ganti model atau ulangi.');
+      }
+
       return raw;
     }
 
@@ -1521,7 +1564,6 @@ ATURAN OUTPUT (SANGAT PENTING):
       }
       try {
         const parsed = JSON.parse(text);
-        // Normalisasi keywords
         let keywords = [];
         if (Array.isArray(parsed.keywords)) {
           keywords = parsed.keywords.map(k => String(k).trim()).filter(Boolean);
@@ -1532,7 +1574,6 @@ ATURAN OUTPUT (SANGAT PENTING):
         } else if (typeof parsed.hashtags === 'string') {
           keywords = parsed.hashtags.split(/[\s,]+/).map(k => k.replace(/^#/, '').trim()).filter(Boolean);
         }
-        // Dedupe
         const seen = new Set();
         keywords = keywords.filter(k => {
           const key = k.toLowerCase();
