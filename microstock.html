@@ -847,7 +847,6 @@
             <option value="meta-llama/llama-4-scout-17b-16e-instruct">Llama 4 Scout (Vision - untuk analisis gambar)</option>
             <option value="meta-llama/llama-4-maverick-17b-128e-instruct">Llama 4 Maverick (Vision)</option>
             <option value="llama-3.3-70b-versatile">Llama 3.3 70B (kualitas tinggi)</option>
-            <option value="llama-3.1-8b-instant">Llama 3.1 8B (tercepat)</option>
           </select>
         </div>
 
@@ -954,6 +953,7 @@
     // KONFIGURASI
     // ============================================================
     const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+    const GROQ_MODELS_URL = 'https://api.groq.com/openai/v1/models';
     const LS_API_KEY = 'akino_groq_api_key';
     const LS_HISTORY = 'akino_metastock_history';
     const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
@@ -1118,6 +1118,7 @@
 
     // ============================================================
     // API KEY MANAGEMENT
+    // Verifikasi pakai GET /models — tidak butuh model apapun
     // ============================================================
     $('btnSaveApiKey').addEventListener('click', async () => {
       const input = $('apiKeyInput');
@@ -1142,25 +1143,26 @@
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memverifikasi...';
 
       try {
-        const res = await fetch(GROQ_API_URL, {
-          method: 'POST',
+        // Verifikasi pakai endpoint /models — tidak butuh model, hanya cek API key valid
+        const res = await fetch(GROQ_MODELS_URL, {
+          method: 'GET',
           headers: {
-            'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + key
-          },
-          body: JSON.stringify({
-            model: 'llama-3.1-8b-instant',
-            messages: [{ role: 'user', content: 'hi' }],
-            max_tokens: 5
-          })
+          }
         });
 
         if (!res.ok) {
           const data = await res.json().catch(() => ({}));
+          if (res.status === 401) {
+            throw new Error('API Key tidak valid atau sudah expired.');
+          } else if (res.status === 403) {
+            throw new Error('API Key tidak memiliki akses. Cek kembali akun Groq Anda.');
+          }
           const errMsg = data.error?.message || ('HTTP ' + res.status);
           throw new Error(errMsg);
         }
 
+        // Sukses — simpan
         localStorage.setItem(LS_API_KEY, key);
         input.value = '';
         showToast('API Key berhasil disimpan!', 'success');
@@ -1413,6 +1415,8 @@
           errMsg = 'Rate limit tercapai. Tunggu beberapa detik lalu coba lagi.';
         } else if (/invalid.?api.?key|401/i.test(errMsg)) {
           errMsg = 'API Key tidak valid. Silakan ganti API Key Anda.';
+        } else if (/model.*does not exist|not found|404/i.test(errMsg)) {
+          errMsg = 'Model tidak tersedia di akun Groq Anda. Coba ganti model lain di pengaturan.';
         }
         $('resultContainer').innerHTML = `
           <div class="notice error">
