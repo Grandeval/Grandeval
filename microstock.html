@@ -13,7 +13,8 @@
   <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/d39mdjct/image/upload/w_180,h_180,c_fit/v1783493763/apk_pgxcmo.png" />
 
   <title>MetaStock AI - Generator Metadata Microstock | Akino Store</title>
-  <meta name="description" content="Generate judul, deskripsi, dan keyword microstock profesional otomatis dengan AI. Support batch upload & export CSV.">
+  <meta name="description" content="Generate judul, deskripsi, dan keyword microstock profesional dengan AI OpenRouter. Support batch upload & export CSV.">
+  <meta name="keywords" content="metadata microstock, keyword generator, AI microstock, openrouter, batch upload, CSV export, Akino Store">
   <link rel="canonical" href="https://akinocpm.my.id/metastock.html">
   <link rel="icon" href="https://res.cloudinary.com/d39mdjct/image/upload/v1783478697/icon_tnzy32.ico" />
 
@@ -185,7 +186,8 @@
       max-width:560px; margin:0.2rem auto 0; line-height:1.6;
     }
 
-    .gate-screen { max-width:480px; margin:2rem auto 3rem; padding:0 1rem; }
+    /* GATE SCREENS */
+    .gate-screen { max-width:520px; margin:2rem auto 3rem; padding:0 1rem; }
     .gate-card {
       background:var(--bg-card); border:1px solid var(--border);
       border-radius:var(--radius-lg); padding:2.5rem 2rem;
@@ -205,10 +207,24 @@
     }
     .gate-card p {
       color:var(--muted-light); font-size:0.88rem;
-      line-height:1.7; margin-bottom:1.25rem;
+      line-height:1.7; margin-bottom:1rem;
+      text-align:left;
     }
+    .gate-card p.center { text-align:center; }
     .gate-card a { color:var(--accent); font-weight:500; }
     .gate-card a:hover { text-decoration:underline; }
+    .gate-card input {
+      width:100%; padding:0.85rem 1rem;
+      background:rgba(255,255,255,0.03); border:1px solid var(--border);
+      border-radius:var(--radius-sm); color:var(--fg);
+      font-family:var(--font-body); font-size:0.88rem;
+      outline:none; margin-bottom:0.75rem;
+      transition:border-color 0.2s, box-shadow 0.2s;
+      text-align:center;
+    }
+    .gate-card input:focus {
+      border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-dim);
+    }
     .btn-google {
       display:flex; align-items:center; justify-content:center; gap:0.7rem;
       width:100%; padding:0.85rem 1.2rem;
@@ -234,7 +250,35 @@
     .btn-primary:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 8px 28px rgba(255,221,87,0.35); }
     .btn-primary:active:not(:disabled) { transform:scale(0.97); }
     .btn-primary:disabled { opacity:0.4; cursor:not-allowed; transform:none; box-shadow:none; }
+    .btn-ghost {
+      display:inline-flex; align-items:center; justify-content:center; gap:0.4rem;
+      padding:0.5rem 1rem; background:var(--bg-card);
+      border:1px solid var(--border); border-radius:var(--radius-sm);
+      color:var(--muted-light); font-size:0.8rem; font-weight:500;
+      cursor:pointer; transition:all var(--transition);
+    }
+    .btn-ghost:hover { border-color:var(--border-hover); color:var(--fg); background:var(--bg-card-hover); }
 
+    .helper-steps {
+      text-align:left;
+      background:rgba(59,130,246,0.06);
+      border:1px solid rgba(59,130,246,0.15);
+      border-radius:var(--radius-sm);
+      padding:0.9rem 1rem;
+      margin-bottom:1rem;
+      font-size:0.82rem;
+      line-height:1.7;
+      color:var(--fg-dim);
+    }
+    .helper-steps strong { color:var(--fg); }
+    .helper-steps ol {
+      margin-left:1.2rem;
+      margin-top:0.3rem;
+    }
+    .helper-steps ol li { margin-bottom:0.3rem; }
+    .helper-steps a { color:var(--accent); font-weight:600; }
+
+    /* MAIN TOOL */
     .tool-layout { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:2rem; }
     @media (max-width:900px) { .tool-layout { grid-template-columns:1fr; } }
 
@@ -279,7 +323,6 @@
     }
     .upload-thumb:hover { border-color:rgba(255,221,87,0.3); }
     .upload-thumb.processing { border-color:var(--info); animation:pulseBorder 1.2s infinite; }
-    .upload-thumb.uploading { border-color:var(--warning); animation:pulseBorder 1.2s infinite; }
     .upload-thumb.done { border-color:var(--success); }
     .upload-thumb.error { border-color:var(--danger); }
     .upload-thumb img { width:100%; height:100%; object-fit:cover; }
@@ -292,7 +335,6 @@
       text-transform:uppercase; letter-spacing:0.3px;
     }
     .upload-thumb .thumb-status.pending { background:rgba(122,122,144,0.9); }
-    .upload-thumb .thumb-status.uploading { background:rgba(251,146,60,0.95); }
     .upload-thumb .thumb-status.processing { background:rgba(59,130,246,0.95); }
     .upload-thumb .thumb-status.done { background:rgba(34,197,94,0.95); }
     .upload-thumb .thumb-status.error { background:rgba(239,68,68,0.95); }
@@ -357,8 +399,7 @@
       display:block; font-size:0.75rem; font-weight:600;
       color:var(--muted-light); margin-bottom:0.35rem; letter-spacing:0.2px;
     }
-    .field label .req { color:#f87171; margin-left:2px; }
-    .field select, .field input[type=text] {
+    .field select, .field input[type=text], .field input[type=password] {
       width:100%; padding:0.6rem 0.85rem;
       background:rgba(255,255,255,0.03); border:1px solid var(--border);
       border-radius:var(--radius-sm); color:var(--fg);
@@ -369,7 +410,7 @@
       background-repeat:no-repeat; background-position:right 0.85rem center;
       padding-right:2rem;
     }
-    .field input[type=text] { background-image:none; padding-right:0.85rem; }
+    .field input[type=text], .field input[type=password] { background-image:none; padding-right:0.85rem; }
     .field select option { background:#0e0e18; color:#f0f0f5; }
     body.light-theme .field select option { background:#ffffff; color:#1a1a24; }
     .field select:focus, .field input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-dim); }
@@ -384,6 +425,7 @@
     .two-col { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
     @media (max-width:480px) { .two-col { grid-template-columns:1fr; } }
 
+    /* RESULTS */
     .result-card {
       background:rgba(255,255,255,0.02); border:1px solid var(--border);
       border-radius:var(--radius); margin-bottom:1rem; overflow:hidden;
@@ -490,6 +532,29 @@
     .btn-export-csv:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(34,197,94,0.35); }
     .btn-export-json { background:var(--bg-card); border:1px solid var(--border) !important; color:var(--fg-dim); }
     .btn-export-json:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-dim); }
+
+    .settings-row {
+      display:flex; flex-wrap:wrap; gap:0.5rem;
+      align-items:center; margin-top:0.5rem;
+      font-size:0.72rem; color:var(--muted);
+    }
+    .settings-row .api-status {
+      display:inline-flex; align-items:center; gap:0.35rem;
+      padding:0.25rem 0.7rem; border-radius:50px;
+      background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.2);
+      color:var(--success); font-weight:600;
+    }
+    .settings-row .api-status.missing {
+      background:rgba(251,146,60,0.1); border-color:rgba(251,146,60,0.2);
+      color:var(--warning);
+    }
+    .settings-row .btn-mini {
+      padding:0.25rem 0.7rem; border-radius:50px;
+      background:var(--bg-card); border:1px solid var(--border);
+      color:var(--muted-light); font-size:0.7rem; cursor:pointer;
+      transition:all 0.2s;
+    }
+    .settings-row .btn-mini:hover { border-color:var(--accent); color:var(--accent); }
 
     .history-section {
       margin-top:2rem; background:var(--bg-card); border:1px solid var(--border);
@@ -688,15 +753,15 @@
   <header class="page-hero">
     <div class="hero-badge"><i class="fas fa-wand-magic-sparkles"></i> AI Generator • Batch & CSV</div>
     <h1>MetaStock <span class="accent">AI</span></h1>
-    <p>Generate judul, deskripsi, dan keyword microstock secara batch (maks 8 foto sekaligus) lalu export ke CSV. Cukup login Google, tanpa perlu API Key.</p>
+    <p>Generate judul, deskripsi, dan keyword microstock secara batch (maks 8 foto sekaligus) lalu export ke CSV. Cukup login Google + API Key OpenRouter.</p>
   </header>
 
-  <!-- ===== GATE: LOGIN ===== -->
+  <!-- ===== GATE 1: LOGIN ===== -->
   <div class="gate-screen" id="gateLogin">
     <div class="gate-card">
       <div class="gate-icon"><i class="fas fa-lock"></i></div>
       <h2>Login Diperlukan</h2>
-      <p>Untuk menggunakan MetaStock AI, silakan login dengan akun Google Anda. Gratis dan hanya butuh beberapa detik.</p>
+      <p class="center">Untuk menggunakan MetaStock AI, silakan login dengan akun Google Anda. Gratis dan hanya butuh beberapa detik.</p>
       <button class="btn-google" id="btnLoginGoogle">
         <svg viewBox="0 0 48 48" width="20" height="20">
           <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
@@ -706,9 +771,47 @@
         </svg>
         Login dengan Google
       </button>
-      <p style="margin-top:1rem;font-size:0.75rem;">
+      <p class="center" style="margin-top:1rem;font-size:0.75rem;">
         Dengan login, Anda menyetujui <a href="terms.html">Syarat &amp; Ketentuan</a> dan <a href="privacy.html">Kebijakan Privasi</a> kami.
       </p>
+    </div>
+  </div>
+
+  <!-- ===== GATE 2: OPENROUTER API KEY ===== -->
+  <div class="gate-screen" id="gateApiKey" style="display:none">
+    <div class="gate-card">
+      <div class="gate-icon"><i class="fas fa-key"></i></div>
+      <h2>Setup OpenRouter API Key</h2>
+      <p class="center">MetaStock AI memakai <strong>OpenRouter</strong> (multi-model AI) untuk generate metadata. Bisa gratis, tinggal pakai model `:free`.</p>
+
+      <div class="helper-steps">
+        <strong>Cara dapat API Key gratis:</strong>
+        <ol>
+          <li>Buka <a href="https://openrouter.ai/keys" target="_blank" rel="noopener">openrouter.ai/keys</a></li>
+          <li>Login dengan Google (gratis, tanpa kartu kredit)</li>
+          <li>Klik tombol <strong>"Create Key"</strong></li>
+          <li>Beri nama (misal: "MetaStock")</li>
+          <li>Copy API Key (format: <code>sk-or-v1-...</code>)</li>
+          <li>Paste di bawah ini</li>
+        </ol>
+      </div>
+
+      <div class="notice info" style="text-align:left;margin-bottom:1rem;">
+        <i class="fas fa-shield-halved"></i>
+        <span>API Key Anda <strong>hanya disimpan di browser ini</strong> (localStorage). Tidak pernah dikirim ke server kami.</span>
+      </div>
+
+      <input type="password" id="apiKeyInput" placeholder="sk-or-v1-... (paste di sini)" autocomplete="off" spellcheck="false">
+      <div id="apiKeyError" class="notice error" style="display:none;text-align:left;margin-bottom:0.75rem;">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="apiKeyErrorText">API Key tidak valid.</span>
+      </div>
+      <button class="btn-primary" id="btnSaveApiKey">
+        <i class="fas fa-check"></i> Simpan & Verifikasi
+      </button>
+      <button class="btn-ghost" id="btnLogoutFromGate" style="margin-top:0.75rem;width:100%;">
+        <i class="fas fa-right-from-bracket"></i> Logout
+      </button>
     </div>
   </div>
 
@@ -749,23 +852,6 @@
 
         <div class="two-col">
           <div class="field">
-            <label>Kategori</label>
-            <select id="category">
-              <option value="">Auto-detect</option>
-              <option value="Nature">🌿 Nature</option>
-              <option value="Abstract">🎨 Abstract</option>
-              <option value="Minimal">⬜ Minimal</option>
-              <option value="Dark">🌙 Dark</option>
-              <option value="Gradient">🌈 Gradient</option>
-              <option value="City">🌆 City</option>
-              <option value="Space">🚀 Space</option>
-              <option value="Anime">🎌 Anime</option>
-              <option value="Business">💼 Business</option>
-              <option value="Food">🍽️ Food</option>
-              <option value="Technology">💻 Technology</option>
-            </select>
-          </div>
-          <div class="field">
             <label>Jumlah Keyword</label>
             <select id="kwCount">
               <option value="20">20 keyword</option>
@@ -774,17 +860,29 @@
               <option value="50">50 keyword</option>
             </select>
           </div>
+          <div class="field">
+            <label>Platform Target</label>
+            <select id="platform">
+              <option value="general" selected>General (semua)</option>
+              <option value="shutterstock">Shutterstock</option>
+              <option value="adobe">Adobe Stock</option>
+              <option value="freepik">Freepik</option>
+              <option value="istock">iStock / Getty</option>
+              <option value="vecteezy">Vecteezy</option>
+            </select>
+          </div>
         </div>
 
         <div class="field">
-          <label>Platform Target</label>
-          <select id="platform">
-            <option value="general" selected>General (semua platform)</option>
-            <option value="shutterstock">Shutterstock (7-50 kw)</option>
-            <option value="adobe">Adobe Stock (max 49 kw)</option>
-            <option value="freepik">Freepik</option>
-            <option value="istock">iStock / Getty</option>
-            <option value="vecteezy">Vecteezy</option>
+          <label>Model AI (OpenRouter)</label>
+          <select id="modelSelect">
+            <option value="meta-llama/llama-3.2-11b-vision-instruct:free" selected>Llama 3.2 11B Vision (GRATIS)</option>
+            <option value="qwen/qwen-2-vl-7b-instruct:free">Qwen 2 VL 7B (GRATIS)</option>
+            <option value="google/gemini-flash-1.5-8b">Gemini Flash 1.5 8B (murah, cepat)</option>
+            <option value="google/gemini-flash-1.5">Gemini Flash 1.5 (murah, bagus)</option>
+            <option value="openai/gpt-4o-mini">GPT-4o mini (murah, akurat)</option>
+            <option value="anthropic/claude-3.5-haiku">Claude 3.5 Haiku (bagus)</option>
+            <option value="openrouter/free">Auto (openrouter/free)</option>
           </select>
         </div>
 
@@ -794,9 +892,13 @@
           <i class="fas fa-wand-magic-sparkles"></i> Generate Semua
         </button>
 
-        <button class="btn-google" id="btnLogout" style="margin-top:0.5rem;background:var(--bg-card);color:var(--muted-light);border:1px solid var(--border);box-shadow:none;font-size:0.78rem;padding:0.5rem 1rem;">
-          <i class="fas fa-right-from-bracket"></i> Logout
-        </button>
+        <div class="settings-row">
+          <span class="api-status" id="apiStatus">
+            <i class="fas fa-check-circle"></i> API Key tersimpan
+          </span>
+          <button class="btn-mini" id="btnChangeApiKey"><i class="fas fa-key"></i> Ganti API Key</button>
+          <button class="btn-mini" id="btnLogout"><i class="fas fa-right-from-bracket"></i> Logout</button>
+        </div>
       </div>
 
       <!-- RIGHT: OUTPUT -->
@@ -899,11 +1001,11 @@
 
   <script>
     // ============================================================
-    // KONFIGURASI (sama seperti admin.html wallpaper AI)
+    // KONFIGURASI
     // ============================================================
-    const WORKER_URL = 'https://wallpaperai.akinostore.workers.dev';
-    const CLOUD_NAME = 'dlwwy1f80';
-    const UPLOAD_PRESET = 'wallpaper_upload';
+    const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
+    const OPENROUTER_KEYS_URL = 'https://openrouter.ai/keys';
+    const LS_API_KEY = 'akino_openrouter_api_key';
     const LS_HISTORY = 'akino_metastock_history';
     const MAX_FILES = 8;
     const MAX_FILE_SIZE = 5 * 1024 * 1024;
@@ -914,7 +1016,7 @@
     // STATE
     // ============================================================
     let currentUser = null;
-    let currentImages = []; // [{ id, dataUrl, fileName, fileSize, originalSize, cloudUrl, status, result, error }]
+    let currentImages = [];
     let isProcessing = false;
 
     // ============================================================
@@ -969,10 +1071,24 @@
     // ============================================================
     function showGate(which) {
       $('gateLogin').style.display = 'none';
+      $('gateApiKey').style.display = 'none';
       $('mainTool').style.display = 'none';
       if (which === 'login') $('gateLogin').style.display = '';
+      else if (which === 'apiKey') $('gateApiKey').style.display = '';
       else if (which === 'main') $('mainTool').style.display = '';
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateApiStatus() {
+      const key = localStorage.getItem(LS_API_KEY);
+      const el = $('apiStatus');
+      if (key) {
+        el.className = 'api-status';
+        el.innerHTML = '<i class="fas fa-check-circle"></i> API Key tersimpan';
+      } else {
+        el.className = 'api-status missing';
+        el.innerHTML = '<i class="fas fa-exclamation-triangle"></i> API Key belum diset';
+      }
     }
 
     function updateUploadCountBadge() {
@@ -989,8 +1105,14 @@
         showGate('login');
         return;
       }
-      showGate('main');
-      renderHistory();
+      const key = localStorage.getItem(LS_API_KEY);
+      if (!key) {
+        showGate('apiKey');
+      } else {
+        showGate('main');
+        updateApiStatus();
+        renderHistory();
+      }
     });
 
     $('btnLoginGoogle').addEventListener('click', async () => {
@@ -998,8 +1120,6 @@
       const originalHTML = btn.innerHTML;
       btn.disabled = true;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menghubungkan...';
-
-      console.log('🔑 Firebase auth origin:', window.location.origin);
 
       try {
         const provider = new firebase.auth.GoogleAuthProvider();
@@ -1021,7 +1141,10 @@
       }
     });
 
-    $('btnLogout').addEventListener('click', async () => {
+    $('btnLogout').addEventListener('click', doLogout);
+    $('btnLogoutFromGate').addEventListener('click', doLogout);
+
+    async function doLogout() {
       if (!confirm('Yakin ingin logout?')) return;
       try {
         await firebase.auth().signOut();
@@ -1032,6 +1155,65 @@
       } catch (err) {
         showToast('Gagal logout: ' + err.message, 'error');
       }
+    }
+
+    // ============================================================
+    // API KEY (OpenRouter)
+    // ============================================================
+    $('btnSaveApiKey').addEventListener('click', async () => {
+      const input = $('apiKeyInput');
+      const key = input.value.trim();
+      const errEl = $('apiKeyError');
+      const errText = $('apiKeyErrorText');
+      errEl.style.display = 'none';
+
+      if (!key) {
+        errText.textContent = 'API Key tidak boleh kosong.';
+        errEl.style.display = 'flex';
+        return;
+      }
+      if (!key.startsWith('sk-or-')) {
+        errText.textContent = 'Format API Key OpenRouter harus dimulai dengan "sk-or-".';
+        errEl.style.display = 'flex';
+        return;
+      }
+
+      const btn = $('btnSaveApiKey');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memverifikasi...';
+
+      try {
+        // Verifikasi pakai endpoint /key (dapat info saldo/limit)
+        const res = await fetch('https://openrouter.ai/api/v1/key', {
+          method: 'GET',
+          headers: { 'Authorization': 'Bearer ' + key }
+        });
+
+        if (!res.ok) {
+          if (res.status === 401) throw new Error('API Key tidak valid atau sudah expired.');
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.error?.message || ('HTTP ' + res.status));
+        }
+
+        localStorage.setItem(LS_API_KEY, key);
+        input.value = '';
+        showToast('API Key berhasil disimpan!', 'success');
+        showGate('main');
+        updateApiStatus();
+        renderHistory();
+      } catch (err) {
+        console.error('API key verify error:', err);
+        errText.textContent = '❌ ' + (err.message || 'API Key tidak valid.');
+        errEl.style.display = 'flex';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-check"></i> Simpan & Verifikasi';
+      }
+    });
+
+    $('btnChangeApiKey').addEventListener('click', () => {
+      $('apiKeyInput').value = localStorage.getItem(LS_API_KEY) || '';
+      showGate('apiKey');
     });
 
     // ============================================================
@@ -1140,7 +1322,6 @@
             fileName: file.name,
             fileSize: compressed.size,
             originalSize: file.size,
-            cloudUrl: null,
             status: 'pending',
             result: null,
             error: null
@@ -1200,8 +1381,7 @@
       uploadGrid.innerHTML = currentImages.map(img => {
         const statusLabel = {
           pending: 'Pending',
-          uploading: 'Upload...',
-          processing: 'AI Proses...',
+          processing: 'Proses...',
           done: '✓ Selesai',
           error: '✗ Error'
         }[img.status] || img.status;
@@ -1250,71 +1430,125 @@
     }
 
     // ============================================================
-    // UPLOAD KE CLOUDINARY (unsigned preset)
+    // CALL OPENROUTER (direct from browser)
     // ============================================================
-    async function uploadToCloudinary(dataUrl) {
-      const url = 'https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/image/upload';
-      const formData = new FormData();
-      formData.append('file', dataUrl);
-      formData.append('upload_preset', UPLOAD_PRESET);
+    async function callOpenRouter(apiKey, model, prompt, imageDataUrl) {
+      const content = imageDataUrl
+        ? [
+            { type: 'text', text: prompt },
+            { type: 'image_url', image_url: { url: imageDataUrl } }
+          ]
+        : prompt;
 
-      const res = await fetch(url, { method: 'POST', body: formData });
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err.error?.message || 'Cloudinary upload gagal (HTTP ' + res.status + ')');
-      }
-      const data = await res.json();
-      if (!data.secure_url) throw new Error('Cloudinary tidak mengembalikan URL.');
-      return data.secure_url;
-    }
-
-    // ============================================================
-    // CALL WORKER AI
-    // ============================================================
-    async function callWorker(cloudinaryUrl, opts) {
       const body = {
-        url: cloudinaryUrl,
-        theme: opts.extraDesc || '',
-        category: opts.category || '',
-        keywords: opts.kwCount || 30,
-        platform: opts.platform || 'general'
+        model: model,
+        messages: [{ role: 'user', content }],
+        temperature: 0.7,
+        max_tokens: 2000
       };
 
-      const res = await fetch(WORKER_URL, {
+      const res = await fetch(OPENROUTER_API_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + apiKey,
+          'HTTP-Referer': window.location.origin,
+          'X-Title': 'MetaStock AI - Akino Store'
+        },
         body: JSON.stringify(body)
       });
 
       if (!res.ok) {
-        const txt = await res.text().catch(() => '');
-        throw new Error('Worker HTTP ' + res.status + (txt ? ' — ' + txt.substring(0, 120) : ''));
+        const data = await res.json().catch(() => ({}));
+        let errMsg = data.error?.message || ('HTTP ' + res.status + ' ' + res.statusText);
+        if (res.status === 401) errMsg = 'API Key tidak valid atau expired.';
+        else if (res.status === 402) errMsg = 'Saldo OpenRouter tidak cukup. Silakan top up atau gunakan model :free.';
+        else if (res.status === 429) errMsg = 'Rate limit. Tunggu beberapa detik lalu coba lagi.';
+        throw new Error(errMsg);
       }
 
       const data = await res.json();
-      // Worker wallpaper return: { title, description, category, hashtags }
-      // Kita normalisasi ke { title, description, keywords[] }
-      return normalizeWorkerResult(data);
+      const raw = data.choices?.[0]?.message?.content || '';
+      if (!raw) throw new Error('AI tidak mengembalikan konten.');
+      return raw;
     }
 
-    function normalizeWorkerResult(data) {
-      let keywords = [];
-      if (Array.isArray(data.keywords)) {
-        keywords = data.keywords;
-      } else if (Array.isArray(data.hashtags)) {
-        keywords = data.hashtags;
-      } else if (typeof data.hashtags === 'string') {
-        keywords = data.hashtags.split(/[\s,]+/).map(s => s.replace(/^#/, '').trim()).filter(Boolean);
-      } else if (typeof data.keywords === 'string') {
-        keywords = data.keywords.split(/[\s,]+/).map(s => s.replace(/^#/, '').trim()).filter(Boolean);
-      }
-
-      return {
-        title: data.title || '',
-        description: data.description || data.desc || '',
-        keywords: keywords,
-        category: data.category || ''
+    // ============================================================
+    // BUILD PROMPT
+    // ============================================================
+    function buildPrompt({ kwCount, platform, extraDesc }) {
+      const platformHints = {
+        general: 'Shutterstock, Adobe Stock, Freepik, iStock, dan platform microstock umum.',
+        shutterstock: 'Shutterstock (title maksimal 200 karakter, 7-50 keyword).',
+        adobe: 'Adobe Stock (title maksimal 70 karakter, maksimal 49 keyword).',
+        freepik: 'Freepik (title maksimal 100 karakter, keyword relevan).',
+        istock: 'iStock/Getty Images (title deskriptif, keyword relevan).',
+        vecteezy: 'Vecteezy (title maksimal 100 karakter, keyword relevan).'
       };
+      const platformHint = platformHints[platform] || platformHints.general;
+      const themeHint = extraDesc ? `\n7. Info tambahan dari user: "${extraDesc}"` : '';
+
+      return `Anda adalah expert metadata microstock profesional dengan pengalaman 10 tahun. Tugas Anda menganalisis gambar dan membuat metadata microstock yang SEO-friendly, akurat, dan menarik untuk platform ${platformHint}
+
+INSTRUKSI:
+1. Analisis gambar secara mendetail: objek utama, latar belakang, suasana, warna dominan, komposisi, mood, konsep, dan elemen-elemen penting.
+2. Buat TITLE: deskriptif, mengandung kata kunci utama di awal, natural, dan menarik. Jangan pakai kata "photo of" atau "image of". Hindari trademark/brand.
+3. Buat DESCRIPTION: 1-2 kalimat menjelaskan gambar secara kontekstual, cocok untuk kebutuhan komersial.
+4. Buat KEYWORDS: tepat ${kwCount} keyword berkualitas (single & multi-word), hindari duplikat, hindari kata umum berlebihan. Keywords dalam bahasa Inggris.
+5. Bahasa output: English (title, description, keywords semua dalam bahasa Inggris).
+6. Deteksi sendiri tipe konten (foto / ilustrasi / vector / 3D render) dan kategori paling cocok.${themeHint}
+
+ATURAN OUTPUT (SANGAT PENTING):
+- HANYA kembalikan JSON valid, tanpa teks penjelasan, tanpa markdown code block, tanpa komentar.
+- Format JSON:
+{
+  "title": "...",
+  "description": "...",
+  "keywords": ["keyword1", "keyword2", "..."]
+}
+
+- "keywords" harus array of string, minimal ${Math.max(15, kwCount - 5)} dan maksimal ${kwCount} keyword.
+- Pastikan JSON valid dan bisa di-parse oleh JSON.parse().`;
+    }
+
+    function parseAIResponse(raw) {
+      let text = String(raw).trim();
+      text = text.replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/i, '').trim();
+      const firstBrace = text.indexOf('{');
+      const lastBrace = text.lastIndexOf('}');
+      if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+        text = text.substring(firstBrace, lastBrace + 1);
+      }
+      try {
+        const parsed = JSON.parse(text);
+        // Normalisasi keywords
+        let keywords = [];
+        if (Array.isArray(parsed.keywords)) {
+          keywords = parsed.keywords.map(k => String(k).trim()).filter(Boolean);
+        } else if (typeof parsed.keywords === 'string') {
+          keywords = parsed.keywords.split(',').map(k => k.trim()).filter(Boolean);
+        } else if (Array.isArray(parsed.hashtags)) {
+          keywords = parsed.hashtags.map(k => String(k).replace(/^#/, '').trim()).filter(Boolean);
+        } else if (typeof parsed.hashtags === 'string') {
+          keywords = parsed.hashtags.split(/[\s,]+/).map(k => k.replace(/^#/, '').trim()).filter(Boolean);
+        }
+        // Dedupe
+        const seen = new Set();
+        keywords = keywords.filter(k => {
+          const key = k.toLowerCase();
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+        return {
+          title: String(parsed.title || '').trim(),
+          description: String(parsed.description || '').trim(),
+          keywords: keywords
+        };
+      } catch (e) {
+        console.error('JSON parse error. Raw:', raw);
+        throw new Error('Format respons AI tidak valid. Coba ulang atau ganti model.');
+      }
     }
 
     // ============================================================
@@ -1324,6 +1558,13 @@
 
     async function generateAll() {
       if (isProcessing) return;
+
+      const apiKey = localStorage.getItem(LS_API_KEY);
+      if (!apiKey) {
+        showToast('API Key belum diset.', 'error');
+        showGate('apiKey');
+        return;
+      }
       if (!currentImages.length) {
         showToast('Upload minimal 1 gambar.', 'error');
         return;
@@ -1338,55 +1579,45 @@
         img.status = 'pending';
         img.result = null;
         img.error = null;
-        img.cloudUrl = null;
       });
       renderUploadGrid();
       renderResults();
       $('exportSection').classList.remove('show');
 
       const opts = {
-        extraDesc: $('extraDesc').value.trim(),
-        category: $('category').value,
         kwCount: parseInt($('kwCount').value) || 30,
-        platform: $('platform').value
+        platform: $('platform').value,
+        extraDesc: $('extraDesc').value.trim()
       };
+      const model = $('modelSelect').value;
 
       const total = currentImages.length;
       let success = 0, fail = 0;
 
       for (let i = 0; i < currentImages.length; i++) {
         const img = currentImages[i];
-        img.status = 'uploading';
+        img.status = 'processing';
         renderUploadGrid();
-        showProgress(i, total, img.fileName + ' — Upload...');
+        showProgress(i, total, img.fileName);
 
         try {
-          // 1. Upload ke Cloudinary
-          const cloudUrl = await uploadToCloudinary(img.dataUrl);
-          img.cloudUrl = cloudUrl;
+          const prompt = buildPrompt(opts);
+          const raw = await callOpenRouter(apiKey, model, prompt, img.dataUrl);
+          const parsed = parseAIResponse(raw);
 
-          // 2. Kirim ke Worker AI
-          img.status = 'processing';
-          renderUploadGrid();
-          showProgress(i, total, img.fileName + ' — AI Generate...');
+          if (!parsed.title) throw new Error('AI tidak menghasilkan title.');
+          if (!parsed.keywords.length) throw new Error('AI tidak menghasilkan keyword.');
 
-          const result = await callWorker(cloudUrl, opts);
-
-          if (!result.title) {
-            throw new Error('Worker tidak mengembalikan title.');
-          }
-
-          img.result = result;
+          img.result = parsed;
           img.status = 'done';
           success++;
 
-          // Simpan ke history
           saveToHistory({
             id: genId('ms'),
             ts: Date.now(),
             preview: img.dataUrl,
             fileName: img.fileName,
-            results: result
+            results: parsed
           });
         } catch (err) {
           console.error('Error untuk', img.fileName, ':', err);
@@ -1446,7 +1677,7 @@
       const html = [];
 
       currentImages.forEach((img) => {
-        if (img.status === 'pending' || img.status === 'uploading' || img.status === 'processing') return;
+        if (img.status === 'pending' || img.status === 'processing') return;
 
         if (img.status === 'error') {
           html.push(`
