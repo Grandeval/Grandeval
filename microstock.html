@@ -13,13 +13,13 @@
   <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/d39mdjct/image/upload/w_180,h_180,c_fit/v1783493763/apk_pgxcmo.png" />
 
   <title>MetaStock AI - Generator Metadata Microstock | Akino Store</title>
-  <meta name="description" content="Generate judul, deskripsi, dan keyword microstock profesional dengan AI Groq. Gratis, cepat, dan akurat untuk Shutterstock, Adobe Stock, Freepik, dan lainnya.">
-  <meta name="keywords" content="metadata microstock, keyword generator, AI microstock, groq, qwen, shutterstock metadata, adobe stock metadata, freepik metadata, Akino Store">
+  <meta name="description" content="Generate judul, deskripsi, dan keyword microstock profesional dengan AI Groq. Support batch upload & export CSV.">
+  <meta name="keywords" content="metadata microstock, keyword generator, AI microstock, groq, qwen, batch upload, CSV export, Akino Store">
   <link rel="canonical" href="https://akinocpm.my.id/metastock.html">
   <link rel="icon" href="https://res.cloudinary.com/d39mdjct/image/upload/v1783478697/icon_tnzy32.ico" />
 
   <meta property="og:title" content="MetaStock AI - Generator Metadata Microstock">
-  <meta property="og:description" content="Generate metadata microstock (title, description, keywords) otomatis dengan AI. Didukung Groq API.">
+  <meta property="og:description" content="Generate metadata microstock (title, description, keywords) otomatis dengan AI. Support batch upload & export CSV.">
   <meta property="og:image" content="https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_thumbnail2_dkwek2.png">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://akinocpm.my.id/metastock.html">
@@ -294,57 +294,154 @@
       background:var(--accent-dim); color:var(--accent);
       font-weight:600; letter-spacing:0.3px;
     }
+    .panel-title .panel-actions {
+      margin-left:auto; display:flex; gap:0.35rem;
+    }
+    .panel-title .panel-actions .btn-mini {
+      padding:0.2rem 0.6rem; border-radius:50px;
+      background:var(--bg-card); border:1px solid var(--border);
+      color:var(--muted-light); font-size:0.65rem; cursor:pointer;
+      transition:all 0.2s;
+    }
+    .panel-title .panel-actions .btn-mini:hover { border-color:var(--accent); color:var(--accent); }
 
-    /* Upload */
+    /* Upload Grid (batch) */
+    .upload-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill, minmax(80px, 1fr));
+      gap:0.5rem;
+      margin-bottom:0.75rem;
+    }
+    .upload-grid:empty { display:none; margin:0; }
+    .upload-thumb {
+      position:relative;
+      aspect-ratio:1;
+      border-radius:10px;
+      overflow:hidden;
+      background:#0a0a12;
+      border:2px solid var(--border);
+      transition:all 0.2s;
+    }
+    .upload-thumb:hover { border-color:rgba(255,221,87,0.3); }
+    .upload-thumb.processing { border-color:var(--info); animation:pulseBorder 1.2s infinite; }
+    .upload-thumb.done { border-color:var(--success); }
+    .upload-thumb.error { border-color:var(--danger); }
+    .upload-thumb img {
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+    .upload-thumb .thumb-status {
+      position:absolute;
+      bottom:3px;
+      left:3px;
+      right:3px;
+      font-size:0.5rem;
+      font-weight:700;
+      padding:0.12rem 0.3rem;
+      border-radius:50px;
+      text-align:center;
+      color:#fff;
+      background:rgba(0,0,0,0.75);
+      backdrop-filter:blur(4px);
+      text-transform:uppercase;
+      letter-spacing:0.3px;
+    }
+    .upload-thumb .thumb-status.pending { background:rgba(122,122,144,0.9); }
+    .upload-thumb .thumb-status.processing { background:rgba(59,130,246,0.95); }
+    .upload-thumb .thumb-status.done { background:rgba(34,197,94,0.95); }
+    .upload-thumb .thumb-status.error { background:rgba(239,68,68,0.95); }
+    .upload-thumb .thumb-remove {
+      position:absolute;
+      top:3px;
+      right:3px;
+      width:20px;
+      height:20px;
+      border-radius:50%;
+      background:rgba(0,0,0,0.75);
+      backdrop-filter:blur(4px);
+      border:1px solid rgba(255,255,255,0.15);
+      color:#fff;
+      font-size:0.55rem;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      z-index:2;
+      transition:all 0.2s;
+    }
+    .upload-thumb .thumb-remove:hover { background:rgba(239,68,68,0.95); transform:scale(1.1); }
+    @keyframes pulseBorder {
+      0%,100% { box-shadow:0 0 0 0 rgba(59,130,246,0.4); }
+      50% { box-shadow:0 0 0 4px rgba(59,130,246,0.15); }
+    }
+
+    /* Upload zone */
     .upload-zone {
-      position:relative; width:100%; aspect-ratio:4/3;
+      position:relative; width:100%;
+      min-height:110px;
       border:2px dashed var(--border);
       border-radius:var(--radius); cursor:pointer;
       display:flex; flex-direction:column;
       align-items:center; justify-content:center;
-      gap:0.5rem; text-align:center;
+      gap:0.4rem; text-align:center;
       transition:all var(--transition);
       background:rgba(255,255,255,0.01);
-      overflow:hidden;
+      padding:1rem;
     }
     .upload-zone:hover, .upload-zone.dragover {
       border-color:var(--accent);
       background:var(--accent-dim);
     }
     .upload-zone .upload-icon {
-      font-size:2.4rem; color:var(--accent);
-      opacity:0.6; margin-bottom:0.3rem;
+      font-size:1.8rem; color:var(--accent);
+      opacity:0.6;
     }
     .upload-zone .upload-title {
       font-family:var(--font-display);
-      font-size:0.95rem; font-weight:600;
+      font-size:0.9rem; font-weight:600;
     }
     .upload-zone .upload-sub {
-      font-size:0.75rem; color:var(--muted);
+      font-size:0.72rem; color:var(--muted);
     }
-    .upload-zone img.preview-img {
-      position:absolute; inset:0;
-      width:100%; height:100%;
-      object-fit:contain; background:#0a0a12;
+
+    /* Batch progress */
+    .batch-progress {
+      margin-top:0.6rem;
+      padding:0.7rem 0.9rem;
+      background:rgba(59,130,246,0.08);
+      border:1px solid rgba(59,130,246,0.2);
+      border-radius:10px;
+      font-size:0.78rem;
+      display:none;
     }
-    .upload-zone .remove-img {
-      position:absolute; top:8px; right:8px;
-      z-index:2; width:32px; height:32px;
-      border-radius:50%; background:rgba(0,0,0,0.7);
-      backdrop-filter:blur(8px);
-      border:1px solid rgba(255,255,255,0.15);
-      color:#fff; font-size:0.85rem;
-      display:flex; align-items:center; justify-content:center;
-      cursor:pointer; transition:all 0.2s;
+    .batch-progress.show { display:block; }
+    .batch-progress .progress-info {
+      display:flex; justify-content:space-between; align-items:center;
+      gap:0.5rem; flex-wrap:wrap;
     }
-    .upload-zone .remove-img:hover { background:rgba(239,68,68,0.8); transform:scale(1.1); }
-    .upload-zone .file-info {
-      position:absolute; bottom:0; left:0; right:0;
-      padding:0.5rem 0.75rem;
-      background:linear-gradient(to top, rgba(0,0,0,0.85), transparent);
-      color:#fff; font-size:0.7rem;
-      display:flex; justify-content:space-between;
-      pointer-events:none;
+    .batch-progress .progress-count {
+      font-family:var(--font-display);
+      font-weight:700; color:var(--info);
+    }
+    .batch-progress .progress-file {
+      font-size:0.7rem; color:var(--muted);
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      max-width:200px;
+    }
+    .batch-progress .progress-bar {
+      height:4px;
+      background:rgba(255,255,255,0.06);
+      border-radius:4px;
+      margin-top:0.5rem;
+      overflow:hidden;
+    }
+    .batch-progress .progress-fill {
+      height:100%;
+      background:linear-gradient(90deg, #3B82F6, #60a5fa);
+      border-radius:4px;
+      transition:width 0.3s ease;
+      width:0%;
     }
 
     /* Form fields */
@@ -378,7 +475,7 @@
       border-radius:var(--radius-sm); color:var(--fg);
       font-family:var(--font-body); font-size:0.85rem;
       outline:none; transition:all 0.2s;
-      resize:vertical; min-height:70px;
+      resize:vertical; min-height:60px;
     }
     .field textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-dim); }
 
@@ -390,50 +487,81 @@
       background:rgba(255,255,255,0.02);
       border:1px solid var(--border);
       border-radius:var(--radius);
-      margin-bottom:0.85rem;
+      margin-bottom:1rem;
       overflow:hidden;
       transition:all var(--transition);
       animation:fadeUp 0.4s ease both;
     }
     .result-card:hover { border-color:rgba(255,221,87,0.2); }
+    .result-card.error-card { border-color:rgba(239,68,68,0.3); background:rgba(239,68,68,0.03); }
     .result-card .rc-head {
-      display:flex; justify-content:space-between; align-items:center;
+      display:flex; align-items:center; gap:0.6rem;
       padding:0.6rem 0.9rem;
       background:rgba(255,221,87,0.04);
       border-bottom:1px solid var(--border);
     }
-    .result-card .rc-head .rc-label {
-      font-size:0.7rem; font-weight:700; letter-spacing:0.5px;
-      text-transform:uppercase; color:var(--accent);
-      display:flex; align-items:center; gap:0.4rem;
+    .result-card.error-card .rc-head { background:rgba(239,68,68,0.06); }
+    .result-card .rc-head img.rc-thumb {
+      width:40px; height:40px; border-radius:8px;
+      object-fit:cover; flex-shrink:0;
+      border:1px solid var(--border);
+      background:#0a0a12;
     }
-    .result-card .rc-head .rc-count {
-      font-size:0.65rem; color:var(--muted);
-      font-family:var(--font-display); font-weight:500;
+    .result-card .rc-head .rc-title-wrap {
+      flex:1; min-width:0;
     }
-    .result-card .rc-body {
-      padding:0.75rem 0.9rem;
-      font-size:0.85rem; line-height:1.6;
+    .result-card .rc-head .rc-filename {
+      font-size:0.78rem; font-weight:600;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .result-card .rc-head .rc-status {
+      font-size:0.6rem; font-weight:700;
+      letter-spacing:0.5px; text-transform:uppercase;
+      color:var(--success);
+      display:flex; align-items:center; gap:0.25rem;
+    }
+    .result-card.error-card .rc-head .rc-status { color:var(--danger); }
+    .result-card .rc-section {
+      padding:0.7rem 0.9rem;
+      border-bottom:1px solid var(--border);
+    }
+    .result-card .rc-section:last-child { border-bottom:none; }
+    .result-card .rc-section .rc-section-label {
+      font-size:0.65rem; font-weight:700;
+      letter-spacing:0.5px; text-transform:uppercase;
+      color:var(--accent); margin-bottom:0.35rem;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .result-card .rc-section .rc-section-label .rc-actions {
+      display:flex; gap:0.3rem;
+    }
+    .result-card .rc-section .rc-content {
+      font-size:0.82rem; line-height:1.55;
       color:var(--fg-dim);
       white-space:pre-wrap; word-break:break-word;
-      max-height:200px; overflow-y:auto;
+      max-height:120px; overflow-y:auto;
     }
-    .result-card .rc-body::-webkit-scrollbar { width:3px; }
-    .result-card .rc-body::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
-    .result-card .rc-actions {
-      display:flex; gap:0.4rem; padding:0 0.9rem 0.75rem;
-      flex-wrap:wrap;
+    .result-card .rc-section .rc-content::-webkit-scrollbar { width:3px; }
+    .result-card .rc-section .rc-content::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+    .result-card .lang-tag {
+      display:inline-block;
+      font-size:0.6rem; font-weight:700;
+      padding:0.15rem 0.5rem;
+      border-radius:50px;
+      background:var(--accent-dim); color:var(--accent);
+      margin-bottom:0.4rem;
     }
-    .btn-copy {
-      display:inline-flex; align-items:center; gap:0.35rem;
-      padding:0.35rem 0.8rem;
+
+    .btn-copy-sm {
+      display:inline-flex; align-items:center; gap:0.25rem;
+      padding:0.2rem 0.55rem;
       background:var(--bg-card); border:1px solid var(--border);
-      border-radius:6px; color:var(--muted-light);
-      font-size:0.7rem; font-weight:500; cursor:pointer;
+      border-radius:5px; color:var(--muted-light);
+      font-size:0.6rem; font-weight:500; cursor:pointer;
       transition:all 0.2s;
     }
-    .btn-copy:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-dim); }
-    .btn-copy.copied { border-color:var(--success); color:var(--success); background:rgba(34,197,94,0.1); }
+    .btn-copy-sm:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-dim); }
+    .btn-copy-sm.copied { border-color:var(--success); color:var(--success); background:rgba(34,197,94,0.1); }
 
     .result-placeholder {
       text-align:center; padding:2.5rem 1rem;
@@ -475,6 +603,40 @@
     .notice.info { background:rgba(59,130,246,0.1); border:1px solid rgba(59,130,246,0.2); color:#60a5fa; }
     .notice.warning { background:rgba(251,146,60,0.1); border:1px solid rgba(251,146,60,0.2); color:#fb923c; }
 
+    /* Export section */
+    .export-section {
+      display:none;
+      gap:0.5rem;
+      margin-bottom:0.75rem;
+      flex-wrap:wrap;
+    }
+    .export-section.show { display:flex; }
+    .export-section button {
+      flex:1;
+      min-width:140px;
+      padding:0.7rem 1rem;
+      border-radius:var(--radius-sm);
+      font-family:var(--font-body);
+      font-size:0.85rem;
+      font-weight:600;
+      cursor:pointer;
+      transition:all var(--transition);
+      display:inline-flex; align-items:center; justify-content:center; gap:0.4rem;
+      border:none;
+    }
+    .btn-export-csv {
+      background:linear-gradient(145deg, #22c55e, #16a34a);
+      color:#fff;
+      box-shadow:0 4px 16px rgba(34,197,94,0.25);
+    }
+    .btn-export-csv:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(34,197,94,0.35); }
+    .btn-export-json {
+      background:var(--bg-card);
+      border:1px solid var(--border) !important;
+      color:var(--fg-dim);
+    }
+    .btn-export-json:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-dim); }
+
     /* History */
     .history-section {
       margin-top:2rem;
@@ -492,7 +654,7 @@
     }
     .history-item:hover { border-color:var(--border-hover); background:rgba(255,255,255,0.04); }
     .history-item .hi-thumb {
-      width:48px; height:48px; border-radius:8px;
+      width:44px; height:44px; border-radius:8px;
       background:var(--bg-elevated); flex-shrink:0;
       overflow:hidden; display:flex;
       align-items:center; justify-content:center;
@@ -501,18 +663,18 @@
     .history-item .hi-thumb img { width:100%; height:100%; object-fit:cover; }
     .history-item .hi-info { flex:1; min-width:0; }
     .history-item .hi-info .hi-title {
-      font-size:0.82rem; font-weight:600;
+      font-size:0.8rem; font-weight:600;
       white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     }
     .history-item .hi-info .hi-time {
-      font-size:0.65rem; color:var(--muted);
+      font-size:0.62rem; color:var(--muted);
       margin-top:0.1rem;
     }
     .history-item .hi-actions { display:flex; gap:0.25rem; flex-shrink:0; }
     .history-item .hi-actions button {
-      width:28px; height:28px; border-radius:6px;
+      width:26px; height:26px; border-radius:6px;
       background:var(--bg-card); border:1px solid var(--border);
-      color:var(--muted); font-size:0.7rem; cursor:pointer;
+      color:var(--muted); font-size:0.65rem; cursor:pointer;
       display:flex; align-items:center; justify-content:center;
       transition:all 0.2s;
     }
@@ -569,6 +731,8 @@
     .toast.error i { color:var(--danger); }
     .toast.info { border-left-color:var(--info); }
     .toast.info i { color:var(--info); }
+    .toast.warning { border-left-color:var(--warning); }
+    .toast.warning i { color:var(--warning); }
     @keyframes slideInToast {
       from { opacity:0; transform:translateX(60px) scale(0.9); }
       to { opacity:1; transform:translateX(0) scale(1); }
@@ -680,6 +844,8 @@
       .toast-container { bottom:70px; right:12px; left:12px; align-items:center; }
       .footer-grid { grid-template-columns:1fr 1fr; gap:1rem; text-align:center; }
       .footer-grid h4 { text-align:center; }
+      .upload-grid { grid-template-columns:repeat(auto-fill, minmax(70px, 1fr)); gap:0.4rem; }
+      .export-section button { font-size:0.78rem; padding:0.6rem 0.8rem; }
     }
   </style>
 </head>
@@ -717,9 +883,9 @@
   </nav>
 
   <header class="page-hero">
-    <div class="hero-badge"><i class="fas fa-wand-magic-sparkles"></i> AI Generator</div>
+    <div class="hero-badge"><i class="fas fa-wand-magic-sparkles"></i> AI Generator • Batch & CSV</div>
     <h1>MetaStock <span class="accent">AI</span></h1>
-    <p>Generate judul, deskripsi, dan keyword microstock profesional dalam hitungan detik dengan bantuan AI. Cocok untuk Shutterstock, Adobe Stock, Freepik, iStock, dan lainnya.</p>
+    <p>Generate judul, deskripsi, dan keyword microstock secara batch (maks 8 foto sekaligus) dan export ke CSV. Cocok untuk Shutterstock, Adobe Stock, Freepik, iStock, dan lainnya.</p>
   </header>
 
   <!-- ===== GATE 1: LOGIN ===== -->
@@ -780,18 +946,30 @@
       <div class="tool-panel">
         <div class="panel-title">
           <i class="fas fa-image"></i> Input
-          <span class="step-badge">STEP 1</span>
+          <span class="step-badge" id="uploadCountBadge">0 / 8</span>
         </div>
+
+        <div class="upload-grid" id="uploadGrid"></div>
 
         <div class="upload-zone" id="uploadZone">
           <i class="fas fa-cloud-upload-alt upload-icon"></i>
           <div class="upload-title">Klik atau Drop Gambar</div>
-          <div class="upload-sub">JPG, PNG, WEBP • Maks 5MB (otomatis dikompres)</div>
+          <div class="upload-sub">Bisa pilih beberapa sekaligus • Maks 8 gambar • 5MB/gambar</div>
         </div>
-        <input type="file" id="fileInput" accept="image/*" style="display:none;">
+        <input type="file" id="fileInput" accept="image/*" multiple style="display:none;">
+
+        <div class="batch-progress" id="batchProgress">
+          <div class="progress-info">
+            <span class="progress-count" id="progressCount">0 / 0</span>
+            <span class="progress-file" id="progressFile">-</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+        </div>
 
         <div class="field" style="margin-top:1rem;">
-          <label>Deskripsi Tambahan <span style="color:var(--muted);font-weight:400;">(opsional)</span></label>
+          <label>Deskripsi Tambahan <span style="color:var(--muted);font-weight:400;">(opsional, berlaku untuk semua)</span></label>
           <textarea id="extraDesc" placeholder="Contoh: foto drone pantai tropis saat sunset, nuansa hangat, cocok untuk travel content..."></textarea>
         </div>
 
@@ -853,7 +1031,7 @@
         <div id="mainNotice"></div>
 
         <button class="btn-primary" id="btnGenerate" style="margin-top:0.75rem;">
-          <i class="fas fa-wand-magic-sparkles"></i> Generate Metadata
+          <i class="fas fa-wand-magic-sparkles"></i> Generate Semua
         </button>
 
         <div class="settings-row">
@@ -869,12 +1047,27 @@
       <div class="tool-panel">
         <div class="panel-title">
           <i class="fas fa-sparkles"></i> Hasil Metadata
-          <span class="step-badge">STEP 2</span>
+          <div class="panel-actions">
+            <button class="btn-mini" id="btnClearResults" title="Bersihkan hasil">
+              <i class="fas fa-trash"></i> Bersihkan
+            </button>
+          </div>
         </div>
+
+        <div class="export-section" id="exportSection">
+          <button class="btn-export-csv" id="btnExportCSV">
+            <i class="fas fa-file-csv"></i> Export CSV
+          </button>
+          <button class="btn-export-json" id="btnExportJSON">
+            <i class="fas fa-code"></i> Export JSON
+          </button>
+        </div>
+
         <div id="resultContainer">
           <div class="result-placeholder">
             <i class="fas fa-robot"></i>
-            <p>Hasil metadata akan muncul di sini.<br>Upload gambar & klik <strong>Generate Metadata</strong>.</p>
+            <p>Upload 1 atau lebih gambar, lalu klik <strong>Generate Semua</strong>.</p>
+            <p style="font-size:0.72rem;color:var(--muted);margin-top:0.4rem;">Hasil per gambar akan muncul di sini dan bisa diexport ke CSV.</p>
           </div>
         </div>
       </div>
@@ -956,26 +1149,29 @@
     const GROQ_MODELS_URL = 'https://api.groq.com/openai/v1/models';
     const LS_API_KEY = 'akino_groq_api_key';
     const LS_HISTORY = 'akino_metastock_history';
-    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+    const MAX_FILES = 8;
+    const MAX_FILE_SIZE = 5 * 1024 * 1024;
     const MAX_IMG_DIM = 1024;
+    const DELAY_BETWEEN_REQUESTS = 700;
 
     // ============================================================
     // STATE
     // ============================================================
     let currentUser = null;
-    let currentImageData = null; // { dataUrl, fileName, fileSize }
+    let currentImages = []; // [{ id, dataUrl, fileName, fileSize, originalSize, status, result, error }]
     let isProcessing = false;
 
     // ============================================================
     // HELPERS
     // ============================================================
     const $ = id => document.getElementById(id);
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
 
     function showToast(message, type = 'info') {
       const container = $('toastContainer');
       const toast = document.createElement('div');
       toast.className = 'toast ' + type;
-      const icons = { info:'fa-info-circle', success:'fa-check-circle', error:'fa-exclamation-circle' };
+      const icons = { info:'fa-info-circle', success:'fa-check-circle', error:'fa-exclamation-circle', warning:'fa-triangle-exclamation' };
       toast.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i> ${message}`;
       container.appendChild(toast);
       setTimeout(() => {
@@ -986,9 +1182,9 @@
     }
 
     function escHtml(str) {
-      if (!str) return '';
+      if (str === null || str === undefined) return '';
       const d = document.createElement('div');
-      d.textContent = str;
+      d.textContent = String(str);
       return d.innerHTML;
     }
 
@@ -1007,8 +1203,12 @@
       return new Date(ts).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' });
     }
 
+    function genId(prefix) {
+      return (prefix || 'id') + '_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+    }
+
     // ============================================================
-    // UI STATE MANAGEMENT
+    // UI STATE
     // ============================================================
     function showGate(which) {
       $('gateLogin').style.display = 'none';
@@ -1032,6 +1232,11 @@
       }
     }
 
+    function updateUploadCountBadge() {
+      const badge = $('uploadCountBadge');
+      if (badge) badge.textContent = currentImages.length + ' / ' + MAX_FILES;
+    }
+
     // ============================================================
     // AUTH FLOW
     // ============================================================
@@ -1052,7 +1257,7 @@
     });
 
     // ============================================================
-    // LOGIN GOOGLE - INLINE (SEPERTI ADMIN.HTML)
+    // LOGIN GOOGLE
     // ============================================================
     $('btnLoginGoogle').addEventListener('click', async () => {
       const btn = $('btnLoginGoogle');
@@ -1065,7 +1270,6 @@
       try {
         const provider = new firebase.auth.GoogleAuthProvider();
         await firebase.auth().signInWithPopup(provider);
-        // onAuthStateChanged yang akan handle redirect ke gate berikutnya
       } catch (err) {
         console.error('❌ Google login error:', {
           code: err.code,
@@ -1074,21 +1278,13 @@
         });
 
         let msg = '';
-        if (err.code === 'auth/popup-closed-by-user') {
-          msg = 'Login dibatalkan.';
-        } else if (err.code === 'auth/unauthorized-domain') {
-          msg = 'Domain ' + window.location.hostname + ' belum diizinkan di Firebase Console → Authentication → Settings → Authorized Domains.';
-        } else if (err.code === 'auth/operation-not-allowed') {
-          msg = 'Login Google belum diaktifkan di Firebase Authentication.';
-        } else if (err.code === 'auth/popup-blocked') {
-          msg = 'Popup diblokir browser. Izinkan popup untuk situs ini, lalu coba lagi.';
-        } else if (err.code === 'auth/cancelled-popup-request') {
-          msg = 'Permintaan login sebelumnya masih berjalan. Tunggu sebentar.';
-        } else if (err.code === 'auth/network-request-failed') {
-          msg = 'Koneksi jaringan gagal. Periksa internet Anda.';
-        } else {
-          msg = 'Firebase [' + (err.code || 'unknown') + ']: ' + err.message;
-        }
+        if (err.code === 'auth/popup-closed-by-user') msg = 'Login dibatalkan.';
+        else if (err.code === 'auth/unauthorized-domain') msg = 'Domain ' + window.location.hostname + ' belum diizinkan di Firebase Console.';
+        else if (err.code === 'auth/operation-not-allowed') msg = 'Login Google belum diaktifkan di Firebase Authentication.';
+        else if (err.code === 'auth/popup-blocked') msg = 'Popup diblokir browser. Izinkan popup untuk situs ini.';
+        else if (err.code === 'auth/cancelled-popup-request') msg = 'Permintaan login sebelumnya masih berjalan.';
+        else if (err.code === 'auth/network-request-failed') msg = 'Koneksi jaringan gagal.';
+        else msg = 'Firebase [' + (err.code || 'unknown') + ']: ' + err.message;
         showToast(msg, 'error');
       } finally {
         btn.disabled = false;
@@ -1103,13 +1299,9 @@
       if (!confirm('Yakin ingin logout?')) return;
       try {
         await firebase.auth().signOut();
-        currentImageData = null;
-        resetUploadUI();
-        $('resultContainer').innerHTML = `
-          <div class="result-placeholder">
-            <i class="fas fa-robot"></i>
-            <p>Hasil metadata akan muncul di sini.</p>
-          </div>`;
+        currentImages = [];
+        renderUploadGrid();
+        resetResultUI();
         showToast('Berhasil logout.', 'success');
       } catch (err) {
         showToast('Gagal logout: ' + err.message, 'error');
@@ -1117,8 +1309,7 @@
     }
 
     // ============================================================
-    // API KEY MANAGEMENT
-    // Verifikasi pakai GET /models — tidak butuh model apapun
+    // API KEY MANAGEMENT (verifikasi via /models)
     // ============================================================
     $('btnSaveApiKey').addEventListener('click', async () => {
       const input = $('apiKeyInput');
@@ -1143,26 +1334,18 @@
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memverifikasi...';
 
       try {
-        // Verifikasi pakai endpoint /models — tidak butuh model, hanya cek API key valid
         const res = await fetch(GROQ_MODELS_URL, {
           method: 'GET',
-          headers: {
-            'Authorization': 'Bearer ' + key
-          }
+          headers: { 'Authorization': 'Bearer ' + key }
         });
 
         if (!res.ok) {
           const data = await res.json().catch(() => ({}));
-          if (res.status === 401) {
-            throw new Error('API Key tidak valid atau sudah expired.');
-          } else if (res.status === 403) {
-            throw new Error('API Key tidak memiliki akses. Cek kembali akun Groq Anda.');
-          }
-          const errMsg = data.error?.message || ('HTTP ' + res.status);
-          throw new Error(errMsg);
+          if (res.status === 401) throw new Error('API Key tidak valid atau sudah expired.');
+          if (res.status === 403) throw new Error('API Key tidak memiliki akses.');
+          throw new Error(data.error?.message || ('HTTP ' + res.status));
         }
 
-        // Sukses — simpan
         localStorage.setItem(LS_API_KEY, key);
         input.value = '';
         showToast('API Key berhasil disimpan!', 'success');
@@ -1180,8 +1363,7 @@
     });
 
     $('btnChangeApiKey').addEventListener('click', () => {
-      const key = localStorage.getItem(LS_API_KEY) || '';
-      $('apiKeyInput').value = key;
+      $('apiKeyInput').value = localStorage.getItem(LS_API_KEY) || '';
       showGate('apiKey');
     });
 
@@ -1235,15 +1417,13 @@
     })();
 
     // ============================================================
-    // IMAGE UPLOAD & COMPRESSION
+    // UPLOAD (BATCH)
     // ============================================================
     const uploadZone = $('uploadZone');
     const fileInput = $('fileInput');
+    const uploadGrid = $('uploadGrid');
 
-    uploadZone.addEventListener('click', (e) => {
-      if (e.target.closest('.remove-img')) return;
-      fileInput.click();
-    });
+    uploadZone.addEventListener('click', () => fileInput.click());
 
     uploadZone.addEventListener('dragover', (e) => {
       e.preventDefault();
@@ -1253,38 +1433,58 @@
     uploadZone.addEventListener('drop', (e) => {
       e.preventDefault();
       uploadZone.classList.remove('dragover');
-      const file = e.dataTransfer.files[0];
-      if (file) handleFile(file);
+      if (e.dataTransfer.files.length) handleFiles(e.dataTransfer.files);
     });
 
     fileInput.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) handleFile(file);
+      if (e.target.files.length) handleFiles(e.target.files);
+      fileInput.value = '';
     });
 
-    async function handleFile(file) {
-      if (!file.type.startsWith('image/')) {
-        showToast('File harus berupa gambar (JPG, PNG, WEBP).', 'error');
-        return;
-      }
-      if (file.size > MAX_FILE_SIZE) {
-        showToast('Ukuran file maksimal 5MB.', 'error');
+    async function handleFiles(fileList) {
+      const files = Array.from(fileList);
+      const remaining = MAX_FILES - currentImages.length;
+
+      if (remaining <= 0) {
+        showToast('Maksimal ' + MAX_FILES + ' gambar. Hapus beberapa dulu.', 'warning');
         return;
       }
 
-      try {
-        const compressed = await compressImage(file);
-        currentImageData = {
-          dataUrl: compressed.dataUrl,
-          fileName: file.name,
-          fileSize: compressed.size,
-          originalSize: file.size
-        };
-        renderUploadPreview();
-      } catch (err) {
-        console.error('Image compression error:', err);
-        showToast('Gagal memproses gambar: ' + err.message, 'error');
+      const toProcess = files.slice(0, remaining);
+      if (files.length > remaining) {
+        showToast('Hanya ' + remaining + ' gambar ditambahkan (maks ' + MAX_FILES + ').', 'warning');
       }
+
+      let added = 0;
+      for (const file of toProcess) {
+        if (!file.type.startsWith('image/')) {
+          showToast('"' + file.name + '" bukan gambar.', 'error');
+          continue;
+        }
+        if (file.size > MAX_FILE_SIZE) {
+          showToast('"' + file.name + '" melebihi 5MB.', 'error');
+          continue;
+        }
+        try {
+          const compressed = await compressImage(file);
+          currentImages.push({
+            id: genId('img'),
+            dataUrl: compressed.dataUrl,
+            fileName: file.name,
+            fileSize: compressed.size,
+            originalSize: file.size,
+            status: 'pending',
+            result: null,
+            error: null
+          });
+          added++;
+        } catch (err) {
+          showToast('Gagal proses "' + file.name + '": ' + err.message, 'error');
+        }
+      }
+
+      renderUploadGrid();
+      if (added > 0) showToast(added + ' gambar berhasil ditambahkan.', 'success');
     }
 
     function compressImage(file) {
@@ -1323,57 +1523,96 @@
       });
     }
 
-    function renderUploadPreview() {
-      uploadZone.innerHTML = `
-        <img src="${currentImageData.dataUrl}" alt="Preview" class="preview-img">
-        <button class="remove-img" id="removeImg" title="Hapus gambar"><i class="fas fa-times"></i></button>
-        <div class="file-info">
-          <span><i class="fas fa-file-image"></i> ${escHtml(currentImageData.fileName)}</span>
-          <span>${formatBytes(currentImageData.fileSize)}</span>
-        </div>
-      `;
-      const removeBtn = $('removeImg');
-      if (removeBtn) {
-        removeBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          resetUploadUI();
-        });
+    function renderUploadGrid() {
+      updateUploadCountBadge();
+      if (!currentImages.length) {
+        uploadGrid.innerHTML = '';
+        return;
       }
-    }
+      uploadGrid.innerHTML = currentImages.map(img => {
+        const statusLabel = {
+          pending: 'Pending',
+          processing: 'Proses...',
+          done: '✓ Selesai',
+          error: '✗ Error'
+        }[img.status] || img.status;
+        return `
+          <div class="upload-thumb ${img.status}" data-id="${img.id}">
+            <img src="${img.dataUrl}" alt="${escHtml(img.fileName)}">
+            <button class="thumb-remove" data-remove="${img.id}" title="Hapus"><i class="fas fa-times"></i></button>
+            <div class="thumb-status ${img.status}">${statusLabel}</div>
+          </div>
+        `;
+      }).join('');
 
-    function resetUploadUI() {
-      currentImageData = null;
-      fileInput.value = '';
-      uploadZone.innerHTML = `
-        <i class="fas fa-cloud-upload-alt upload-icon"></i>
-        <div class="upload-title">Klik atau Drop Gambar</div>
-        <div class="upload-sub">JPG, PNG, WEBP • Maks 5MB (otomatis dikompres)</div>
-      `;
+      uploadGrid.querySelectorAll('[data-remove]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (isProcessing) {
+            showToast('Tidak bisa hapus saat proses berjalan.', 'warning');
+            return;
+          }
+          const id = btn.dataset.remove;
+          currentImages = currentImages.filter(x => x.id !== id);
+          renderUploadGrid();
+          renderResults();
+        });
+      });
     }
 
     // ============================================================
-    // GENERATE METADATA
+    // PROGRESS
     // ============================================================
-    $('btnGenerate').addEventListener('click', generateMetadata);
+    function showProgress(current, total, fileName) {
+      const bp = $('batchProgress');
+      if (total === 0) { bp.classList.remove('show'); return; }
+      bp.classList.add('show');
+      $('progressCount').textContent = current + ' / ' + total;
+      $('progressFile').textContent = fileName || '-';
+      const pct = total > 0 ? Math.round((current / total) * 100) : 0;
+      $('progressFill').style.width = pct + '%';
+    }
 
-    async function generateMetadata() {
+    function hideProgress() {
+      setTimeout(() => {
+        $('batchProgress').classList.remove('show');
+        $('progressFill').style.width = '0%';
+      }, 800);
+    }
+
+    // ============================================================
+    // GENERATE (BATCH)
+    // ============================================================
+    $('btnGenerate').addEventListener('click', generateAll);
+
+    async function generateAll() {
       if (isProcessing) return;
 
       const apiKey = localStorage.getItem(LS_API_KEY);
       if (!apiKey) {
-        showToast('API Key belum diset. Silakan set dulu.', 'error');
+        showToast('API Key belum diset.', 'error');
         showGate('apiKey');
         return;
       }
-      if (!currentImageData) {
-        showToast('Upload gambar terlebih dahulu.', 'error');
+      if (!currentImages.length) {
+        showToast('Upload minimal 1 gambar.', 'error');
         return;
       }
 
       isProcessing = true;
       const btn = $('btnGenerate');
       btn.disabled = true;
-      btn.innerHTML = '<span class="spinner-small"></span> Generating...';
+      btn.innerHTML = '<span class="spinner-small"></span> Memproses...';
+
+      // Reset status semua
+      currentImages.forEach(img => {
+        img.status = 'pending';
+        img.result = null;
+        img.error = null;
+      });
+      renderUploadGrid();
+      renderResults();
+      $('exportSection').classList.remove('show');
 
       const lang = $('langSelect').value;
       const kwCount = parseInt($('kwCount').value) || 30;
@@ -1382,53 +1621,84 @@
       const extraDesc = $('extraDesc').value.trim();
       const model = $('modelSelect').value;
 
-      $('mainNotice').innerHTML = '';
-      $('resultContainer').innerHTML = `
-        <div class="result-placeholder">
-          <div class="spinner"></div>
-          <p>AI sedang menganalisis gambar dan menyusun metadata...</p>
-          <p style="font-size:0.7rem;color:var(--muted);margin-top:0.3rem;">Biasanya butuh 3-10 detik</p>
-        </div>
-      `;
+      const total = currentImages.length;
+      let success = 0, fail = 0;
 
-      try {
-        const prompt = buildPrompt({ lang, kwCount, platform, contentType, extraDesc });
-        const result = await callGroqVision(apiKey, model, prompt, currentImageData.dataUrl);
+      for (let i = 0; i < currentImages.length; i++) {
+        const img = currentImages[i];
+        img.status = 'processing';
+        renderUploadGrid();
+        showProgress(i, total, img.fileName);
 
-        const parsed = parseAIResponse(result, lang);
-        renderResults(parsed, lang, platform);
-        saveToHistory({
-          id: 'ms_' + Date.now(),
-          ts: Date.now(),
-          preview: currentImageData.dataUrl,
-          fileName: currentImageData.fileName,
-          lang, platform, contentType,
-          results: parsed
-        });
-        showToast('Metadata berhasil digenerate!', 'success');
-      } catch (err) {
-        console.error('Generate error:', err);
-        let errMsg = err.message || 'Terjadi kesalahan.';
-        if (/does not support|vision|image_url is not supported|not support/i.test(errMsg)) {
-          errMsg = 'Model ini tidak mendukung analisis gambar. Silakan ganti model ke "Llama 4 Scout (Vision)" di pengaturan.';
-        } else if (/rate.?limit|429/i.test(errMsg)) {
-          errMsg = 'Rate limit tercapai. Tunggu beberapa detik lalu coba lagi.';
-        } else if (/invalid.?api.?key|401/i.test(errMsg)) {
-          errMsg = 'API Key tidak valid. Silakan ganti API Key Anda.';
-        } else if (/model.*does not exist|not found|404/i.test(errMsg)) {
-          errMsg = 'Model tidak tersedia di akun Groq Anda. Coba ganti model lain di pengaturan.';
+        try {
+          const prompt = buildPrompt({ lang, kwCount, platform, contentType, extraDesc });
+          const raw = await callGroqVision(apiKey, model, prompt, img.dataUrl);
+          const parsed = parseAIResponse(raw, lang);
+
+          // Validasi ada key sesuai bahasa
+          if (lang === 'both') {
+            if (!parsed.id && !parsed.en) throw new Error('Format respons AI tidak lengkap (butuh id & en).');
+          } else if (!parsed[lang]) {
+            throw new Error('Format respons AI tidak lengkap.');
+          }
+
+          img.result = parsed;
+          img.status = 'done';
+          success++;
+
+          // Simpan ke history
+          saveToHistory({
+            id: genId('ms'),
+            ts: Date.now(),
+            preview: img.dataUrl,
+            fileName: img.fileName,
+            lang, platform, contentType,
+            results: parsed
+          });
+        } catch (err) {
+          console.error('Generate error untuk', img.fileName, ':', err);
+          let errMsg = err.message || 'Error';
+          if (/does not support|vision|image_url is not supported|not support/i.test(errMsg)) {
+            errMsg = 'Model tidak mendukung analisis gambar. Ganti ke Llama 4 Scout (Vision).';
+          } else if (/rate.?limit|429/i.test(errMsg)) {
+            errMsg = 'Rate limit. Tunggu beberapa detik.';
+          } else if (/invalid.?api.?key|401/i.test(errMsg)) {
+            errMsg = 'API Key tidak valid.';
+          } else if (/model.*does not exist|not found|404/i.test(errMsg)) {
+            errMsg = 'Model tidak tersedia di akun Groq Anda.';
+          }
+          img.status = 'error';
+          img.error = errMsg;
+          fail++;
         }
-        $('resultContainer').innerHTML = `
-          <div class="notice error">
-            <i class="fas fa-exclamation-circle"></i>
-            <span>${escHtml(errMsg)}</span>
-          </div>
-        `;
-        showToast('Gagal generate: ' + errMsg, 'error');
-      } finally {
-        isProcessing = false;
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-wand-magic-sparkles"></i> Generate Metadata';
+
+        renderUploadGrid();
+        renderResults();
+        showProgress(i + 1, total, img.fileName);
+
+        // Jeda antar request untuk hindari rate limit
+        if (i < currentImages.length - 1) {
+          await sleep(DELAY_BETWEEN_REQUESTS);
+        }
+      }
+
+      isProcessing = false;
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-wand-magic-sparkles"></i> Generate Semua';
+      hideProgress();
+      renderResults();
+
+      // Tampilkan tombol export jika minimal 1 sukses
+      if (success > 0) {
+        $('exportSection').classList.add('show');
+      }
+
+      if (fail === 0) {
+        showToast('Selesai! ' + success + ' gambar berhasil diproses.', 'success');
+      } else if (success === 0) {
+        showToast('Gagal semua. Cek pesan error di setiap gambar.', 'error');
+      } else {
+        showToast(success + ' berhasil, ' + fail + ' gagal.', 'warning');
       }
     }
 
@@ -1444,7 +1714,7 @@
 
       const typeHint = contentType === 'auto'
         ? 'Deteksi sendiri tipe konten (foto / ilustrasi / vector / 3D render).'
-        : `Tipe konten: ${contentType}.`;
+        : 'Tipe konten: ' + contentType + '.';
 
       const targetLang = lang === 'both' ? 'BOTH Indonesian and English'
         : lang === 'id' ? 'Indonesian'
@@ -1494,15 +1764,13 @@ ${langStructure}
     async function callGroqVision(apiKey, model, prompt, imageDataUrl) {
       const body = {
         model: model,
-        messages: [
-          {
-            role: 'user',
-            content: [
-              { type: 'text', text: prompt },
-              { type: 'image_url', image_url: { url: imageDataUrl } }
-            ]
-          }
-        ],
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'text', text: prompt },
+            { type: 'image_url', image_url: { url: imageDataUrl } }
+          ]
+        }],
         temperature: 0.6,
         max_tokens: 2048
       };
@@ -1518,8 +1786,7 @@ ${langStructure}
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        const errMsg = data.error?.message || ('HTTP ' + res.status + ' ' + res.statusText);
-        throw new Error(errMsg);
+        throw new Error(data.error?.message || ('HTTP ' + res.status + ' ' + res.statusText));
       }
 
       const data = await res.json();
@@ -1529,18 +1796,15 @@ ${langStructure}
     }
 
     function parseAIResponse(raw, lang) {
-      let text = raw.trim();
+      let text = String(raw).trim();
       text = text.replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/i, '').trim();
-
       const firstBrace = text.indexOf('{');
       const lastBrace = text.lastIndexOf('}');
       if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
         text = text.substring(firstBrace, lastBrace + 1);
       }
-
       try {
-        const parsed = JSON.parse(text);
-        return parsed;
+        return JSON.parse(text);
       } catch (e) {
         console.error('JSON parse error. Raw:', raw);
         throw new Error('Format respons AI tidak valid. Coba ulang atau ganti model.');
@@ -1548,84 +1812,138 @@ ${langStructure}
     }
 
     // ============================================================
-    // RENDER RESULTS
+    // RENDER RESULTS (BATCH)
     // ============================================================
-    function renderResults(parsed, lang, platform) {
+    function renderResults() {
       const container = $('resultContainer');
-      const html = [];
+      const lang = $('langSelect').value;
+
+      const doneItems = currentImages.filter(img => img.status === 'done' && img.result);
+      const errItems = currentImages.filter(img => img.status === 'error');
+
+      if (!currentImages.length) {
+        container.innerHTML = `
+          <div class="result-placeholder">
+            <i class="fas fa-robot"></i>
+            <p>Upload 1 atau lebih gambar, lalu klik <strong>Generate Semua</strong>.</p>
+          </div>`;
+        return;
+      }
+
+      if (!doneItems.length && !errItems.length && !isProcessing) {
+        container.innerHTML = `
+          <div class="result-placeholder">
+            <i class="fas fa-hourglass-half"></i>
+            <p>${currentImages.length} gambar siap diproses.</p>
+            <p style="font-size:0.72rem;color:var(--muted);margin-top:0.4rem;">Klik "Generate Semua" untuk mulai.</p>
+          </div>`;
+        return;
+      }
+
       const langs = lang === 'both' ? ['id', 'en'] : [lang];
+      const html = [];
 
-      langs.forEach((code) => {
-        const data = parsed[code];
-        if (!data) return;
-        const langLabel = code === 'id' ? '🇮🇩 Indonesia' : '🇬🇧 English';
+      currentImages.forEach((img) => {
+        if (img.status === 'pending' || img.status === 'processing') return;
 
-        html.push(`<div class="lang-group" data-lang="${code}">`);
-        html.push(`<div style="font-size:0.72rem;font-weight:700;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin:0.6rem 0 0.4rem;">${langLabel}</div>`);
+        if (img.status === 'error') {
+          html.push(`
+            <div class="result-card error-card">
+              <div class="rc-head">
+                <img src="${img.dataUrl}" alt="" class="rc-thumb">
+                <div class="rc-title-wrap">
+                  <div class="rc-filename">${escHtml(img.fileName)}</div>
+                  <div class="rc-status" style="color:var(--danger);"><i class="fas fa-times-circle"></i> Error</div>
+                </div>
+              </div>
+              <div class="rc-section">
+                <div class="rc-content" style="color:#f87171;">${escHtml(img.error || 'Gagal diproses.')}</div>
+              </div>
+            </div>
+          `);
+          return;
+        }
+
+        if (!img.result) return;
+
+        const sections = [];
+        langs.forEach((code) => {
+          const data = img.result[code];
+          if (!data) return;
+          const langLabel = code === 'id' ? '🇮🇩 ID' : '🇬🇧 EN';
+          const kws = Array.isArray(data.keywords) ? data.keywords : [];
+          const kwText = kws.join(', ');
+          const idBase = img.id + '-' + code;
+
+          sections.push(`
+            <div class="rc-section" data-lang="${code}">
+              <span class="lang-tag">${langLabel}</span>
+              <div class="rc-section-label">
+                <span><i class="fas fa-heading"></i> Title</span>
+                <div class="rc-actions">
+                  <button class="btn-copy-sm" data-copy-target="t-${idBase}"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+              </div>
+              <div class="rc-content" id="t-${idBase}">${escHtml(data.title || '-')}</div>
+            </div>
+            <div class="rc-section">
+              <div class="rc-section-label">
+                <span><i class="fas fa-align-left"></i> Description</span>
+                <div class="rc-actions">
+                  <button class="btn-copy-sm" data-copy-target="d-${idBase}"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+              </div>
+              <div class="rc-content" id="d-${idBase}">${escHtml(data.description || '-')}</div>
+            </div>
+            <div class="rc-section">
+              <div class="rc-section-label">
+                <span><i class="fas fa-tags"></i> Keywords (${kws.length})</span>
+                <div class="rc-actions">
+                  <button class="btn-copy-sm" data-copy-target="k-${idBase}"><i class="fas fa-copy"></i> Copy</button>
+                  <button class="btn-copy-sm" data-copy-json="k-${idBase}"><i class="fas fa-code"></i> JSON</button>
+                </div>
+              </div>
+              <div class="rc-content" id="k-${idBase}">${escHtml(kwText || '-')}</div>
+            </div>
+          `);
+        });
 
         html.push(`
           <div class="result-card">
             <div class="rc-head">
-              <span class="rc-label"><i class="fas fa-heading"></i> Title</span>
-              <span class="rc-count">${(data.title || '').length} chars</span>
+              <img src="${img.dataUrl}" alt="" class="rc-thumb">
+              <div class="rc-title-wrap">
+                <div class="rc-filename">${escHtml(img.fileName)}</div>
+                <div class="rc-status"><i class="fas fa-check-circle"></i> Selesai</div>
+              </div>
             </div>
-            <div class="rc-body" id="title-${code}">${escHtml(data.title || '-')}</div>
-            <div class="rc-actions">
-              <button class="btn-copy" data-copy-target="title-${code}"><i class="fas fa-copy"></i> Copy Title</button>
-            </div>
+            ${sections.join('')}
           </div>
         `);
-
-        html.push(`
-          <div class="result-card">
-            <div class="rc-head">
-              <span class="rc-label"><i class="fas fa-align-left"></i> Description</span>
-              <span class="rc-count">${(data.description || '').length} chars</span>
-            </div>
-            <div class="rc-body" id="desc-${code}">${escHtml(data.description || '-')}</div>
-            <div class="rc-actions">
-              <button class="btn-copy" data-copy-target="desc-${code}"><i class="fas fa-copy"></i> Copy Description</button>
-            </div>
-          </div>
-        `);
-
-        const kws = Array.isArray(data.keywords) ? data.keywords : [];
-        const kwText = kws.join(', ');
-        html.push(`
-          <div class="result-card">
-            <div class="rc-head">
-              <span class="rc-label"><i class="fas fa-tags"></i> Keywords</span>
-              <span class="rc-count">${kws.length} keyword</span>
-            </div>
-            <div class="rc-body" id="kw-${code}" style="max-height:180px;">${escHtml(kwText || '-')}</div>
-            <div class="rc-actions">
-              <button class="btn-copy" data-copy-target="kw-${code}"><i class="fas fa-copy"></i> Copy Keywords</button>
-              <button class="btn-copy" data-copy-json="kw-${code}"><i class="fas fa-code"></i> Copy JSON</button>
-            </div>
-          </div>
-        `);
-
-        html.push('</div>');
       });
 
-      html.push(`
-        <button class="btn-primary" id="btnCopyAll" style="margin-top:0.5rem;">
-          <i class="fas fa-clipboard-check"></i> Copy Semua (JSON)
-        </button>
-      `);
+      if (!html.length) {
+        container.innerHTML = `
+          <div class="result-placeholder">
+            <div class="spinner"></div>
+            <p>Memproses...</p>
+          </div>`;
+        return;
+      }
 
       container.innerHTML = html.join('');
 
-      container.querySelectorAll('.btn-copy').forEach((btn) => {
+      // Attach copy handlers
+      container.querySelectorAll('.btn-copy-sm').forEach((btn) => {
         btn.addEventListener('click', async () => {
           const targetId = btn.dataset.copyTarget;
-          const isJson = btn.dataset.copyJson;
+          const jsonId = btn.dataset.copyJson;
           let text = '';
           if (targetId) {
             const el = document.getElementById(targetId);
             if (el) text = el.textContent;
-          } else if (isJson) {
-            const el = document.getElementById(isJson);
+          } else if (jsonId) {
+            const el = document.getElementById(jsonId);
             if (el) {
               const parts = el.textContent.split(',').map(s => s.trim()).filter(Boolean);
               text = JSON.stringify(parts, null, 2);
@@ -1635,22 +1953,29 @@ ${langStructure}
           await copyText(text);
           btn.classList.add('copied');
           const orig = btn.innerHTML;
-          btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-          setTimeout(() => {
-            btn.classList.remove('copied');
-            btn.innerHTML = orig;
-          }, 1600);
+          btn.innerHTML = '<i class="fas fa-check"></i>';
+          setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = orig; }, 1400);
         });
       });
-
-      const copyAllBtn = $('btnCopyAll');
-      if (copyAllBtn) {
-        copyAllBtn.addEventListener('click', async () => {
-          await copyText(JSON.stringify(parsed, null, 2));
-          showToast('Semua metadata disalin sebagai JSON!', 'success');
-        });
-      }
     }
+
+    function resetResultUI() {
+      $('resultContainer').innerHTML = `
+        <div class="result-placeholder">
+          <i class="fas fa-robot"></i>
+          <p>Upload 1 atau lebih gambar, lalu klik <strong>Generate Semua</strong>.</p>
+        </div>`;
+      $('exportSection').classList.remove('show');
+    }
+
+    $('btnClearResults').addEventListener('click', () => {
+      if (isProcessing) return;
+      if (!confirm('Bersihkan hasil generate (gambar tetap ada)?')) return;
+      currentImages.forEach(img => { img.status = 'pending'; img.result = null; img.error = null; });
+      renderUploadGrid();
+      resetResultUI();
+      showToast('Hasil dibersihkan.', 'info');
+    });
 
     async function copyText(text) {
       try {
@@ -1672,7 +1997,93 @@ ${langStructure}
     }
 
     // ============================================================
-    // HISTORY (localStorage)
+    // EXPORT CSV & JSON
+    // ============================================================
+    $('btnExportCSV').addEventListener('click', exportCSV);
+    $('btnExportJSON').addEventListener('click', exportJSON);
+
+    function csvEscape(val) {
+      if (val === null || val === undefined) return '';
+      const s = String(val);
+      if (/[",\n\r]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
+      return s;
+    }
+
+    function exportCSV() {
+      const doneItems = currentImages.filter(img => img.status === 'done' && img.result);
+      if (!doneItems.length) {
+        showToast('Belum ada hasil untuk diexport.', 'warning');
+        return;
+      }
+      const lang = $('langSelect').value;
+      const header = [];
+      const rows = [];
+
+      if (lang === 'both') {
+        header.push('filename','title_id','description_id','keywords_id','title_en','description_en','keywords_en');
+        doneItems.forEach(img => {
+          const id = img.result.id || {};
+          const en = img.result.en || {};
+          rows.push([
+            img.fileName,
+            id.title || '',
+            id.description || '',
+            Array.isArray(id.keywords) ? id.keywords.join(', ') : '',
+            en.title || '',
+            en.description || '',
+            Array.isArray(en.keywords) ? en.keywords.join(', ') : ''
+          ]);
+        });
+      } else {
+        header.push('filename','title','description','keywords');
+        doneItems.forEach(img => {
+          const d = img.result[lang] || {};
+          rows.push([
+            img.fileName,
+            d.title || '',
+            d.description || '',
+            Array.isArray(d.keywords) ? d.keywords.join(', ') : ''
+          ]);
+        });
+      }
+
+      const csv = [header, ...rows].map(row => row.map(csvEscape).join(',')).join('\r\n');
+      downloadFile(csv, 'metastock-metadata-' + new Date().toISOString().slice(0,10) + '.csv', 'text/csv');
+      showToast('CSV berhasil diexport (' + doneItems.length + ' baris).', 'success');
+    }
+
+    function exportJSON() {
+      const doneItems = currentImages.filter(img => img.status === 'done' && img.result);
+      if (!doneItems.length) {
+        showToast('Belum ada hasil untuk diexport.', 'warning');
+        return;
+      }
+      const payload = doneItems.map(img => ({
+        filename: img.fileName,
+        result: img.result
+      }));
+      const json = JSON.stringify(payload, null, 2);
+      downloadFile(json, 'metastock-metadata-' + new Date().toISOString().slice(0,10) + '.json', 'application/json');
+      showToast('JSON berhasil diexport (' + doneItems.length + ' item).', 'success');
+    }
+
+    function downloadFile(content, filename, mimeType) {
+      // BOM untuk CSV agar Excel baca UTF-8 dengan benar
+      const isCSV = mimeType.indexOf('csv') !== -1;
+      const payload = isCSV ? '\ufeff' + content : content;
+      const blob = new Blob([payload], { type: mimeType + ';charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+
+    // ============================================================
+    // HISTORY
     // ============================================================
     function saveToHistory(item) {
       try {
@@ -1690,9 +2101,7 @@ ${langStructure}
       const list = $('historyList');
       const countEl = $('historyCount');
       let history = [];
-      try {
-        history = JSON.parse(localStorage.getItem(LS_HISTORY) || '[]');
-      } catch (e) { history = []; }
+      try { history = JSON.parse(localStorage.getItem(LS_HISTORY) || '[]'); } catch (e) { history = []; }
 
       if (countEl) countEl.textContent = history.length;
 
@@ -1709,11 +2118,10 @@ ${langStructure}
         div.innerHTML = `
           <div class="hi-thumb">${item.preview ? `<img src="${item.preview}" alt="">` : '<i class="fas fa-image"></i>'}</div>
           <div class="hi-info">
-            <div class="hi-title">${escHtml(titlePreview || 'Metadata')}</div>
+            <div class="hi-title">${escHtml(titlePreview || item.fileName || 'Metadata')}</div>
             <div class="hi-time">${timeAgo(item.ts)} • ${item.lang === 'both' ? 'ID+EN' : (item.lang || '').toUpperCase()}</div>
           </div>
           <div class="hi-actions">
-            <button title="Muat ulang" data-action="load" data-id="${item.id}"><i class="fas fa-redo"></i></button>
             <button title="Copy JSON" data-action="copy" data-id="${item.id}"><i class="fas fa-copy"></i></button>
             <button class="del" title="Hapus" data-action="delete" data-id="${item.id}"><i class="fas fa-trash"></i></button>
           </div>
@@ -1721,7 +2129,7 @@ ${langStructure}
         list.appendChild(div);
       });
 
-      list.querySelectorAll('button[data-action]').forEach((btn) => {
+      list.querySelectorAll('button[data-action]').forEach(btn => {
         btn.addEventListener('click', async (e) => {
           e.stopPropagation();
           const action = btn.dataset.action;
@@ -1730,26 +2138,11 @@ ${langStructure}
           if (!item) return;
 
           if (action === 'delete') {
-            if (!confirm('Hapus item ini dari riwayat?')) return;
+            if (!confirm('Hapus item ini?')) return;
             const newHistory = history.filter(h => h.id !== id);
             localStorage.setItem(LS_HISTORY, JSON.stringify(newHistory));
             renderHistory();
             showToast('Item dihapus.', 'success');
-          } else if (action === 'load') {
-            if (item.preview) {
-              currentImageData = {
-                dataUrl: item.preview,
-                fileName: item.fileName || 'history.jpg',
-                fileSize: 0,
-                originalSize: 0
-              };
-              renderUploadPreview();
-              $('langSelect').value = item.lang || 'en';
-              $('platform').value = item.platform || 'general';
-            }
-            renderResults(item.results, item.lang, item.platform);
-            showToast('Metadata dimuat dari riwayat.', 'info');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
           } else if (action === 'copy') {
             await copyText(JSON.stringify(item.results, null, 2));
             showToast('JSON disalin!', 'success');
@@ -1760,9 +2153,7 @@ ${langStructure}
 
     function extractTitlePreview(results, lang) {
       if (!results) return '';
-      if (lang === 'both') {
-        return results.en?.title || results.id?.title || '';
-      }
+      if (lang === 'both') return results.en?.title || results.id?.title || '';
       return results[lang]?.title || '';
     }
 
