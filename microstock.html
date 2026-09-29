@@ -13,7 +13,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/d39mdjct/image/upload/w_180,h_180,c_fit/v1783493763/apk_pgxcmo.png" />
 
   <title>MetaStock AI - Generator Metadata Microstock | Akino Store</title>
-  <meta name="description" content="Generate judul, deskripsi, dan keyword microstock profesional dengan AI. Support batch upload & export CSV.">
+  <meta name="description" content="Generate judul, deskripsi, dan keyword microstock profesional dengan AI OpenRouter. Support batch upload & export CSV.">
   <link rel="canonical" href="https://akinocpm.my.id/metastock.html">
   <link rel="icon" href="https://res.cloudinary.com/d39mdjct/image/upload/v1783478697/icon_tnzy32.ico" />
 
@@ -29,15 +29,18 @@
   <style>
     :root {
       --bg: #07070d;
+      --bg-soft: #0a0a14;
       --bg-card: rgba(255,255,255,0.04);
       --bg-card-hover: rgba(255,255,255,0.08);
       --bg-elevated: #0e0e18;
+      --bg-input: rgba(255,255,255,0.03);
       --fg: #f0f0f5;
       --fg-dim: #c0c0d0;
       --muted: #7a7a90;
       --muted-light: #a0a0b8;
       --accent: #FFDD57;
-      --accent-dim: rgba(255,221,87,0.12);
+      --accent-soft: rgba(255,221,87,0.12);
+      --accent-hover: #f5c842;
       --border: rgba(255,255,255,0.06);
       --border-hover: rgba(255,255,255,0.12);
       --radius: 16px;
@@ -47,8 +50,7 @@
       --font-body: 'DM Sans', sans-serif;
       --shadow-card: 0 8px 32px rgba(0,0,0,0.3);
       --shadow-hover: 0 16px 48px rgba(0,0,0,0.5);
-      --nav-bg: rgba(7,7,13,0.6);
-      --nav-scrolled: rgba(7,7,13,0.92);
+      --nav-bg: rgba(7,7,13,0.7);
       --transition: 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
       --success: #22c55e;
       --warning: #fb923c;
@@ -57,19 +59,20 @@
     }
     body.light-theme {
       --bg: #f5f5fa;
-      --bg-card: rgba(0,0,0,0.04);
-      --bg-card-hover: rgba(0,0,0,0.08);
-      --bg-elevated: #f0f0f5;
+      --bg-soft: #ffffff;
+      --bg-card: rgba(0,0,0,0.03);
+      --bg-card-hover: rgba(0,0,0,0.06);
+      --bg-elevated: #ffffff;
+      --bg-input: rgba(0,0,0,0.03);
       --fg: #1a1a24;
       --fg-dim: #3a3a4a;
       --muted: #5a5a70;
       --muted-light: #7a7a90;
       --border: rgba(0,0,0,0.08);
       --border-hover: rgba(0,0,0,0.14);
-      --shadow-card: 0 8px 32px rgba(0,0,0,0.08);
-      --shadow-hover: 0 16px 48px rgba(0,0,0,0.12);
-      --nav-bg: rgba(245,245,250,0.7);
-      --nav-scrolled: rgba(245,245,250,0.95);
+      --shadow-card: 0 8px 32px rgba(0,0,0,0.06);
+      --shadow-hover: 0 16px 48px rgba(0,0,0,0.1);
+      --nav-bg: rgba(245,245,250,0.75);
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     html { scroll-behavior:smooth; -webkit-tap-highlight-color:transparent; }
@@ -89,6 +92,7 @@
     a { text-decoration:none; color:inherit; }
     button { font-family:inherit; cursor:pointer; border:none; background:none; color:inherit; }
     img { display:block; max-width:100%; }
+    input, select, textarea { font-family:inherit; }
 
     .ambient-glows { position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
     .ambient-glows .glow {
@@ -102,6 +106,7 @@
     @keyframes glowFloat2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-50px,-70px)} }
     @keyframes glowFloat3 { 0%,100%{transform:translate(-50%,-50%) scale(1)} 50%{transform:translate(-50%,-50%) scale(1.25)} }
 
+    /* ===== NAVBAR ===== */
     .navbar {
       position:fixed; top:0; left:0; right:0; z-index:100;
       display:flex; justify-content:space-between; align-items:center;
@@ -112,36 +117,30 @@
       transition:all var(--transition);
       min-height:60px;
     }
-    .navbar.scrolled { background:var(--nav-scrolled); box-shadow:0 4px 30px rgba(0,0,0,0.2); }
+    .navbar.scrolled { box-shadow:0 4px 30px rgba(0,0,0,0.2); }
     .nav-brand {
-      font-family:var(--font-display); font-size:1.25rem; font-weight:700;
+      font-family:var(--font-display); font-size:1.15rem; font-weight:700;
       color:var(--accent); letter-spacing:-0.3px;
       display:flex; align-items:center; gap:0.4rem;
     }
-    .nav-brand i { font-size:1rem; opacity:0.7; }
-    .nav-actions { display:flex; align-items:center; gap:0.5rem; }
-    .theme-toggle {
+    .nav-brand i { font-size:0.95rem; opacity:0.8; }
+    .nav-actions { display:flex; align-items:center; gap:0.4rem; }
+    .icon-btn {
       background:var(--bg-card); border:1px solid var(--border);
-      color:var(--muted); width:36px; height:36px;
-      border-radius:var(--radius-sm); cursor:pointer;
+      color:var(--muted); width:38px; height:38px;
+      border-radius:10px; cursor:pointer;
       display:flex; align-items:center; justify-content:center;
-      font-size:0.9rem; transition:all 0.25s ease;
+      font-size:0.85rem; transition:all 0.25s ease;
     }
-    .theme-toggle:hover { color:var(--accent); border-color:var(--accent); background:var(--accent-dim); }
-    .menu-toggle {
-      display:none; background:var(--bg-card); border:1px solid var(--border);
-      color:var(--fg); font-size:1.2rem; cursor:pointer;
-      width:40px; height:40px; border-radius:var(--radius-sm);
-      align-items:center; justify-content:center;
-      transition:all 0.25s;
-    }
+    .icon-btn:hover { color:var(--accent); border-color:var(--accent); background:var(--accent-soft); }
+    .menu-toggle { display:none; }
     .nav-links { list-style:none; display:flex; gap:0.15rem; align-items:center; }
     .nav-links a {
-      color:var(--muted); padding:0.4rem 0.9rem; border-radius:var(--radius-sm);
+      color:var(--muted); padding:0.4rem 0.9rem; border-radius:10px;
       font-size:0.85rem; font-weight:500; transition:all var(--transition);
     }
     .nav-links a:hover, .nav-links a.active { color:var(--fg); background:var(--bg-card); }
-    .nav-links a.active { color:var(--accent); background:var(--accent-dim); }
+    .nav-links a.active { color:var(--accent); background:var(--accent-soft); }
     .dropdown { position:relative; }
     .dropdown-menu {
       display:none; position:absolute; top:calc(100% + 6px); left:50%;
@@ -152,41 +151,44 @@
       min-width:240px; padding:0.4rem;
       box-shadow:0 24px 64px rgba(0,0,0,0.5);
     }
-    body.light-theme .dropdown-menu { background:rgba(245,245,250,0.96); }
+    body.light-theme .dropdown-menu { background:rgba(255,255,255,0.98); }
     .dropdown:hover .dropdown-menu { display:block; }
     .dropdown-menu a {
-      display:block; padding:0.5rem 0.9rem; border-radius:var(--radius-sm);
+      display:block; padding:0.5rem 0.9rem; border-radius:10px;
       font-size:0.82rem; white-space:nowrap;
       color:var(--muted); transition:all var(--transition);
     }
-    .dropdown-menu a:hover { background:var(--accent-dim); color:var(--accent); }
+    .dropdown-menu a:hover { background:var(--accent-soft); color:var(--accent); }
 
-    .container { max-width:1200px; margin:0 auto; padding:0 1rem; }
+    /* ===== PAGE HEADER (COMPACT) ===== */
+    .page-header {
+      max-width:1400px; margin:0 auto;
+      padding:4.5rem 1.5rem 1rem;
+      display:flex; justify-content:space-between; align-items:flex-end;
+      gap:1rem; flex-wrap:wrap;
+    }
+    .page-header-text h1 {
+      font-family:var(--font-display);
+      font-size:clamp(1.4rem, 3vw, 1.9rem);
+      font-weight:700; letter-spacing:-0.5px;
+      margin-bottom:0.2rem;
+      display:flex; align-items:center; gap:0.5rem;
+    }
+    .page-header-text h1 i { color:var(--accent); font-size:1.3rem; }
+    .page-header-text p {
+      color:var(--muted-light); font-size:0.88rem;
+    }
+    .page-header-actions { display:flex; gap:0.4rem; }
 
-    .page-hero {
-      padding:5rem 1.5rem 1.5rem; text-align:center;
+    /* ===== CONTAINER ===== */
+    .container {
+      max-width:1400px; margin:0 auto;
+      padding:0 1.5rem 3rem;
       position:relative; z-index:2;
     }
-    .page-hero .hero-badge {
-      display:inline-flex; align-items:center; gap:0.5rem;
-      padding:0.3rem 1rem; border-radius:50px;
-      background:var(--accent-dim); border:1px solid rgba(255,221,87,0.15);
-      font-size:0.75rem; font-weight:500; color:var(--accent);
-      margin-bottom:0.75rem; letter-spacing:0.5px;
-    }
-    .page-hero h1 {
-      font-family:var(--font-display);
-      font-size:clamp(1.8rem, 5vw, 2.8rem);
-      font-weight:700; letter-spacing:-1px; margin-bottom:0.4rem;
-    }
-    .page-hero h1 .accent { color:var(--accent); }
-    .page-hero p {
-      color:var(--muted-light); font-size:0.95rem;
-      max-width:560px; margin:0.2rem auto 0; line-height:1.6;
-    }
 
-    /* GATE */
-    .gate-screen { max-width:520px; margin:2rem auto 3rem; padding:0 1rem; }
+    /* ===== GATE ===== */
+    .gate-screen { max-width:520px; margin:2rem auto; padding:0 1rem; }
     .gate-card {
       background:var(--bg-card); border:1px solid var(--border);
       border-radius:var(--radius-lg); padding:2.5rem 2rem;
@@ -195,7 +197,7 @@
     }
     .gate-card .gate-icon {
       width:72px; height:72px; border-radius:20px;
-      background:var(--accent-dim); color:var(--accent);
+      background:var(--accent-soft); color:var(--accent);
       display:flex; align-items:center; justify-content:center;
       font-size:1.8rem; margin:0 auto 1rem;
       border:1px solid rgba(255,221,87,0.15);
@@ -213,16 +215,14 @@
     .gate-card a:hover { text-decoration:underline; }
     .gate-card input {
       width:100%; padding:0.85rem 1rem;
-      background:rgba(255,255,255,0.03); border:1px solid var(--border);
+      background:var(--bg-input); border:1px solid var(--border);
       border-radius:var(--radius-sm); color:var(--fg);
-      font-family:var(--font-body); font-size:0.88rem;
+      font-size:0.88rem;
       outline:none; margin-bottom:0.75rem;
       transition:border-color 0.2s, box-shadow 0.2s;
       text-align:center;
     }
-    .gate-card input:focus {
-      border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-dim);
-    }
+    .gate-card input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
     .btn-google {
       display:flex; align-items:center; justify-content:center; gap:0.7rem;
       width:100%; padding:0.85rem 1.2rem;
@@ -233,20 +233,19 @@
       box-shadow:0 4px 20px rgba(255,221,87,0.2);
     }
     .btn-google:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 8px 28px rgba(255,221,87,0.35); }
-    .btn-google:active:not(:disabled) { transform:scale(0.97); }
     .btn-google:disabled { opacity:0.7; cursor:wait; }
     .btn-google svg { width:20px; height:20px; flex-shrink:0; }
     .btn-primary {
       display:flex; align-items:center; justify-content:center; gap:0.5rem;
       width:100%; padding:0.75rem 1.2rem;
       background:linear-gradient(145deg, #FFDD57, #f5c842);
-      color:#0a0a0f; font-weight:600; font-size:0.9rem;
+      color:#0a0a0f; font-weight:600; font-size:0.88rem;
       border-radius:var(--radius-sm); border:none;
       cursor:pointer; transition:all var(--transition);
       box-shadow:0 4px 20px rgba(255,221,87,0.2);
     }
     .btn-primary:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 8px 28px rgba(255,221,87,0.35); }
-    .btn-primary:active:not(:disabled) { transform:scale(0.97); }
+    .btn-primary:active:not(:disabled) { transform:scale(0.98); }
     .btn-primary:disabled { opacity:0.4; cursor:not-allowed; transform:none; box-shadow:none; }
     .btn-ghost {
       display:inline-flex; align-items:center; justify-content:center; gap:0.4rem;
@@ -255,7 +254,7 @@
       color:var(--muted-light); font-size:0.8rem; font-weight:500;
       cursor:pointer; transition:all var(--transition);
     }
-    .btn-ghost:hover { border-color:var(--border-hover); color:var(--fg); background:var(--bg-card-hover); }
+    .btn-ghost:hover { border-color:var(--border-hover); color:var(--fg); }
 
     .helper-steps {
       text-align:left;
@@ -273,71 +272,131 @@
     .helper-steps ol li { margin-bottom:0.3rem; }
     .helper-steps a { color:var(--accent); font-weight:600; }
 
-    /* MAIN TOOL */
-    .tool-layout { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:2rem; }
-    @media (max-width:900px) { .tool-layout { grid-template-columns:1fr; } }
+    /* ===== MAIN LAYOUT (mirip meita.ai) ===== */
+    .studio-layout {
+      display:grid;
+      grid-template-columns: 400px 1fr;
+      gap:1.25rem;
+      align-items:start;
+    }
+    @media (max-width:1024px) {
+      .studio-layout { grid-template-columns: 1fr; }
+    }
 
-    .tool-panel {
-      background:var(--bg-card); border:1px solid var(--border);
-      border-radius:var(--radius-lg); padding:1.5rem;
+    /* ===== LEFT PANEL: UPLOAD + SETTINGS ===== */
+    .studio-panel {
+      background:var(--bg-card);
+      border:1px solid var(--border);
+      border-radius:var(--radius-lg);
+      padding:1.25rem;
       transition:all var(--transition);
     }
-    .tool-panel:hover { border-color:rgba(255,221,87,0.15); }
-    .panel-title {
-      font-family:var(--font-display); font-size:1rem;
-      font-weight:700; margin-bottom:1rem;
-      display:flex; align-items:center; gap:0.5rem;
-      padding-bottom:0.75rem;
-      border-bottom:1px solid var(--border);
+    @media (min-width:1025px) {
+      .studio-panel { position:sticky; top:80px; max-height:calc(100vh - 100px); overflow-y:auto; }
+      .studio-panel::-webkit-scrollbar { width:4px; }
+      .studio-panel::-webkit-scrollbar-thumb { background:var(--border); border-radius:10px; }
     }
-    .panel-title i { color:var(--accent); }
-    .panel-title .step-badge {
-      margin-left:auto; font-size:0.65rem;
-      padding:0.15rem 0.6rem; border-radius:50px;
-      background:var(--accent-dim); color:var(--accent);
-      font-weight:600; letter-spacing:0.3px;
-    }
-    .panel-title .panel-actions { margin-left:auto; display:flex; gap:0.35rem; }
-    .panel-title .panel-actions .btn-mini {
-      padding:0.2rem 0.6rem; border-radius:50px;
-      background:var(--bg-card); border:1px solid var(--border);
-      color:var(--muted-light); font-size:0.65rem; cursor:pointer;
-      transition:all 0.2s;
-      display:inline-flex; align-items:center; gap:0.25rem;
-    }
-    .panel-title .panel-actions .btn-mini:hover { border-color:var(--accent); color:var(--accent); }
 
+    .panel-section { margin-bottom:1.25rem; }
+    .panel-section:last-child { margin-bottom:0; }
+    .panel-section-title {
+      font-size:0.72rem;
+      font-weight:700;
+      letter-spacing:0.8px;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin-bottom:0.6rem;
+      display:flex; align-items:center; gap:0.4rem;
+    }
+    .panel-section-title i { color:var(--accent); font-size:0.7rem; }
+    .panel-section-title .count-badge {
+      margin-left:auto;
+      font-family:var(--font-display);
+      font-size:0.65rem;
+      padding:0.1rem 0.5rem;
+      border-radius:50px;
+      background:var(--accent-soft);
+      color:var(--accent);
+      font-weight:700;
+    }
+
+    /* Upload zone */
+    .upload-zone {
+      position:relative; width:100%;
+      border:2px dashed var(--border);
+      border-radius:var(--radius);
+      cursor:pointer;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      gap:0.4rem; text-align:center;
+      transition:all var(--transition);
+      background:rgba(255,255,255,0.01);
+      padding:1.5rem 1rem;
+      min-height:130px;
+    }
+    .upload-zone:hover, .upload-zone.dragover {
+      border-color:var(--accent);
+      background:var(--accent-soft);
+    }
+    .upload-zone .upload-icon {
+      width:44px; height:44px; border-radius:12px;
+      background:var(--accent-soft);
+      color:var(--accent);
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.15rem;
+      margin-bottom:0.3rem;
+    }
+    .upload-zone .upload-title {
+      font-family:var(--font-display);
+      font-size:0.88rem; font-weight:600;
+    }
+    .upload-zone .upload-sub {
+      font-size:0.72rem; color:var(--muted);
+      line-height:1.4;
+    }
+    .upload-zone .upload-sub strong { color:var(--accent); }
+    .upload-zone input[type=file] { display:none; }
+
+    /* Upload thumbnails grid */
     .upload-grid {
-      display:grid; grid-template-columns:repeat(auto-fill, minmax(80px, 1fr));
-      gap:0.5rem; margin-bottom:0.75rem;
+      display:grid;
+      grid-template-columns:repeat(auto-fill, minmax(64px, 1fr));
+      gap:0.4rem;
+      margin-top:0.6rem;
     }
     .upload-grid:empty { display:none; margin:0; }
     .upload-thumb {
-      position:relative; aspect-ratio:1; border-radius:10px; overflow:hidden;
-      background:#0a0a12; border:2px solid var(--border);
+      position:relative;
+      aspect-ratio:1;
+      border-radius:10px;
+      overflow:hidden;
+      background:#0a0a12;
+      border:2px solid var(--border);
       transition:all 0.2s;
     }
-    .upload-thumb:hover { border-color:rgba(255,221,87,0.3); }
     .upload-thumb.processing { border-color:var(--info); animation:pulseBorder 1.2s infinite; }
     .upload-thumb.done { border-color:var(--success); }
     .upload-thumb.error { border-color:var(--danger); }
     .upload-thumb img { width:100%; height:100%; object-fit:cover; }
-    .upload-thumb .thumb-status {
-      position:absolute; bottom:3px; left:3px; right:3px;
-      font-size:0.5rem; font-weight:700;
-      padding:0.12rem 0.3rem; border-radius:50px;
-      text-align:center; color:#fff;
-      background:rgba(0,0,0,0.75); backdrop-filter:blur(4px);
-      text-transform:uppercase; letter-spacing:0.3px;
+    .upload-thumb .thumb-overlay {
+      position:absolute; inset:0;
+      background:linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.85));
+      pointer-events:none;
     }
-    .upload-thumb .thumb-status.pending { background:rgba(122,122,144,0.9); }
-    .upload-thumb .thumb-status.processing { background:rgba(59,130,246,0.95); }
-    .upload-thumb .thumb-status.done { background:rgba(34,197,94,0.95); }
-    .upload-thumb .thumb-status.error { background:rgba(239,68,68,0.95); }
+    .upload-thumb .thumb-status {
+      position:absolute; bottom:4px; left:4px; right:4px;
+      font-size:0.5rem; font-weight:700;
+      text-align:center; color:#fff;
+      text-transform:uppercase; letter-spacing:0.3px;
+      text-shadow:0 1px 2px rgba(0,0,0,0.5);
+    }
+    .upload-thumb .thumb-status.processing { color:#93c5fd; }
+    .upload-thumb .thumb-status.done { color:#86efac; }
+    .upload-thumb .thumb-status.error { color:#fca5a5; }
     .upload-thumb .thumb-remove {
       position:absolute; top:3px; right:3px;
       width:20px; height:20px; border-radius:50%;
-      background:rgba(0,0,0,0.75); backdrop-filter:blur(4px);
+      background:rgba(0,0,0,0.75);
       border:1px solid rgba(255,255,255,0.15);
       color:#fff; font-size:0.55rem; cursor:pointer;
       display:flex; align-items:center; justify-content:center;
@@ -349,187 +408,357 @@
       50% { box-shadow:0 0 0 4px rgba(59,130,246,0.15); }
     }
 
-    .upload-zone {
-      position:relative; width:100%; min-height:110px;
-      border:2px dashed var(--border); border-radius:var(--radius);
-      cursor:pointer; display:flex; flex-direction:column;
-      align-items:center; justify-content:center; gap:0.4rem;
-      text-align:center; transition:all var(--transition);
-      background:rgba(255,255,255,0.01); padding:1rem;
+    /* Form fields */
+    .field { margin-bottom:0.8rem; }
+    .field:last-child { margin-bottom:0; }
+    .field label {
+      display:flex; align-items:center; gap:0.3rem;
+      font-size:0.72rem; font-weight:600;
+      color:var(--muted-light); margin-bottom:0.3rem;
+      letter-spacing:0.2px;
     }
-    .upload-zone:hover, .upload-zone.dragover {
-      border-color:var(--accent); background:var(--accent-dim);
+    .field label .info-icon {
+      font-size:0.65rem; color:var(--muted);
+      cursor:help; margin-left:auto;
     }
-    .upload-zone .upload-icon { font-size:1.8rem; color:var(--accent); opacity:0.6; }
-    .upload-zone .upload-title { font-family:var(--font-display); font-size:0.9rem; font-weight:600; }
-    .upload-zone .upload-sub { font-size:0.72rem; color:var(--muted); }
+    .field select, .field input[type=text] {
+      width:100%; padding:0.55rem 0.8rem;
+      background:var(--bg-input); border:1px solid var(--border);
+      border-radius:var(--radius-sm); color:var(--fg);
+      font-size:0.82rem;
+      outline:none; transition:all 0.2s;
+      -webkit-appearance:none; appearance:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7a90' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+      background-repeat:no-repeat; background-position:right 0.7rem center;
+      padding-right:2rem;
+    }
+    .field input[type=text] { background-image:none; padding-right:0.8rem; }
+    .field select option { background:#0e0e18; color:#f0f0f5; }
+    body.light-theme .field select option { background:#ffffff; color:#1a1a24; }
+    .field select:focus, .field input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+    .field textarea {
+      width:100%; padding:0.55rem 0.8rem;
+      background:var(--bg-input); border:1px solid var(--border);
+      border-radius:var(--radius-sm); color:var(--fg);
+      font-size:0.82rem;
+      outline:none; transition:all 0.2s;
+      resize:vertical; min-height:56px;
+      font-family:var(--font-body);
+    }
+    .field textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+    .field textarea::placeholder, .field input::placeholder { color:var(--muted); opacity:0.7; }
 
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; }
+    @media (max-width:480px) { .two-col { grid-template-columns:1fr; } }
+
+    /* Asset type pills */
+    .asset-pills {
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:0.35rem;
+    }
+    .asset-pill {
+      display:flex; flex-direction:column; align-items:center; gap:0.15rem;
+      padding:0.5rem 0.3rem;
+      background:var(--bg-input);
+      border:1px solid var(--border);
+      border-radius:10px;
+      cursor:pointer;
+      transition:all 0.2s;
+      font-size:0.65rem;
+      font-weight:600;
+      color:var(--muted-light);
+      text-align:center;
+    }
+    .asset-pill i { font-size:0.95rem; color:var(--muted); transition:color 0.2s; }
+    .asset-pill:hover { border-color:var(--border-hover); color:var(--fg); }
+    .asset-pill:hover i { color:var(--fg-dim); }
+    .asset-pill.active {
+      border-color:var(--accent);
+      background:var(--accent-soft);
+      color:var(--accent);
+    }
+    .asset-pill.active i { color:var(--accent); }
+
+    /* Progress bar */
     .batch-progress {
-      margin-top:0.6rem; padding:0.7rem 0.9rem;
+      margin-top:0.5rem; padding:0.6rem 0.8rem;
       background:rgba(59,130,246,0.08);
       border:1px solid rgba(59,130,246,0.2);
-      border-radius:10px; font-size:0.78rem; display:none;
+      border-radius:10px; font-size:0.75rem; display:none;
     }
     .batch-progress.show { display:block; }
     .batch-progress .progress-info {
       display:flex; justify-content:space-between; align-items:center;
       gap:0.5rem; flex-wrap:wrap;
     }
-    .batch-progress .progress-count { font-family:var(--font-display); font-weight:700; color:var(--info); }
+    .batch-progress .progress-count {
+      font-family:var(--font-display); font-weight:700; color:var(--info);
+    }
     .batch-progress .progress-file {
-      font-size:0.7rem; color:var(--muted);
+      font-size:0.68rem; color:var(--muted);
       white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-      max-width:200px;
+      max-width:180px;
     }
     .batch-progress .progress-bar {
       height:4px; background:rgba(255,255,255,0.06);
-      border-radius:4px; margin-top:0.5rem; overflow:hidden;
+      border-radius:4px; margin-top:0.4rem; overflow:hidden;
     }
     .batch-progress .progress-fill {
       height:100%; background:linear-gradient(90deg, #3B82F6, #60a5fa);
       border-radius:4px; transition:width 0.3s ease; width:0%;
     }
 
-    .field { margin-bottom:0.9rem; }
-    .field label {
-      display:block; font-size:0.75rem; font-weight:600;
-      color:var(--muted-light); margin-bottom:0.35rem; letter-spacing:0.2px;
+    /* Settings row bottom */
+    .settings-bar {
+      display:flex; flex-wrap:wrap; gap:0.4rem;
+      align-items:center; margin-top:0.75rem;
+      padding-top:0.75rem;
+      border-top:1px solid var(--border);
+      font-size:0.7rem;
+      color:var(--muted);
     }
-    .field select, .field input[type=text] {
-      width:100%; padding:0.6rem 0.85rem;
-      background:rgba(255,255,255,0.03); border:1px solid var(--border);
-      border-radius:var(--radius-sm); color:var(--fg);
-      font-family:var(--font-body); font-size:0.85rem;
-      outline:none; transition:all 0.2s;
-      -webkit-appearance:none; appearance:none;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7a90' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
-      background-repeat:no-repeat; background-position:right 0.85rem center;
-      padding-right:2rem;
+    .api-status {
+      display:inline-flex; align-items:center; gap:0.3rem;
+      padding:0.2rem 0.6rem; border-radius:50px;
+      font-weight:600; font-size:0.65rem;
     }
-    .field input[type=text] { background-image:none; padding-right:0.85rem; }
-    .field select option { background:#0e0e18; color:#f0f0f5; }
-    body.light-theme .field select option { background:#ffffff; color:#1a1a24; }
-    .field select:focus, .field input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-dim); }
-    .field textarea {
-      width:100%; padding:0.6rem 0.85rem;
-      background:rgba(255,255,255,0.03); border:1px solid var(--border);
-      border-radius:var(--radius-sm); color:var(--fg);
-      font-family:var(--font-body); font-size:0.85rem;
-      outline:none; transition:all 0.2s; resize:vertical; min-height:60px;
-    }
-    .field textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-dim); }
-    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
-    @media (max-width:480px) { .two-col { grid-template-columns:1fr; } }
-
-    /* RESULTS */
-    .result-card {
-      background:rgba(255,255,255,0.02); border:1px solid var(--border);
-      border-radius:var(--radius); margin-bottom:1rem; overflow:hidden;
-      transition:all var(--transition); animation:fadeUp 0.4s ease both;
-    }
-    .result-card:hover { border-color:rgba(255,221,87,0.2); }
-    .result-card.error-card { border-color:rgba(239,68,68,0.3); background:rgba(239,68,68,0.03); }
-    .result-card .rc-head {
-      display:flex; align-items:center; gap:0.6rem;
-      padding:0.6rem 0.9rem;
-      background:rgba(255,221,87,0.04);
-      border-bottom:1px solid var(--border);
-    }
-    .result-card.error-card .rc-head { background:rgba(239,68,68,0.06); }
-    .result-card .rc-head img.rc-thumb {
-      width:40px; height:40px; border-radius:8px;
-      object-fit:cover; flex-shrink:0;
-      border:1px solid var(--border); background:#0a0a12;
-    }
-    .result-card .rc-head .rc-title-wrap { flex:1; min-width:0; }
-    .result-card .rc-head .rc-filename {
-      font-size:0.78rem; font-weight:600;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
-    .result-card .rc-head .rc-status {
-      font-size:0.6rem; font-weight:700;
-      letter-spacing:0.5px; text-transform:uppercase;
+    .api-status.ok {
+      background:rgba(34,197,94,0.1);
+      border:1px solid rgba(34,197,94,0.2);
       color:var(--success);
-      display:flex; align-items:center; gap:0.25rem;
     }
-    .result-card.error-card .rc-head .rc-status { color:var(--danger); }
-    .result-card .rc-section { padding:0.7rem 0.9rem; border-bottom:1px solid var(--border); }
-    .result-card .rc-section:last-child { border-bottom:none; }
-    .result-card .rc-section .rc-section-label {
-      font-size:0.65rem; font-weight:700;
-      letter-spacing:0.5px; text-transform:uppercase;
-      color:var(--accent); margin-bottom:0.35rem;
-      display:flex; align-items:center; justify-content:space-between;
+    .api-status.missing {
+      background:rgba(251,146,60,0.1);
+      border:1px solid rgba(251,146,60,0.2);
+      color:var(--warning);
     }
-    .result-card .rc-section .rc-section-label .rc-actions { display:flex; gap:0.3rem; }
-    .result-card .rc-section .rc-content {
-      font-size:0.82rem; line-height:1.55;
-      color:var(--fg-dim); white-space:pre-wrap; word-break:break-word;
-      max-height:140px; overflow-y:auto;
-    }
-    .result-card .rc-section .rc-content::-webkit-scrollbar { width:3px; }
-    .result-card .rc-section .rc-content::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
 
-    .btn-copy-sm {
-      display:inline-flex; align-items:center; gap:0.25rem;
-      padding:0.2rem 0.55rem; background:var(--bg-card);
-      border:1px solid var(--border); border-radius:5px;
-      color:var(--muted-light); font-size:0.6rem; font-weight:500;
+    /* ===== RIGHT: RESULTS ===== */
+    .results-panel {
+      display:flex; flex-direction:column;
+      gap:1rem;
+      min-width:0;
+    }
+
+    .results-toolbar {
+      display:flex; align-items:center;
+      gap:0.5rem; flex-wrap:wrap;
+      padding:0.75rem 1rem;
+      background:var(--bg-card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+    }
+    .results-toolbar .rt-info {
+      flex:1;
+      display:flex; align-items:center; gap:0.5rem;
+      font-size:0.8rem; color:var(--muted-light);
+      min-width:120px;
+    }
+    .results-toolbar .rt-info strong { color:var(--fg); font-family:var(--font-display); }
+    .results-toolbar .rt-actions { display:flex; gap:0.35rem; flex-wrap:wrap; }
+
+    .btn-toolbar {
+      display:inline-flex; align-items:center; gap:0.3rem;
+      padding:0.35rem 0.8rem;
+      background:var(--bg-input);
+      border:1px solid var(--border);
+      border-radius:8px;
+      color:var(--muted-light);
+      font-size:0.72rem; font-weight:600;
       cursor:pointer; transition:all 0.2s;
     }
-    .btn-copy-sm:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-dim); }
-    .btn-copy-sm.copied { border-color:var(--success); color:var(--success); background:rgba(34,197,94,0.1); }
-
-    .result-placeholder { text-align:center; padding:2.5rem 1rem; color:var(--muted); }
-    .result-placeholder i {
-      font-size:2.5rem; color:var(--accent);
-      opacity:0.3; margin-bottom:0.5rem; display:block;
+    .btn-toolbar:hover { color:var(--fg); border-color:var(--border-hover); }
+    .btn-toolbar.btn-csv {
+      background:rgba(34,197,94,0.1);
+      border-color:rgba(34,197,94,0.2);
+      color:#4ade80;
     }
-    .result-placeholder p { font-size:0.85rem; }
+    .btn-toolbar.btn-csv:hover { background:rgba(34,197,94,0.2); }
+    .btn-toolbar.btn-danger {
+      background:rgba(239,68,68,0.08);
+      border-color:rgba(239,68,68,0.15);
+      color:#f87171;
+    }
+    .btn-toolbar.btn-danger:hover { background:rgba(239,68,68,0.15); }
+
+    /* Result cards */
+    .result-card {
+      background:var(--bg-card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      overflow:hidden;
+      transition:all var(--transition);
+      animation:fadeUp 0.35s ease both;
+    }
+    .result-card:hover { border-color:var(--border-hover); }
+    .result-card.error-card { border-color:rgba(239,68,68,0.25); background:rgba(239,68,68,0.03); }
+    .result-card .rc-header {
+      display:flex; align-items:center; gap:0.6rem;
+      padding:0.7rem 1rem;
+      border-bottom:1px solid var(--border);
+      background:rgba(255,255,255,0.01);
+    }
+    .result-card .rc-thumb {
+      width:44px; height:44px; border-radius:8px;
+      object-fit:cover; flex-shrink:0;
+      border:1px solid var(--border);
+      background:#0a0a12;
+    }
+    .result-card .rc-meta { flex:1; min-width:0; }
+    .result-card .rc-filename {
+      font-size:0.8rem; font-weight:600;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .result-card .rc-status {
+      font-size:0.62rem; font-weight:700;
+      letter-spacing:0.4px; text-transform:uppercase;
+      color:var(--success);
+      display:flex; align-items:center; gap:0.25rem;
+      margin-top:0.1rem;
+    }
+    .result-card.error-card .rc-status { color:var(--danger); }
+
+    .result-card .rc-body { padding:0; }
+    .result-row {
+      padding:0.75rem 1rem;
+      border-bottom:1px solid var(--border);
+    }
+    .result-row:last-child { border-bottom:none; }
+    .result-row-head {
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:0.4rem; gap:0.5rem;
+    }
+    .result-row-label {
+      font-size:0.68rem; font-weight:700;
+      letter-spacing:0.6px; text-transform:uppercase;
+      color:var(--accent);
+      display:flex; align-items:center; gap:0.35rem;
+    }
+    .result-row-label .char-count {
+      font-weight:500;
+      color:var(--muted);
+      font-size:0.62rem;
+      margin-left:0.3rem;
+      text-transform:none;
+      letter-spacing:0;
+    }
+    .result-row-actions { display:flex; gap:0.3rem; }
+
+    .btn-copy-xs {
+      display:inline-flex; align-items:center; gap:0.25rem;
+      padding:0.18rem 0.5rem;
+      background:var(--bg-input);
+      border:1px solid var(--border);
+      border-radius:6px;
+      color:var(--muted-light);
+      font-size:0.62rem; font-weight:600;
+      cursor:pointer; transition:all 0.2s;
+    }
+    .btn-copy-xs:hover { border-color:var(--accent); color:var(--accent); }
+    .btn-copy-xs.copied { border-color:var(--success); color:var(--success); }
+
+    .result-row-content {
+      font-size:0.84rem;
+      line-height:1.55;
+      color:var(--fg);
+      word-break:break-word;
+      white-space:pre-wrap;
+      max-height:120px;
+      overflow-y:auto;
+    }
+    .result-row-content::-webkit-scrollbar { width:3px; }
+    .result-row-content::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+
+    .keywords-chips {
+      display:flex; flex-wrap:wrap; gap:0.3rem;
+      max-height:140px; overflow-y:auto;
+      padding:0.1rem 0;
+    }
+    .keywords-chips::-webkit-scrollbar { width:3px; }
+    .keywords-chips::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+    .kw-chip {
+      font-size:0.72rem;
+      padding:0.2rem 0.55rem;
+      background:var(--bg-input);
+      border:1px solid var(--border);
+      border-radius:50px;
+      color:var(--fg-dim);
+      transition:all 0.15s;
+      cursor:default;
+    }
+    .kw-chip:hover {
+      border-color:var(--accent);
+      color:var(--accent);
+      background:var(--accent-soft);
+    }
+
+    .result-row-error {
+      padding:0.75rem 1rem;
+      font-size:0.8rem;
+      color:#f87171;
+      background:rgba(239,68,68,0.04);
+    }
+
+    /* Empty / loading state */
+    .empty-results {
+      padding:3rem 1.5rem;
+      text-align:center;
+      background:var(--bg-card);
+      border:1px dashed var(--border);
+      border-radius:var(--radius);
+      color:var(--muted);
+    }
+    .empty-results .empty-icon {
+      width:60px; height:60px; border-radius:16px;
+      background:var(--accent-soft);
+      color:var(--accent);
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.5rem;
+      margin:0 auto 0.9rem;
+      opacity:0.9;
+    }
+    .empty-results h3 {
+      font-family:var(--font-display);
+      font-size:1rem; font-weight:600;
+      color:var(--fg);
+      margin-bottom:0.3rem;
+    }
+    .empty-results p {
+      font-size:0.82rem;
+      color:var(--muted-light);
+      max-width:340px;
+      margin:0 auto;
+      line-height:1.6;
+    }
+    .empty-results .empty-hint {
+      margin-top:0.9rem;
+      font-size:0.72rem;
+      color:var(--muted);
+      display:inline-flex; align-items:center; gap:0.35rem;
+      padding:0.35rem 0.8rem;
+      border-radius:50px;
+      background:var(--bg-input);
+      border:1px solid var(--border);
+    }
 
     .spinner {
-      width:36px; height:36px; border:3px solid var(--border);
-      border-top-color:var(--accent); border-radius:50%;
-      animation:spin 0.8s linear infinite; margin:0 auto 0.75rem;
+      width:36px; height:36px;
+      border:3px solid var(--border);
+      border-top-color:var(--accent);
+      border-radius:50%;
+      animation:spin 0.8s linear infinite;
+      margin:0 auto 0.75rem;
     }
     .spinner-small {
       display:inline-block; width:14px; height:14px;
       border:2px solid rgba(10,10,15,0.3);
-      border-top-color:#0a0a0f; border-radius:50%;
-      animation:spin 0.7s linear infinite;
+      border-top-color:#0a0a0f;
+      border-radius:50%; animation:spin 0.7s linear infinite;
     }
     @keyframes spin { to { transform:rotate(360deg); } }
 
-    .notice {
-      padding:0.65rem 0.9rem; border-radius:var(--radius-sm);
-      font-size:0.8rem; margin-bottom:0.75rem;
-      display:flex; align-items:flex-start; gap:0.5rem; line-height:1.5;
-    }
-    .notice i { margin-top:2px; flex-shrink:0; }
-    .notice.error { background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2); color:#f87171; }
-    .notice.success { background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.2); color:#4ade80; }
-    .notice.info { background:rgba(59,130,246,0.1); border:1px solid rgba(59,130,246,0.2); color:#60a5fa; }
-    .notice.warning { background:rgba(251,146,60,0.1); border:1px solid rgba(251,146,60,0.2); color:#fb923c; }
-
-    .export-section { display:none; gap:0.5rem; margin-bottom:0.75rem; flex-wrap:wrap; }
-    .export-section.show { display:flex; }
-    .export-section button {
-      flex:1; min-width:140px; padding:0.7rem 1rem;
-      border-radius:var(--radius-sm); font-family:var(--font-body);
-      font-size:0.85rem; font-weight:600; cursor:pointer;
-      transition:all var(--transition);
-      display:inline-flex; align-items:center; justify-content:center; gap:0.4rem;
-      border:none;
-    }
-    .btn-export-csv {
-      background:linear-gradient(145deg, #22c55e, #16a34a);
-      color:#fff; box-shadow:0 4px 16px rgba(34,197,94,0.25);
-    }
-    .btn-export-csv:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(34,197,94,0.35); }
-    .btn-export-json { background:var(--bg-card); border:1px solid var(--border) !important; color:var(--fg-dim); }
-    .btn-export-json:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-dim); }
-
-    /* MODAL */
+    /* ===== MODAL ===== */
     .modal-overlay {
       position:fixed; inset:0; z-index:9998;
       background:rgba(0,0,0,0.75); backdrop-filter:blur(12px);
@@ -556,12 +785,12 @@
     .modal-close {
       position:absolute; top:1rem; right:1rem;
       width:34px; height:34px; border-radius:50%;
-      background:rgba(255,255,255,0.05); border:1px solid var(--border);
+      background:var(--bg-input); border:1px solid var(--border);
       color:var(--fg); font-size:0.95rem; cursor:pointer;
       display:flex; align-items:center; justify-content:center;
       transition:all var(--transition);
     }
-    .modal-close:hover { background:rgba(255,255,255,0.12); }
+    .modal-close:hover { background:var(--bg-card-hover); }
     .modal-title {
       font-family:var(--font-display); font-size:1.15rem;
       font-weight:700; margin-bottom:0.3rem;
@@ -574,9 +803,9 @@
     }
     .setting-row {
       display:flex; justify-content:space-between; align-items:center;
-      gap:0.75rem; padding:0.75rem 0.9rem;
-      background:rgba(255,255,255,0.02); border:1px solid var(--border);
-      border-radius:var(--radius-sm); margin-bottom:0.6rem;
+      gap:0.75rem; padding:0.7rem 0.9rem;
+      background:var(--bg-input); border:1px solid var(--border);
+      border-radius:var(--radius-sm); margin-bottom:0.5rem;
     }
     .setting-row .sr-label {
       font-size:0.78rem; color:var(--muted-light);
@@ -591,36 +820,7 @@
     }
     .setting-row .sr-value.ok { color:var(--success); }
     .setting-row .sr-value.missing { color:var(--warning); }
-    .setting-row .sr-value.masked {
-      font-family:monospace;
-      letter-spacing:0.5px;
-    }
-    .modal-actions {
-      display:flex; gap:0.5rem; margin-top:1rem; flex-wrap:wrap;
-    }
-    .modal-actions button {
-      flex:1; min-width:120px;
-      padding:0.7rem 1rem; border-radius:var(--radius-sm);
-      font-family:var(--font-body); font-size:0.85rem; font-weight:600;
-      cursor:pointer; transition:all var(--transition);
-      display:inline-flex; align-items:center; justify-content:center; gap:0.4rem;
-      border:none;
-    }
-    .modal-actions .btn-ok {
-      background:linear-gradient(145deg, #FFDD57, #f5c842);
-      color:#0a0a0f;
-    }
-    .modal-actions .btn-ok:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(255,221,87,0.3); }
-    .modal-actions .btn-danger {
-      background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2);
-      color:#f87171;
-    }
-    .modal-actions .btn-danger:hover { background:rgba(239,68,68,0.2); }
-    .modal-actions .btn-cancel {
-      background:var(--bg-card); border:1px solid var(--border);
-      color:var(--muted-light);
-    }
-    .modal-actions .btn-cancel:hover { border-color:var(--border-hover); color:var(--fg); }
+    .setting-row .sr-value.masked { font-family:monospace; letter-spacing:0.5px; }
 
     .modal-input-group { margin-bottom:0.75rem; }
     .modal-input-group label {
@@ -629,42 +829,86 @@
     }
     .modal-input-group input {
       width:100%; padding:0.7rem 0.9rem;
-      background:rgba(255,255,255,0.03); border:1px solid var(--border);
+      background:var(--bg-input); border:1px solid var(--border);
       border-radius:var(--radius-sm); color:var(--fg);
-      font-family:var(--font-body); font-size:0.85rem;
+      font-size:0.85rem;
       outline:none; transition:all 0.2s;
     }
-    .modal-input-group input:focus {
-      border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-dim);
-    }
+    .modal-input-group input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
 
+    .modal-actions { display:flex; gap:0.5rem; margin-top:1rem; flex-wrap:wrap; }
+    .modal-actions button {
+      flex:1; min-width:120px;
+      padding:0.7rem 1rem; border-radius:var(--radius-sm);
+      font-size:0.85rem; font-weight:600;
+      cursor:pointer; transition:all var(--transition);
+      display:inline-flex; align-items:center; justify-content:center; gap:0.4rem;
+      border:none;
+    }
+    .btn-ok {
+      background:linear-gradient(145deg, #FFDD57, #f5c842);
+      color:#0a0a0f;
+    }
+    .btn-ok:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(255,221,87,0.3); }
+    .btn-danger {
+      background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2) !important;
+      color:#f87171;
+    }
+    .btn-danger:hover { background:rgba(239,68,68,0.2); }
+    .btn-cancel {
+      background:var(--bg-input); border:1px solid var(--border);
+      color:var(--muted-light);
+    }
+    .btn-cancel:hover { border-color:var(--border-hover); color:var(--fg); }
+
+    /* ===== HISTORY ===== */
     .history-section {
-      margin-top:2rem; background:var(--bg-card); border:1px solid var(--border);
+      margin-top:2rem;
+      background:var(--bg-card); border:1px solid var(--border);
       border-radius:var(--radius-lg); padding:1.25rem;
+    }
+    .history-header {
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:0.9rem; gap:0.5rem; flex-wrap:wrap;
+    }
+    .history-title {
+      font-family:var(--font-display);
+      font-size:0.95rem; font-weight:700;
+      display:flex; align-items:center; gap:0.5rem;
+    }
+    .history-title i { color:var(--accent); }
+    .history-title .hcount {
+      font-family:var(--font-display);
+      font-size:0.65rem;
+      padding:0.1rem 0.5rem;
+      border-radius:50px;
+      background:var(--accent-soft);
+      color:var(--accent);
+      font-weight:700;
     }
     .history-list { display:flex; flex-direction:column; gap:0.5rem; max-height:400px; overflow-y:auto; }
     .history-list::-webkit-scrollbar { width:4px; }
     .history-list::-webkit-scrollbar-thumb { background:var(--border); border-radius:10px; }
     .history-item {
-      background:rgba(255,255,255,0.02); border:1px solid var(--border);
-      border-radius:var(--radius-sm); padding:0.7rem 0.9rem;
-      display:flex; align-items:center; gap:0.75rem;
-      transition:all var(--transition); cursor:pointer;
+      background:var(--bg-input); border:1px solid var(--border);
+      border-radius:var(--radius-sm); padding:0.65rem 0.85rem;
+      display:flex; align-items:center; gap:0.7rem;
+      transition:all var(--transition);
     }
-    .history-item:hover { border-color:var(--border-hover); background:rgba(255,255,255,0.04); }
+    .history-item:hover { border-color:var(--border-hover); background:var(--bg-card-hover); }
     .history-item .hi-thumb {
-      width:44px; height:44px; border-radius:8px;
+      width:40px; height:40px; border-radius:8px;
       background:var(--bg-elevated); flex-shrink:0; overflow:hidden;
       display:flex; align-items:center; justify-content:center;
-      color:var(--muted); font-size:1rem;
+      color:var(--muted); font-size:0.9rem;
     }
     .history-item .hi-thumb img { width:100%; height:100%; object-fit:cover; }
     .history-item .hi-info { flex:1; min-width:0; }
-    .history-item .hi-info .hi-title {
-      font-size:0.8rem; font-weight:600;
+    .history-item .hi-title {
+      font-size:0.78rem; font-weight:600;
       white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     }
-    .history-item .hi-info .hi-time { font-size:0.62rem; color:var(--muted); margin-top:0.1rem; }
+    .history-item .hi-time { font-size:0.6rem; color:var(--muted); margin-top:0.1rem; }
     .history-item .hi-actions { display:flex; gap:0.25rem; flex-shrink:0; }
     .history-item .hi-actions button {
       width:26px; height:26px; border-radius:6px;
@@ -675,24 +919,26 @@
     }
     .history-item .hi-actions button:hover { color:var(--accent); border-color:var(--accent); }
     .history-item .hi-actions button.del:hover { color:#ef4444; border-color:#ef4444; }
-    .history-empty { text-align:center; padding:1.5rem; color:var(--muted); font-size:0.8rem; }
+    .history-empty { text-align:center; padding:1.5rem; color:var(--muted); font-size:0.78rem; }
 
     @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
 
+    /* ===== TOAST ===== */
     .toast-container {
       position:fixed; bottom:24px; right:24px; z-index:9999;
       display:flex; flex-direction:column; gap:0.5rem; max-width:90%;
     }
     .toast {
-      padding:0.7rem 1.4rem;
-      background:rgba(20,20,30,0.92); backdrop-filter:blur(16px);
+      padding:0.7rem 1.3rem;
+      background:rgba(20,20,30,0.95); backdrop-filter:blur(16px);
       border:1px solid rgba(255,255,255,0.06); border-radius:12px;
       box-shadow:0 8px 32px rgba(0,0,0,0.4);
-      display:flex; align-items:center; gap:0.6rem;
+      display:flex; align-items:center; gap:0.55rem;
       animation:slideInToast 0.35s cubic-bezier(0.34,1.56,0.64,1);
       font-size:0.82rem; border-left:3px solid var(--accent);
       color:var(--fg);
     }
+    body.light-theme .toast { background:rgba(255,255,255,0.98); }
     .toast i { color:var(--accent); font-size:0.9rem; }
     .toast.success { border-left-color:var(--success); } .toast.success i { color:var(--success); }
     .toast.error { border-left-color:var(--danger); } .toast.error i { color:var(--danger); }
@@ -700,26 +946,26 @@
     .toast.warning { border-left-color:var(--warning); } .toast.warning i { color:var(--warning); }
     @keyframes slideInToast { from { opacity:0; transform:translateX(60px) scale(0.9); } to { opacity:1; transform:translateX(0) scale(1); } }
 
+    /* ===== MISC ===== */
     .chat-float {
       position:fixed; bottom:1.25rem; right:1.25rem; z-index:99;
       display:flex; flex-direction:column; align-items:flex-end; gap:0.5rem;
     }
     .chat-float-label {
       background:rgba(12,12,24,0.92); backdrop-filter:blur(12px);
-      border:1px solid var(--border); border-radius:var(--radius-sm);
+      border:1px solid var(--border); border-radius:10px;
       padding:0.4rem 0.9rem; font-size:0.72rem; color:var(--muted);
       white-space:nowrap; opacity:0; transform:translateY(6px) scale(0.95);
       transition:all 0.3s ease; pointer-events:none;
     }
-    body.light-theme .chat-float-label { background:rgba(245,245,250,0.95); }
-    .chat-float-label span { color:var(--accent); font-weight:600; }
     .chat-float:hover .chat-float-label { opacity:1; transform:translateY(0) scale(1); }
+    .chat-float-label span { color:var(--accent); font-weight:600; }
     .chat-float-btn {
-      width:54px; height:54px; border-radius:16px;
+      width:52px; height:52px; border-radius:16px;
       background:linear-gradient(145deg, #25D366, #1da851);
       border:none; cursor:pointer;
       display:flex; align-items:center; justify-content:center;
-      color:#fff; font-size:1.5rem;
+      color:#fff; font-size:1.4rem;
       box-shadow:0 4px 24px rgba(37,211,102,0.35);
       transition:all var(--transition); text-decoration:none;
     }
@@ -727,7 +973,7 @@
 
     .back-to-top {
       position:fixed; bottom:1.25rem; left:1.25rem; z-index:90;
-      width:44px; height:44px; border-radius:var(--radius-sm);
+      width:42px; height:42px; border-radius:10px;
       background:var(--bg-card); border:1px solid var(--border);
       color:var(--muted); font-size:0.9rem; cursor:pointer;
       display:flex; align-items:center; justify-content:center;
@@ -735,50 +981,49 @@
       transition:all 0.3s ease; backdrop-filter:blur(12px);
     }
     .back-to-top.show { opacity:1; transform:translateY(0); pointer-events:auto; }
-    .back-to-top:hover { color:var(--accent); border-color:var(--accent); background:var(--accent-dim); }
+    .back-to-top:hover { color:var(--accent); border-color:var(--accent); background:var(--accent-soft); }
 
     .footer {
-      padding:3rem 1.5rem 1.5rem; border-top:1px solid var(--border);
-      margin-top:1rem; position:relative; z-index:2;
+      padding:2.5rem 1.5rem 1.5rem;
+      border-top:1px solid var(--border);
+      margin-top:2rem;
     }
-    .footer-grid {
-      display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-      gap:2rem; max-width:1000px; margin:0 auto 2rem; text-align:left;
+    .footer-inner {
+      max-width:1400px; margin:0 auto;
+      display:flex; justify-content:space-between; align-items:center;
+      gap:1rem; flex-wrap:wrap;
+      font-size:0.78rem; color:var(--muted);
     }
-    .footer-grid h4 { font-family:var(--font-display); font-size:0.85rem; color:var(--fg); margin-bottom:0.8rem; }
-    .footer-grid p, .footer-grid a { font-size:0.8rem; color:var(--muted); line-height:1.8; }
-    .footer-grid a { display:block; transition:color 0.2s; }
-    .footer-grid a:hover { color:var(--accent); }
-    .footer-grid .brand-footer { font-weight:600; color:var(--accent); }
-    .footer-bottom {
-      max-width:1000px; margin:0 auto; border-top:1px solid var(--border);
-      padding-top:1.5rem; text-align:center; font-size:0.7rem; color:var(--muted);
-    }
+    .footer-inner a { color:var(--muted); transition:color 0.2s; }
+    .footer-inner a:hover { color:var(--accent); }
+    .footer-inner .brand { font-weight:600; color:var(--accent); }
+    .footer-inner .links { display:flex; gap:1rem; flex-wrap:wrap; }
 
     .social-row {
-      position:relative; z-index:2;
-      display:flex; justify-content:center; gap:0.8rem;
+      display:flex; justify-content:center; gap:0.6rem;
       padding:1rem 1rem 0.5rem;
     }
     .social-row a {
-      width:42px; height:42px; border-radius:var(--radius-sm);
+      width:38px; height:38px; border-radius:10px;
       background:var(--bg-card); border:1px solid var(--border);
       display:flex; align-items:center; justify-content:center;
-      color:var(--muted); font-size:0.95rem;
+      color:var(--muted); font-size:0.9rem;
       transition:all var(--transition);
     }
-    .social-row a:hover { color:var(--accent); border-color:var(--accent); background:var(--accent-dim); transform:translateY(-3px); }
+    .social-row a:hover { color:var(--accent); border-color:var(--accent); background:var(--accent-soft); transform:translateY(-3px); }
 
+    /* ===== RESPONSIVE ===== */
     @media (max-width:768px) {
       .navbar { padding:0.6rem 1rem; min-height:56px; }
       .menu-toggle { display:flex; }
       .nav-links {
         display:none; position:absolute; top:100%; left:0; right:0;
-        flex-direction:column; background:rgba(7,7,13,0.97);
+        flex-direction:column; background:rgba(7,7,13,0.98);
         backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
-        border-bottom:1px solid var(--border); padding:0.8rem; gap:0.1rem;
+        border-bottom:1px solid var(--border);
+        padding:0.8rem; gap:0.1rem;
       }
-      body.light-theme .nav-links { background:rgba(245,245,250,0.97); }
+      body.light-theme .nav-links { background:rgba(245,245,250,0.98); }
       .nav-links.active { display:flex; }
       .nav-links a { padding:0.5rem 0.8rem; width:100%; }
       .dropdown-menu {
@@ -788,15 +1033,17 @@
       }
       .dropdown:hover .dropdown-menu { display:none; }
       .dropdown.active .dropdown-menu { display:block !important; }
-      .page-hero { padding:4rem 1rem 1rem; }
-      .gate-card { padding:1.75rem 1.25rem; }
-      .tool-panel { padding:1rem; }
+      .page-header { padding:4rem 1rem 1rem; }
+      .page-header-text h1 { font-size:1.25rem; }
+      .container { padding:0 1rem 2.5rem; }
+      .studio-layout { gap:1rem; }
+      .studio-panel { padding:1rem; }
       .toast-container { bottom:70px; right:12px; left:12px; align-items:center; }
-      .footer-grid { grid-template-columns:1fr 1fr; gap:1rem; text-align:center; }
-      .footer-grid h4 { text-align:center; }
-      .upload-grid { grid-template-columns:repeat(auto-fill, minmax(70px, 1fr)); gap:0.4rem; }
-      .export-section button { font-size:0.78rem; padding:0.6rem 0.8rem; }
-      .modal-box { padding:1.5rem 1.25rem; }
+      .upload-grid { grid-template-columns:repeat(auto-fill, minmax(56px, 1fr)); }
+      .results-toolbar .rt-actions { width:100%; }
+      .results-toolbar .rt-actions .btn-toolbar { flex:1; justify-content:center; }
+      .footer-inner { justify-content:center; text-align:center; flex-direction:column; }
+      .asset-pills { grid-template-columns:repeat(3, 1fr); }
     }
   </style>
 </head>
@@ -808,22 +1055,23 @@
     <div class="glow glow-3"></div>
   </div>
 
+  <!-- ===== NAVBAR ===== -->
   <nav class="navbar" id="navbar" aria-label="Navigasi utama">
     <a href="index.html" class="nav-brand"><i class="fas fa-store"></i> Akino Store</a>
     <div class="nav-actions">
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle tema"><i class="fas fa-moon"></i></button>
-      <button class="menu-toggle" id="menuToggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
+      <button class="icon-btn" id="themeToggle" aria-label="Toggle tema"><i class="fas fa-moon"></i></button>
+      <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
     </div>
     <ul class="nav-links" id="navLinks">
       <li><a href="index.html">Home</a></li>
       <li><a href="about.html">About</a></li>
       <li class="dropdown" id="dropdownService">
-        <a href="#" class="active" id="dropdownToggle">Service <i class="fas fa-chevron-down" style="font-size:0.5rem;margin-left:4px;"></i></a>
+        <a href="#" class="active" id="dropdownToggle">Service <i class="fas fa-chevron-down" style="font-size:0.5rem;"></i></a>
         <ul class="dropdown-menu">
           <li><a href="CarParkingMultiplayer.html">Car Parking Multiplayer</a></li>
           <li><a href="SosialMedia.html">Layanan Sosial Media</a></li>
           <li><a href="designedit.html">Design / Edit Foto</a></li>
-          <li><a href="metastock.html" style="color:var(--accent)">🆕 MetaStock AI</a></li>
+          <li><a href="metastock.html" style="color:var(--accent)">MetaStock AI</a></li>
           <li><a href="manga.html">Manga</a></li>
           <li><a href="wallpaper.html">Wallpaper</a></li>
         </ul>
@@ -833,18 +1081,12 @@
     </ul>
   </nav>
 
-  <header class="page-hero">
-    <div class="hero-badge"><i class="fas fa-wand-magic-sparkles"></i> AI Generator • Batch & CSV</div>
-    <h1>MetaStock <span class="accent">AI</span></h1>
-    <p>Generate judul, deskripsi, dan keyword microstock secara batch (maks 8 foto sekaligus) lalu export ke CSV. Cukup login Google + API Key OpenRouter.</p>
-  </header>
-
   <!-- ===== GATE 1: LOGIN ===== -->
-  <div class="gate-screen" id="gateLogin">
+  <div class="gate-screen" id="gateLogin" style="display:none">
     <div class="gate-card">
       <div class="gate-icon"><i class="fas fa-lock"></i></div>
       <h2>Login Diperlukan</h2>
-      <p class="center">Untuk menggunakan MetaStock AI, silakan login dengan akun Google Anda. Gratis dan hanya butuh beberapa detik.</p>
+      <p class="center">Untuk menggunakan MetaStock AI, silakan login dengan akun Google Anda.</p>
       <button class="btn-google" id="btnLoginGoogle">
         <svg viewBox="0 0 48 48" width="20" height="20">
           <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
@@ -854,99 +1096,143 @@
         </svg>
         Login dengan Google
       </button>
-      <p class="center" style="margin-top:1rem;font-size:0.75rem;">
-        Dengan login, Anda menyetujui <a href="terms.html">Syarat &amp; Ketentuan</a> dan <a href="privacy.html">Kebijakan Privasi</a> kami.
-      </p>
     </div>
   </div>
 
-  <!-- ===== GATE 2: OPENROUTER API KEY ===== -->
+  <!-- ===== GATE 2: API KEY ===== -->
   <div class="gate-screen" id="gateApiKey" style="display:none">
     <div class="gate-card">
       <div class="gate-icon"><i class="fas fa-key"></i></div>
       <h2>Setup OpenRouter API Key</h2>
-      <p class="center">MetaStock AI memakai <strong>OpenRouter</strong> untuk generate metadata. <strong>Gratis!</strong></p>
+      <p class="center">MetaStock AI memakai <strong>OpenRouter</strong>. <strong>Gratis!</strong></p>
 
       <div class="helper-steps">
         <strong>Cara dapat API Key gratis:</strong>
         <ol>
           <li>Buka <a href="https://openrouter.ai/keys" target="_blank" rel="noopener">openrouter.ai/keys</a></li>
-          <li>Login dengan Google (gratis, tanpa kartu kredit)</li>
-          <li>Klik tombol <strong>"Create Key"</strong></li>
-          <li>Beri nama (misal: "MetaStock")</li>
+          <li>Login dengan Google (gratis)</li>
+          <li>Klik <strong>"Create Key"</strong></li>
           <li>Copy API Key (format: <code>sk-or-v1-...</code>)</li>
           <li>Paste di bawah ini</li>
         </ol>
       </div>
 
-      <div class="notice info" style="text-align:left;margin-bottom:1rem;">
-        <i class="fas fa-shield-halved"></i>
-        <span>API Key Anda <strong>hanya disimpan di browser ini</strong> (localStorage). Tidak pernah dikirim ke server kami.</span>
-      </div>
-
       <input type="password" id="apiKeyInput" placeholder="sk-or-v1-... (paste di sini)" autocomplete="off" spellcheck="false">
-      <div id="apiKeyError" class="notice error" style="display:none;text-align:left;margin-bottom:0.75rem;">
-        <i class="fas fa-exclamation-circle"></i>
-        <span id="apiKeyErrorText">API Key tidak valid.</span>
-      </div>
-      <button class="btn-primary" id="btnSaveApiKey">
-        <i class="fas fa-check"></i> Simpan & Verifikasi
-      </button>
-      <button class="btn-ghost" id="btnLogoutFromGate" style="margin-top:0.75rem;width:100%;">
-        <i class="fas fa-right-from-bracket"></i> Logout
-      </button>
+      <div id="apiKeyError" class="notice error" style="display:none;text-align:left;margin-bottom:0.75rem;padding:0.5rem 0.7rem;border-radius:8px;font-size:0.78rem;"></div>
+      <button class="btn-primary" id="btnSaveApiKey"><i class="fas fa-check"></i> Simpan & Verifikasi</button>
+      <button class="btn-ghost" id="btnLogoutFromGate" style="margin-top:0.6rem;width:100%;"><i class="fas fa-right-from-bracket"></i> Logout</button>
     </div>
   </div>
 
-  <!-- ===== MAIN TOOL ===== -->
-  <div class="container" id="mainTool" style="display:none;padding-top:0.5rem;">
-    <div class="tool-layout">
+  <!-- ===== PAGE HEADER ===== -->
+  <div class="page-header" id="pageHeader" style="display:none">
+    <div class="page-header-text">
+      <h1><i class="fas fa-wand-magic-sparkles"></i> MetaStock AI</h1>
+      <p>Generator metadata microstock otomatis — judul, deskripsi, & keyword untuk foto, vector, video, dan lainnya.</p>
+    </div>
+    <div class="page-header-actions">
+      <button class="btn-ghost" id="btnOpenSettings"><i class="fas fa-cog"></i> Pengaturan</button>
+    </div>
+  </div>
 
-      <!-- LEFT: INPUT -->
-      <div class="tool-panel">
-        <div class="panel-title">
-          <i class="fas fa-image"></i> Input
-          <span class="step-badge" id="uploadCountBadge">0 / 8</span>
-        </div>
+  <!-- ===== STUDIO LAYOUT ===== -->
+  <div class="container" id="studioContainer" style="display:none">
 
-        <div class="upload-grid" id="uploadGrid"></div>
+    <div class="studio-layout">
 
-        <div class="upload-zone" id="uploadZone">
-          <i class="fas fa-cloud-upload-alt upload-icon"></i>
-          <div class="upload-title">Klik atau Drop Gambar</div>
-          <div class="upload-sub">Bisa pilih beberapa sekaligus • Maks 8 gambar • 5MB/gambar</div>
-        </div>
-        <input type="file" id="fileInput" accept="image/*" multiple style="display:none;">
+      <!-- ===== LEFT: STUDIO PANEL ===== -->
+      <div class="studio-panel">
 
-        <div class="batch-progress" id="batchProgress">
-          <div class="progress-info">
-            <span class="progress-count" id="progressCount">0 / 0</span>
-            <span class="progress-file" id="progressFile">-</span>
+        <!-- Upload section -->
+        <div class="panel-section">
+          <div class="panel-section-title">
+            <i class="fas fa-images"></i> Upload Aset
+            <span class="count-badge" id="uploadCountBadge">0 / 8</span>
           </div>
-          <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
+
+          <div class="upload-zone" id="uploadZone">
+            <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+            <div class="upload-title">Klik atau Drop File</div>
+            <div class="upload-sub">Maks <strong id="maxUploadLabel">8</strong> file • 5MB/file</div>
+            <input type="file" id="fileInput" accept="image/*" multiple>
+          </div>
+
+          <div class="upload-grid" id="uploadGrid"></div>
+
+          <div class="batch-progress" id="batchProgress">
+            <div class="progress-info">
+              <span class="progress-count" id="progressCount">0 / 0</span>
+              <span class="progress-file" id="progressFile">-</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
           </div>
         </div>
 
-        <div class="field" style="margin-top:1rem;">
-          <label>Konteks / Tema Tambahan <span style="color:var(--muted);font-weight:400;">(opsional)</span></label>
-          <textarea id="extraDesc" placeholder="Contoh: foto drone pantai tropis saat sunset, nuansa hangat, cocok untuk travel content..."></textarea>
+        <!-- Tipe aset -->
+        <div class="panel-section">
+          <div class="panel-section-title">
+            <i class="fas fa-layer-group"></i> Tipe Aset
+          </div>
+          <div class="asset-pills" id="assetPills">
+            <div class="asset-pill active" data-type="photo">
+              <i class="fas fa-camera"></i>
+              <span>Photo</span>
+            </div>
+            <div class="asset-pill" data-type="vector">
+              <i class="fas fa-bezier-curve"></i>
+              <span>Vector</span>
+            </div>
+            <div class="asset-pill" data-type="illustration">
+              <i class="fas fa-paint-brush"></i>
+              <span>Illustration</span>
+            </div>
+            <div class="asset-pill" data-type="video">
+              <i class="fas fa-video"></i>
+              <span>Video</span>
+            </div>
+            <div class="asset-pill" data-type="3d">
+              <i class="fas fa-cube"></i>
+              <span>3D Render</span>
+            </div>
+            <div class="asset-pill" data-type="editorial">
+              <i class="fas fa-newspaper"></i>
+              <span>Editorial</span>
+            </div>
+          </div>
         </div>
 
-        <div class="two-col">
-          <div class="field">
-            <label>Jumlah Keyword</label>
-            <select id="kwCount">
-              <option value="20">20 keyword</option>
-              <option value="30" selected>30 keyword</option>
-              <option value="40">40 keyword</option>
-              <option value="50">50 keyword</option>
-            </select>
+        <!-- Settings -->
+        <div class="panel-section">
+          <div class="panel-section-title">
+            <i class="fas fa-sliders"></i> Pengaturan Output
           </div>
+
+          <div class="two-col">
+            <div class="field">
+              <label>Bahasa</label>
+              <select id="langSelect">
+                <option value="en" selected>English</option>
+                <option value="id">Indonesia</option>
+                <option value="both">ID + EN</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Jumlah Keyword</label>
+              <select id="kwCount">
+                <option value="20">20 keyword</option>
+                <option value="30" selected>30 keyword</option>
+                <option value="40">40 keyword</option>
+                <option value="50">50 keyword</option>
+              </select>
+            </div>
+          </div>
+
           <div class="field">
             <label>Platform Target</label>
             <select id="platform">
-              <option value="general" selected>General (semua)</option>
+              <option value="general" selected>General (semua platform)</option>
               <option value="shutterstock">Shutterstock</option>
               <option value="adobe">Adobe Stock</option>
               <option value="freepik">Freepik</option>
@@ -954,60 +1240,86 @@
               <option value="vecteezy">Vecteezy</option>
             </select>
           </div>
+
+          <div class="field">
+            <label>Batas Upload per Batch <i class="fas fa-info-circle info-icon" title="Berapa file maksimal yang bisa diupload sekaligus"></i></label>
+            <select id="uploadLimit">
+              <option value="4">4 file</option>
+              <option value="6">6 file</option>
+              <option value="8" selected>8 file (rekomendasi)</option>
+              <option value="12">12 file</option>
+              <option value="16">16 file</option>
+              <option value="20">20 file (maks)</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Konteks Tambahan <span style="color:var(--muted);font-weight:400;">(opsional)</span></label>
+            <textarea id="extraDesc" placeholder="Contoh: fokus untuk brand travel, tone hangat, target Asia Tenggara..."></textarea>
+          </div>
         </div>
 
-        <div id="mainNotice"></div>
-
-        <button class="btn-primary" id="btnGenerate" style="margin-top:0.75rem;">
+        <!-- Generate button -->
+        <button class="btn-primary" id="btnGenerate">
           <i class="fas fa-wand-magic-sparkles"></i> Generate Semua
         </button>
 
-        <div class="settings-row" style="display:flex; flex-wrap:wrap; gap:0.5rem; align-items:center; margin-top:0.6rem; font-size:0.72rem; color:var(--muted);">
-          <span class="api-status" id="apiStatus" style="display:inline-flex; align-items:center; gap:0.35rem; padding:0.25rem 0.7rem; border-radius:50px; background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.2); color:var(--success); font-weight:600;">
-            <i class="fas fa-check-circle"></i> API Key tersimpan
+        <!-- Status bar -->
+        <div class="settings-bar">
+          <span class="api-status ok" id="apiStatus">
+            <i class="fas fa-check-circle"></i> API Key OK
           </span>
-          <button class="btn-mini" id="btnOpenSettings" style="padding:0.25rem 0.7rem; border-radius:50px; background:var(--bg-card); border:1px solid var(--border); color:var(--muted-light); font-size:0.7rem; cursor:pointer;">
-            <i class="fas fa-cog"></i> Pengaturan
-          </button>
+          <span style="margin-left:auto;font-size:0.65rem;">
+            <i class="fas fa-bolt"></i> via OpenRouter
+          </span>
         </div>
       </div>
 
-      <!-- RIGHT: OUTPUT -->
-      <div class="tool-panel">
-        <div class="panel-title">
-          <i class="fas fa-sparkles"></i> Hasil Metadata
-          <div class="panel-actions">
-            <button class="btn-mini" id="btnClearResults" title="Bersihkan hasil">
-              <i class="fas fa-trash"></i> Bersihkan
+      <!-- ===== RIGHT: RESULTS ===== -->
+      <div class="results-panel">
+
+        <div class="results-toolbar">
+          <div class="rt-info">
+            <i class="fas fa-list-check"></i>
+            <span id="resultsInfo">Belum ada hasil</span>
+          </div>
+          <div class="rt-actions" id="resultsActions" style="display:none">
+            <button class="btn-toolbar btn-csv" id="btnExportCSV">
+              <i class="fas fa-file-csv"></i> CSV
+            </button>
+            <button class="btn-toolbar" id="btnExportJSON">
+              <i class="fas fa-code"></i> JSON
+            </button>
+            <button class="btn-toolbar btn-danger" id="btnClearResults">
+              <i class="fas fa-trash"></i> Clear
             </button>
           </div>
         </div>
 
-        <div class="export-section" id="exportSection">
-          <button class="btn-export-csv" id="btnExportCSV">
-            <i class="fas fa-file-csv"></i> Export CSV
-          </button>
-          <button class="btn-export-json" id="btnExportJSON">
-            <i class="fas fa-code"></i> Export JSON
-          </button>
-        </div>
-
         <div id="resultContainer">
-          <div class="result-placeholder">
-            <i class="fas fa-robot"></i>
-            <p>Upload 1 atau lebih gambar, lalu klik <strong>Generate Semua</strong>.</p>
-            <p style="font-size:0.72rem;color:var(--muted);margin-top:0.4rem;">Hasil per gambar akan muncul di sini dan bisa diexport ke CSV.</p>
+          <div class="empty-results">
+            <div class="empty-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+            <h3>Belum ada hasil</h3>
+            <p>Upload gambar di panel kiri, pilih tipe aset, lalu klik <strong>Generate Semua</strong>.</p>
+            <div class="empty-hint">
+              <i class="fas fa-lightbulb"></i> AI akan buat judul, deskripsi & keyword
+            </div>
           </div>
         </div>
+
       </div>
+
     </div>
 
-    <!-- HISTORY -->
+    <!-- ===== HISTORY ===== -->
     <div class="history-section">
-      <div class="panel-title">
-        <i class="fas fa-clock-rotate-left"></i> Riwayat Generate
-        <span class="step-badge" id="historyCount">0</span>
-        <button class="btn-mini" id="btnClearHistory" style="margin-left:0.5rem;">
+      <div class="history-header">
+        <div class="history-title">
+          <i class="fas fa-clock-rotate-left"></i>
+          Riwayat Generate
+          <span class="hcount" id="historyCount">0</span>
+        </div>
+        <button class="btn-toolbar btn-danger" id="btnClearHistory">
           <i class="fas fa-trash"></i> Hapus Semua
         </button>
       </div>
@@ -1015,6 +1327,7 @@
         <div class="history-empty"><i class="fas fa-inbox"></i><br>Belum ada riwayat.</div>
       </div>
     </div>
+
   </div>
 
   <!-- ===== SETTINGS MODAL ===== -->
@@ -1028,33 +1341,29 @@
         <span class="sr-label"><i class="fas fa-key"></i> API Key</span>
         <span class="sr-value masked" id="srApiKeyMasked">-</span>
       </div>
-
       <div class="setting-row">
         <span class="sr-label"><i class="fas fa-wallet"></i> Kredit</span>
         <span class="sr-value" id="srCredits">-</span>
       </div>
-
       <div class="setting-row">
-        <span class="sr-label"><i class="fas fa-gauge-high"></i> Usage Limit</span>
+        <span class="sr-label"><i class="fas fa-gauge-high"></i> Usage</span>
         <span class="sr-value" id="srUsage">-</span>
       </div>
-
       <div class="setting-row">
         <span class="sr-label"><i class="fas fa-user-check"></i> Status</span>
         <span class="sr-value ok" id="srStatus">Aktif</span>
       </div>
 
       <div class="modal-input-group" style="margin-top:1rem;">
-        <label>Ganti API Key (kosongkan jika tidak ingin ganti)</label>
-        <input type="password" id="modalApiKeyInput" placeholder="sk-or-v1-... (opsional)">
+        <label>Ganti API Key (opsional)</label>
+        <input type="password" id="modalApiKeyInput" placeholder="sk-or-v1-...">
       </div>
 
       <div class="modal-actions">
-        <button class="btn-cancel" id="btnRefreshAccount"><i class="fas fa-sync"></i> Refresh Info</button>
+        <button class="btn-cancel" id="btnRefreshAccount"><i class="fas fa-sync"></i> Refresh</button>
         <button class="btn-ok" id="btnSaveNewKey"><i class="fas fa-check"></i> Simpan</button>
       </div>
-
-      <div class="modal-actions" style="margin-top:0.5rem;">
+      <div class="modal-actions">
         <button class="btn-danger" id="btnLogoutModal" style="flex:1;">
           <i class="fas fa-right-from-bracket"></i> Logout
         </button>
@@ -1062,49 +1371,31 @@
     </div>
   </div>
 
+  <!-- ===== FOOTER ===== -->
   <div class="social-row">
-    <a href="https://www.tiktok.com/@akinolaset_?_t=8pbChkK23O6&_r=1" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-    <a href="https://www.instagram.com/akinostore_?igsh=MWxqbGpham5ocjhyOA==" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-    <a href="https://youtube.com/@akinolaset?si=e4NLLQrgN0R3BPi4" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+    <a href="https://www.tiktok.com/@akinolaset_" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+    <a href="https://www.instagram.com/akinostore_" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://youtube.com/@akinolaset" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
     <a href="https://wa.me/6289687163314" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
   </div>
 
-  <footer class="footer" aria-label="Footer">
-    <div class="footer-grid">
+  <footer class="footer">
+    <div class="footer-inner">
       <div>
-        <h4 class="brand-footer">Akino Store</h4>
-        <p>Jasa digital, game, dan baca manga terpercaya sejak 2022.</p>
+        <span class="brand">Akino Store</span> &copy; 2022. Jasa digital & AI tools.
       </div>
-      <div>
-        <h4>Layanan</h4>
-        <a href="CarParkingMultiplayer.html">Car Parking</a>
-        <a href="SosialMedia.html">Sosial Media</a>
-        <a href="designedit.html">Design / Edit</a>
-      </div>
-      <div>
-        <h4>Tentang</h4>
-        <a href="about.html">About Us</a>
+      <div class="links">
+        <a href="about.html">About</a>
+        <a href="privacy.html">Privasi</a>
+        <a href="terms.html">Syarat</a>
         <a href="https://wa.me/6289687163314" target="_blank">Contact</a>
-        <a href="stockmobil.html">Stock Mobil</a>
-      </div>
-      <div>
-        <h4>Legal</h4>
-        <a href="privacy.html">Kebijakan Privasi</a>
-        <a href="terms.html">Syarat &amp; Ketentuan</a>
-      </div>
-      <div>
-        <h4>Follow</h4>
-        <a href="https://www.tiktok.com/@akinolaset_" target="_blank">TikTok</a>
-        <a href="https://www.instagram.com/akinostore_" target="_blank">Instagram</a>
-        <a href="https://youtube.com/@akinolaset" target="_blank">YouTube</a>
       </div>
     </div>
-    <div class="footer-bottom">&copy; 2022 Akino Store. All Rights Reserved.</div>
   </footer>
 
   <div class="chat-float">
     <div class="chat-float-label">Chat Admin: <span>089687163314</span></div>
-    <a href="https://wa.me/6289687163314" target="_blank" rel="noopener" class="chat-float-btn" aria-label="Chat Admin WhatsApp">
+    <a href="https://wa.me/6289687163314" target="_blank" rel="noopener" class="chat-float-btn">
       <i class="fab fa-whatsapp"></i>
     </a>
   </div>
@@ -1123,12 +1414,51 @@
     const OPENROUTER_KEY_URL = 'https://openrouter.ai/api/v1/key';
     const LS_API_KEY = 'akino_openrouter_api_key';
     const LS_HISTORY = 'akino_metastock_history';
-    const MAX_FILES = 8;
+    const LS_SETTINGS = 'akino_metastock_settings';
     const MAX_FILE_SIZE = 5 * 1024 * 1024;
     const MAX_IMG_DIM = 1024;
     const DELAY_BETWEEN_REQUESTS = 1000;
-    // Fixed model — sama seperti wallpaper AI (openrouter auto-router)
-    const FIXED_MODEL = 'openrouter/free';
+
+    const MODEL_CHAIN = [
+      'openrouter/free',
+      'meta-llama/llama-3.2-11b-vision-instruct:free',
+      'qwen/qwen-2-vl-7b-instruct:free',
+      'google/gemini-flash-1.5-8b'
+    ];
+
+    // Asset type → prompt hints
+    const ASSET_HINTS = {
+      photo: {
+        label: 'Photo',
+        context: 'This is a PHOTOGRAPH. Focus keywords on: subject, lighting, composition, mood, colors, season, location, and photo-technical terms (bokeh, shallow depth of field, golden hour, backlit, etc).',
+        titleHint: 'Natural descriptive title as a photographer would caption it.'
+      },
+      vector: {
+        label: 'Vector',
+        context: 'This is a VECTOR GRAPHIC / editable illustration. Focus keywords on: flat design, icon, graphic, editable, scalable, isolated, silhouette, simple, minimal, modern, web, ui. Include "vector", "illustration", "icon", "clipart", "graphic element".',
+        titleHint: 'Title should mention "vector" or "icon" and describe style (flat, minimal, gradient).'
+      },
+      illustration: {
+        label: 'Illustration',
+        context: 'This is an ILLUSTRATION / digital artwork. Focus keywords on: artwork, drawn, painting, digital art, artistic, character, scene, narrative, stylized, colorful, cartoon, anime, comic. Include the art medium or style if visible.',
+        titleHint: 'Title should mention illustration/artwork and describe subject and style.'
+      },
+      video: {
+        label: 'Video',
+        context: 'This is a VIDEO / motion footage still. Focus keywords on: video, footage, clip, motion, cinematic, footage, 4K, HD, slow motion, timelapse, aerial, drone, lifestyle, cinematic, background video. Include camera motion terms if applicable.',
+        titleHint: 'Title should mention "video" or "footage" and describe the scene and action.'
+      },
+      '3d': {
+        label: '3D Render',
+        context: 'This is a 3D RENDER / CGI. Focus keywords on: 3D render, CGI, realistic render, octane, blender, cinema 4d, mockup, 3d model, digital, rendered, studio lighting, product visualization. Include "3d" and "render" as keywords.',
+        titleHint: 'Title should mention "3D render" or "CGI" and describe the subject.'
+      },
+      editorial: {
+        label: 'Editorial',
+        context: 'This is EDITORIAL / newsworthy content. Focus keywords on: editorial, news, journalism, documentary, real life, event, reportage, candid, social issues, current events. Avoid commercial-heavy keywords.',
+        titleHint: 'Title should be factual and newsworthy, describing the event/scene.'
+      }
+    };
 
     // ============================================================
     // STATE
@@ -1136,6 +1466,8 @@
     let currentUser = null;
     let currentImages = [];
     let isProcessing = false;
+    let currentAssetType = 'photo';
+    let maxUploadLimit = 8;
 
     // ============================================================
     // HELPERS
@@ -1148,13 +1480,13 @@
       const toast = document.createElement('div');
       toast.className = 'toast ' + type;
       const icons = { info:'fa-info-circle', success:'fa-check-circle', error:'fa-exclamation-circle', warning:'fa-triangle-exclamation' };
-      toast.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i> ${message}`;
+      toast.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i> <span>${escHtml(message)}</span>`;
       container.appendChild(toast);
       setTimeout(() => {
         toast.style.opacity = '0';
         toast.style.transform = 'translateX(40px) scale(0.9)';
         setTimeout(() => toast.remove(), 300);
-      }, 4000);
+      }, 4200);
     }
 
     function escHtml(str) {
@@ -1183,16 +1515,54 @@
       return key.substring(0, 10) + '...' + key.substring(key.length - 4);
     }
 
+    function saveSettings() {
+      try {
+        const s = {
+          assetType: currentAssetType,
+          uploadLimit: parseInt($('uploadLimit').value) || 8,
+          lang: $('langSelect').value,
+          kwCount: $('kwCount').value,
+          platform: $('platform').value
+        };
+        localStorage.setItem(LS_SETTINGS, JSON.stringify(s));
+      } catch(e) {}
+    }
+
+    function loadSettings() {
+      try {
+        const s = JSON.parse(localStorage.getItem(LS_SETTINGS) || '{}');
+        if (s.assetType && ASSET_HINTS[s.assetType]) {
+          currentAssetType = s.assetType;
+          document.querySelectorAll('.asset-pill').forEach(p => {
+            p.classList.toggle('active', p.dataset.type === s.assetType);
+          });
+        }
+        if (s.uploadLimit) {
+          maxUploadLimit = s.uploadLimit;
+          $('uploadLimit').value = String(s.uploadLimit);
+          $('maxUploadLabel').textContent = s.uploadLimit;
+        }
+        if (s.lang) $('langSelect').value = s.lang;
+        if (s.kwCount) $('kwCount').value = s.kwCount;
+        if (s.platform) $('platform').value = s.platform;
+        updateUploadCountBadge();
+      } catch(e) {}
+    }
+
     // ============================================================
     // UI STATE
     // ============================================================
     function showGate(which) {
       $('gateLogin').style.display = 'none';
       $('gateApiKey').style.display = 'none';
-      $('mainTool').style.display = 'none';
+      $('pageHeader').style.display = 'none';
+      $('studioContainer').style.display = 'none';
       if (which === 'login') $('gateLogin').style.display = '';
       else if (which === 'apiKey') $('gateApiKey').style.display = '';
-      else if (which === 'main') $('mainTool').style.display = '';
+      else if (which === 'main') {
+        $('pageHeader').style.display = 'flex';
+        $('studioContainer').style.display = 'block';
+      }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -1200,19 +1570,31 @@
       const key = localStorage.getItem(LS_API_KEY);
       const el = $('apiStatus');
       if (key) {
-        el.className = 'api-status';
-        el.style.cssText = 'display:inline-flex; align-items:center; gap:0.35rem; padding:0.25rem 0.7rem; border-radius:50px; background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.2); color:var(--success); font-weight:600;';
-        el.innerHTML = '<i class="fas fa-check-circle"></i> API Key tersimpan';
+        el.className = 'api-status ok';
+        el.innerHTML = '<i class="fas fa-check-circle"></i> API Key OK';
       } else {
         el.className = 'api-status missing';
-        el.style.cssText = 'display:inline-flex; align-items:center; gap:0.35rem; padding:0.25rem 0.7rem; border-radius:50px; background:rgba(251,146,60,0.1); border:1px solid rgba(251,146,60,0.2); color:var(--warning); font-weight:600;';
         el.innerHTML = '<i class="fas fa-exclamation-triangle"></i> API Key belum diset';
       }
     }
 
     function updateUploadCountBadge() {
       const badge = $('uploadCountBadge');
-      if (badge) badge.textContent = currentImages.length + ' / ' + MAX_FILES;
+      if (badge) badge.textContent = currentImages.length + ' / ' + maxUploadLimit;
+    }
+
+    function updateResultsInfo() {
+      const done = currentImages.filter(i => i.status === 'done').length;
+      const total = currentImages.length;
+      const info = $('resultsInfo');
+      const actions = $('resultsActions');
+      if (total === 0) {
+        info.innerHTML = 'Belum ada hasil';
+        actions.style.display = 'none';
+      } else {
+        info.innerHTML = '<strong>' + done + '</strong> / <strong>' + total + '</strong> aset selesai';
+        actions.style.display = done > 0 ? 'flex' : 'none';
+      }
     }
 
     // ============================================================
@@ -1229,6 +1611,7 @@
         showGate('apiKey');
       } else {
         showGate('main');
+        loadSettings();
         updateApiStatus();
         renderHistory();
       }
@@ -1236,10 +1619,9 @@
 
     $('btnLoginGoogle').addEventListener('click', async () => {
       const btn = $('btnLoginGoogle');
-      const originalHTML = btn.innerHTML;
+      const orig = btn.innerHTML;
       btn.disabled = true;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menghubungkan...';
-
       try {
         const provider = new firebase.auth.GoogleAuthProvider();
         await firebase.auth().signInWithPopup(provider);
@@ -1247,16 +1629,14 @@
         console.error('Google login error:', { code: err.code, message: err.message });
         let msg = '';
         if (err.code === 'auth/popup-closed-by-user') msg = 'Login dibatalkan.';
-        else if (err.code === 'auth/unauthorized-domain') msg = 'Domain ' + window.location.hostname + ' belum diizinkan di Firebase Console.';
-        else if (err.code === 'auth/operation-not-allowed') msg = 'Login Google belum diaktifkan di Firebase Authentication.';
-        else if (err.code === 'auth/popup-blocked') msg = 'Popup diblokir browser. Izinkan popup untuk situs ini.';
-        else if (err.code === 'auth/cancelled-popup-request') msg = 'Permintaan login sebelumnya masih berjalan.';
-        else if (err.code === 'auth/network-request-failed') msg = 'Koneksi jaringan gagal.';
-        else msg = 'Firebase [' + (err.code || 'unknown') + ']: ' + err.message;
+        else if (err.code === 'auth/unauthorized-domain') msg = 'Domain ' + window.location.hostname + ' belum diizinkan.';
+        else if (err.code === 'auth/popup-blocked') msg = 'Popup diblokir browser.';
+        else if (err.code === 'auth/network-request-failed') msg = 'Koneksi gagal.';
+        else msg = 'Firebase [' + (err.code || 'unknown') + ']';
         showToast(msg, 'error');
       } finally {
         btn.disabled = false;
-        btn.innerHTML = originalHTML;
+        btn.innerHTML = orig;
       }
     });
 
@@ -1278,7 +1658,7 @@
     }
 
     // ============================================================
-    // API KEY VERIFY
+    // API KEY
     // ============================================================
     async function verifyApiKey(key) {
       const res = await fetch(OPENROUTER_KEY_URL, {
@@ -1297,36 +1677,34 @@
       const input = $('apiKeyInput');
       const key = input.value.trim();
       const errEl = $('apiKeyError');
-      const errText = $('apiKeyErrorText');
       errEl.style.display = 'none';
 
       if (!key) {
-        errText.textContent = 'API Key tidak boleh kosong.';
-        errEl.style.display = 'flex';
+        errEl.textContent = 'API Key tidak boleh kosong.';
+        errEl.style.display = 'block';
         return;
       }
       if (!key.startsWith('sk-or-')) {
-        errText.textContent = 'Format API Key OpenRouter harus dimulai dengan "sk-or-".';
-        errEl.style.display = 'flex';
+        errEl.textContent = 'Format API Key harus dimulai dengan "sk-or-".';
+        errEl.style.display = 'block';
         return;
       }
 
       const btn = $('btnSaveApiKey');
       btn.disabled = true;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memverifikasi...';
-
       try {
         await verifyApiKey(key);
         localStorage.setItem(LS_API_KEY, key);
         input.value = '';
         showToast('API Key berhasil disimpan!', 'success');
         showGate('main');
+        loadSettings();
         updateApiStatus();
         renderHistory();
       } catch (err) {
-        console.error('API key verify error:', err);
-        errText.textContent = '❌ ' + (err.message || 'API Key tidak valid.');
-        errEl.style.display = 'flex';
+        errEl.textContent = err.message || 'API Key tidak valid.';
+        errEl.style.display = 'block';
       } finally {
         btn.disabled = false;
         btn.innerHTML = '<i class="fas fa-check"></i> Simpan & Verifikasi';
@@ -1341,18 +1719,13 @@
       $('srApiKeyMasked').textContent = maskApiKey(key);
       $('modalApiKeyInput').value = '';
       $('settingsModal').classList.add('active');
-      // Load account info
       await loadAccountInfo();
     });
 
-    $('btnCloseSettings').addEventListener('click', () => {
-      $('settingsModal').classList.remove('active');
-    });
-
+    $('btnCloseSettings').addEventListener('click', () => $('settingsModal').classList.remove('active'));
     $('settingsModal').addEventListener('click', (e) => {
       if (e.target === $('settingsModal')) $('settingsModal').classList.remove('active');
     });
-
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && $('settingsModal').classList.contains('active')) {
         $('settingsModal').classList.remove('active');
@@ -1362,14 +1735,10 @@
     async function loadAccountInfo() {
       const key = localStorage.getItem(LS_API_KEY);
       if (!key) return;
-      const srCredits = $('srCredits');
-      const srUsage = $('srUsage');
-      const srStatus = $('srStatus');
-      srCredits.textContent = 'Memuat...';
-      srUsage.textContent = 'Memuat...';
+      $('srCredits').textContent = 'Memuat...';
+      $('srUsage').textContent = 'Memuat...';
       try {
         const data = await verifyApiKey(key);
-        // Data structure OpenRouter: { data: { label, usage, limit, is_free_tier, ... } }
         const d = data.data || data;
         const credits = (d.limit_remaining !== null && d.limit_remaining !== undefined)
           ? '$' + parseFloat(d.limit_remaining).toFixed(4)
@@ -1377,37 +1746,29 @@
         const usage = (d.usage !== undefined && d.usage !== null)
           ? '$' + parseFloat(d.usage).toFixed(4)
           : '$0.0000';
-        srCredits.textContent = credits;
-        srUsage.textContent = usage;
-        srStatus.textContent = d.is_free_tier ? 'Free Tier' : 'Aktif';
-        srStatus.className = 'sr-value ok';
+        $('srCredits').textContent = credits;
+        $('srUsage').textContent = usage;
+        $('srStatus').textContent = d.is_free_tier ? 'Free Tier' : 'Aktif';
+        $('srStatus').className = 'sr-value ok';
       } catch (err) {
-        console.error('Load account info error:', err);
-        srCredits.textContent = 'Error';
-        srUsage.textContent = 'Error';
-        srStatus.textContent = 'Error';
-        srStatus.className = 'sr-value missing';
+        $('srCredits').textContent = 'Error';
+        $('srUsage').textContent = 'Error';
+        $('srStatus').textContent = 'Error';
+        $('srStatus').className = 'sr-value missing';
       }
     }
 
     $('btnRefreshAccount').addEventListener('click', async () => {
       await loadAccountInfo();
-      showToast('Info akun di-refresh.', 'info');
+      showToast('Info di-refresh.', 'info');
     });
 
     $('btnSaveNewKey').addEventListener('click', async () => {
       const newKey = $('modalApiKeyInput').value.trim();
-      if (!newKey) {
-        showToast('API Key baru kosong. Tidak ada yang diubah.', 'info');
-        return;
-      }
-      if (!newKey.startsWith('sk-or-')) {
-        showToast('Format API Key salah (harus mulai sk-or-).', 'error');
-        return;
-      }
+      if (!newKey) { showToast('API Key kosong.', 'info'); return; }
+      if (!newKey.startsWith('sk-or-')) { showToast('Format salah (harus sk-or-).', 'error'); return; }
       const btn = $('btnSaveNewKey');
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
       try {
         await verifyApiKey(newKey);
         localStorage.setItem(LS_API_KEY, newKey);
@@ -1416,10 +1777,9 @@
         showToast('API Key berhasil diganti!', 'success');
         await loadAccountInfo();
       } catch (err) {
-        showToast('❌ ' + (err.message || 'API Key tidak valid.'), 'error');
+        showToast(err.message || 'API Key tidak valid.', 'error');
       } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-check"></i> Simpan';
+        btn.disabled = false; btn.innerHTML = '<i class="fas fa-check"></i> Simpan';
       }
     });
 
@@ -1473,7 +1833,44 @@
     })();
 
     // ============================================================
-    // UPLOAD BATCH
+    // ASSET TYPE PILLS
+    // ============================================================
+    $('assetPills').addEventListener('click', (e) => {
+      const pill = e.target.closest('.asset-pill');
+      if (!pill) return;
+      const type = pill.dataset.type;
+      if (!ASSET_HINTS[type]) return;
+      currentAssetType = type;
+      document.querySelectorAll('.asset-pill').forEach(p => {
+        p.classList.toggle('active', p.dataset.type === type);
+      });
+      saveSettings();
+      showToast('Tipe aset: ' + ASSET_HINTS[type].label, 'info');
+    });
+
+    // ============================================================
+    // UPLOAD LIMIT
+    // ============================================================
+    $('uploadLimit').addEventListener('change', (e) => {
+      maxUploadLimit = parseInt(e.target.value) || 8;
+      $('maxUploadLabel').textContent = maxUploadLimit;
+      // Kalau current lebih dari limit baru, hapus kelebihan
+      if (currentImages.length > maxUploadLimit) {
+        currentImages = currentImages.slice(0, maxUploadLimit);
+        renderUploadGrid();
+        showToast('Upload dibatasi ke ' + maxUploadLimit + ' file.', 'warning');
+      }
+      updateUploadCountBadge();
+      saveSettings();
+    });
+
+    // Save settings other fields
+    ['langSelect', 'kwCount', 'platform'].forEach(id => {
+      $(id).addEventListener('change', saveSettings);
+    });
+
+    // ============================================================
+    // UPLOAD
     // ============================================================
     const uploadZone = $('uploadZone');
     const fileInput = $('fileInput');
@@ -1494,18 +1891,20 @@
 
     async function handleFiles(fileList) {
       const files = Array.from(fileList);
-      const remaining = MAX_FILES - currentImages.length;
+      const remaining = maxUploadLimit - currentImages.length;
       if (remaining <= 0) {
-        showToast('Maksimal ' + MAX_FILES + ' gambar. Hapus beberapa dulu.', 'warning');
+        showToast('Sudah mencapai batas ' + maxUploadLimit + ' file. Hapus beberapa dulu.', 'warning');
         return;
       }
       const toProcess = files.slice(0, remaining);
-      if (files.length > remaining) showToast('Hanya ' + remaining + ' gambar ditambahkan (maks ' + MAX_FILES + ').', 'warning');
+      if (files.length > remaining) {
+        showToast('Hanya ' + remaining + ' file ditambahkan (limit: ' + maxUploadLimit + ').', 'warning');
+      }
 
       let added = 0;
       for (const file of toProcess) {
         if (!file.type.startsWith('image/')) { showToast('"' + file.name + '" bukan gambar.', 'error'); continue; }
-        if (file.size > MAX_FILE_SIZE) { showToast('"' + file.name + '" melebihi 5MB.', 'error'); continue; }
+        if (file.size > MAX_FILE_SIZE) { showToast('"' + file.name + '" >5MB.', 'error'); continue; }
         try {
           const compressed = await compressImage(file);
           currentImages.push({
@@ -1520,11 +1919,12 @@
           });
           added++;
         } catch (err) {
-          showToast('Gagal proses "' + file.name + '": ' + err.message, 'error');
+          showToast('Gagal "' + file.name + '": ' + err.message, 'error');
         }
       }
       renderUploadGrid();
-      if (added > 0) showToast(added + ' gambar berhasil ditambahkan.', 'success');
+      updateResultsInfo();
+      if (added > 0) showToast(added + ' file ditambahkan.', 'success');
     }
 
     function compressImage(file) {
@@ -1555,10 +1955,10 @@
             const size = Math.round(base64.length * 3 / 4);
             resolve({ dataUrl, size });
           };
-          img.onerror = () => reject(new Error('Gagal membaca gambar'));
+          img.onerror = () => reject(new Error('Gagal baca gambar'));
           img.src = e.target.result;
         };
-        reader.onerror = () => reject(new Error('Gagal membaca file'));
+        reader.onerror = () => reject(new Error('Gagal baca file'));
         reader.readAsDataURL(file);
       });
     }
@@ -1569,13 +1969,14 @@
       uploadGrid.innerHTML = currentImages.map(img => {
         const statusLabel = {
           pending: 'Pending',
-          processing: 'Proses...',
-          done: '✓ Selesai',
-          error: '✗ Error'
+          processing: 'AI...',
+          done: '✓',
+          error: '✗'
         }[img.status] || img.status;
         return `
           <div class="upload-thumb ${img.status}" data-id="${img.id}">
             <img src="${img.dataUrl}" alt="${escHtml(img.fileName)}">
+            <div class="thumb-overlay"></div>
             <button class="thumb-remove" data-remove="${img.id}" title="Hapus"><i class="fas fa-times"></i></button>
             <div class="thumb-status ${img.status}">${statusLabel}</div>
           </div>
@@ -1590,6 +1991,7 @@
           currentImages = currentImages.filter(x => x.id !== id);
           renderUploadGrid();
           renderResults();
+          updateResultsInfo();
         });
       });
     }
@@ -1606,7 +2008,6 @@
       const pct = total > 0 ? Math.round((current / total) * 100) : 0;
       $('progressFill').style.width = pct + '%';
     }
-
     function hideProgress() {
       setTimeout(() => {
         $('batchProgress').classList.remove('show');
@@ -1615,9 +2016,9 @@
     }
 
     // ============================================================
-    // CALL OPENROUTER (FIXED MODEL, ROBUST ERROR HANDLING)
+    // CALL OPENROUTER (retry chain)
     // ============================================================
-    async function callOpenRouter(apiKey, prompt, imageDataUrl) {
+    async function callOpenRouterSingle(apiKey, model, prompt, imageDataUrl) {
       const content = imageDataUrl
         ? [
             { type: 'text', text: prompt },
@@ -1626,7 +2027,7 @@
         : prompt;
 
       const body = {
-        model: FIXED_MODEL,
+        model: model,
         messages: [{ role: 'user', content }],
         temperature: 0.7,
         max_tokens: 4000
@@ -1644,33 +2045,31 @@
       });
 
       const rawText = await res.text();
-      console.log('🔍 OpenRouter response [' + res.status + ']:', rawText.substring(0, 600));
+      console.log('🔍 [' + model + '] [' + res.status + ']:', rawText.substring(0, 300));
 
       let data;
       try { data = JSON.parse(rawText); }
-      catch (e) { throw new Error('Response OpenRouter tidak valid (bukan JSON). Status: ' + res.status); }
+      catch (e) { throw new Error('Response bukan JSON.'); }
 
       if (!res.ok) {
         let errMsg = data.error?.message || ('HTTP ' + res.status);
-        if (res.status === 401) errMsg = 'API Key tidak valid atau expired.';
-        else if (res.status === 402) errMsg = 'Saldo OpenRouter tidak cukup. Pakai model :free.';
-        else if (res.status === 429) errMsg = 'Rate limit OpenRouter. Tunggu 10-30 detik lalu coba lagi.';
-        else if (res.status === 404) errMsg = 'Model tidak tersedia saat ini. Coba lagi.';
-        else if (res.status === 400) errMsg = 'Request tidak valid. Coba lagi.';
-        throw new Error(errMsg);
+        if (res.status === 401) errMsg = 'API Key invalid.';
+        else if (res.status === 402) errMsg = 'Saldo tidak cukup.';
+        else if (res.status === 429) errMsg = 'Rate limit.';
+        const err = new Error(errMsg);
+        err.fatal = (res.status === 401 || res.status === 402);
+        throw err;
       }
 
       if (data.error) {
         const errMsg = data.error.message || JSON.stringify(data.error);
-        if (/rate.?limit/i.test(errMsg)) throw new Error('Rate limit. Tunggu 10-30 detik lalu coba lagi.');
-        if (/no.?endpoint|not found|does not exist/i.test(errMsg)) throw new Error('Model tidak tersedia. Coba lagi beberapa detik.');
-        if (/image|vision|multimodal/i.test(errMsg)) throw new Error('Model tidak support gambar. Coba lagi.');
-        throw new Error('OpenRouter: ' + errMsg);
+        const err = new Error('OpenRouter: ' + errMsg);
+        if (/rate.?limit/i.test(errMsg)) err.fatal = false;
+        throw err;
       }
 
       if (!data.choices || !Array.isArray(data.choices) || data.choices.length === 0) {
-        console.error('Tidak ada choices:', data);
-        throw new Error('AI tidak mengembalikan pilihan output. Coba ulangi.');
+        throw new Error('Tidak ada choices.');
       }
 
       const choice = data.choices[0];
@@ -1678,33 +2077,52 @@
       const finishReason = choice.finish_reason || 'unknown';
       let raw = message.content;
 
-      // Kalau content null (kemungkinan reasoning model), coba reasoning
       if ((raw === null || raw === undefined || raw === '') && message.reasoning) {
-        if (finishReason === 'length') {
-          throw new Error('AI kehabisan token sebelum selesai. Coba ulangi atau kurangi jumlah keyword.');
-        }
+        if (finishReason === 'length') throw new Error('Reasoning model kehabisan token.');
         raw = message.reasoning;
       }
-
       if (Array.isArray(raw)) {
         raw = raw.map(part => (typeof part === 'string' ? part : part.text || '')).join('');
       }
-
       raw = String(raw || '').trim();
 
-      if (!raw) {
-        console.error('Content kosong. finish_reason:', finishReason);
-        if (finishReason === 'length') throw new Error('AI kehabisan token (respons kepotong). Coba kurangi keyword.');
-        throw new Error('AI tidak mengembalikan konten. Coba ulangi.');
+      if (!raw) throw new Error('Model tidak menghasilkan teks.');
+
+      // Skip output guard/reasoning prefix
+      if (/^user safety:|^thinking process:/i.test(raw)) {
+        throw new Error('Output guard terdeteksi.');
+      }
+      if (raw.indexOf('{') === -1 || raw.indexOf('}') === -1) {
+        throw new Error('Tidak mengandung JSON.');
       }
 
       return raw;
     }
 
+    async function callOpenRouterWithRetry(apiKey, prompt, imageDataUrl) {
+      let lastErr = null;
+      for (let i = 0; i < MODEL_CHAIN.length; i++) {
+        const model = MODEL_CHAIN[i];
+        try {
+          if (i > 0) console.log('🔄 Retry dengan:', model);
+          const raw = await callOpenRouterSingle(apiKey, model, prompt, imageDataUrl);
+          const parsed = parseAIResponse(raw);
+          console.log('✅ Sukses dengan:', model);
+          return parsed;
+        } catch (err) {
+          console.warn('❌ ' + model + ' gagal:', err.message);
+          lastErr = err;
+          if (err.fatal) throw err;
+          if (i < MODEL_CHAIN.length - 1) await sleep(1500);
+        }
+      }
+      throw new Error('Semua model gagal. Coba lagi. Detail: ' + (lastErr?.message || 'unknown'));
+    }
+
     // ============================================================
-    // BUILD PROMPT
+    // BUILD PROMPT (adaptive per asset type)
     // ============================================================
-    function buildPrompt({ kwCount, platform, extraDesc }) {
+    function buildPrompt({ kwCount, platform, extraDesc, assetType, lang }) {
       const platformHints = {
         general: 'Shutterstock, Adobe Stock, Freepik, iStock, dan platform microstock umum.',
         shutterstock: 'Shutterstock (title maksimal 200 karakter, 7-50 keyword).',
@@ -1714,29 +2132,44 @@
         vecteezy: 'Vecteezy (title maksimal 100 karakter, keyword relevan).'
       };
       const platformHint = platformHints[platform] || platformHints.general;
-      const themeHint = extraDesc ? `\n7. Info tambahan dari user: "${extraDesc}"` : '';
+      const assetHint = ASSET_HINTS[assetType] || ASSET_HINTS.photo;
+      const themeHint = extraDesc ? `\n7. Extra context from user: "${extraDesc}"` : '';
 
-      return `You are a professional microstock metadata expert with 10 years of experience. Your task is to analyze the image and create SEO-friendly, accurate, and attractive microstock metadata for platforms like ${platformHint}
+      const langInstr = lang === 'both'
+        ? '5. Output language: BOTH Indonesian and English. Use "id" and "en" keys.'
+        : lang === 'id'
+          ? '5. Output language: Indonesian (Bahasa Indonesia).'
+          : '5. Output language: English.';
+
+      const structExample = lang === 'both'
+        ? `{
+  "id": { "title": "...", "description": "...", "keywords": ["...", "..."] },
+  "en": { "title": "...", "description": "...", "keywords": ["...", "..."] }
+}`
+        : `{
+  "${lang}": { "title": "...", "description": "...", "keywords": ["...", "..."] }
+}`;
+
+      return `You are a professional microstock metadata expert with 10 years of experience. Your task is to analyze the asset and create SEO-friendly, accurate, and attractive microstock metadata for platforms like ${platformHint}
+
+ASSET TYPE: ${assetHint.label}
+${assetHint.context}
 
 INSTRUCTIONS:
-1. Analyze the image in detail: main object, background, atmosphere, dominant colors, composition, mood, concept, and key elements.
-2. Create TITLE: descriptive, starts with main keyword, natural, and attractive. Do NOT use "photo of" or "image of". Avoid trademarks/brands.
-3. Create DESCRIPTION: 1-2 sentences explaining the image contextually, suitable for commercial use.
-4. Create KEYWORDS: exactly ${kwCount} high-quality keywords (single & multi-word), no duplicates, no overused generic words. Keywords in English.
-5. Output language: English (title, description, keywords all in English).
-6. Auto-detect content type (photo / illustration / vector / 3D render) and best category.${themeHint}
+1. Analyze the asset in detail: main subject/object, style, composition, mood, colors, theme, and visual elements.
+2. Create TITLE: descriptive, starts with main keyword, natural, attractive. NO "photo of" / "image of". Avoid trademarks/brands. ${assetHint.titleHint}
+3. Create DESCRIPTION: 1-2 sentences explaining the asset contextually, suitable for commercial use.
+4. Create KEYWORDS: exactly ${kwCount} high-quality keywords (mix single & multi-word), no duplicates, no generic overuse. Keywords in English even if title is Indonesian.
+${langInstr}
+6. Content type auto-detected: ${assetHint.label}.${themeHint}
 
 CRITICAL OUTPUT RULES:
-- Return ONLY valid JSON, no explanation text, no markdown code block, no comments.
+- Return ONLY valid JSON. NO explanations, NO markdown code blocks, NO comments.
 - JSON format:
-{
-  "title": "...",
-  "description": "...",
-  "keywords": ["keyword1", "keyword2", "..."]
-}
+${structExample}
 
-- "keywords" must be an array of strings, minimum ${Math.max(15, kwCount - 5)} and maximum ${kwCount} keywords.
-- Make sure JSON is valid and parseable by JSON.parse().`;
+- "keywords" must be array of strings, min ${Math.max(15, kwCount - 5)} and max ${kwCount} keywords.
+- Ensure JSON is valid and parseable by JSON.parse().`;
     }
 
     function parseAIResponse(raw) {
@@ -1744,46 +2177,55 @@ CRITICAL OUTPUT RULES:
       text = text.replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/i, '').trim();
 
       if (/^thinking process/i.test(text)) {
-        throw new Error('Model menghasilkan "thinking process" bukan JSON. Coba ulangi beberapa detik lagi.');
+        throw new Error('Model reasoning bukan JSON.');
       }
 
       const firstBrace = text.indexOf('{');
       const lastBrace = text.lastIndexOf('}');
       if (firstBrace === -1 || lastBrace === -1 || lastBrace <= firstBrace) {
-        console.error('Tidak ada JSON object. Raw:', raw.substring(0, 300));
-        throw new Error('Respons AI tidak mengandung JSON. Coba ulangi.');
+        throw new Error('Respons tidak mengandung JSON.');
       }
 
       const jsonText = text.substring(firstBrace, lastBrace + 1);
       let parsed;
       try { parsed = JSON.parse(jsonText); }
-      catch (e) {
-        console.error('JSON parse error. Raw:', jsonText.substring(0, 300));
-        throw new Error('JSON dari AI tidak valid (mungkin kepotong). Coba kurangi keyword atau ulangi.');
+      catch (e) { throw new Error('JSON tidak valid (mungkin kepotong).'); }
+
+      // Normalisasi: support single lang, both lang, atau flat
+      let result;
+      const lang = $('langSelect').value;
+
+      if (lang === 'both') {
+        result = { id: normalizeNode(parsed.id), en: normalizeNode(parsed.en) };
+        if (!result.id && !result.en) throw new Error('Format JSON tidak lengkap (butuh id & en).');
+      } else {
+        const node = parsed[lang] || parsed;
+        result = normalizeNode(node);
+        if (!result) throw new Error('Format JSON tidak sesuai.');
       }
 
+      return result;
+    }
+
+    function normalizeNode(node) {
+      if (!node || typeof node !== 'object') return null;
       let keywords = [];
-      if (Array.isArray(parsed.keywords)) {
-        keywords = parsed.keywords.map(k => String(k).trim()).filter(Boolean);
-      } else if (typeof parsed.keywords === 'string') {
-        keywords = parsed.keywords.split(',').map(k => k.trim()).filter(Boolean);
-      } else if (Array.isArray(parsed.hashtags)) {
-        keywords = parsed.hashtags.map(k => String(k).replace(/^#/, '').trim()).filter(Boolean);
-      } else if (typeof parsed.hashtags === 'string') {
-        keywords = parsed.hashtags.split(/[\s,]+/).map(k => k.replace(/^#/, '').trim()).filter(Boolean);
+      const k = node.keywords || node.hashtags || [];
+      if (Array.isArray(k)) {
+        keywords = k.map(x => String(x).trim()).filter(Boolean);
+      } else if (typeof k === 'string') {
+        keywords = k.split(/[\s,]+/).map(x => x.replace(/^#/, '').trim()).filter(Boolean);
       }
-
       const seen = new Set();
-      keywords = keywords.filter(k => {
-        const key = k.toLowerCase();
+      keywords = keywords.filter(x => {
+        const key = x.toLowerCase();
         if (seen.has(key)) return false;
         seen.add(key);
         return true;
       });
-
       return {
-        title: String(parsed.title || '').trim(),
-        description: String(parsed.description || '').trim(),
+        title: String(node.title || '').trim(),
+        description: String(node.description || '').trim(),
         keywords: keywords
       };
     }
@@ -1795,7 +2237,6 @@ CRITICAL OUTPUT RULES:
 
     async function generateAll() {
       if (isProcessing) return;
-
       const apiKey = localStorage.getItem(LS_API_KEY);
       if (!apiKey) { showToast('API Key belum diset.', 'error'); showGate('apiKey'); return; }
       if (!currentImages.length) { showToast('Upload minimal 1 gambar.', 'error'); return; }
@@ -1808,12 +2249,14 @@ CRITICAL OUTPUT RULES:
       currentImages.forEach(img => { img.status = 'pending'; img.result = null; img.error = null; });
       renderUploadGrid();
       renderResults();
-      $('exportSection').classList.remove('show');
+      updateResultsInfo();
 
       const opts = {
         kwCount: parseInt($('kwCount').value) || 30,
         platform: $('platform').value,
-        extraDesc: $('extraDesc').value.trim()
+        extraDesc: $('extraDesc').value.trim(),
+        assetType: currentAssetType,
+        lang: $('langSelect').value
       };
 
       const total = currentImages.length;
@@ -1827,29 +2270,40 @@ CRITICAL OUTPUT RULES:
 
         try {
           const prompt = buildPrompt(opts);
-          const raw = await callOpenRouter(apiKey, prompt, img.dataUrl);
-          const parsed = parseAIResponse(raw);
-          if (!parsed.title) throw new Error('AI tidak menghasilkan title.');
-          if (!parsed.keywords.length) throw new Error('AI tidak menghasilkan keyword.');
+          const parsed = await callOpenRouterWithRetry(apiKey, prompt, img.dataUrl);
+
+          // Validasi per language
+          const lang = opts.lang;
+          if (lang === 'both') {
+            if (!parsed.en || !parsed.en.title) throw new Error('AI tidak menghasilkan EN.');
+          } else {
+            if (!parsed.title) throw new Error('AI tidak menghasilkan title.');
+            if (!parsed.keywords.length) throw new Error('AI tidak menghasilkan keyword.');
+          }
+
           img.result = parsed;
           img.status = 'done';
           success++;
+
           saveToHistory({
             id: genId('ms'),
             ts: Date.now(),
             preview: img.dataUrl,
             fileName: img.fileName,
+            assetType: currentAssetType,
+            lang: lang,
             results: parsed
           });
         } catch (err) {
-          console.error('Error untuk', img.fileName, ':', err);
+          console.error('Error [' + img.fileName + ']:', err);
           img.status = 'error';
-          img.error = err.message || 'Error tidak diketahui.';
+          img.error = err.message || 'Error.';
           fail++;
         }
 
         renderUploadGrid();
         renderResults();
+        updateResultsInfo();
         showProgress(i + 1, total, img.fileName);
         if (i < currentImages.length - 1) await sleep(DELAY_BETWEEN_REQUESTS);
       }
@@ -1859,10 +2313,10 @@ CRITICAL OUTPUT RULES:
       btn.innerHTML = '<i class="fas fa-wand-magic-sparkles"></i> Generate Semua';
       hideProgress();
       renderResults();
-      if (success > 0) $('exportSection').classList.add('show');
+      updateResultsInfo();
 
-      if (fail === 0) showToast('Selesai! ' + success + ' gambar berhasil diproses.', 'success');
-      else if (success === 0) showToast('Gagal semua. Cek pesan error di setiap gambar.', 'error');
+      if (fail === 0) showToast('Selesai! ' + success + ' aset berhasil.', 'success');
+      else if (success === 0) showToast('Gagal semua.', 'error');
       else showToast(success + ' berhasil, ' + fail + ' gagal.', 'warning');
     }
 
@@ -1871,90 +2325,130 @@ CRITICAL OUTPUT RULES:
     // ============================================================
     function renderResults() {
       const container = $('resultContainer');
+      const lang = $('langSelect').value;
+
       if (!currentImages.length) {
-        container.innerHTML = `<div class="result-placeholder"><i class="fas fa-robot"></i><p>Upload 1 atau lebih gambar, lalu klik <strong>Generate Semua</strong>.</p></div>`;
+        container.innerHTML = `
+          <div class="empty-results">
+            <div class="empty-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+            <h3>Belum ada hasil</h3>
+            <p>Upload gambar di panel kiri, pilih tipe aset, lalu klik <strong>Generate Semua</strong>.</p>
+            <div class="empty-hint"><i class="fas fa-lightbulb"></i> AI akan buat judul, deskripsi & keyword</div>
+          </div>`;
         return;
       }
-      const doneItems = currentImages.filter(img => img.status === 'done' && img.result);
-      const errItems = currentImages.filter(img => img.status === 'error');
-      if (!doneItems.length && !errItems.length && !isProcessing) {
-        container.innerHTML = `<div class="result-placeholder"><i class="fas fa-hourglass-half"></i><p>${currentImages.length} gambar siap diproses.</p></div>`;
+
+      const pending = currentImages.filter(i => i.status === 'pending' || i.status === 'processing');
+      if (pending.length === currentImages.length && !isProcessing) {
+        container.innerHTML = `
+          <div class="empty-results">
+            <div class="empty-icon"><i class="fas fa-hourglass-half"></i></div>
+            <h3>${currentImages.length} aset siap diproses</h3>
+            <p>Klik "Generate Semua" untuk memulai.</p>
+          </div>`;
         return;
       }
 
       const html = [];
       currentImages.forEach((img) => {
         if (img.status === 'pending' || img.status === 'processing') return;
+
         if (img.status === 'error') {
           html.push(`
             <div class="result-card error-card">
-              <div class="rc-head">
+              <div class="rc-header">
                 <img src="${img.dataUrl}" alt="" class="rc-thumb">
-                <div class="rc-title-wrap">
+                <div class="rc-meta">
                   <div class="rc-filename">${escHtml(img.fileName)}</div>
                   <div class="rc-status" style="color:var(--danger);"><i class="fas fa-times-circle"></i> Error</div>
                 </div>
               </div>
-              <div class="rc-section">
-                <div class="rc-content" style="color:#f87171;">${escHtml(img.error || 'Gagal diproses.')}</div>
-              </div>
+              <div class="result-row-error">${escHtml(img.error || 'Gagal.')}</div>
             </div>
           `);
           return;
         }
         if (!img.result) return;
-        const r = img.result;
-        const kws = Array.isArray(r.keywords) ? r.keywords : [];
-        const kwText = kws.join(', ');
+
         const idBase = img.id;
+        const r = img.result;
+        const langs = lang === 'both' ? ['id', 'en'] : [lang];
+        const blocks = [];
+
+        langs.forEach(code => {
+          const node = r[code];
+          if (!node) return;
+          const langLabel = code === 'id' ? '🇮🇩 ID' : '🇬🇧 EN';
+          const kws = node.keywords || [];
+          const tid = `t-${idBase}-${code}`;
+          const did = `d-${idBase}-${code}`;
+          const kid = `k-${idBase}-${code}`;
+
+          blocks.push(`
+            <div class="result-row">
+              <div class="result-row-head">
+                <div class="result-row-label">
+                  ${langLabel} &middot; Title
+                  <span class="char-count">${(node.title || '').length} chars</span>
+                </div>
+                <div class="result-row-actions">
+                  <button class="btn-copy-xs" data-copy-target="${tid}"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+              </div>
+              <div class="result-row-content" id="${tid}">${escHtml(node.title || '-')}</div>
+            </div>
+            <div class="result-row">
+              <div class="result-row-head">
+                <div class="result-row-label">
+                  ${langLabel} &middot; Description
+                  <span class="char-count">${(node.description || '').length} chars</span>
+                </div>
+                <div class="result-row-actions">
+                  <button class="btn-copy-xs" data-copy-target="${did}"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+              </div>
+              <div class="result-row-content" id="${did}">${escHtml(node.description || '-')}</div>
+            </div>
+            <div class="result-row">
+              <div class="result-row-head">
+                <div class="result-row-label">
+                  ${langLabel} &middot; Keywords
+                  <span class="char-count">${kws.length} keyword</span>
+                </div>
+                <div class="result-row-actions">
+                  <button class="btn-copy-xs" data-copy-target="${kid}"><i class="fas fa-copy"></i> Copy</button>
+                  <button class="btn-copy-xs" data-copy-json="${kid}"><i class="fas fa-code"></i> JSON</button>
+                </div>
+              </div>
+              <div class="keywords-chips" id="${kid}">
+                ${kws.map(k => `<span class="kw-chip">${escHtml(k)}</span>`).join('') || '-'}
+              </div>
+            </div>
+          `);
+        });
+
         html.push(`
           <div class="result-card">
-            <div class="rc-head">
+            <div class="rc-header">
               <img src="${img.dataUrl}" alt="" class="rc-thumb">
-              <div class="rc-title-wrap">
+              <div class="rc-meta">
                 <div class="rc-filename">${escHtml(img.fileName)}</div>
-                <div class="rc-status"><i class="fas fa-check-circle"></i> Selesai</div>
+                <div class="rc-status"><i class="fas fa-check-circle"></i> Selesai &middot; ${ASSET_HINTS[img.result ? (currentAssetType) : 'photo']?.label || ''}</div>
               </div>
             </div>
-            <div class="rc-section">
-              <div class="rc-section-label">
-                <span><i class="fas fa-heading"></i> Title</span>
-                <div class="rc-actions">
-                  <button class="btn-copy-sm" data-copy-target="t-${idBase}"><i class="fas fa-copy"></i> Copy</button>
-                </div>
-              </div>
-              <div class="rc-content" id="t-${idBase}">${escHtml(r.title || '-')}</div>
-            </div>
-            <div class="rc-section">
-              <div class="rc-section-label">
-                <span><i class="fas fa-align-left"></i> Description</span>
-                <div class="rc-actions">
-                  <button class="btn-copy-sm" data-copy-target="d-${idBase}"><i class="fas fa-copy"></i> Copy</button>
-                </div>
-              </div>
-              <div class="rc-content" id="d-${idBase}">${escHtml(r.description || '-')}</div>
-            </div>
-            <div class="rc-section">
-              <div class="rc-section-label">
-                <span><i class="fas fa-tags"></i> Keywords (${kws.length})</span>
-                <div class="rc-actions">
-                  <button class="btn-copy-sm" data-copy-target="k-${idBase}"><i class="fas fa-copy"></i> Copy</button>
-                  <button class="btn-copy-sm" data-copy-json="k-${idBase}"><i class="fas fa-code"></i> JSON</button>
-                </div>
-              </div>
-              <div class="rc-content" id="k-${idBase}">${escHtml(kwText || '-')}</div>
-            </div>
+            <div class="rc-body">${blocks.join('')}</div>
           </div>
         `);
       });
 
       if (!html.length) {
-        container.innerHTML = `<div class="result-placeholder"><div class="spinner"></div><p>Memproses...</p></div>`;
+        container.innerHTML = `<div class="empty-results"><div class="spinner"></div><p>Memproses...</p></div>`;
         return;
       }
       container.innerHTML = html.join('');
 
-      container.querySelectorAll('.btn-copy-sm').forEach((btn) => {
+      // Copy handlers
+      container.querySelectorAll('.btn-copy-xs').forEach(btn => {
         btn.addEventListener('click', async () => {
           const targetId = btn.dataset.copyTarget;
           const jsonId = btn.dataset.copyJson;
@@ -1965,8 +2459,8 @@ CRITICAL OUTPUT RULES:
           } else if (jsonId) {
             const el = document.getElementById(jsonId);
             if (el) {
-              const parts = el.textContent.split(',').map(s => s.trim()).filter(Boolean);
-              text = JSON.stringify(parts, null, 2);
+              const chips = Array.from(el.querySelectorAll('.kw-chip')).map(c => c.textContent);
+              text = JSON.stringify(chips, null, 2);
             }
           }
           if (!text) return;
@@ -1980,13 +2474,18 @@ CRITICAL OUTPUT RULES:
     }
 
     function resetResultUI() {
-      $('resultContainer').innerHTML = `<div class="result-placeholder"><i class="fas fa-robot"></i><p>Upload 1 atau lebih gambar, lalu klik <strong>Generate Semua</strong>.</p></div>`;
-      $('exportSection').classList.remove('show');
+      $('resultContainer').innerHTML = `
+        <div class="empty-results">
+          <div class="empty-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+          <h3>Belum ada hasil</h3>
+          <p>Upload gambar di panel kiri, pilih tipe aset, lalu klik <strong>Generate Semua</strong>.</p>
+        </div>`;
+      updateResultsInfo();
     }
 
     $('btnClearResults').addEventListener('click', () => {
       if (isProcessing) return;
-      if (!confirm('Bersihkan hasil generate (gambar tetap ada)?')) return;
+      if (!confirm('Bersihkan hasil generate? (gambar tetap ada)')) return;
       currentImages.forEach(img => { img.status = 'pending'; img.result = null; img.error = null; });
       renderUploadGrid();
       resetResultUI();
@@ -1999,11 +2498,11 @@ CRITICAL OUTPUT RULES:
           await navigator.clipboard.writeText(text);
         } else {
           const ta = document.createElement('textarea');
-          ta.value = text;
-          ta.style.position = 'fixed'; ta.style.left = '-9999px';
+          ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px';
           document.body.appendChild(ta); ta.select();
           document.execCommand('copy'); document.body.removeChild(ta);
         }
+        showToast('Disalin!', 'success');
       } catch (e) { showToast('Gagal menyalin.', 'error'); }
     }
 
@@ -2021,30 +2520,41 @@ CRITICAL OUTPUT RULES:
     }
 
     function exportCSV() {
-      const doneItems = currentImages.filter(img => img.status === 'done' && img.result);
-      if (!doneItems.length) { showToast('Belum ada hasil.', 'warning'); return; }
-      const header = ['filename', 'title', 'description', 'keywords'];
-      const rows = doneItems.map(img => {
-        const r = img.result;
-        return [img.fileName, r.title || '', r.description || '', Array.isArray(r.keywords) ? r.keywords.join(', ') : ''];
-      });
-      const csv = [header, ...rows].map(row => row.map(csvEscape).join(',')).join('\r\n');
-      downloadFile(csv, 'metastock-metadata-' + new Date().toISOString().slice(0,10) + '.csv', 'text/csv');
-      showToast('CSV berhasil diexport (' + doneItems.length + ' baris).', 'success');
+      const done = currentImages.filter(i => i.status === 'done' && i.result);
+      if (!done.length) { showToast('Belum ada hasil.', 'warning'); return; }
+      const lang = $('langSelect').value;
+      let header, rows;
+      if (lang === 'both') {
+        header = ['filename','asset_type','title_id','description_id','keywords_id','title_en','description_en','keywords_en'];
+        rows = done.map(img => {
+          const i = img.result.id || {};
+          const e = img.result.en || {};
+          return [img.fileName, currentAssetType, i.title || '', i.description || '', (i.keywords||[]).join(', '),
+                  e.title || '', e.description || '', (e.keywords||[]).join(', ')];
+        });
+      } else {
+        header = ['filename','asset_type','title','description','keywords'];
+        rows = done.map(img => {
+          const n = img.result || {};
+          return [img.fileName, currentAssetType, n.title || '', n.description || '', (n.keywords||[]).join(', ')];
+        });
+      }
+      const csv = [header, ...rows].map(r => r.map(csvEscape).join(',')).join('\r\n');
+      downloadFile(csv, 'metastock-' + new Date().toISOString().slice(0,10) + '.csv', 'text/csv');
+      showToast('CSV diexport (' + done.length + ' baris).', 'success');
     }
 
     function exportJSON() {
-      const doneItems = currentImages.filter(img => img.status === 'done' && img.result);
-      if (!doneItems.length) { showToast('Belum ada hasil.', 'warning'); return; }
-      const payload = doneItems.map(img => ({
+      const done = currentImages.filter(i => i.status === 'done' && i.result);
+      if (!done.length) { showToast('Belum ada hasil.', 'warning'); return; }
+      const payload = done.map(img => ({
         filename: img.fileName,
-        title: img.result.title || '',
-        description: img.result.description || '',
-        keywords: Array.isArray(img.result.keywords) ? img.result.keywords : []
+        asset_type: currentAssetType,
+        results: img.result
       }));
       const json = JSON.stringify(payload, null, 2);
-      downloadFile(json, 'metastock-metadata-' + new Date().toISOString().slice(0,10) + '.json', 'application/json');
-      showToast('JSON berhasil diexport (' + doneItems.length + ' item).', 'success');
+      downloadFile(json, 'metastock-' + new Date().toISOString().slice(0,10) + '.json', 'application/json');
+      showToast('JSON diexport.', 'success');
     }
 
     function downloadFile(content, filename, mimeType) {
@@ -2064,19 +2574,19 @@ CRITICAL OUTPUT RULES:
     // ============================================================
     function saveToHistory(item) {
       try {
-        let history = JSON.parse(localStorage.getItem(LS_HISTORY) || '[]');
-        history.unshift(item);
-        if (history.length > 30) history = history.slice(0, 30);
-        localStorage.setItem(LS_HISTORY, JSON.stringify(history));
+        let h = JSON.parse(localStorage.getItem(LS_HISTORY) || '[]');
+        h.unshift(item);
+        if (h.length > 30) h = h.slice(0, 30);
+        localStorage.setItem(LS_HISTORY, JSON.stringify(h));
         renderHistory();
-      } catch (e) { console.warn('Save history error:', e); }
+      } catch (e) {}
     }
 
     function renderHistory() {
       const list = $('historyList');
       const countEl = $('historyCount');
       let history = [];
-      try { history = JSON.parse(localStorage.getItem(LS_HISTORY) || '[]'); } catch (e) { history = []; }
+      try { history = JSON.parse(localStorage.getItem(LS_HISTORY) || '[]'); } catch (e) {}
       if (countEl) countEl.textContent = history.length;
       if (!history.length) {
         list.innerHTML = '<div class="history-empty"><i class="fas fa-inbox"></i><br>Belum ada riwayat.</div>';
@@ -2086,12 +2596,16 @@ CRITICAL OUTPUT RULES:
       history.forEach((item) => {
         const div = document.createElement('div');
         div.className = 'history-item';
-        const titlePreview = item.results?.title || item.fileName || 'Metadata';
+        const lang = item.lang || 'en';
+        const preview = lang === 'both'
+          ? (item.results?.en?.title || item.results?.id?.title || item.fileName)
+          : (item.results?.title || item.fileName);
+        const typeLabel = ASSET_HINTS[item.assetType]?.label || 'Photo';
         div.innerHTML = `
           <div class="hi-thumb">${item.preview ? `<img src="${item.preview}" alt="">` : '<i class="fas fa-image"></i>'}</div>
           <div class="hi-info">
-            <div class="hi-title">${escHtml(titlePreview)}</div>
-            <div class="hi-time">${timeAgo(item.ts)}</div>
+            <div class="hi-title">${escHtml(preview)}</div>
+            <div class="hi-time">${timeAgo(item.ts)} &middot; ${escHtml(typeLabel)}</div>
           </div>
           <div class="hi-actions">
             <button title="Copy JSON" data-action="copy" data-id="${item.id}"><i class="fas fa-copy"></i></button>
@@ -2109,13 +2623,12 @@ CRITICAL OUTPUT RULES:
           if (!item) return;
           if (action === 'delete') {
             if (!confirm('Hapus item ini?')) return;
-            const newHistory = history.filter(h => h.id !== id);
-            localStorage.setItem(LS_HISTORY, JSON.stringify(newHistory));
+            const nh = history.filter(h => h.id !== id);
+            localStorage.setItem(LS_HISTORY, JSON.stringify(nh));
             renderHistory();
             showToast('Item dihapus.', 'success');
           } else if (action === 'copy') {
             await copyText(JSON.stringify(item.results, null, 2));
-            showToast('JSON disalin!', 'success');
           }
         });
       });
@@ -2125,7 +2638,7 @@ CRITICAL OUTPUT RULES:
       if (!confirm('Hapus semua riwayat?')) return;
       localStorage.removeItem(LS_HISTORY);
       renderHistory();
-      showToast('Semua riwayat dihapus.', 'success');
+      showToast('Riwayat dihapus.', 'success');
     });
 
     // ============================================================
