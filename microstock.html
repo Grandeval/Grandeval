@@ -1,0 +1,1782 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+  <link rel="manifest" href="/manifest.json?v=4.2" />
+  <meta name="theme-color" content="#3B82F6" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="apple-touch-icon" href="https://res.cloudinary.com/d39mdjct/image/upload/w_180,h_180,c_fit/v1783493763/apk_pgxcmo.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="https://res.cloudinary.com/d39mdjct/image/upload/w_152,h_152,c_fit/v1783493763/apk_pgxcmo.png" />
+  <link rel="apple-touch-icon" sizes="167x167" href="https://res.cloudinary.com/d39mdjct/image/upload/w_167,h_167,c_fit/v1783493763/apk_pgxcmo.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/d39mdjct/image/upload/w_180,h_180,c_fit/v1783493763/apk_pgxcmo.png" />
+
+  <title>MetaStock AI - Generator Metadata Microstock | Akino Store</title>
+  <meta name="description" content="Generate judul, deskripsi, dan keyword microstock profesional dengan AI Groq. Gratis, cepat, dan akurat untuk Shutterstock, Adobe Stock, Freepik, dan lainnya.">
+  <meta name="keywords" content="metadata microstock, keyword generator, AI microstock, groq, qwen, shutterstock metadata, adobe stock metadata, freepik metadata, Akino Store">
+  <link rel="canonical" href="https://akinocpm.my.id/metastock.html">
+  <link rel="icon" href="https://res.cloudinary.com/d39mdjct/image/upload/v1783478697/icon_tnzy32.ico" />
+
+  <meta property="og:title" content="MetaStock AI - Generator Metadata Microstock">
+  <meta property="og:description" content="Generate metadata microstock (title, description, keywords) otomatis dengan AI. Didukung Groq API.">
+  <meta property="og:image" content="https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_thumbnail2_dkwek2.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://akinocpm.my.id/metastock.html">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-init.js?v=4.3"></script>
+
+  <style>
+    :root {
+      --bg: #07070d;
+      --bg-card: rgba(255,255,255,0.04);
+      --bg-card-hover: rgba(255,255,255,0.08);
+      --bg-elevated: #0e0e18;
+      --fg: #f0f0f5;
+      --fg-dim: #c0c0d0;
+      --muted: #7a7a90;
+      --muted-light: #a0a0b8;
+      --accent: #FFDD57;
+      --accent-dim: rgba(255,221,87,0.12);
+      --border: rgba(255,255,255,0.06);
+      --border-hover: rgba(255,255,255,0.12);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --radius-lg: 20px;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --shadow-card: 0 8px 32px rgba(0,0,0,0.3);
+      --shadow-hover: 0 16px 48px rgba(0,0,0,0.5);
+      --nav-bg: rgba(7,7,13,0.6);
+      --nav-scrolled: rgba(7,7,13,0.92);
+      --transition: 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+      --success: #22c55e;
+      --warning: #fb923c;
+      --danger: #ef4444;
+      --info: #3B82F6;
+    }
+    body.light-theme {
+      --bg: #f5f5fa;
+      --bg-card: rgba(0,0,0,0.04);
+      --bg-card-hover: rgba(0,0,0,0.08);
+      --bg-elevated: #f0f0f5;
+      --fg: #1a1a24;
+      --fg-dim: #3a3a4a;
+      --muted: #5a5a70;
+      --muted-light: #7a7a90;
+      --border: rgba(0,0,0,0.08);
+      --border-hover: rgba(0,0,0,0.14);
+      --shadow-card: 0 8px 32px rgba(0,0,0,0.08);
+      --shadow-hover: 0 16px 48px rgba(0,0,0,0.12);
+      --nav-bg: rgba(245,245,250,0.7);
+      --nav-scrolled: rgba(245,245,250,0.95);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; -webkit-tap-highlight-color:transparent; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--fg);
+      overflow-x:hidden;
+      line-height:1.6;
+      min-height:100vh;
+      min-height:100dvh;
+      transition: background var(--transition), color var(--transition);
+    }
+    ::-webkit-scrollbar { width:5px; height:5px; }
+    ::-webkit-scrollbar-track { background:transparent; }
+    ::-webkit-scrollbar-thumb { background:var(--border); border-radius:10px; }
+    ::selection { background:var(--accent); color:#000; }
+    a { text-decoration:none; color:inherit; }
+    button { font-family:inherit; cursor:pointer; border:none; background:none; color:inherit; }
+    img { display:block; max-width:100%; }
+
+    .ambient-glows { position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+    .ambient-glows .glow {
+      position:absolute; border-radius:50%; filter:blur(120px);
+      opacity:0.06; transition:opacity 0.3s;
+    }
+    .ambient-glows .glow-1 { width:500px; height:500px; top:-150px; left:-100px; background:#FFDD57; animation:glowFloat1 12s ease-in-out infinite; }
+    .ambient-glows .glow-2 { width:400px; height:400px; bottom:-100px; right:-80px; background:#FFA726; animation:glowFloat2 15s ease-in-out infinite; }
+    .ambient-glows .glow-3 { width:300px; height:300px; top:50%; left:50%; transform:translate(-50%,-50%); background:#FFDD57; animation:glowFloat3 18s ease-in-out infinite; }
+    @keyframes glowFloat1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(70px,50px)} }
+    @keyframes glowFloat2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-50px,-70px)} }
+    @keyframes glowFloat3 { 0%,100%{transform:translate(-50%,-50%) scale(1)} 50%{transform:translate(-50%,-50%) scale(1.25)} }
+
+    .navbar {
+      position:fixed; top:0; left:0; right:0; z-index:100;
+      display:flex; justify-content:space-between; align-items:center;
+      padding:0.75rem 2rem;
+      background:var(--nav-bg);
+      backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+      border-bottom:1px solid var(--border);
+      transition:all var(--transition);
+      min-height:60px;
+    }
+    .navbar.scrolled { background:var(--nav-scrolled); box-shadow:0 4px 30px rgba(0,0,0,0.2); }
+    .nav-brand {
+      font-family:var(--font-display); font-size:1.25rem; font-weight:700;
+      color:var(--accent); letter-spacing:-0.3px;
+      display:flex; align-items:center; gap:0.4rem;
+    }
+    .nav-brand i { font-size:1rem; opacity:0.7; }
+    .nav-actions { display:flex; align-items:center; gap:0.5rem; }
+    .theme-toggle {
+      background:var(--bg-card); border:1px solid var(--border);
+      color:var(--muted); width:36px; height:36px;
+      border-radius:var(--radius-sm); cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      font-size:0.9rem; transition:all 0.25s ease;
+    }
+    .theme-toggle:hover { color:var(--accent); border-color:var(--accent); background:var(--accent-dim); }
+    .menu-toggle {
+      display:none; background:var(--bg-card); border:1px solid var(--border);
+      color:var(--fg); font-size:1.2rem; cursor:pointer;
+      width:40px; height:40px; border-radius:var(--radius-sm);
+      align-items:center; justify-content:center;
+      transition:all 0.25s;
+    }
+    .nav-links { list-style:none; display:flex; gap:0.15rem; align-items:center; }
+    .nav-links a {
+      color:var(--muted); padding:0.4rem 0.9rem; border-radius:var(--radius-sm);
+      font-size:0.85rem; font-weight:500; transition:all var(--transition);
+    }
+    .nav-links a:hover, .nav-links a.active { color:var(--fg); background:var(--bg-card); }
+    .nav-links a.active { color:var(--accent); background:var(--accent-dim); }
+    .dropdown { position:relative; }
+    .dropdown-menu {
+      display:none; position:absolute; top:calc(100% + 6px); left:50%;
+      transform:translateX(-50%);
+      background:rgba(15,15,25,0.96); backdrop-filter:blur(20px);
+      -webkit-backdrop-filter:blur(20px);
+      border:1px solid var(--border); border-radius:var(--radius);
+      min-width:240px; padding:0.4rem;
+      box-shadow:0 24px 64px rgba(0,0,0,0.5);
+    }
+    body.light-theme .dropdown-menu { background:rgba(245,245,250,0.96); }
+    .dropdown:hover .dropdown-menu { display:block; }
+    .dropdown-menu a {
+      display:block; padding:0.5rem 0.9rem; border-radius:var(--radius-sm);
+      font-size:0.82rem; white-space:nowrap;
+      color:var(--muted); transition:all var(--transition);
+    }
+    .dropdown-menu a:hover { background:var(--accent-dim); color:var(--accent); }
+
+    .container { max-width:1200px; margin:0 auto; padding:0 1rem; }
+
+    .page-hero {
+      padding:5rem 1.5rem 1.5rem; text-align:center;
+      position:relative; z-index:2;
+    }
+    .page-hero .hero-badge {
+      display:inline-flex; align-items:center; gap:0.5rem;
+      padding:0.3rem 1rem; border-radius:50px;
+      background:var(--accent-dim); border:1px solid rgba(255,221,87,0.15);
+      font-size:0.75rem; font-weight:500; color:var(--accent);
+      margin-bottom:0.75rem; letter-spacing:0.5px;
+    }
+    .page-hero h1 {
+      font-family:var(--font-display);
+      font-size:clamp(1.8rem, 5vw, 2.8rem);
+      font-weight:700; letter-spacing:-1px; margin-bottom:0.4rem;
+    }
+    .page-hero h1 .accent { color:var(--accent); }
+    .page-hero p {
+      color:var(--muted-light); font-size:0.95rem;
+      max-width:560px; margin:0.2rem auto 0; line-height:1.6;
+    }
+
+    /* ===== GATE SCREENS ===== */
+    .gate-screen {
+      max-width:480px; margin:2rem auto 3rem;
+      padding:0 1rem;
+    }
+    .gate-card {
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:var(--radius-lg); padding:2.5rem 2rem;
+      text-align:center; box-shadow:var(--shadow-card);
+      backdrop-filter:blur(10px);
+    }
+    .gate-card .gate-icon {
+      width:72px; height:72px; border-radius:20px;
+      background:var(--accent-dim); color:var(--accent);
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.8rem; margin:0 auto 1rem;
+      border:1px solid rgba(255,221,87,0.15);
+    }
+    .gate-card h2 {
+      font-family:var(--font-display); font-size:1.3rem;
+      font-weight:700; margin-bottom:0.4rem;
+    }
+    .gate-card p {
+      color:var(--muted-light); font-size:0.88rem;
+      line-height:1.7; margin-bottom:1.25rem;
+    }
+    .gate-card a { color:var(--accent); font-weight:500; }
+    .gate-card a:hover { text-decoration:underline; }
+    .gate-card input {
+      width:100%; padding:0.85rem 1rem;
+      background:rgba(255,255,255,0.03); border:1px solid var(--border);
+      border-radius:var(--radius-sm); color:var(--fg);
+      font-family:var(--font-body); font-size:0.9rem;
+      outline:none; margin-bottom:0.75rem;
+      transition:border-color 0.2s, box-shadow 0.2s;
+      text-align:center;
+    }
+    .gate-card input:focus {
+      border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-dim);
+    }
+    .btn-google {
+      display:flex; align-items:center; justify-content:center; gap:0.7rem;
+      width:100%; padding:0.85rem 1.2rem;
+      background:linear-gradient(145deg, #FFDD57, #f5c842);
+      color:#0a0a0f; font-weight:600; font-size:0.9rem;
+      border-radius:var(--radius-sm); border:none;
+      cursor:pointer; transition:all var(--transition);
+      box-shadow:0 4px 20px rgba(255,221,87,0.2);
+    }
+    .btn-google:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 8px 28px rgba(255,221,87,0.35); }
+    .btn-google:active:not(:disabled) { transform:scale(0.97); }
+    .btn-google:disabled { opacity:0.7; cursor:wait; }
+    .btn-google svg { width:20px; height:20px; flex-shrink:0; }
+    .btn-primary {
+      display:flex; align-items:center; justify-content:center; gap:0.5rem;
+      width:100%; padding:0.75rem 1.2rem;
+      background:linear-gradient(145deg, #FFDD57, #f5c842);
+      color:#0a0a0f; font-weight:600; font-size:0.9rem;
+      border-radius:var(--radius-sm); border:none;
+      cursor:pointer; transition:all var(--transition);
+      box-shadow:0 4px 20px rgba(255,221,87,0.2);
+    }
+    .btn-primary:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 8px 28px rgba(255,221,87,0.35); }
+    .btn-primary:active:not(:disabled) { transform:scale(0.97); }
+    .btn-primary:disabled { opacity:0.4; cursor:not-allowed; transform:none; box-shadow:none; }
+    .btn-ghost {
+      display:inline-flex; align-items:center; justify-content:center; gap:0.4rem;
+      padding:0.5rem 1rem; background:var(--bg-card);
+      border:1px solid var(--border); border-radius:var(--radius-sm);
+      color:var(--muted-light); font-size:0.8rem; font-weight:500;
+      cursor:pointer; transition:all var(--transition);
+    }
+    .btn-ghost:hover { border-color:var(--border-hover); color:var(--fg); background:var(--bg-card-hover); }
+
+    /* ===== MAIN TOOL ===== */
+    .tool-layout {
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:1.25rem; margin-bottom:2rem;
+    }
+    @media (max-width:900px) { .tool-layout { grid-template-columns:1fr; } }
+
+    .tool-panel {
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:var(--radius-lg); padding:1.5rem;
+      transition:all var(--transition);
+    }
+    .tool-panel:hover { border-color:rgba(255,221,87,0.15); }
+    .panel-title {
+      font-family:var(--font-display); font-size:1rem;
+      font-weight:700; margin-bottom:1rem;
+      display:flex; align-items:center; gap:0.5rem;
+      padding-bottom:0.75rem;
+      border-bottom:1px solid var(--border);
+    }
+    .panel-title i { color:var(--accent); }
+    .panel-title .step-badge {
+      margin-left:auto; font-size:0.65rem;
+      padding:0.15rem 0.6rem; border-radius:50px;
+      background:var(--accent-dim); color:var(--accent);
+      font-weight:600; letter-spacing:0.3px;
+    }
+
+    /* Upload */
+    .upload-zone {
+      position:relative; width:100%; aspect-ratio:4/3;
+      border:2px dashed var(--border);
+      border-radius:var(--radius); cursor:pointer;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      gap:0.5rem; text-align:center;
+      transition:all var(--transition);
+      background:rgba(255,255,255,0.01);
+      overflow:hidden;
+    }
+    .upload-zone:hover, .upload-zone.dragover {
+      border-color:var(--accent);
+      background:var(--accent-dim);
+    }
+    .upload-zone .upload-icon {
+      font-size:2.4rem; color:var(--accent);
+      opacity:0.6; margin-bottom:0.3rem;
+    }
+    .upload-zone .upload-title {
+      font-family:var(--font-display);
+      font-size:0.95rem; font-weight:600;
+    }
+    .upload-zone .upload-sub {
+      font-size:0.75rem; color:var(--muted);
+    }
+    .upload-zone img.preview-img {
+      position:absolute; inset:0;
+      width:100%; height:100%;
+      object-fit:contain; background:#0a0a12;
+    }
+    .upload-zone .remove-img {
+      position:absolute; top:8px; right:8px;
+      z-index:2; width:32px; height:32px;
+      border-radius:50%; background:rgba(0,0,0,0.7);
+      backdrop-filter:blur(8px);
+      border:1px solid rgba(255,255,255,0.15);
+      color:#fff; font-size:0.85rem;
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; transition:all 0.2s;
+    }
+    .upload-zone .remove-img:hover { background:rgba(239,68,68,0.8); transform:scale(1.1); }
+    .upload-zone .file-info {
+      position:absolute; bottom:0; left:0; right:0;
+      padding:0.5rem 0.75rem;
+      background:linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+      color:#fff; font-size:0.7rem;
+      display:flex; justify-content:space-between;
+      pointer-events:none;
+    }
+
+    /* Form fields */
+    .field { margin-bottom:0.9rem; }
+    .field label {
+      display:block; font-size:0.75rem; font-weight:600;
+      color:var(--muted-light); margin-bottom:0.35rem;
+      letter-spacing:0.2px;
+    }
+    .field label .req { color:#f87171; margin-left:2px; }
+    .field select, .field input[type=text], .field input[type=password] {
+      width:100%; padding:0.6rem 0.85rem;
+      background:rgba(255,255,255,0.03); border:1px solid var(--border);
+      border-radius:var(--radius-sm); color:var(--fg);
+      font-family:var(--font-body); font-size:0.85rem;
+      outline:none; transition:all 0.2s;
+      -webkit-appearance:none; appearance:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7a90' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+      background-repeat:no-repeat; background-position:right 0.85rem center;
+      padding-right:2rem;
+    }
+    .field input[type=text], .field input[type=password] { background-image:none; padding-right:0.85rem; }
+    .field select option { background:#0e0e18; color:#f0f0f5; }
+    body.light-theme .field select option { background:#ffffff; color:#1a1a24; }
+    .field select:focus, .field input:focus {
+      border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-dim);
+    }
+    .field textarea {
+      width:100%; padding:0.6rem 0.85rem;
+      background:rgba(255,255,255,0.03); border:1px solid var(--border);
+      border-radius:var(--radius-sm); color:var(--fg);
+      font-family:var(--font-body); font-size:0.85rem;
+      outline:none; transition:all 0.2s;
+      resize:vertical; min-height:70px;
+    }
+    .field textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-dim); }
+
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
+    @media (max-width:480px) { .two-col { grid-template-columns:1fr; } }
+
+    /* Results */
+    .result-card {
+      background:rgba(255,255,255,0.02);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      margin-bottom:0.85rem;
+      overflow:hidden;
+      transition:all var(--transition);
+      animation:fadeUp 0.4s ease both;
+    }
+    .result-card:hover { border-color:rgba(255,221,87,0.2); }
+    .result-card .rc-head {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:0.6rem 0.9rem;
+      background:rgba(255,221,87,0.04);
+      border-bottom:1px solid var(--border);
+    }
+    .result-card .rc-head .rc-label {
+      font-size:0.7rem; font-weight:700; letter-spacing:0.5px;
+      text-transform:uppercase; color:var(--accent);
+      display:flex; align-items:center; gap:0.4rem;
+    }
+    .result-card .rc-head .rc-count {
+      font-size:0.65rem; color:var(--muted);
+      font-family:var(--font-display); font-weight:500;
+    }
+    .result-card .rc-body {
+      padding:0.75rem 0.9rem;
+      font-size:0.85rem; line-height:1.6;
+      color:var(--fg-dim);
+      white-space:pre-wrap; word-break:break-word;
+      max-height:200px; overflow-y:auto;
+    }
+    .result-card .rc-body::-webkit-scrollbar { width:3px; }
+    .result-card .rc-body::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+    .result-card .rc-actions {
+      display:flex; gap:0.4rem; padding:0 0.9rem 0.75rem;
+      flex-wrap:wrap;
+    }
+    .btn-copy {
+      display:inline-flex; align-items:center; gap:0.35rem;
+      padding:0.35rem 0.8rem;
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:6px; color:var(--muted-light);
+      font-size:0.7rem; font-weight:500; cursor:pointer;
+      transition:all 0.2s;
+    }
+    .btn-copy:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-dim); }
+    .btn-copy.copied { border-color:var(--success); color:var(--success); background:rgba(34,197,94,0.1); }
+
+    .result-placeholder {
+      text-align:center; padding:2.5rem 1rem;
+      color:var(--muted);
+    }
+    .result-placeholder i {
+      font-size:2.5rem; color:var(--accent);
+      opacity:0.3; margin-bottom:0.5rem; display:block;
+    }
+    .result-placeholder p { font-size:0.85rem; }
+
+    /* Loading spinner */
+    .spinner {
+      width:36px; height:36px;
+      border:3px solid var(--border);
+      border-top-color:var(--accent);
+      border-radius:50%;
+      animation:spin 0.8s linear infinite;
+      margin:0 auto 0.75rem;
+    }
+    .spinner-small {
+      display:inline-block; width:14px; height:14px;
+      border:2px solid rgba(10,10,15,0.3);
+      border-top-color:#0a0a0f;
+      border-radius:50%; animation:spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    /* Error/notice */
+    .notice {
+      padding:0.65rem 0.9rem; border-radius:var(--radius-sm);
+      font-size:0.8rem; margin-bottom:0.75rem;
+      display:flex; align-items:flex-start; gap:0.5rem;
+      line-height:1.5;
+    }
+    .notice i { margin-top:2px; flex-shrink:0; }
+    .notice.error { background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2); color:#f87171; }
+    .notice.success { background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.2); color:#4ade80; }
+    .notice.info { background:rgba(59,130,246,0.1); border:1px solid rgba(59,130,246,0.2); color:#60a5fa; }
+    .notice.warning { background:rgba(251,146,60,0.1); border:1px solid rgba(251,146,60,0.2); color:#fb923c; }
+
+    /* History */
+    .history-section {
+      margin-top:2rem;
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:var(--radius-lg); padding:1.25rem;
+    }
+    .history-list { display:flex; flex-direction:column; gap:0.5rem; max-height:400px; overflow-y:auto; }
+    .history-list::-webkit-scrollbar { width:4px; }
+    .history-list::-webkit-scrollbar-thumb { background:var(--border); border-radius:10px; }
+    .history-item {
+      background:rgba(255,255,255,0.02); border:1px solid var(--border);
+      border-radius:var(--radius-sm); padding:0.7rem 0.9rem;
+      display:flex; align-items:center; gap:0.75rem;
+      transition:all var(--transition); cursor:pointer;
+    }
+    .history-item:hover { border-color:var(--border-hover); background:rgba(255,255,255,0.04); }
+    .history-item .hi-thumb {
+      width:48px; height:48px; border-radius:8px;
+      background:var(--bg-elevated); flex-shrink:0;
+      overflow:hidden; display:flex;
+      align-items:center; justify-content:center;
+      color:var(--muted); font-size:1rem;
+    }
+    .history-item .hi-thumb img { width:100%; height:100%; object-fit:cover; }
+    .history-item .hi-info { flex:1; min-width:0; }
+    .history-item .hi-info .hi-title {
+      font-size:0.82rem; font-weight:600;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .history-item .hi-info .hi-time {
+      font-size:0.65rem; color:var(--muted);
+      margin-top:0.1rem;
+    }
+    .history-item .hi-actions { display:flex; gap:0.25rem; flex-shrink:0; }
+    .history-item .hi-actions button {
+      width:28px; height:28px; border-radius:6px;
+      background:var(--bg-card); border:1px solid var(--border);
+      color:var(--muted); font-size:0.7rem; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      transition:all 0.2s;
+    }
+    .history-item .hi-actions button:hover { color:var(--accent); border-color:var(--accent); }
+    .history-item .hi-actions button.del:hover { color:#ef4444; border-color:#ef4444; }
+    .history-empty { text-align:center; padding:1.5rem; color:var(--muted); font-size:0.8rem; }
+
+    /* Settings row */
+    .settings-row {
+      display:flex; flex-wrap:wrap; gap:0.5rem;
+      align-items:center; margin-top:0.5rem;
+      font-size:0.72rem; color:var(--muted);
+    }
+    .settings-row .api-status {
+      display:inline-flex; align-items:center; gap:0.35rem;
+      padding:0.25rem 0.7rem; border-radius:50px;
+      background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.2);
+      color:var(--success); font-weight:600;
+    }
+    .settings-row .api-status.missing {
+      background:rgba(251,146,60,0.1); border-color:rgba(251,146,60,0.2);
+      color:var(--warning);
+    }
+    .settings-row .btn-mini {
+      padding:0.25rem 0.7rem; border-radius:50px;
+      background:var(--bg-card); border:1px solid var(--border);
+      color:var(--muted-light); font-size:0.7rem; cursor:pointer;
+      transition:all 0.2s;
+    }
+    .settings-row .btn-mini:hover { border-color:var(--accent); color:var(--accent); }
+
+    @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+    /* Toast */
+    .toast-container {
+      position:fixed; bottom:24px; right:24px; z-index:9999;
+      display:flex; flex-direction:column; gap:0.5rem; max-width:90%;
+    }
+    .toast {
+      padding:0.7rem 1.4rem;
+      background:rgba(20,20,30,0.92); backdrop-filter:blur(16px);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:12px;
+      box-shadow:0 8px 32px rgba(0,0,0,0.4);
+      display:flex; align-items:center; gap:0.6rem;
+      animation:slideInToast 0.35s cubic-bezier(0.34,1.56,0.64,1);
+      font-size:0.82rem; border-left:3px solid var(--accent);
+      color:var(--fg);
+    }
+    .toast i { color:var(--accent); font-size:0.9rem; }
+    .toast.success { border-left-color:var(--success); }
+    .toast.success i { color:var(--success); }
+    .toast.error { border-left-color:var(--danger); }
+    .toast.error i { color:var(--danger); }
+    .toast.info { border-left-color:var(--info); }
+    .toast.info i { color:var(--info); }
+    @keyframes slideInToast {
+      from { opacity:0; transform:translateX(60px) scale(0.9); }
+      to { opacity:1; transform:translateX(0) scale(1); }
+    }
+
+    /* Chat float */
+    .chat-float {
+      position:fixed; bottom:1.25rem; right:1.25rem; z-index:99;
+      display:flex; flex-direction:column; align-items:flex-end; gap:0.5rem;
+    }
+    .chat-float-label {
+      background:rgba(12,12,24,0.92); backdrop-filter:blur(12px);
+      border:1px solid var(--border); border-radius:var(--radius-sm);
+      padding:0.4rem 0.9rem; font-size:0.72rem; color:var(--muted);
+      white-space:nowrap; opacity:0; transform:translateY(6px) scale(0.95);
+      transition:all 0.3s ease; pointer-events:none;
+    }
+    body.light-theme .chat-float-label { background:rgba(245,245,250,0.95); }
+    .chat-float-label span { color:var(--accent); font-weight:600; }
+    .chat-float:hover .chat-float-label { opacity:1; transform:translateY(0) scale(1); }
+    .chat-float-btn {
+      width:54px; height:54px; border-radius:16px;
+      background:linear-gradient(145deg, #25D366, #1da851);
+      border:none; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      color:#fff; font-size:1.5rem;
+      box-shadow:0 4px 24px rgba(37,211,102,0.35);
+      transition:all var(--transition); text-decoration:none;
+    }
+    .chat-float-btn:hover { transform:scale(1.08); }
+
+    .back-to-top {
+      position:fixed; bottom:1.25rem; left:1.25rem; z-index:90;
+      width:44px; height:44px; border-radius:var(--radius-sm);
+      background:var(--bg-card); border:1px solid var(--border);
+      color:var(--muted); font-size:0.9rem; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      opacity:0; transform:translateY(10px); pointer-events:none;
+      transition:all 0.3s ease; backdrop-filter:blur(12px);
+    }
+    .back-to-top.show { opacity:1; transform:translateY(0); pointer-events:auto; }
+    .back-to-top:hover { color:var(--accent); border-color:var(--accent); background:var(--accent-dim); }
+
+    .footer {
+      padding:3rem 1.5rem 1.5rem;
+      border-top:1px solid var(--border); margin-top:1rem;
+      position:relative; z-index:2;
+    }
+    .footer-grid {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+      gap:2rem; max-width:1000px; margin:0 auto 2rem; text-align:left;
+    }
+    .footer-grid h4 {
+      font-family:var(--font-display); font-size:0.85rem;
+      color:var(--fg); margin-bottom:0.8rem;
+    }
+    .footer-grid p, .footer-grid a {
+      font-size:0.8rem; color:var(--muted); line-height:1.8;
+    }
+    .footer-grid a { display:block; transition:color 0.2s; }
+    .footer-grid a:hover { color:var(--accent); }
+    .footer-grid .brand-footer { font-weight:600; color:var(--accent); }
+    .footer-bottom {
+      max-width:1000px; margin:0 auto;
+      border-top:1px solid var(--border); padding-top:1.5rem;
+      text-align:center; font-size:0.7rem; color:var(--muted);
+    }
+
+    .social-row {
+      position:relative; z-index:2;
+      display:flex; justify-content:center; gap:0.8rem;
+      padding:1rem 1rem 0.5rem;
+    }
+    .social-row a {
+      width:42px; height:42px; border-radius:var(--radius-sm);
+      background:var(--bg-card); border:1px solid var(--border);
+      display:flex; align-items:center; justify-content:center;
+      color:var(--muted); font-size:0.95rem;
+      transition:all var(--transition);
+    }
+    .social-row a:hover {
+      color:var(--accent); border-color:var(--accent);
+      background:var(--accent-dim); transform:translateY(-3px);
+    }
+
+    @media (max-width:768px) {
+      .navbar { padding:0.6rem 1rem; min-height:56px; }
+      .menu-toggle { display:flex; }
+      .nav-links {
+        display:none; position:absolute; top:100%; left:0; right:0;
+        flex-direction:column; background:rgba(7,7,13,0.97);
+        backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+        border-bottom:1px solid var(--border);
+        padding:0.8rem; gap:0.1rem;
+      }
+      body.light-theme .nav-links { background:rgba(245,245,250,0.97); }
+      .nav-links.active { display:flex; }
+      .nav-links a { padding:0.5rem 0.8rem; width:100%; }
+      .dropdown-menu {
+        position:static; transform:none; box-shadow:none;
+        background:rgba(255,255,255,0.03); border:none;
+        min-width:auto; padding:0.2rem 0 0.2rem 1rem;
+      }
+      .dropdown:hover .dropdown-menu { display:none; }
+      .dropdown.active .dropdown-menu { display:block !important; }
+      .page-hero { padding:4rem 1rem 1rem; }
+      .gate-card { padding:1.75rem 1.25rem; }
+      .tool-panel { padding:1rem; }
+      .toast-container { bottom:70px; right:12px; left:12px; align-items:center; }
+      .footer-grid { grid-template-columns:1fr 1fr; gap:1rem; text-align:center; }
+      .footer-grid h4 { text-align:center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ambient-glows" aria-hidden="true">
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    <div class="glow glow-3"></div>
+  </div>
+
+  <nav class="navbar" id="navbar" aria-label="Navigasi utama">
+    <a href="index.html" class="nav-brand"><i class="fas fa-store"></i> Akino Store</a>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle tema"><i class="fas fa-moon"></i></button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li class="dropdown" id="dropdownService">
+        <a href="#" class="active" id="dropdownToggle">Service <i class="fas fa-chevron-down" style="font-size:0.5rem;margin-left:4px;"></i></a>
+        <ul class="dropdown-menu">
+          <li><a href="CarParkingMultiplayer.html">Car Parking Multiplayer</a></li>
+          <li><a href="SosialMedia.html">Layanan Sosial Media</a></li>
+          <li><a href="designedit.html">Design / Edit Foto</a></li>
+          <li><a href="metastock.html" style="color:var(--accent)">🆕 MetaStock AI</a></li>
+          <li><a href="manga.html">Manga</a></li>
+          <li><a href="wallpaper.html">Wallpaper</a></li>
+        </ul>
+      </li>
+      <li><a href="jastip.html">Jastip</a></li>
+      <li><a href="https://wa.me/6289687163314" target="_blank">Contact</a></li>
+    </ul>
+  </nav>
+
+  <header class="page-hero">
+    <div class="hero-badge"><i class="fas fa-wand-magic-sparkles"></i> AI Generator</div>
+    <h1>MetaStock <span class="accent">AI</span></h1>
+    <p>Generate judul, deskripsi, dan keyword microstock profesional dalam hitungan detik dengan bantuan AI. Cocok untuk Shutterstock, Adobe Stock, Freepik, iStock, dan lainnya.</p>
+  </header>
+
+  <!-- ===== GATE 1: LOGIN ===== -->
+  <div class="gate-screen" id="gateLogin">
+    <div class="gate-card">
+      <div class="gate-icon"><i class="fas fa-lock"></i></div>
+      <h2>Login Diperlukan</h2>
+      <p>Untuk menggunakan MetaStock AI, silakan login terlebih dahulu menggunakan akun Google Anda. Gratis dan hanya butuh beberapa detik.</p>
+      <button class="btn-google" id="btnLoginGoogle">
+        <svg viewBox="0 0 48 48" width="20" height="20">
+          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.28 7.09-10.36 7.09-17.65z"/>
+          <path fill="#FBBC05" d="M10.53 28.59A14.5 14.5 0 0 1 9.5 24c0-1.59.28-3.14.76-4.59l-7.98-6.19A23.99 23.99 0 0 0 0 24c0 3.77.87 7.35 2.56 10.56l7.97-5.97z"/>
+          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 5.97C6.51 42.62 14.62 48 24 48z"/>
+        </svg>
+        Login dengan Google
+      </button>
+      <p style="margin-top:1rem;font-size:0.75rem;">
+        Dengan login, Anda menyetujui <a href="terms.html">Syarat &amp; Ketentuan</a> dan <a href="privacy.html">Kebijakan Privasi</a> kami.
+      </p>
+    </div>
+  </div>
+
+  <!-- ===== GATE 2: API KEY ===== -->
+  <div class="gate-screen" id="gateApiKey" style="display:none">
+    <div class="gate-card">
+      <div class="gate-icon"><i class="fas fa-key"></i></div>
+      <h2>Setup Groq API Key</h2>
+      <p>
+        MetaStock AI menggunakan <strong>Groq API</strong> (super cepat & gratis) untuk memproses metadata Anda.
+        Dapatkan API Key gratis di
+        <a href="https://console.groq.com/keys" target="_blank" rel="noopener">console.groq.com/keys</a>
+        &mdash; login dengan Google, lalu klik <strong>"Create API Key"</strong>.
+      </p>
+      <div class="notice info" style="text-align:left;margin-bottom:1rem;">
+        <i class="fas fa-shield-halved"></i>
+        <span>API Key Anda <strong>disimpan hanya di browser ini</strong> (localStorage) dan tidak pernah dikirim ke server kami. Aman & privat.</span>
+      </div>
+      <input type="password" id="apiKeyInput" placeholder="gsk_... (paste di sini)" autocomplete="off" spellcheck="false">
+      <div id="apiKeyError" class="notice error" style="display:none;text-align:left;margin-bottom:0.75rem;">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="apiKeyErrorText">API Key tidak valid.</span>
+      </div>
+      <button class="btn-primary" id="btnSaveApiKey">
+        <i class="fas fa-check"></i> Simpan & Verifikasi
+      </button>
+      <button class="btn-ghost" id="btnLogoutFromGate" style="margin-top:0.75rem;width:100%;">
+        <i class="fas fa-right-from-bracket"></i> Logout
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== MAIN TOOL ===== -->
+  <div class="container" id="mainTool" style="display:none;padding-top:0.5rem;">
+    <div class="tool-layout">
+
+      <!-- LEFT: INPUT -->
+      <div class="tool-panel">
+        <div class="panel-title">
+          <i class="fas fa-image"></i> Input
+          <span class="step-badge">STEP 1</span>
+        </div>
+
+        <div class="upload-zone" id="uploadZone">
+          <i class="fas fa-cloud-upload-alt upload-icon"></i>
+          <div class="upload-title">Klik atau Drop Gambar</div>
+          <div class="upload-sub">JPG, PNG, WEBP • Maks 5MB (otomatis dikompres)</div>
+        </div>
+        <input type="file" id="fileInput" accept="image/*" style="display:none;">
+
+        <div class="field" style="margin-top:1rem;">
+          <label>Deskripsi Tambahan <span style="color:var(--muted);font-weight:400;">(opsional)</span></label>
+          <textarea id="extraDesc" placeholder="Contoh: foto drone pantai tropis saat sunset, nuansa hangat, cocok untuk travel content..."></textarea>
+        </div>
+
+        <div class="two-col">
+          <div class="field">
+            <label>Bahasa Output <span class="req">*</span></label>
+            <select id="langSelect">
+              <option value="id">🇮🇩 Indonesia</option>
+              <option value="en" selected>🇬🇧 English</option>
+              <option value="both">🌐 Indonesia + English</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Jumlah Keyword</label>
+            <select id="kwCount">
+              <option value="20">20 keyword</option>
+              <option value="30" selected>30 keyword</option>
+              <option value="40">40 keyword</option>
+              <option value="50">50 keyword</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="field">
+            <label>Platform Target</label>
+            <select id="platform">
+              <option value="general">General (semua platform)</option>
+              <option value="shutterstock">Shutterstock (7-50 kw)</option>
+              <option value="adobe">Adobe Stock (max 49 kw)</option>
+              <option value="freepik">Freepik</option>
+              <option value="istock">iStock / Getty</option>
+              <option value="vecteezy">Vecteezy</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Tipe Konten</label>
+            <select id="contentType">
+              <option value="auto" selected>Auto-detect</option>
+              <option value="photo">📷 Foto</option>
+              <option value="illustration">🎨 Ilustrasi</option>
+              <option value="vector">✏️ Vector</option>
+              <option value="3d">🧊 3D Render</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Model AI (Groq)</label>
+          <select id="modelSelect">
+            <option value="qwen/qwen3.6-27b" selected>Qwen 3.6 27B (rekomendasi)</option>
+            <option value="qwen/qwen3-32b">Qwen 3 32B (cepat, akurat)</option>
+            <option value="meta-llama/llama-4-scout-17b-16e-instruct">Llama 4 Scout (Vision - untuk analisis gambar)</option>
+            <option value="meta-llama/llama-4-maverick-17b-128e-instruct">Llama 4 Maverick (Vision)</option>
+            <option value="llama-3.3-70b-versatile">Llama 3.3 70B (kualitas tinggi)</option>
+            <option value="llama-3.1-8b-instant">Llama 3.1 8B (tercepat)</option>
+          </select>
+        </div>
+
+        <div id="mainNotice"></div>
+
+        <button class="btn-primary" id="btnGenerate" style="margin-top:0.75rem;">
+          <i class="fas fa-wand-magic-sparkles"></i> Generate Metadata
+        </button>
+
+        <div class="settings-row">
+          <span class="api-status" id="apiStatus">
+            <i class="fas fa-check-circle"></i> API Key tersimpan
+          </span>
+          <button class="btn-mini" id="btnChangeApiKey"><i class="fas fa-key"></i> Ganti API Key</button>
+          <button class="btn-mini" id="btnLogout"><i class="fas fa-right-from-bracket"></i> Logout</button>
+        </div>
+      </div>
+
+      <!-- RIGHT: OUTPUT -->
+      <div class="tool-panel">
+        <div class="panel-title">
+          <i class="fas fa-sparkles"></i> Hasil Metadata
+          <span class="step-badge">STEP 2</span>
+        </div>
+        <div id="resultContainer">
+          <div class="result-placeholder">
+            <i class="fas fa-robot"></i>
+            <p>Hasil metadata akan muncul di sini.<br>Upload gambar & klik <strong>Generate Metadata</strong>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="history-section">
+      <div class="panel-title">
+        <i class="fas fa-clock-rotate-left"></i> Riwayat Generate
+        <span class="step-badge" id="historyCount">0</span>
+        <button class="btn-mini" id="btnClearHistory" style="margin-left:0.5rem;">
+          <i class="fas fa-trash"></i> Hapus Semua
+        </button>
+      </div>
+      <div class="history-list" id="historyList">
+        <div class="history-empty"><i class="fas fa-inbox"></i><br>Belum ada riwayat.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="social-row">
+    <a href="https://www.tiktok.com/@akinolaset_?_t=8pbChkK23O6&_r=1" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+    <a href="https://www.instagram.com/akinostore_?igsh=MWxqbGpham5ocjhyOA==" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://youtube.com/@akinolaset?si=e4NLLQrgN0R3BPi4" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+    <a href="https://wa.me/6289687163314" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+  </div>
+
+  <footer class="footer" aria-label="Footer">
+    <div class="footer-grid">
+      <div>
+        <h4 class="brand-footer">Akino Store</h4>
+        <p>Jasa digital, game, dan baca manga terpercaya sejak 2022. Solusi untuk kebutuhan game, sosial media, design, dan hiburan baca Anda.</p>
+      </div>
+      <div>
+        <h4>Layanan</h4>
+        <a href="CarParkingMultiplayer.html">Car Parking</a>
+        <a href="SosialMedia.html">Sosial Media</a>
+        <a href="designedit.html">Design / Edit</a>
+      </div>
+      <div>
+        <h4>Tentang</h4>
+        <a href="about.html">About Us</a>
+        <a href="https://wa.me/6289687163314" target="_blank">Contact</a>
+        <a href="stockmobil.html">Stock Mobil</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="privacy.html">Kebijakan Privasi</a>
+        <a href="terms.html">Syarat &amp; Ketentuan</a>
+      </div>
+      <div>
+        <h4>Follow</h4>
+        <a href="https://www.tiktok.com/@akinolaset_" target="_blank">TikTok</a>
+        <a href="https://www.instagram.com/akinostore_" target="_blank">Instagram</a>
+        <a href="https://youtube.com/@akinolaset" target="_blank">YouTube</a>
+      </div>
+    </div>
+    <div class="footer-bottom">&copy; 2022 Akino Store. All Rights Reserved.</div>
+  </footer>
+
+  <div class="chat-float">
+    <div class="chat-float-label">Chat Admin: <span>089687163314</span></div>
+    <a href="https://wa.me/6289687163314" target="_blank" rel="noopener" class="chat-float-btn" aria-label="Chat Admin WhatsApp">
+      <i class="fab fa-whatsapp"></i>
+    </a>
+  </div>
+
+  <button class="back-to-top" id="backToTop" aria-label="Kembali ke atas">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    // ============================================================
+    // KONFIGURASI
+    // ============================================================
+    const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+    const LS_API_KEY = 'akino_groq_api_key';
+    const LS_HISTORY = 'akino_metastock_history';
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+    const MAX_IMG_DIM = 1024;
+
+    // ============================================================
+    // STATE
+    // ============================================================
+    let currentUser = null;
+    let currentImageData = null; // { dataUrl, fileName, fileSize }
+    let isProcessing = false;
+
+    // ============================================================
+    // HELPERS
+    // ============================================================
+    const $ = id => document.getElementById(id);
+
+    function showToast(message, type = 'info') {
+      const container = $('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast ' + type;
+      const icons = { info:'fa-info-circle', success:'fa-check-circle', error:'fa-exclamation-circle' };
+      toast.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i> ${message}`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(40px) scale(0.9)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    function escHtml(str) {
+      if (!str) return '';
+      const d = document.createElement('div');
+      d.textContent = str;
+      return d.innerHTML;
+    }
+
+    function formatBytes(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
+      return (bytes/(1024*1024)).toFixed(2) + ' MB';
+    }
+
+    function timeAgo(ts) {
+      const diff = Math.floor((Date.now() - ts) / 1000);
+      if (diff < 60) return 'Baru saja';
+      if (diff < 3600) return Math.floor(diff/60) + ' mnt lalu';
+      if (diff < 86400) return Math.floor(diff/3600) + ' jam lalu';
+      if (diff < 604800) return Math.floor(diff/86400) + ' hari lalu';
+      return new Date(ts).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' });
+    }
+
+    // ============================================================
+    // UI STATE MANAGEMENT
+    // ============================================================
+    function showGate(which) {
+      $('gateLogin').style.display = 'none';
+      $('gateApiKey').style.display = 'none';
+      $('mainTool').style.display = 'none';
+      if (which === 'login') $('gateLogin').style.display = '';
+      else if (which === 'apiKey') $('gateApiKey').style.display = '';
+      else if (which === 'main') $('mainTool').style.display = '';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateApiStatus() {
+      const key = localStorage.getItem(LS_API_KEY);
+      const el = $('apiStatus');
+      if (key) {
+        el.className = 'api-status';
+        el.innerHTML = '<i class="fas fa-check-circle"></i> API Key tersimpan';
+      } else {
+        el.className = 'api-status missing';
+        el.innerHTML = '<i class="fas fa-exclamation-triangle"></i> API Key belum diset';
+      }
+    }
+
+    // ============================================================
+    // AUTH FLOW
+    // ============================================================
+    firebase.auth().onAuthStateChanged((user) => {
+      currentUser = user;
+      if (!user) {
+        showGate('login');
+        return;
+      }
+      const key = localStorage.getItem(LS_API_KEY);
+      if (!key) {
+        showGate('apiKey');
+      } else {
+        showGate('main');
+        updateApiStatus();
+        renderHistory();
+      }
+    });
+
+    // ============================================================
+    // LOGIN GOOGLE - INLINE (SEPERTI ADMIN.HTML)
+    // ============================================================
+    $('btnLoginGoogle').addEventListener('click', async () => {
+      const btn = $('btnLoginGoogle');
+      const originalHTML = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menghubungkan...';
+
+      console.log('🔑 Firebase auth origin:', window.location.origin);
+
+      try {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        await firebase.auth().signInWithPopup(provider);
+        // onAuthStateChanged yang akan handle redirect ke gate berikutnya
+      } catch (err) {
+        console.error('❌ Google login error:', {
+          code: err.code,
+          message: err.message,
+          origin: window.location.origin
+        });
+
+        let msg = '';
+        if (err.code === 'auth/popup-closed-by-user') {
+          msg = 'Login dibatalkan.';
+        } else if (err.code === 'auth/unauthorized-domain') {
+          msg = 'Domain ' + window.location.hostname + ' belum diizinkan di Firebase Console → Authentication → Settings → Authorized Domains.';
+        } else if (err.code === 'auth/operation-not-allowed') {
+          msg = 'Login Google belum diaktifkan di Firebase Authentication.';
+        } else if (err.code === 'auth/popup-blocked') {
+          msg = 'Popup diblokir browser. Izinkan popup untuk situs ini, lalu coba lagi.';
+        } else if (err.code === 'auth/cancelled-popup-request') {
+          msg = 'Permintaan login sebelumnya masih berjalan. Tunggu sebentar.';
+        } else if (err.code === 'auth/network-request-failed') {
+          msg = 'Koneksi jaringan gagal. Periksa internet Anda.';
+        } else {
+          msg = 'Firebase [' + (err.code || 'unknown') + ']: ' + err.message;
+        }
+        showToast(msg, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+      }
+    });
+
+    $('btnLogout').addEventListener('click', doLogout);
+    $('btnLogoutFromGate').addEventListener('click', doLogout);
+
+    async function doLogout() {
+      if (!confirm('Yakin ingin logout?')) return;
+      try {
+        await firebase.auth().signOut();
+        currentImageData = null;
+        resetUploadUI();
+        $('resultContainer').innerHTML = `
+          <div class="result-placeholder">
+            <i class="fas fa-robot"></i>
+            <p>Hasil metadata akan muncul di sini.</p>
+          </div>`;
+        showToast('Berhasil logout.', 'success');
+      } catch (err) {
+        showToast('Gagal logout: ' + err.message, 'error');
+      }
+    }
+
+    // ============================================================
+    // API KEY MANAGEMENT
+    // ============================================================
+    $('btnSaveApiKey').addEventListener('click', async () => {
+      const input = $('apiKeyInput');
+      const key = input.value.trim();
+      const errEl = $('apiKeyError');
+      const errText = $('apiKeyErrorText');
+      errEl.style.display = 'none';
+
+      if (!key) {
+        errText.textContent = 'API Key tidak boleh kosong.';
+        errEl.style.display = 'flex';
+        return;
+      }
+      if (!key.startsWith('gsk_')) {
+        errText.textContent = 'Format API Key Groq harus dimulai dengan "gsk_".';
+        errEl.style.display = 'flex';
+        return;
+      }
+
+      const btn = $('btnSaveApiKey');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memverifikasi...';
+
+      try {
+        const res = await fetch(GROQ_API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + key
+          },
+          body: JSON.stringify({
+            model: 'llama-3.1-8b-instant',
+            messages: [{ role: 'user', content: 'hi' }],
+            max_tokens: 5
+          })
+        });
+
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          const errMsg = data.error?.message || ('HTTP ' + res.status);
+          throw new Error(errMsg);
+        }
+
+        localStorage.setItem(LS_API_KEY, key);
+        input.value = '';
+        showToast('API Key berhasil disimpan!', 'success');
+        showGate('main');
+        updateApiStatus();
+        renderHistory();
+      } catch (err) {
+        console.error('API key verify error:', err);
+        errText.textContent = '❌ ' + (err.message || 'API Key tidak valid.');
+        errEl.style.display = 'flex';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-check"></i> Simpan & Verifikasi';
+      }
+    });
+
+    $('btnChangeApiKey').addEventListener('click', () => {
+      const key = localStorage.getItem(LS_API_KEY) || '';
+      $('apiKeyInput').value = key;
+      showGate('apiKey');
+    });
+
+    // ============================================================
+    // THEME + NAVBAR
+    // ============================================================
+    (function setupNav() {
+      window.addEventListener('scroll', () => {
+        $('navbar').classList.toggle('scrolled', window.scrollY > 40);
+        const btn = $('backToTop');
+        if (btn) btn.classList.toggle('show', window.scrollY > 400);
+      });
+      const backBtn = $('backToTop');
+      if (backBtn) backBtn.addEventListener('click', () => window.scrollTo({ top:0, behavior:'smooth' }));
+
+      const menuToggle = $('menuToggle');
+      const navLinks = $('navLinks');
+      if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', () => {
+          navLinks.classList.toggle('active');
+          const icon = menuToggle.querySelector('i');
+          icon.className = navLinks.classList.contains('active') ? 'fas fa-xmark' : 'fas fa-bars';
+        });
+      }
+      const ddToggle = $('dropdownToggle');
+      const ddService = $('dropdownService');
+      if (ddToggle && ddService) {
+        ddToggle.addEventListener('click', (e) => {
+          if (window.innerWidth <= 768) {
+            e.preventDefault();
+            ddService.classList.toggle('active');
+          }
+        });
+      }
+
+      const themeToggle = $('themeToggle');
+      const themeIcon = themeToggle ? themeToggle.querySelector('i') : null;
+      const curTheme = localStorage.getItem('theme') || 'dark';
+      if (curTheme === 'light') {
+        document.body.classList.add('light-theme');
+        if (themeIcon) themeIcon.className = 'fas fa-sun';
+      }
+      if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+          document.body.classList.toggle('light-theme');
+          const isLight = document.body.classList.contains('light-theme');
+          if (themeIcon) themeIcon.className = isLight ? 'fas fa-sun' : 'fas fa-moon';
+          localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        });
+      }
+    })();
+
+    // ============================================================
+    // IMAGE UPLOAD & COMPRESSION
+    // ============================================================
+    const uploadZone = $('uploadZone');
+    const fileInput = $('fileInput');
+
+    uploadZone.addEventListener('click', (e) => {
+      if (e.target.closest('.remove-img')) return;
+      fileInput.click();
+    });
+
+    uploadZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadZone.classList.add('dragover');
+    });
+    uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+    uploadZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadZone.classList.remove('dragover');
+      const file = e.dataTransfer.files[0];
+      if (file) handleFile(file);
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) handleFile(file);
+    });
+
+    async function handleFile(file) {
+      if (!file.type.startsWith('image/')) {
+        showToast('File harus berupa gambar (JPG, PNG, WEBP).', 'error');
+        return;
+      }
+      if (file.size > MAX_FILE_SIZE) {
+        showToast('Ukuran file maksimal 5MB.', 'error');
+        return;
+      }
+
+      try {
+        const compressed = await compressImage(file);
+        currentImageData = {
+          dataUrl: compressed.dataUrl,
+          fileName: file.name,
+          fileSize: compressed.size,
+          originalSize: file.size
+        };
+        renderUploadPreview();
+      } catch (err) {
+        console.error('Image compression error:', err);
+        showToast('Gagal memproses gambar: ' + err.message, 'error');
+      }
+    }
+
+    function compressImage(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            let { width, height } = img;
+            if (width > MAX_IMG_DIM || height > MAX_IMG_DIM) {
+              if (width >= height) {
+                height = Math.round(height * MAX_IMG_DIM / width);
+                width = MAX_IMG_DIM;
+              } else {
+                width = Math.round(width * MAX_IMG_DIM / height);
+                height = MAX_IMG_DIM;
+              }
+            }
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, width, height);
+            ctx.drawImage(img, 0, 0, width, height);
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+            const base64 = dataUrl.split(',')[1] || '';
+            const size = Math.round(base64.length * 3 / 4);
+            resolve({ dataUrl, size });
+          };
+          img.onerror = () => reject(new Error('Gagal membaca gambar'));
+          img.src = e.target.result;
+        };
+        reader.onerror = () => reject(new Error('Gagal membaca file'));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function renderUploadPreview() {
+      uploadZone.innerHTML = `
+        <img src="${currentImageData.dataUrl}" alt="Preview" class="preview-img">
+        <button class="remove-img" id="removeImg" title="Hapus gambar"><i class="fas fa-times"></i></button>
+        <div class="file-info">
+          <span><i class="fas fa-file-image"></i> ${escHtml(currentImageData.fileName)}</span>
+          <span>${formatBytes(currentImageData.fileSize)}</span>
+        </div>
+      `;
+      const removeBtn = $('removeImg');
+      if (removeBtn) {
+        removeBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          resetUploadUI();
+        });
+      }
+    }
+
+    function resetUploadUI() {
+      currentImageData = null;
+      fileInput.value = '';
+      uploadZone.innerHTML = `
+        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+        <div class="upload-title">Klik atau Drop Gambar</div>
+        <div class="upload-sub">JPG, PNG, WEBP • Maks 5MB (otomatis dikompres)</div>
+      `;
+    }
+
+    // ============================================================
+    // GENERATE METADATA
+    // ============================================================
+    $('btnGenerate').addEventListener('click', generateMetadata);
+
+    async function generateMetadata() {
+      if (isProcessing) return;
+
+      const apiKey = localStorage.getItem(LS_API_KEY);
+      if (!apiKey) {
+        showToast('API Key belum diset. Silakan set dulu.', 'error');
+        showGate('apiKey');
+        return;
+      }
+      if (!currentImageData) {
+        showToast('Upload gambar terlebih dahulu.', 'error');
+        return;
+      }
+
+      isProcessing = true;
+      const btn = $('btnGenerate');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner-small"></span> Generating...';
+
+      const lang = $('langSelect').value;
+      const kwCount = parseInt($('kwCount').value) || 30;
+      const platform = $('platform').value;
+      const contentType = $('contentType').value;
+      const extraDesc = $('extraDesc').value.trim();
+      const model = $('modelSelect').value;
+
+      $('mainNotice').innerHTML = '';
+      $('resultContainer').innerHTML = `
+        <div class="result-placeholder">
+          <div class="spinner"></div>
+          <p>AI sedang menganalisis gambar dan menyusun metadata...</p>
+          <p style="font-size:0.7rem;color:var(--muted);margin-top:0.3rem;">Biasanya butuh 3-10 detik</p>
+        </div>
+      `;
+
+      try {
+        const prompt = buildPrompt({ lang, kwCount, platform, contentType, extraDesc });
+        const result = await callGroqVision(apiKey, model, prompt, currentImageData.dataUrl);
+
+        const parsed = parseAIResponse(result, lang);
+        renderResults(parsed, lang, platform);
+        saveToHistory({
+          id: 'ms_' + Date.now(),
+          ts: Date.now(),
+          preview: currentImageData.dataUrl,
+          fileName: currentImageData.fileName,
+          lang, platform, contentType,
+          results: parsed
+        });
+        showToast('Metadata berhasil digenerate!', 'success');
+      } catch (err) {
+        console.error('Generate error:', err);
+        let errMsg = err.message || 'Terjadi kesalahan.';
+        if (/does not support|vision|image_url is not supported|not support/i.test(errMsg)) {
+          errMsg = 'Model ini tidak mendukung analisis gambar. Silakan ganti model ke "Llama 4 Scout (Vision)" di pengaturan.';
+        } else if (/rate.?limit|429/i.test(errMsg)) {
+          errMsg = 'Rate limit tercapai. Tunggu beberapa detik lalu coba lagi.';
+        } else if (/invalid.?api.?key|401/i.test(errMsg)) {
+          errMsg = 'API Key tidak valid. Silakan ganti API Key Anda.';
+        }
+        $('resultContainer').innerHTML = `
+          <div class="notice error">
+            <i class="fas fa-exclamation-circle"></i>
+            <span>${escHtml(errMsg)}</span>
+          </div>
+        `;
+        showToast('Gagal generate: ' + errMsg, 'error');
+      } finally {
+        isProcessing = false;
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-wand-magic-sparkles"></i> Generate Metadata';
+      }
+    }
+
+    function buildPrompt({ lang, kwCount, platform, contentType, extraDesc }) {
+      const platformHints = {
+        general: 'Shutterstock, Adobe Stock, Freepik, iStock, dan platform microstock umum lainnya.',
+        shutterstock: 'Shutterstock (title maksimal 200 karakter, 7-50 keyword).',
+        adobe: 'Adobe Stock (title maksimal 70 karakter, maksimal 49 keyword).',
+        freepik: 'Freepik (title maksimal 100 karakter, keyword relevan).',
+        istock: 'iStock/Getty Images (title deskriptif, keyword relevan).',
+        vecteezy: 'Vecteezy (title maksimal 100 karakter, keyword relevan).'
+      };
+
+      const typeHint = contentType === 'auto'
+        ? 'Deteksi sendiri tipe konten (foto / ilustrasi / vector / 3D render).'
+        : `Tipe konten: ${contentType}.`;
+
+      const targetLang = lang === 'both' ? 'BOTH Indonesian and English'
+        : lang === 'id' ? 'Indonesian'
+        : 'English';
+
+      const langStructure = lang === 'both'
+        ? `{
+  "id": {
+    "title": "...",
+    "description": "...",
+    "keywords": ["...", "..."]
+  },
+  "en": {
+    "title": "...",
+    "description": "...",
+    "keywords": ["...", "..."]
+  }
+}`
+        : `{
+  "${lang}": {
+    "title": "...",
+    "description": "...",
+    "keywords": ["...", "..."]
+  }
+}`;
+
+      return `Anda adalah expert metadata microstock profesional dengan pengalaman 10 tahun. Tugas Anda menganalisis gambar dan membuat metadata microstock yang SEO-friendly, akurat, dan menarik untuk platform ${platformHints[platform]}
+
+INSTRUKSI:
+1. Analisis gambar secara mendetail: objek utama, latar belakang, suasana, warna dominan, komposisi, mood, konsep, dan elemen-elemen penting.
+2. Buat TITLE: deskriptif, mengandung kata kunci utama di awal, natural, dan menarik. Jangan pakai kata "photo of" atau "image of". Hindari trademark/brand.
+3. Buat DESCRIPTION: 1-2 kalimat menjelaskan gambar secara kontekstual, cocok untuk kebutuhan komersial.
+4. Buat KEYWORDS: tepat ${kwCount} keyword berkualitas (single & multi-word), hindari duplikat, hindari kata umum berlebihan.
+5. Bahasa output: ${targetLang}.
+6. ${typeHint}
+${extraDesc ? '7. Info tambahan dari user: "' + extraDesc + '"' : ''}
+
+ATURAN OUTPUT (SANGAT PENTING):
+- HANYA kembalikan JSON valid, tanpa teks penjelasan, tanpa markdown code block, tanpa komentar.
+- Format JSON:
+${langStructure}
+
+- "keywords" harus berupa array of string.
+- Pastikan JSON valid dan bisa di-parse oleh JSON.parse().`;
+    }
+
+    async function callGroqVision(apiKey, model, prompt, imageDataUrl) {
+      const body = {
+        model: model,
+        messages: [
+          {
+            role: 'user',
+            content: [
+              { type: 'text', text: prompt },
+              { type: 'image_url', image_url: { url: imageDataUrl } }
+            ]
+          }
+        ],
+        temperature: 0.6,
+        max_tokens: 2048
+      };
+
+      const res = await fetch(GROQ_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + apiKey
+        },
+        body: JSON.stringify(body)
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        const errMsg = data.error?.message || ('HTTP ' + res.status + ' ' + res.statusText);
+        throw new Error(errMsg);
+      }
+
+      const data = await res.json();
+      const content = data.choices?.[0]?.message?.content || '';
+      if (!content) throw new Error('AI tidak mengembalikan konten.');
+      return content;
+    }
+
+    function parseAIResponse(raw, lang) {
+      let text = raw.trim();
+      text = text.replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/i, '').trim();
+
+      const firstBrace = text.indexOf('{');
+      const lastBrace = text.lastIndexOf('}');
+      if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+        text = text.substring(firstBrace, lastBrace + 1);
+      }
+
+      try {
+        const parsed = JSON.parse(text);
+        return parsed;
+      } catch (e) {
+        console.error('JSON parse error. Raw:', raw);
+        throw new Error('Format respons AI tidak valid. Coba ulang atau ganti model.');
+      }
+    }
+
+    // ============================================================
+    // RENDER RESULTS
+    // ============================================================
+    function renderResults(parsed, lang, platform) {
+      const container = $('resultContainer');
+      const html = [];
+      const langs = lang === 'both' ? ['id', 'en'] : [lang];
+
+      langs.forEach((code) => {
+        const data = parsed[code];
+        if (!data) return;
+        const langLabel = code === 'id' ? '🇮🇩 Indonesia' : '🇬🇧 English';
+
+        html.push(`<div class="lang-group" data-lang="${code}">`);
+        html.push(`<div style="font-size:0.72rem;font-weight:700;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin:0.6rem 0 0.4rem;">${langLabel}</div>`);
+
+        html.push(`
+          <div class="result-card">
+            <div class="rc-head">
+              <span class="rc-label"><i class="fas fa-heading"></i> Title</span>
+              <span class="rc-count">${(data.title || '').length} chars</span>
+            </div>
+            <div class="rc-body" id="title-${code}">${escHtml(data.title || '-')}</div>
+            <div class="rc-actions">
+              <button class="btn-copy" data-copy-target="title-${code}"><i class="fas fa-copy"></i> Copy Title</button>
+            </div>
+          </div>
+        `);
+
+        html.push(`
+          <div class="result-card">
+            <div class="rc-head">
+              <span class="rc-label"><i class="fas fa-align-left"></i> Description</span>
+              <span class="rc-count">${(data.description || '').length} chars</span>
+            </div>
+            <div class="rc-body" id="desc-${code}">${escHtml(data.description || '-')}</div>
+            <div class="rc-actions">
+              <button class="btn-copy" data-copy-target="desc-${code}"><i class="fas fa-copy"></i> Copy Description</button>
+            </div>
+          </div>
+        `);
+
+        const kws = Array.isArray(data.keywords) ? data.keywords : [];
+        const kwText = kws.join(', ');
+        html.push(`
+          <div class="result-card">
+            <div class="rc-head">
+              <span class="rc-label"><i class="fas fa-tags"></i> Keywords</span>
+              <span class="rc-count">${kws.length} keyword</span>
+            </div>
+            <div class="rc-body" id="kw-${code}" style="max-height:180px;">${escHtml(kwText || '-')}</div>
+            <div class="rc-actions">
+              <button class="btn-copy" data-copy-target="kw-${code}"><i class="fas fa-copy"></i> Copy Keywords</button>
+              <button class="btn-copy" data-copy-json="kw-${code}"><i class="fas fa-code"></i> Copy JSON</button>
+            </div>
+          </div>
+        `);
+
+        html.push('</div>');
+      });
+
+      html.push(`
+        <button class="btn-primary" id="btnCopyAll" style="margin-top:0.5rem;">
+          <i class="fas fa-clipboard-check"></i> Copy Semua (JSON)
+        </button>
+      `);
+
+      container.innerHTML = html.join('');
+
+      container.querySelectorAll('.btn-copy').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          const targetId = btn.dataset.copyTarget;
+          const isJson = btn.dataset.copyJson;
+          let text = '';
+          if (targetId) {
+            const el = document.getElementById(targetId);
+            if (el) text = el.textContent;
+          } else if (isJson) {
+            const el = document.getElementById(isJson);
+            if (el) {
+              const parts = el.textContent.split(',').map(s => s.trim()).filter(Boolean);
+              text = JSON.stringify(parts, null, 2);
+            }
+          }
+          if (!text) return;
+          await copyText(text);
+          btn.classList.add('copied');
+          const orig = btn.innerHTML;
+          btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+          setTimeout(() => {
+            btn.classList.remove('copied');
+            btn.innerHTML = orig;
+          }, 1600);
+        });
+      });
+
+      const copyAllBtn = $('btnCopyAll');
+      if (copyAllBtn) {
+        copyAllBtn.addEventListener('click', async () => {
+          await copyText(JSON.stringify(parsed, null, 2));
+          showToast('Semua metadata disalin sebagai JSON!', 'success');
+        });
+      }
+    }
+
+    async function copyText(text) {
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position = 'fixed';
+          ta.style.left = '-9999px';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+        }
+      } catch (e) {
+        showToast('Gagal menyalin.', 'error');
+      }
+    }
+
+    // ============================================================
+    // HISTORY (localStorage)
+    // ============================================================
+    function saveToHistory(item) {
+      try {
+        let history = JSON.parse(localStorage.getItem(LS_HISTORY) || '[]');
+        history.unshift(item);
+        if (history.length > 30) history = history.slice(0, 30);
+        localStorage.setItem(LS_HISTORY, JSON.stringify(history));
+        renderHistory();
+      } catch (e) {
+        console.warn('Save history error:', e);
+      }
+    }
+
+    function renderHistory() {
+      const list = $('historyList');
+      const countEl = $('historyCount');
+      let history = [];
+      try {
+        history = JSON.parse(localStorage.getItem(LS_HISTORY) || '[]');
+      } catch (e) { history = []; }
+
+      if (countEl) countEl.textContent = history.length;
+
+      if (!history.length) {
+        list.innerHTML = '<div class="history-empty"><i class="fas fa-inbox"></i><br>Belum ada riwayat.</div>';
+        return;
+      }
+
+      list.innerHTML = '';
+      history.forEach((item) => {
+        const div = document.createElement('div');
+        div.className = 'history-item';
+        const titlePreview = extractTitlePreview(item.results, item.lang);
+        div.innerHTML = `
+          <div class="hi-thumb">${item.preview ? `<img src="${item.preview}" alt="">` : '<i class="fas fa-image"></i>'}</div>
+          <div class="hi-info">
+            <div class="hi-title">${escHtml(titlePreview || 'Metadata')}</div>
+            <div class="hi-time">${timeAgo(item.ts)} • ${item.lang === 'both' ? 'ID+EN' : (item.lang || '').toUpperCase()}</div>
+          </div>
+          <div class="hi-actions">
+            <button title="Muat ulang" data-action="load" data-id="${item.id}"><i class="fas fa-redo"></i></button>
+            <button title="Copy JSON" data-action="copy" data-id="${item.id}"><i class="fas fa-copy"></i></button>
+            <button class="del" title="Hapus" data-action="delete" data-id="${item.id}"><i class="fas fa-trash"></i></button>
+          </div>
+        `;
+        list.appendChild(div);
+      });
+
+      list.querySelectorAll('button[data-action]').forEach((btn) => {
+        btn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const action = btn.dataset.action;
+          const id = btn.dataset.id;
+          const item = history.find(h => h.id === id);
+          if (!item) return;
+
+          if (action === 'delete') {
+            if (!confirm('Hapus item ini dari riwayat?')) return;
+            const newHistory = history.filter(h => h.id !== id);
+            localStorage.setItem(LS_HISTORY, JSON.stringify(newHistory));
+            renderHistory();
+            showToast('Item dihapus.', 'success');
+          } else if (action === 'load') {
+            if (item.preview) {
+              currentImageData = {
+                dataUrl: item.preview,
+                fileName: item.fileName || 'history.jpg',
+                fileSize: 0,
+                originalSize: 0
+              };
+              renderUploadPreview();
+              $('langSelect').value = item.lang || 'en';
+              $('platform').value = item.platform || 'general';
+            }
+            renderResults(item.results, item.lang, item.platform);
+            showToast('Metadata dimuat dari riwayat.', 'info');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          } else if (action === 'copy') {
+            await copyText(JSON.stringify(item.results, null, 2));
+            showToast('JSON disalin!', 'success');
+          }
+        });
+      });
+    }
+
+    function extractTitlePreview(results, lang) {
+      if (!results) return '';
+      if (lang === 'both') {
+        return results.en?.title || results.id?.title || '';
+      }
+      return results[lang]?.title || '';
+    }
+
+    $('btnClearHistory').addEventListener('click', () => {
+      if (!confirm('Hapus semua riwayat?')) return;
+      localStorage.removeItem(LS_HISTORY);
+      renderHistory();
+      showToast('Semua riwayat dihapus.', 'success');
+    });
+
+    // ============================================================
+    // SERVICE WORKER
+    // ============================================================
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
