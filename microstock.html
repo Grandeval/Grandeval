@@ -8,9 +8,6 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link rel="apple-touch-icon" href="https://res.cloudinary.com/d39mdjct/image/upload/w_180,h_180,c_fit/v1783493763/apk_pgxcmo.png" />
-  <link rel="apple-touch-icon" sizes="152x152" href="https://res.cloudinary.com/d39mdjct/image/upload/w_152,h_152,c_fit/v1783493763/apk_pgxcmo.png" />
-  <link rel="apple-touch-icon" sizes="167x167" href="https://res.cloudinary.com/d39mdjct/image/upload/w_167,h_167,c_fit/v1783493763/apk_pgxcmo.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/d39mdjct/image/upload/w_180,h_180,c_fit/v1783493763/apk_pgxcmo.png" />
 
   <title>MetaStock AI - Generator Metadata Microstock | Akino Store</title>
   <meta name="description" content="Generate judul, deskripsi, dan keyword microstock profesional dengan AI multi-provider (Groq, Gemini, OpenRouter). Upload tanpa batas, auto-retry, export CSV.">
@@ -509,7 +506,7 @@
         </label>
         <input type="password" id="groqKeyInput" placeholder="gsk_..." autocomplete="off" spellcheck="false">
       </div>
-      <div class="provider-hint"><strong>Prioritas 1</strong> · Llama 4 Scout vision · super cepat</div>
+      <div class="provider-hint"><strong>Prioritas 1</strong> · Qwen 3.6 27B vision · super cepat</div>
 
       <div class="api-key-field">
         <label>
@@ -518,7 +515,7 @@
         </label>
         <input type="password" id="geminiKeyInput" placeholder="Tempel API Key Gemini di sini..." autocomplete="off" spellcheck="false">
       </div>
-      <div class="provider-hint"><strong>Prioritas 2</strong> · Gemini 2.0 / 1.5 Flash (format bebas)</div>
+      <div class="provider-hint"><strong>Prioritas 2</strong> · Gemini 3.8 / 2.5 Flash (format bebas)</div>
 
       <div class="api-key-field">
         <label>
@@ -527,7 +524,7 @@
         </label>
         <input type="password" id="openrouterKeyInput" placeholder="sk-or-v1-..." autocomplete="off" spellcheck="false">
       </div>
-      <div class="provider-hint"><strong>Prioritas 3</strong> · banyak model fallback</div>
+      <div class="provider-hint"><strong>Prioritas 3</strong> · banyak model vision free</div>
 
       <div id="apiKeyError" style="display:none;text-align:left;margin-bottom:0.75rem;padding:0.5rem 0.7rem;border-radius:8px;font-size:0.78rem;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;"></div>
       <button class="btn-primary" id="btnSaveApiKey"><i class="fas fa-check"></i> Simpan & Verifikasi</button>
@@ -828,11 +825,11 @@
         modelsEndpoint: 'https://api.groq.com/openai/v1/models',
         keysUrl: 'https://console.groq.com/keys',
         keyPrefix: 'gsk_',
+        // Model vision Groq yang aktif saat ini (per Sep 2026):
+        // Llama 4 Scout & Maverick sudah deprecated
         models: [
-          'meta-llama/llama-4-scout-17b-16e-instruct',
-          'meta-llama/llama-4-maverick-17b-128e-instruct',
-          'llama-3.2-11b-vision-preview',
-          'llama-3.2-90b-vision-preview'
+          'qwen/qwen3.6-27b',
+          'qwen/qwen3.8-27b'
         ]
       },
       gemini: {
@@ -841,12 +838,13 @@
         endpoint: 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',
         modelsEndpoint: 'https://generativelanguage.googleapis.com/v1beta/openai/models',
         keysUrl: 'https://aistudio.google.com/app/apikey',
-        // PENTING: Gemini key baru tidak selalu berawalan AIza, jadi prefix dikosongkan
         keyPrefix: '',
+        // Model Gemini yang valid di endpoint OpenAI-compatible (per Sep 2026):
         models: [
-          'gemini-2.0-flash-exp',
-          'gemini-1.5-flash',
-          'gemini-1.5-flash-8b'
+          'gemini-3.8-flash',
+          'gemini-2.5-flash',
+          'gemini-3-flash-preview',
+          'gemini-2.5-flash-lite'
         ]
       },
       openrouter: {
@@ -856,12 +854,13 @@
         modelsEndpoint: 'https://openrouter.ai/api/v1/key',
         keysUrl: 'https://openrouter.ai/keys',
         keyPrefix: 'sk-or-',
-        // Model diupdate: hanya yang masih aktif. Model lama (llama-3.2-11b, qwen-2-vl) sudah 404.
+        // Model vision free OpenRouter yang aktif (per Sep 2026):
         models: [
-          'google/gemini-2.0-flash-exp:free',
-          'meta-llama/llama-4-scout-17b-16e-instruct:free',
-          'qwen/qwen3-next-80b-a3b-instruct:free',
-          'mistralai/mistral-small-3.2-24b-instruct:free',
+          'inclusionai/ling-3.0-flash-vl:free',
+          'google/gemma-4-26b-a4b-it:free',
+          'google/gemma-4-31b-it:free',
+          'thinkingmachines/inkling:free',
+          'thinkingmachines/inkling-small:free',
           'openrouter/free'
         ]
       }
@@ -879,7 +878,7 @@
     const DELAY_BETWEEN_REQUESTS = 1000;
     const MAX_RETRY_ROUNDS = 2;
 
-    /* ============ CLEANUP LEGACY KEYS (Versi Lama) ============ */
+    /* ============ CLEANUP LEGACY KEYS ============ */
     (function cleanupLegacyKeys() {
       const legacy = [
         'akino_openrouter_api_key_old',
@@ -1120,7 +1119,7 @@
       const provider = PROVIDERS[providerId];
       if (!provider) throw new Error('Provider tidak dikenal.');
       if (!key) throw new Error('API Key kosong.');
-      // Hanya cek prefix kalau provider mendefinisikannya
+      // Hanya cek prefix kalau provider mendefinisikannya (Gemini: kosong → skip)
       if (provider.keyPrefix && !key.startsWith(provider.keyPrefix)) {
         throw new Error('Format ' + provider.name + ' harus diawali "' + provider.keyPrefix + '".');
       }
@@ -1220,7 +1219,7 @@
       });
     });
 
-    // ===== SAVE per provider =====
+    // SAVE per provider
     document.querySelectorAll('.provider-card [data-save]').forEach(btn => {
       btn.addEventListener('click', async () => {
         const card = btn.closest('.provider-card');
@@ -1242,27 +1241,23 @@
       });
     });
 
-    // ===== HAPUS per provider → hapus permanen dari localStorage =====
+    // HAPUS per provider — hapus permanen dari localStorage
     document.querySelectorAll('.provider-card [data-clear]').forEach(btn => {
       btn.addEventListener('click', () => {
         const card = btn.closest('.provider-card');
         const pid = card.dataset.provider;
         if (!confirm('Hapus API Key ' + PROVIDERS[pid].name + '?\n\nKey akan dihapus permanen dari browser.')) return;
 
-        // Hapus eksplisit dari localStorage
         const storageKey = LS_KEYS[pid];
         localStorage.removeItem(storageKey);
 
-        // Clear input field di card
         const input = card.querySelector('[data-input]');
         if (input) input.value = '';
 
-        // Clear juga input di gate screen
         const gateMap = { groq: 'groqKeyInput', gemini: 'geminiKeyInput', openrouter: 'openrouterKeyInput' };
         const gateEl = document.getElementById(gateMap[pid]);
         if (gateEl) gateEl.value = '';
 
-        // Verifikasi benar-benar terhapus
         const check = localStorage.getItem(storageKey);
         if (check) {
           showToast('GAGAL hapus! Coba clear cache browser.', 'error');
@@ -1275,15 +1270,13 @@
       });
     });
 
-    // ===== HAPUS SEMUA KEY (RESET BERSIH) =====
+    // HAPUS SEMUA KEY (RESET BERSIH)
     $('btnClearAllKeys').addEventListener('click', () => {
       if (!confirm('⚠️ Hapus SEMUA API Key dari browser?\n\nSemua provider (Groq, Gemini, OpenRouter) akan dihapus permanen.')) return;
 
       Object.values(LS_KEYS).forEach(k => localStorage.removeItem(k));
-      // Legacy keys (kalau masih nyangkut)
       ['akino_openrouter_api_key_old', 'metastock_api_key', 'apikey'].forEach(k => localStorage.removeItem(k));
 
-      // Clear semua input field
       document.querySelectorAll('.provider-card [data-input]').forEach(inp => inp.value = '');
       ['groqKeyInput','geminiKeyInput','openrouterKeyInput'].forEach(id => {
         const el = document.getElementById(id);
@@ -1821,7 +1814,9 @@
           err.fatal = true;
         }
         if (res.status === 429) {
-          // Rate limit → bukan fatal, coba model/provider lain
+          // Rate limit → bukan fatal, tunggu sebentar lalu coba model/provider lain
+          const retryAfter = parseInt(res.headers.get('Retry-After')) || 3;
+          await sleep(retryAfter * 1000);
         }
         throw err;
       }
@@ -1885,9 +1880,8 @@
             if (err.fatal) {
               console.warn('⏭️ Skip provider ' + provider.name + ' (fatal, misal 401)');
               providerFatal = true;
-              break; // langsung ke provider berikutnya
+              break;
             }
-            // 404/429/500 → coba model berikutnya di provider yang sama
             await sleep(800);
           }
         }
