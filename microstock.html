@@ -1372,6 +1372,15 @@
     });
 
     function renderQueue(){
+      // Sort priority: processing > pending > error > done (terbaru dulu di tiap grup)
+      const _pri={processing:0,pending:1,error:2,done:3};
+      currentItems.sort((a,b)=>{
+        const pa=_pri[a.status]!==undefined?_pri[a.status]:99;
+        const pb=_pri[b.status]!==undefined?_pri[b.status]:99;
+        if(pa!==pb)return pa-pb;
+        return (b._ts||0)-(a._ts||0);
+      });
+
       const list=$('queueList');
       $('filterTabs').style.display=currentItems.length>0?'flex':'none';
 
