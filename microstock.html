@@ -428,7 +428,7 @@
       color:var(--warning);
     }
 
-    /* ===== RIGHT PANEL ===== */
+    /* RIGHT PANEL */
     .queue-panel {
       display:flex; flex-direction:column;
       gap:1rem; min-width:0;
@@ -1090,7 +1090,7 @@
   <div class="page-header" id="pageHeader" style="display:none">
     <div class="page-header-text">
       <h1><i class="fas fa-wand-magic-sparkles"></i> MetaStock AI</h1>
-      <p>Upload tanpa batas • Auto-retry gagal • Export CSV/JSON</p>
+      <p>Upload tanpa batas • Auto-retry gagal • Export CSV (Freepik & standard)</p>
     </div>
     <div class="page-header-actions">
       <button class="btn-ghost" id="btnOpenSettings"><i class="fas fa-cog"></i> Pengaturan</button>
@@ -1161,9 +1161,9 @@
             <label>Platform Target</label>
             <select id="platform">
               <option value="general" selected>General (semua)</option>
+              <option value="freepik">Freepik (format CSV khusus)</option>
               <option value="shutterstock">Shutterstock</option>
               <option value="adobe">Adobe Stock</option>
-              <option value="freepik">Freepik</option>
               <option value="istock">iStock / Getty</option>
               <option value="vecteezy">Vecteezy</option>
             </select>
@@ -1370,7 +1370,7 @@
     // STATE
     // ============================================================
     let currentUser = null;
-    let currentItems = []; // { id, dataUrl, fileName, fileSize, originalSize, status, result, error, retryCount, expanded }
+    let currentItems = [];
     let isProcessing = false;
     let currentAssetType = 'photo';
 
@@ -1489,7 +1489,6 @@
       $('statProcessing').textContent = processing;
       $('statPending').textContent = pending;
 
-      // Queue info
       const info = $('queueStats');
       if (!total) {
         info.textContent = 'Belum ada file';
@@ -1500,7 +1499,6 @@
         info.innerHTML = parts.join(' · ');
       }
 
-      // Buttons state
       $('btnExportCSV').disabled = done === 0;
       $('btnExportJSON').disabled = done === 0;
       $('btnRetryFailed').style.display = error > 0 ? 'inline-flex' : 'none';
@@ -1947,7 +1945,6 @@
         });
       });
 
-      // Copy handlers
       list.querySelectorAll('.btn-copy-xs').forEach(btn => {
         btn.addEventListener('click', async (e) => {
           e.stopPropagation();
@@ -2141,9 +2138,9 @@
     function buildPrompt({ kwCount, platform, extraDesc, assetType, lang }) {
       const platformHints = {
         general: 'Shutterstock, Adobe Stock, Freepik, iStock, dan platform microstock umum.',
+        freepik: 'Freepik (title maks 100 karakter, keyword relevan, maks 50 keyword).',
         shutterstock: 'Shutterstock (title maks 200, 7-50 keyword).',
         adobe: 'Adobe Stock (title maks 70, maks 49 keyword).',
-        freepik: 'Freepik (title maks 100).',
         istock: 'iStock/Getty (title deskriptif).',
         vecteezy: 'Vecteezy (title maks 100).'
       };
@@ -2272,7 +2269,7 @@ ${structExample}
 
       let success = 0, fail = 0;
 
-      // ROUND 1: Initial generate
+      // ROUND 1
       for (let i = 0; i < targets.length; i++) {
         const item = targets[i];
         item.status = 'processing';
@@ -2477,26 +2474,81 @@ ${structExample}
     }
 
     // ============================================================
-    // EXPORT CSV & JSON
+    // EXPORT CSV — Auto-detect format dari Platform Target
     // ============================================================
     $('btnExportCSV').addEventListener('click', exportCSV);
     $('btnExportJSON').addEventListener('click', exportJSON);
 
-    function csvEscape(val) {
-      if (val === null || val === undefined) return '';
-      const s = String(val);
-      if (/[",\n\r]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
-      return s;
-    }
-
     function exportCSV() {
       const done = currentItems.filter(i => i.status === 'done' && i.result);
-      if (!done.length) { showToast('Belum ada hasil.', 'warning'); return; }
+      if (!done.length) { showToast('Belum ada hasil untuk diexport.', 'warning'); return; }
       const lang = $('langSelect').value;
+      const platform = $('platform').value;
+
+      if (platform === 'freepik') {
+        exportCSVFreepik(done, lang);
+      } else {
+        exportCSVStandard(done, lang);
+      }
+    }
+
+    // Format Freepik: separator ";" dan setiap field dibungkus single quote
+    // Format: 'file name';'title';'keywords';'prompt';'model'
+    function exportCSVFreepik(items, lang) {
+      function wrap(val) {
+        if (val === null || val === undefined) val = '';
+        const s = String(val).replace(/'/g, "''");
+        return "'" + s + "'";
+      }
+
+      const userPrompt = $('extraDesc').value.trim();
+      const aiModel = 'MetaStock AI';
+
+      const rows = [];
+      items.forEach(item => {
+        const r = item.result || {};
+        let title = '', keywords = '', description = '';
+
+        if (lang === 'both') {
+          // Freepik hanya support 1 bahasa per CSV, prioritas English
+          title = (r.en?.title || r.id?.title || '').trim();
+          keywords = (r.en?.keywords || r.id?.keywords || []).join(',');
+          description = (r.en?.description || r.id?.description || '').trim();
+        } else {
+          title = (r.title || '').trim();
+          keywords = (r.keywords || []).join(',');
+          description = (r.description || '').trim();
+        }
+
+        const prompt = userPrompt || description;
+
+        rows.push([
+          wrap(item.fileName),
+          wrap(title),
+          wrap(keywords),
+          wrap(prompt),
+          wrap(aiModel)
+        ].join(';'));
+      });
+
+      const csv = rows.join('\r\n');
+      downloadFile(csv, 'freepik-metadata-' + new Date().toISOString().slice(0,10) + '.csv', 'text/csv');
+      showToast('CSV Freepik diexport (' + items.length + ' baris).', 'success');
+    }
+
+    // Format CSV Standard (comma separator, double-quote escape)
+    function exportCSVStandard(items, lang) {
+      function csvEscape(val) {
+        if (val === null || val === undefined) return '';
+        const s = String(val);
+        if (/[",\n\r]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
+        return s;
+      }
+
       let header, rows;
       if (lang === 'both') {
         header = ['filename','asset_type','title_id','description_id','keywords_id','title_en','description_en','keywords_en'];
-        rows = done.map(item => {
+        rows = items.map(item => {
           const i = item.result.id || {};
           const e = item.result.en || {};
           return [
@@ -2512,7 +2564,7 @@ ${structExample}
         });
       } else {
         header = ['filename','asset_type','title','description','keywords'];
-        rows = done.map(item => {
+        rows = items.map(item => {
           const n = item.result || {};
           return [
             item.fileName,
@@ -2523,9 +2575,10 @@ ${structExample}
           ];
         });
       }
+
       const csv = [header, ...rows].map(r => r.map(csvEscape).join(',')).join('\r\n');
       downloadFile(csv, 'metastock-' + new Date().toISOString().slice(0,10) + '.csv', 'text/csv');
-      showToast('CSV diexport (' + done.length + ' baris).', 'success');
+      showToast('CSV Standard diexport (' + items.length + ' baris).', 'success');
     }
 
     function exportJSON() {
