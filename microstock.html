@@ -8,6 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <link rel="apple-touch-icon" href="https://res.cloudinary.com/d39mdjct/image/upload/w_180,h_180,c_fit/v1783493763/apk_pgxcmo.png" />
   <title>MetaStock AI - Generator Metadata Microstock | Akino Store</title>
+  <meta name="description" content="Generate judul, deskripsi, dan keyword microstock profesional dengan AI multi-provider. Upload tanpa batas, auto-save cloud, export CSV.">
   <link rel="canonical" href="https://akinocpm.my.id/metastock.html">
   <link rel="icon" href="https://res.cloudinary.com/d39mdjct/image/upload/v1783478697/icon_tnzy32.ico" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -117,7 +118,7 @@
     .two-col{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;}
     @media (max-width:480px){.two-col{grid-template-columns:1fr;}}
     .asset-pills{display:grid;grid-template-columns:repeat(3,1fr);gap:0.35rem;}
-    .asset-pill{display:flex;flex-direction:column;align-items:center;gap:0.15rem;padding:0.5rem 0.3rem;background:var(--bg-input);border:1px solid var(--border);border-radius:10px;transition:all 0.2s;font-size:0.65rem;font-weight:600;color:var(--muted-light);text-align:center;}
+    .asset-pill{display:flex;flex-direction:column;align-items:center;gap:0.15rem;padding:0.5rem 0.3rem;background:var(--bg-input);border:1px solid var(--border);border-radius:10px;transition:all 0.2s;font-size:0.65rem;font-weight:600;color:var(--muted-light);text-align:center;cursor:pointer;}
     .asset-pill i{font-size:0.95rem;color:var(--muted);}
     .asset-pill:hover{border-color:var(--border-hover);color:var(--fg);}
     .asset-pill.active{border-color:var(--accent);background:var(--accent-soft);color:var(--accent);}
@@ -160,6 +161,24 @@
     .btn-toolbar.btn-csv:hover:not(:disabled){transform:translateY(-1px);}
     .btn-toolbar.btn-danger{background:rgba(239,68,68,0.08);border-color:rgba(239,68,68,0.15);color:#f87171;}
     .btn-toolbar.btn-retry{background:rgba(251,146,60,0.1);border-color:rgba(251,146,60,0.2);color:#fb923c;}
+    .filter-tabs{display:flex;gap:0.4rem;padding:0.6rem 0.75rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow-x:auto;scrollbar-width:none;}
+    .filter-tabs::-webkit-scrollbar{display:none;}
+    .filter-tab{display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 0.85rem;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--muted-light);font-size:0.75rem;font-weight:600;cursor:pointer;transition:all 0.2s;white-space:nowrap;flex-shrink:0;}
+    .filter-tab:hover{color:var(--fg);border-color:var(--border-hover);}
+    .filter-tab.active{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);}
+    .filter-tab.active i{color:var(--accent);}
+    .filter-tab i{font-size:0.75rem;}
+    .filter-tab .ft-count{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 0.35rem;border-radius:50px;background:rgba(255,255,255,0.06);font-size:0.65rem;font-weight:700;color:var(--muted);}
+    .filter-tab .ft-count.zero{opacity:0.4;}
+    .filter-tab[data-filter="pending"] .ft-count{background:rgba(251,146,60,0.15);color:#fb923c;}
+    .filter-tab[data-filter="processing"] .ft-count{background:rgba(59,130,246,0.15);color:#60a5fa;}
+    .filter-tab[data-filter="done"] .ft-count{background:rgba(34,197,94,0.15);color:var(--success);}
+    .filter-tab[data-filter="error"] .ft-count{background:rgba(239,68,68,0.15);color:#f87171;}
+    .filter-tab.active .ft-count{background:var(--accent);color:#0a0a0f;}
+    .filter-tab.active[data-filter="done"] .ft-count{background:var(--success);color:#fff;}
+    .filter-tab.active[data-filter="error"] .ft-count{background:#ef4444;color:#fff;}
+    .filter-tab.active[data-filter="processing"] .ft-count{background:var(--info);color:#fff;}
+    .filter-tab.active[data-filter="pending"] .ft-count{background:#fb923c;color:#fff;}
     .pagination-bar{display:flex;align-items:center;justify-content:space-between;gap:0.5rem;padding:0.6rem 0.9rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);flex-wrap:wrap;}
     .pagination-info{font-size:0.75rem;color:var(--muted);}
     .pagination-info strong{color:var(--fg);}
@@ -180,7 +199,7 @@
     .queue-item-header{display:flex;align-items:center;gap:0.75rem;padding:0.7rem 0.9rem;cursor:pointer;user-select:none;}
     .queue-item-thumb{width:52px;height:52px;border-radius:10px;object-fit:cover;flex-shrink:0;border:1px solid var(--border);background:#0a0a12;}
     .queue-item-info{flex:1;min-width:0;}
-    .queue-item-name{font-size:0.82rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:0.4rem;}
+    .queue-item-name{font-size:0.82rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;}
     .queue-item-status{font-size:0.65rem;font-weight:600;display:inline-flex;align-items:center;gap:0.3rem;margin-top:0.15rem;}
     .queue-item-status.pending{color:var(--muted);}
     .queue-item-status.processing{color:var(--info);}
@@ -204,7 +223,7 @@
     body.light-theme .platform-preview .pp-content{background:rgba(0,0,0,0.04);}
     .copy-all-bar{padding:0.6rem 0.9rem;background:rgba(255,221,87,0.04);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;}
     .copy-all-bar .cab-info{flex:1;font-size:0.7rem;color:var(--muted);min-width:100px;}
-    .btn-copy-all{display:inline-flex;align-items:center;gap:0.35rem;padding:0.35rem 0.85rem;background:linear-gradient(145deg,#FFDD57,#f5c842);border-radius:8px;color:#0a0a0f;font-size:0.7rem;font-weight:700;transition:all 0.2s;border:none;}
+    .btn-copy-all{display:inline-flex;align-items:center;gap:0.35rem;padding:0.35rem 0.85rem;background:linear-gradient(145deg,#FFDD57,#f5c842);border-radius:8px;color:#0a0a0f;font-size:0.7rem;font-weight:700;transition:all 0.2s;border:none;cursor:pointer;}
     .btn-copy-all:hover{transform:translateY(-1px);}
     .btn-copy-all.copied{background:linear-gradient(145deg,#22c55e,#16a34a);color:#fff;}
     .result-row{padding:0.75rem 0.9rem;border-bottom:1px solid var(--border);}
@@ -213,7 +232,7 @@
     .result-row-label{font-size:0.68rem;font-weight:700;letter-spacing:0.6px;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:0.35rem;}
     .result-row-label .char-count{font-weight:500;color:var(--muted);font-size:0.62rem;margin-left:0.3rem;text-transform:none;letter-spacing:0;}
     .result-row-actions{display:flex;gap:0.3rem;}
-    .btn-copy-xs{display:inline-flex;align-items:center;gap:0.25rem;padding:0.2rem 0.55rem;background:var(--bg-input);border:1px solid var(--border);border-radius:6px;color:var(--muted-light);font-size:0.62rem;font-weight:600;transition:all 0.2s;}
+    .btn-copy-xs{display:inline-flex;align-items:center;gap:0.25rem;padding:0.2rem 0.55rem;background:var(--bg-input);border:1px solid var(--border);border-radius:6px;color:var(--muted-light);font-size:0.62rem;font-weight:600;transition:all 0.2s;cursor:pointer;}
     .btn-copy-xs:hover{border-color:var(--accent);color:var(--accent);}
     .btn-copy-xs.copied{border-color:var(--success);color:var(--success);}
     .result-row-content{font-size:0.84rem;line-height:1.55;color:var(--fg);word-break:break-word;white-space:pre-wrap;max-height:140px;overflow-y:auto;cursor:text;user-select:text;padding:0.4rem;background:rgba(255,255,255,0.015);border-radius:6px;border:1px solid transparent;}
@@ -257,15 +276,15 @@
     .key-item .ki-status.ready{background:rgba(34,197,94,0.15);color:var(--success);}
     .key-item .ki-status.limited{background:rgba(251,146,60,0.15);color:#fb923c;}
     .key-item .ki-status.invalid{background:rgba(239,68,68,0.15);color:#f87171;}
-    .key-item .ki-remove{width:26px;height:26px;border-radius:6px;background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.2);display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+    .key-item .ki-remove{width:26px;height:26px;border-radius:6px;background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.2);display:flex;align-items:center;justify-content:center;transition:all 0.2s;cursor:pointer;}
     .key-item .ki-remove:hover{background:rgba(239,68,68,0.2);}
     .add-key-row{display:flex;gap:0.4rem;}
     .add-key-row input{flex:1;padding:0.55rem 0.7rem;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--fg);font-size:0.75rem;outline:none;font-family:monospace;min-width:0;}
     .add-key-row input:focus{border-color:var(--accent);}
-    .add-key-row button{padding:0.55rem 1rem;border-radius:8px;background:linear-gradient(145deg,#FFDD57,#f5c842);color:#0a0a0f;font-size:0.75rem;font-weight:700;white-space:nowrap;}
+    .add-key-row button{padding:0.55rem 1rem;border-radius:8px;background:linear-gradient(145deg,#FFDD57,#f5c842);color:#0a0a0f;font-size:0.75rem;font-weight:700;white-space:nowrap;cursor:pointer;}
     .add-key-row button:disabled{opacity:0.5;cursor:wait;}
     .modal-actions{display:flex;gap:0.5rem;margin-top:1rem;flex-wrap:wrap;}
-    .modal-actions button{flex:1;min-width:120px;padding:0.7rem 1rem;border-radius:var(--radius-sm);font-size:0.85rem;font-weight:600;transition:all var(--transition);display:inline-flex;align-items:center;justify-content:center;gap:0.4rem;border:none;}
+    .modal-actions button{flex:1;min-width:120px;padding:0.7rem 1rem;border-radius:var(--radius-sm);font-size:0.85rem;font-weight:600;transition:all var(--transition);display:inline-flex;align-items:center;justify-content:center;gap:0.4rem;border:none;cursor:pointer;}
     .btn-danger{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2) !important;color:#f87171;}
     .btn-cancel{background:var(--bg-input);border:1px solid var(--border);color:var(--muted-light);}
     .toast-container{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:0.5rem;max-width:90%;}
@@ -282,7 +301,7 @@
     .chat-float-label span{color:var(--accent);font-weight:600;}
     .chat-float-btn{width:52px;height:52px;border-radius:16px;background:linear-gradient(145deg,#25D366,#1da851);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.4rem;box-shadow:0 4px 24px rgba(37,211,102,0.35);transition:all var(--transition);}
     .chat-float-btn:hover{transform:scale(1.08);}
-    .back-to-top{position:fixed;bottom:1.25rem;left:1.25rem;z-index:90;width:42px;height:42px;border-radius:10px;background:var(--bg-card);border:1px solid var(--border);color:var(--muted);font-size:0.9rem;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(10px);pointer-events:none;transition:all 0.3s;backdrop-filter:blur(12px);}
+    .back-to-top{position:fixed;bottom:1.25rem;left:1.25rem;z-index:90;width:42px;height:42px;border-radius:10px;background:var(--bg-card);border:1px solid var(--border);color:var(--muted);font-size:0.9rem;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(10px);pointer-events:none;transition:all 0.3s;backdrop-filter:blur(12px);cursor:pointer;}
     .back-to-top.show{opacity:1;transform:translateY(0);pointer-events:auto;}
     .back-to-top:hover{color:var(--accent);border-color:var(--accent);}
     .footer{padding:2.5rem 1.5rem 1.5rem;border-top:1px solid var(--border);margin-top:2rem;}
@@ -313,7 +332,10 @@
       .footer-inner{justify-content:center;text-align:center;flex-direction:column;}
       .stat-box .stat-num{font-size:1.15rem;}
       .pagination-bar{flex-direction:column;align-items:stretch;}
-      .pagination-controls{justify-content:center;}
+      .pagination-controls{justify-content:center;flex-wrap:wrap;}
+      .filter-tabs{padding:0.5rem 0.6rem;}
+      .filter-tab{padding:0.4rem 0.7rem;font-size:0.7rem;}
+      .filter-tab .ft-count{min-width:18px;height:18px;font-size:0.6rem;}
     }
   </style>
 </head>
@@ -373,7 +395,7 @@
       <h2>Setup API Keys</h2>
       <p class="center">Tambahkan <strong>minimal 1 API Key</strong>. Bisa tambah banyak key — kalau kena limit, otomatis ganti ke key berikutnya.</p>
       <div class="api-key-field">
-        <label><span><i class="fas fa-bolt"></i> Groq</span><a href="https://console.groq.com/keys" target="_blank">Dapatkan →</a></label>
+        <label><span><i class="fas fa-bolt"></i> Groq (tercepat)</span><a href="https://console.groq.com/keys" target="_blank">Dapatkan →</a></label>
         <input type="password" id="groqKeyInput" placeholder="gsk_..." autocomplete="off">
       </div>
       <div class="provider-hint"><strong>Prioritas 1</strong> · Qwen 3.6 27B vision</div>
@@ -386,7 +408,7 @@
         <label><span><i class="fas fa-route"></i> OpenRouter</span><a href="https://openrouter.ai/keys" target="_blank">Dapatkan →</a></label>
         <input type="password" id="openrouterKeyInput" placeholder="sk-or-v1-..." autocomplete="off">
       </div>
-      <div class="provider-hint"><strong>Prioritas 3</strong> · banyak model vision free</div>
+      <div class="provider-hint"><strong>Prioritas 3</strong> · openrouter/free (auto-router)</div>
       <div id="apiKeyError" style="display:none;text-align:left;margin-bottom:0.75rem;padding:0.5rem 0.7rem;border-radius:8px;font-size:0.78rem;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;"></div>
       <button class="btn-primary" id="btnSaveApiKey"><i class="fas fa-check"></i> Simpan & Lanjut</button>
       <button class="btn-ghost" id="btnLogoutFromGate" style="margin-top:0.6rem;width:100%;"><i class="fas fa-right-from-bracket"></i> Logout</button>
@@ -396,7 +418,7 @@
   <div class="page-header" id="pageHeader" style="display:none">
     <div class="page-header-text">
       <h1><i class="fas fa-wand-magic-sparkles"></i> MetaStock AI</h1>
-      <p>Multi-key rotation • Auto-save ke cloud • Data terisolasi per akun</p>
+      <p>Multi-key rotation • Auto-save cloud • Data terisolasi per akun • Groq prioritas</p>
     </div>
     <div class="page-header-actions">
       <div class="user-chip" id="userChip" style="display:none;">
@@ -415,7 +437,7 @@
           <div class="upload-zone" id="uploadZone">
             <div class="upload-icon"><i class="fas fa-plus"></i></div>
             <div class="upload-title">Klik atau Drop File</div>
-            <div class="upload-sub"><strong>Tanpa batas</strong> • Maks 5MB/file • JPG/PNG/WEBP</div>
+            <div class="upload-sub"><strong>Tanpa batas</strong> • Maks 5MB/file • Auto-save ke cloud</div>
             <input type="file" id="fileInput" accept="image/*" multiple>
           </div>
           <div class="batch-progress" id="batchProgress">
@@ -511,6 +533,14 @@
           </div>
         </div>
 
+        <div class="filter-tabs" id="filterTabs" style="display:none;">
+          <button class="filter-tab active" data-filter="all"><i class="fas fa-list"></i> Semua <span class="ft-count" data-count="all">0</span></button>
+          <button class="filter-tab" data-filter="pending"><i class="fas fa-clock"></i> Menunggu <span class="ft-count" data-count="pending">0</span></button>
+          <button class="filter-tab" data-filter="processing"><i class="fas fa-spinner"></i> Proses <span class="ft-count" data-count="processing">0</span></button>
+          <button class="filter-tab" data-filter="done"><i class="fas fa-check-circle"></i> Selesai <span class="ft-count" data-count="done">0</span></button>
+          <button class="filter-tab" data-filter="error"><i class="fas fa-times-circle"></i> Gagal <span class="ft-count" data-count="error">0</span></button>
+        </div>
+
         <div class="queue-list" id="queueList">
           <div class="empty-queue">
             <div class="empty-icon"><i class="fas fa-cloud-upload-alt"></i></div>
@@ -586,7 +616,7 @@
       </div>
 
       <div style="margin-top:0.75rem;">
-        <button id="btnClearAllKeys" style="width:100%;padding:0.7rem;border-radius:10px;font-size:0.78rem;font-weight:600;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);color:#f87171;display:flex;align-items:center;justify-content:center;gap:0.4rem;">
+        <button id="btnClearAllKeys" style="width:100%;padding:0.7rem;border-radius:10px;font-size:0.78rem;font-weight:600;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);color:#f87171;display:flex;align-items:center;justify-content:center;gap:0.4rem;cursor:pointer;">
           <i class="fas fa-broom"></i> Hapus Semua API Key
         </button>
       </div>
@@ -626,7 +656,6 @@
   <div class="toast-container" id="toastContainer"></div>
 
   <script>
-    /* ============ CONFIG ============ */
     const PROVIDERS = {
       groq: {
         id: 'groq', name: 'Groq',
@@ -647,13 +676,7 @@
         endpoint: 'https://openrouter.ai/api/v1/chat/completions',
         modelsEndpoint: 'https://openrouter.ai/api/v1/key',
         keyPrefix: 'sk-or-',
-        models: [
-          'inclusionai/ling-3.0-flash-vl:free',
-          'google/gemma-4-26b-a4b-it:free',
-          'google/gemma-4-31b-it:free',
-          'thinkingmachines/inkling:free',
-          'openrouter/free'
-        ]
+        models: ['openrouter/free']
       }
     };
     const PROVIDER_ORDER = ['groq', 'gemini', 'openrouter'];
@@ -679,7 +702,7 @@
     const RATE_LIMIT_COOLDOWN = 5 * 60 * 1000;
 
     const ASSET_HINTS = {
-      photo:{label:'Photo',context:'PHOTOGRAPH. Focus keywords on: subject, lighting, composition, mood, colors, season, location, photo-technical terms.',titleHint:'Natural descriptive title.'},
+      photo:{label:'Photo',context:'PHOTOGRAPH. Focus keywords on: subject, lighting, composition, mood, colors, season, location, photo-technical terms.',titleHint:'Natural descriptive title as photographer.'},
       vector:{label:'Vector',context:'VECTOR GRAPHIC. Focus: flat design, icon, editable, scalable, isolated, minimal, modern, web, ui.',titleHint:'Title mentions vector or icon.'},
       illustration:{label:'Illustration',context:'ILLUSTRATION. Focus: artwork, drawn, painting, digital art, character, scene, narrative, stylized, colorful, cartoon.',titleHint:'Title mentions illustration.'},
       video:{label:'Video',context:'VIDEO still. Focus: video, footage, clip, motion, cinematic, 4K, slow motion, timelapse, aerial, drone.',titleHint:'Title mentions video or footage.'},
@@ -696,7 +719,6 @@
       vecteezy:{name:'Vecteezy',icon:'fa-vector-square',fields:['filename','title','keywords','description']}
     };
 
-    /* ============ STATE ============ */
     let currentUser = null;
     let currentItems = [];
     let isProcessing = false;
@@ -706,7 +728,7 @@
     let currentPage = 1;
     let pageSize = parseInt(localStorage.getItem(LS_PAGE_SIZE)) || 10;
     let firestoreUnsubscribe = null;
-    let isSavingFirestore = false;
+    let currentFilter = 'all';
 
     const $ = id => document.getElementById(id);
     const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -716,7 +738,6 @@
     function genId(prefix){idCounter++;return (prefix||'id')+'_'+Date.now()+'_'+idCounter+'_'+Math.random().toString(36).substr(2,4);}
     function maskApiKey(k){if(!k)return '-';if(k.length<15)return '***';return k.substring(0,10)+'...'+k.substring(k.length-4);}
 
-    /* ============ MULTI-KEY STORAGE ============ */
     function getKeys(pid){
       try{
         const raw=localStorage.getItem(LS_KEYS[pid]);
@@ -761,7 +782,6 @@
       return ready.length>0?ready:keys;
     }
 
-    /* ============ TOAST ============ */
     function showToast(message,type='info'){
       const c=$('toastContainer');const t=document.createElement('div');
       t.className='toast '+type;
@@ -771,7 +791,6 @@
       setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(40px) scale(0.9)';setTimeout(()=>t.remove(),300);},4200);
     }
 
-    /* ============ CLOUDINARY UPLOAD ============ */
     async function uploadToCloudinary(dataUrl){
       const res=await fetch(dataUrl);
       const blob=await res.blob();
@@ -785,7 +804,6 @@
       return data.secure_url;
     }
 
-    /* ============ FIRESTORE ============ */
     async function saveItemToFirestore(item){
       if(!currentUser||typeof db==='undefined')return null;
       try{
@@ -809,7 +827,7 @@
         if(item.firestoreId){
           await db.collection(FIRESTORE_COLLECTION).doc(item.firestoreId).update(payload);
           return item.firestoreId;
-        } else {
+        }else{
           payload.createdAt=firebase.firestore.FieldValue.serverTimestamp();
           const ref=await db.collection(FIRESTORE_COLLECTION).add(payload);
           return ref.id;
@@ -849,15 +867,11 @@
               _ts:d.updatedAt?.seconds?d.updatedAt.seconds*1000:(d.createdAt?.seconds?d.createdAt.seconds*1000:Date.now())
             });
           });
-          // Preserve unsaved items (yang belum masuk Firestore) + state expanded
-          const unsaved=currentItems.filter(i=>!i.firestoreId&&i.status==='pending'&&!i.result);
           const expandedMap={};
           currentItems.forEach(i=>{if(i.expanded)expandedMap[i.firestoreId||i.id]=true;});
-          [...unsaved,...dbItems].forEach(i=>{i.expanded=expandedMap[i.firestoreId||i.id]||false;});
-          // Dedup: unsaved items that might already be in DB
-          const dbIds=new Set(dbItems.map(i=>i.firestoreId));
-          const filteredUnsaved=unsaved.filter(i=>!i.firestoreId||!dbIds.has(i.firestoreId));
-          currentItems=[...filteredUnsaved,...dbItems];
+          dbItems.forEach(i=>{i.expanded=expandedMap[i.firestoreId]||false;});
+          const unsaved=currentItems.filter(i=>!i.firestoreId);
+          currentItems=[...unsaved,...dbItems];
           currentItems.sort((a,b)=>(b._ts||0)-(a._ts||0));
           renderQueue();
           updateStats();
@@ -867,7 +881,6 @@
         });
     }
 
-    /* ============ AUTH ============ */
     firebase.auth().onAuthStateChanged((user)=>{
       currentUser=user;
       if(!user){
@@ -921,7 +934,6 @@
       }catch(err){showToast('Gagal logout.','error');}
     }
 
-    /* ============ VERIFY ============ */
     async function verifyProviderKey(pid,key){
       const p=PROVIDERS[pid];
       if(!p)throw new Error('Provider tidak dikenal.');
@@ -964,7 +976,6 @@
       loadItemsFromFirestore();
     });
 
-    /* ============ SETTINGS MODAL ============ */
     $('btnOpenSettings').addEventListener('click',()=>{
       $('settingsModal').classList.add('active');
       renderProviderCards();
@@ -981,16 +992,9 @@
         const listEl=card.querySelector('[data-key-list]');
         const totalReady=keys.filter(k=>!isKeyRateLimited(k)).length;
 
-        if(keys.length===0){
-          statusEl.className='pc-status missing';
-          statusEl.textContent='Belum diset';
-        }else if(totalReady===0){
-          statusEl.className='pc-status missing';
-          statusEl.textContent=keys.length+' key (semua limit)';
-        }else{
-          statusEl.className='pc-status ok';
-          statusEl.textContent=totalReady+'/'+keys.length+' aktif';
-        }
+        if(keys.length===0){statusEl.className='pc-status missing';statusEl.textContent='Belum diset';}
+        else if(totalReady===0){statusEl.className='pc-status missing';statusEl.textContent=keys.length+' key (semua limit)';}
+        else{statusEl.className='pc-status ok';statusEl.textContent=totalReady+'/'+keys.length+' aktif';}
 
         if(keys.length===0){
           listEl.innerHTML='<div style="font-size:0.7rem;color:var(--muted);padding:0.3rem 0;">Belum ada key. Tambah di bawah.</div>';
@@ -1061,7 +1065,6 @@
       showToast('Info di-refresh.','info');
     });
 
-    /* ============ NAV / THEME ============ */
     (function setupNav(){
       window.addEventListener('scroll',()=>{
         $('navbar').classList.toggle('scrolled',window.scrollY>40);
@@ -1096,7 +1099,6 @@
       }
     })();
 
-    /* ============ ASSET & SETTINGS ============ */
     $('assetPills').addEventListener('click',(e)=>{
       const pill=e.target.closest('.asset-pill');if(!pill)return;
       const type=pill.dataset.type;if(!ASSET_HINTS[type])return;
@@ -1150,6 +1152,24 @@
       document.querySelectorAll('.provider-dot').forEach(dot=>dot.classList.toggle('active',active.includes(dot.dataset.provider)));
     }
 
+    function updateFilterCounts(){
+      const counts={
+        all:currentItems.length,
+        pending:currentItems.filter(i=>i.status==='pending').length,
+        processing:currentItems.filter(i=>i.status==='processing').length,
+        done:currentItems.filter(i=>i.status==='done').length,
+        error:currentItems.filter(i=>i.status==='error').length
+      };
+      document.querySelectorAll('.filter-tab').forEach(tab=>{
+        const f=tab.dataset.filter;
+        const countEl=tab.querySelector('.ft-count');
+        if(countEl){
+          countEl.textContent=counts[f]||0;
+          countEl.classList.toggle('zero',!counts[f]);
+        }
+      });
+    }
+
     function updateStats(){
       const total=currentItems.length;
       const done=currentItems.filter(i=>i.status==='done').length;
@@ -1168,12 +1188,12 @@
         if(error)parts.push(`<span style="color:var(--danger)">${error} ✗</span>`);
         info.innerHTML=parts.join(' · ');
       }
+      updateFilterCounts();
       $('btnExportCSV').disabled=done===0;
       $('btnExportJSON').disabled=done===0;
       $('btnRetryFailed').style.display=error>0?'inline-flex':'none';
     }
 
-    /* ============ UPLOAD ============ */
     const uploadZone=$('uploadZone');const fileInput=$('fileInput');
     uploadZone.addEventListener('click',()=>fileInput.click());
     uploadZone.addEventListener('dragover',(e)=>{e.preventDefault();uploadZone.classList.add('dragover');});
@@ -1182,18 +1202,42 @@
     fileInput.addEventListener('change',(e)=>{if(e.target.files.length)handleFiles(e.target.files);fileInput.value='';});
 
     async function handleFiles(fileList){
+      if(isProcessing){showToast('Tunggu proses generate selesai dulu.','warning');return;}
       const files=Array.from(fileList);
-      let added=0,skipped=0;
+      if(!files.length)return;
+
+      const valid=[];
       for(const file of files){
-        if(!file.type.startsWith('image/')){skipped++;continue;}
-        if(file.size>MAX_FILE_SIZE){showToast('"'+file.name+'" >5MB, skip.','warning');skipped++;continue;}
+        if(!file.type.startsWith('image/'))continue;
+        if(file.size>MAX_FILE_SIZE){showToast('"'+file.name+'" >5MB, skip.','warning');continue;}
+        if(currentItems.some(i=>i.fileName===file.name&&i.originalSize===file.size)){
+          showToast('"'+file.name+'" sudah ada di antrian.','info');
+          continue;
+        }
+        valid.push(file);
+      }
+      if(!valid.length){showToast('Tidak ada file baru yang valid.','warning');return;}
+
+      const bp=$('batchProgress');
+      bp.classList.add('show');
+      showProgress(0,valid.length,'Menyiapkan...');
+
+      let added=0,failed=0;
+
+      for(let i=0;i<valid.length;i++){
+        const file=valid[i];
         try{
+          showProgress(i,valid.length,file.name+' (compress...)');
           const compressed=await compressImage(file);
+
+          showProgress(i,valid.length,file.name+' (upload cloud...)');
+          const cloudUrl=await uploadToCloudinary(compressed.dataUrl);
+
           const newItem={
             firestoreId:null,
             id:genId('img'),
-            dataUrl:compressed.dataUrl,
-            cloudUrl:'',
+            dataUrl:cloudUrl,
+            cloudUrl:cloudUrl,
             fileName:file.name,
             fileSize:compressed.size,
             originalSize:file.size,
@@ -1208,14 +1252,26 @@
             providerUsed:null,
             _ts:Date.now()
           };
+
+          showProgress(i,valid.length,file.name+' (save...)');
+          const fid=await saveItemToFirestore(newItem);
+          if(fid)newItem.firestoreId=fid;
+
           currentItems.unshift(newItem);
           added++;
-        }catch(err){showToast('Gagal "'+file.name+'": '+err.message,'error');skipped++;}
+          currentPage=1;
+          renderQueue();updateStats();
+          showProgress(i+1,valid.length,file.name+' ✓');
+        }catch(err){
+          console.error('Handle file error:',file.name,err);
+          showToast('Gagal "'+file.name+'": '+err.message,'error');
+          failed++;
+        }
       }
-      currentPage=1;
-      renderQueue();updateStats();
-      if(added>0)showToast(added+' file ditambahkan. Klik Generate untuk proses.','success');
-      if(skipped>0&&added===0)showToast('Tidak ada file yang valid.','warning');
+
+      hideProgress();
+      if(added>0)showToast(added+' file tersimpan di cloud. Klik Generate untuk proses metadata.','success');
+      if(failed>0)showToast(failed+' file gagal diupload.','warning');
     }
 
     function compressImage(file){
@@ -1247,21 +1303,32 @@
       });
     }
 
-    /* ============ PAGINATION ============ */
+    function getFilteredItems(){
+      if(currentFilter==='all')return currentItems;
+      return currentItems.filter(i=>i.status===currentFilter);
+    }
+
     function getPagedItems(){
-      const total=currentItems.length;
+      const filtered=getFilteredItems();
+      const total=filtered.length;
       const totalPages=Math.max(1,Math.ceil(total/pageSize));
       if(currentPage>totalPages)currentPage=totalPages;
       const start=(currentPage-1)*pageSize;
       const end=start+pageSize;
-      return{items:currentItems.slice(start,end),total,totalPages,start,end:Math.min(end,total)};
+      return{items:filtered.slice(start,end),total,totalPages,start,end:Math.min(end,total)};
     }
+
+    function labelFilter(f){
+      return {all:'Semua',pending:'Menunggu',processing:'Proses',done:'Selesai',error:'Gagal'}[f]||f;
+    }
+
     function renderPagination(){
       const bar=$('paginationBar');
       const{total,totalPages,start,end}=getPagedItems();
       if(total===0){bar.style.display='none';return;}
       bar.style.display='flex';
-      $('paginationInfo').innerHTML='Menampilkan <strong>'+(start+1)+'-'+end+'</strong> dari <strong>'+total+'</strong> file';
+      const label=currentFilter==='all'?'file':labelFilter(currentFilter).toLowerCase();
+      $('paginationInfo').innerHTML='Menampilkan <strong>'+(start+1)+'-'+end+'</strong> dari <strong>'+total+'</strong> '+label;
       $('btnPrevPage').disabled=currentPage<=1;
       $('btnNextPage').disabled=currentPage>=totalPages;
       const pageNumEl=$('pageNumbers');
@@ -1293,14 +1360,36 @@
       currentPage=1;renderQueue();renderPagination();
     });
 
-    /* ============ RENDER QUEUE ============ */
+    $('filterTabs').addEventListener('click',(e)=>{
+      const tab=e.target.closest('.filter-tab');
+      if(!tab)return;
+      const f=tab.dataset.filter;
+      if(f===currentFilter)return;
+      currentFilter=f;
+      currentPage=1;
+      document.querySelectorAll('.filter-tab').forEach(t=>t.classList.toggle('active',t.dataset.filter===f));
+      renderQueue();
+    });
+
     function renderQueue(){
       const list=$('queueList');
+      $('filterTabs').style.display=currentItems.length>0?'flex':'none';
+
       if(!currentItems.length){
         list.innerHTML=`<div class="empty-queue"><div class="empty-icon"><i class="fas fa-cloud-upload-alt"></i></div><h3>Belum ada file</h3><p>Upload gambar di panel kiri, lalu klik <strong>Generate Semua</strong>.</p></div>`;
         $('paginationBar').style.display='none';
+        updateFilterCounts();
         return;
       }
+
+      const filtered=getFilteredItems();
+      if(!filtered.length&&currentFilter!=='all'){
+        list.innerHTML=`<div class="empty-queue"><div class="empty-icon"><i class="fas fa-filter"></i></div><h3>Tidak ada file "${labelFilter(currentFilter)}"</h3><p>Coba ganti filter atau upload file baru.</p></div>`;
+        $('paginationBar').style.display='none';
+        updateFilterCounts();
+        return;
+      }
+
       const{items}=getPagedItems();
       const lang=$('langSelect').value;
       const html=[];
@@ -1322,7 +1411,7 @@
               <img src="${item.dataUrl}" alt="" class="queue-item-thumb" loading="lazy">
               <div class="queue-item-info">
                 <div class="queue-item-name">
-                  <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escHtml(item.fileName)}</span>
+                  <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;">${escHtml(item.fileName)}</span>
                   ${retryBadge}${providerBadge}${savedBadge}
                 </div>
                 <div class="queue-item-status ${item.status}">${statusIcon} ${statusText}</div>
@@ -1340,6 +1429,7 @@
       list.innerHTML=html.join('');
       attachQueueHandlers();
       renderPagination();
+      updateFilterCounts();
     }
 
     function attachQueueHandlers(){
@@ -1367,7 +1457,7 @@
           const id=el.dataset.remove;
           const item=currentItems.find(x=>x.id===id);
           if(!item)return;
-          if(!confirm('Hapus file ini'+(item.firestoreId?' dari cloud juga':'')+'?'))return;
+          if(!confirm('Hapus "'+item.fileName+'" dari antrian?\n\nCatatan: file di Cloudinary tidak ikut terhapus — bersihkan manual dari dashboard Cloudinary.'))return;
           if(item.firestoreId)await deleteItemFromFirestore(item.firestoreId);
           currentItems=currentItems.filter(x=>x.id!==id);
           renderQueue();updateStats();
@@ -1378,7 +1468,7 @@
         el.addEventListener('click',async(e)=>{
           e.stopPropagation();
           if(isProcessing)return;
-          await retrySingle(el.dataset.retry);
+          await retrySingle(el.dataset.retry,false);
         });
       });
       list.querySelectorAll('[data-regen]').forEach(el=>{
@@ -1449,11 +1539,11 @@
       const kwStrComma=keywords.join(',');
       const userPrompt=$('extraDesc').value.trim();
       if(platform==='freepik')return[normalizeFreepikFilename(item.fileName),title,kwStrComma,userPrompt||description,'MetaStock AI'];
-      if(platform==='shutterstock')return[item.fileName,description,kwStrComma,'','no','no',(currentAssetType==='vector'||currentAssetType==='illustration')?'yes':'no'];
+      if(platform==='shutterstock')return[item.fileName,description,kwStrComma,'','no','no',(item.assetType==='vector'||item.assetType==='illustration')?'yes':'no'];
       if(platform==='adobe')return[item.fileName,title,kwStrComma,'',''];
       if(platform==='istock')return[item.fileName,title,description,kwStr];
       if(platform==='vecteezy')return[item.fileName,title,kwStrComma,description];
-      return[item.fileName,currentAssetType,title,description,kwStr];
+      return[item.fileName,item.assetType||currentAssetType,title,description,kwStr];
     }
     function formatPlatformPreview(item,lang,platform){
       const row=buildPlatformRow(item,lang,platform);
@@ -1565,7 +1655,6 @@
     }
     function hideProgress(){setTimeout(()=>{$('batchProgress').classList.remove('show');$('progressFill').style.width='0%';},800);}
 
-    /* ============ PROVIDER CALL ============ */
     async function callProvider(pid,apiKey,model,prompt,imageDataUrl,signal){
       const provider=PROVIDERS[pid];
       const content=imageDataUrl
@@ -1625,7 +1714,6 @@
         if(stopRequested)throw new Error('STOP_REQUESTED');
         const provider=PROVIDERS[pid];
         const keys=getAvailableKeys(pid);
-        let providerExhausted=false;
 
         for(const keyObj of keys){
           if(stopRequested)throw new Error('STOP_REQUESTED');
@@ -1648,28 +1736,18 @@
               console.warn('❌ '+provider.name+'/'+model+' gagal:',err.message);
               lastErr=err;
               attemptedAny=true;
-              if(err.fatal){
-                markKeyFail(pid,keyObj.id,'invalid');
-                keyFatal=true;
-                break;
-              }
-              if(err.rateLimited){
-                markKeyFail(pid,keyObj.id,'rate_limit');
-                keyFatal=true;
-                break;
-              }
+              if(err.fatal){markKeyFail(pid,keyObj.id,'invalid');keyFatal=true;break;}
+              if(err.rateLimited){markKeyFail(pid,keyObj.id,'rate_limit');keyFatal=true;break;}
               await sleep(600);
             }
           }
           if(keyFatal)continue;
         }
-        if(providerExhausted)continue;
       }
       if(!attemptedAny)throw new Error('Tidak ada provider yang bisa dicoba.');
       throw new Error('Semua provider gagal: '+(lastErr?.message||'unknown'));
     }
 
-    /* ============ PROMPT ============ */
     function buildPrompt({kwCount,platform,extraDesc,assetType,lang}){
       const platformHints={
         general:'Shutterstock, Adobe Stock, Freepik, iStock.',
@@ -1739,7 +1817,6 @@ CRITICAL OUTPUT RULES:
       return{title:String(node.title||'').trim(),description:String(node.description||'').trim(),keywords};
     }
 
-    /* ============ GENERATE ============ */
     $('btnGenerate').addEventListener('click',()=>generateAll(false));
     $('btnRetryFailed').addEventListener('click',()=>generateAll(true));
 
@@ -1758,15 +1835,6 @@ CRITICAL OUTPUT RULES:
       else $('btnGenerate').innerHTML='<i class="fas fa-wand-magic-sparkles"></i> Generate Semua';
     }
 
-    async function ensureCloudUrl(item){
-      if(item.cloudUrl)return item.cloudUrl;
-      if(!item.dataUrl)throw new Error('Gambar tidak ada di memory.');
-      const url=await uploadToCloudinary(item.dataUrl);
-      item.cloudUrl=url;
-      item.dataUrl=url; // replace for display
-      return url;
-    }
-
     async function generateAll(onlyFailed){
       if(isProcessing)return;
       const activeProviders=getActiveProviders();
@@ -1776,7 +1844,10 @@ CRITICAL OUTPUT RULES:
         ?currentItems.filter(i=>i.status==='error')
         :currentItems.filter(i=>i.status==='pending'||i.status==='error');
 
-      if(!targets.length){showToast(onlyFailed?'Tidak ada file gagal.':'Tidak ada file untuk diproses.','info');return;}
+      if(!targets.length){
+        showToast(onlyFailed?'Tidak ada file gagal.':'Semua file sudah di-generate. Upload file baru untuk proses.','info');
+        return;
+      }
 
       stopRequested=false;
       abortController=new AbortController();
@@ -1801,22 +1872,10 @@ CRITICAL OUTPUT RULES:
         item.status='processing';
         item.lang=opts.lang;
         item.platform=opts.platform;
-        item.assetType=opts.assetType;
         renderQueue();updateStats();
         showProgress(i,targets.length,item.fileName);
 
         try{
-          // Upload ke Cloudinary kalau belum
-          if(!item.cloudUrl){
-            showProgress(i,targets.length,item.fileName+' (upload...)');
-            item.cloudUrl=await ensureCloudUrl(item);
-          }
-          // Save pending ke Firestore
-          if(!item.firestoreId){
-            const fid=await saveItemToFirestore(item);
-            if(fid)item.firestoreId=fid;
-          }
-
           const prompt=buildPrompt(opts);
           const parsed=await callAIWithFallback(prompt,item.cloudUrl||item.dataUrl,abortController.signal);
 
@@ -1837,8 +1896,6 @@ CRITICAL OUTPUT RULES:
           item.expanded=false;
           success++;
           item._ts=Date.now();
-
-          // Save hasil ke Firestore
           await saveItemToFirestore(item);
         }catch(err){
           if(err.message==='STOP_REQUESTED'||stopRequested){stopped=true;break;}
@@ -1854,7 +1911,6 @@ CRITICAL OUTPUT RULES:
         if(i<targets.length-1&&!stopRequested)await sleep(DELAY_BETWEEN_REQUESTS);
       }
 
-      // Auto retry
       let totalFixed=0;
       if(!stopped){
         for(let round=1;round<=MAX_RETRY_ROUNDS;round++){
@@ -1942,13 +1998,6 @@ CRITICAL OUTPUT RULES:
       };
 
       try{
-        if(!item.cloudUrl){
-          item.cloudUrl=await ensureCloudUrl(item);
-        }
-        if(!item.firestoreId){
-          const fid=await saveItemToFirestore(item);
-          if(fid)item.firestoreId=fid;
-        }
         const prompt=buildPrompt(opts);
         const parsed=await callAIWithFallback(prompt,item.cloudUrl||item.dataUrl,abortController.signal);
         const providerName=parsed.__provider||'AI';
@@ -1969,9 +2018,8 @@ CRITICAL OUTPUT RULES:
         await saveItemToFirestore(item);
         showToast(isRegenerate?'Berhasil regenerate!':'Berhasil di-retry!','success');
       }catch(err){
-        if(err.message==='STOP_REQUESTED'){
-          item.status='pending';
-        }else{
+        if(err.message==='STOP_REQUESTED'){item.status='pending';}
+        else{
           item.status='error';
           item.error=err.message;
           item.retryCount++;
@@ -1988,17 +2036,25 @@ CRITICAL OUTPUT RULES:
 
     $('btnClearQueue').addEventListener('click',async()=>{
       if(isProcessing){showToast('Tidak bisa clear saat proses berjalan.','warning');return;}
-      if(!confirm('Hapus SEMUA file dari antrian & cloud? Ini tidak bisa dibatalkan.'))return;
-      const itemsToDelete=currentItems.filter(i=>i.firestoreId);
+      if(!currentItems.length){showToast('Antrian kosong.','info');return;}
+      const cloudCount=currentItems.filter(i=>i.firestoreId).length;
+      const msg='⚠️ Hapus '+currentItems.length+' file dari antrian'+
+        (cloudCount?' ('+cloudCount+' record di Firestore)':'')+
+        '?\n\nFile di Cloudinary TIDAK ikut terhapus. Bersihkan manual kalau perlu.';
+      if(!confirm(msg))return;
+
+      const toDelete=currentItems.filter(i=>i.firestoreId);
       currentItems=[];
       renderQueue();updateStats();
-      for(const it of itemsToDelete){
-        await deleteItemFromFirestore(it.firestoreId);
+      showProgress(0,toDelete.length,'Menghapus dari cloud...');
+      for(let i=0;i<toDelete.length;i++){
+        showProgress(i,toDelete.length,toDelete[i].fileName);
+        await deleteItemFromFirestore(toDelete[i].firestoreId);
       }
-      showToast('Antrian dibersihkan ('+itemsToDelete.length+' file dihapus dari cloud).','success');
+      hideProgress();
+      showToast(toDelete.length+' record dihapus.','success');
     });
 
-    /* ============ COPY ============ */
     async function copyText(text){
       try{
         if(navigator.clipboard&&navigator.clipboard.writeText)await navigator.clipboard.writeText(text);
@@ -2012,7 +2068,6 @@ CRITICAL OUTPUT RULES:
       }catch(e){showToast('Gagal menyalin.','error');}
     }
 
-    /* ============ EXPORT ============ */
     $('btnExportCSV').addEventListener('click',exportCSV);
     $('btnExportJSON').addEventListener('click',exportJSON);
 
