@@ -272,20 +272,17 @@
     .queue-item.expanded .queue-item-body { display:block; }
     .queue-item-error-msg { padding:0.75rem 0.9rem; font-size:0.8rem; color:#f87171; background:rgba(239,68,68,0.04); }
 
-    .platform-format-badge { display:inline-flex; align-items:center; gap:0.35rem; padding:0.25rem 0.7rem; border-radius:50px; background:rgba(255,221,87,0.1); border:1px solid rgba(255,221,87,0.2); color:var(--accent); font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
-    .platform-format-badge i { font-size:0.6rem; }
+    .platform-preview { padding:0.75rem 0.9rem; background:rgba(59,130,246,0.04); border-bottom:1px solid var(--border); }
+    .platform-preview .pp-head { display:flex; align-items:center; justify-content:space-between; gap:0.5rem; margin-bottom:0.4rem; flex-wrap:wrap; }
+    .platform-preview .pp-title { font-size:0.68rem; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:var(--info); display:flex; align-items:center; gap:0.35rem; }
+    .platform-preview .pp-content { font-family:monospace; font-size:0.72rem; line-height:1.55; color:var(--fg-dim); background:rgba(0,0,0,0.2); border-radius:6px; padding:0.5rem 0.65rem; white-space:pre-wrap; word-break:break-all; max-height:140px; overflow-y:auto; }
+    body.light-theme .platform-preview .pp-content { background:rgba(0,0,0,0.04); }
 
     .copy-all-bar { padding:0.6rem 0.9rem; background:rgba(255,221,87,0.04); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap; }
     .copy-all-bar .cab-info { flex:1; font-size:0.7rem; color:var(--muted); min-width:100px; }
     .btn-copy-all { display:inline-flex; align-items:center; gap:0.35rem; padding:0.35rem 0.85rem; background:linear-gradient(145deg, #FFDD57, #f5c842); border-radius:8px; color:#0a0a0f; font-size:0.7rem; font-weight:700; cursor:pointer; transition:all 0.2s; border:none; }
     .btn-copy-all:hover { transform:translateY(-1px); box-shadow:0 4px 16px rgba(255,221,87,0.3); }
     .btn-copy-all.copied { background:linear-gradient(145deg, #22c55e, #16a34a); color:#fff; }
-
-    .platform-preview { padding:0.75rem 0.9rem; background:rgba(59,130,246,0.04); border-bottom:1px solid var(--border); }
-    .platform-preview .pp-head { display:flex; align-items:center; justify-content:space-between; gap:0.5rem; margin-bottom:0.4rem; flex-wrap:wrap; }
-    .platform-preview .pp-title { font-size:0.68rem; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:var(--info); display:flex; align-items:center; gap:0.35rem; }
-    .platform-preview .pp-content { font-family:monospace; font-size:0.72rem; line-height:1.55; color:var(--fg-dim); background:rgba(0,0,0,0.2); border-radius:6px; padding:0.5rem 0.65rem; white-space:pre-wrap; word-break:break-all; max-height:140px; overflow-y:auto; }
-    body.light-theme .platform-preview .pp-content { background:rgba(0,0,0,0.04); }
 
     .result-row { padding:0.75rem 0.9rem; border-bottom:1px solid var(--border); }
     .result-row:last-child { border-bottom:none; }
@@ -519,9 +516,9 @@
           <span><i class="fab fa-google"></i> Google Gemini (gratis)</span>
           <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Dapatkan →</a>
         </label>
-        <input type="password" id="geminiKeyInput" placeholder="AIza..." autocomplete="off" spellcheck="false">
+        <input type="password" id="geminiKeyInput" placeholder="Tempel API Key Gemini di sini..." autocomplete="off" spellcheck="false">
       </div>
-      <div class="provider-hint"><strong>Prioritas 2</strong> · Gemini 2.0 / 1.5 Flash</div>
+      <div class="provider-hint"><strong>Prioritas 2</strong> · Gemini 2.0 / 1.5 Flash (format bebas)</div>
 
       <div class="api-key-field">
         <label>
@@ -751,7 +748,7 @@
         </div>
         <div class="pc-body">
           <div class="pc-row"><span class="pc-label">Status</span><span class="pc-val" data-info>-</span></div>
-          <input type="password" class="pc-input" data-input placeholder="AIza...">
+          <input type="password" class="pc-input" data-input placeholder="Tempel API Key Gemini (format bebas)">
           <div class="pc-actions">
             <button class="pc-btn-save" data-save>Simpan</button>
             <button class="pc-btn-clear" data-clear>Hapus</button>
@@ -772,6 +769,12 @@
             <button class="pc-btn-clear" data-clear>Hapus</button>
           </div>
         </div>
+      </div>
+
+      <div style="margin-top:0.75rem;">
+        <button id="btnClearAllKeys" style="width:100%;padding:0.7rem;border-radius:10px;font-size:0.78rem;font-weight:600;cursor:pointer;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);color:#f87171;display:flex;align-items:center;justify-content:center;gap:0.4rem;">
+          <i class="fas fa-broom"></i> Hapus Semua API Key (Reset Bersih)
+        </button>
       </div>
 
       <div class="modal-actions">
@@ -838,7 +841,8 @@
         endpoint: 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',
         modelsEndpoint: 'https://generativelanguage.googleapis.com/v1beta/openai/models',
         keysUrl: 'https://aistudio.google.com/app/apikey',
-        keyPrefix: 'AIza',
+        // PENTING: Gemini key baru tidak selalu berawalan AIza, jadi prefix dikosongkan
+        keyPrefix: '',
         models: [
           'gemini-2.0-flash-exp',
           'gemini-1.5-flash',
@@ -852,10 +856,12 @@
         modelsEndpoint: 'https://openrouter.ai/api/v1/key',
         keysUrl: 'https://openrouter.ai/keys',
         keyPrefix: 'sk-or-',
+        // Model diupdate: hanya yang masih aktif. Model lama (llama-3.2-11b, qwen-2-vl) sudah 404.
         models: [
-          'meta-llama/llama-3.2-11b-vision-instruct:free',
-          'qwen/qwen-2-vl-7b-instruct:free',
-          'google/gemini-flash-1.5-8b',
+          'google/gemini-2.0-flash-exp:free',
+          'meta-llama/llama-4-scout-17b-16e-instruct:free',
+          'qwen/qwen3-next-80b-a3b-instruct:free',
+          'mistralai/mistral-small-3.2-24b-instruct:free',
           'openrouter/free'
         ]
       }
@@ -872,6 +878,24 @@
     const MAX_IMG_DIM = 1024;
     const DELAY_BETWEEN_REQUESTS = 1000;
     const MAX_RETRY_ROUNDS = 2;
+
+    /* ============ CLEANUP LEGACY KEYS (Versi Lama) ============ */
+    (function cleanupLegacyKeys() {
+      const legacy = [
+        'akino_openrouter_api_key_old',
+        'metastock_api_key',
+        'apikey',
+        'openrouter_key',
+        'groq_key',
+        'gemini_key'
+      ];
+      legacy.forEach(k => {
+        if (localStorage.getItem(k)) {
+          localStorage.removeItem(k);
+          console.log('🧹 Legacy key dihapus:', k);
+        }
+      });
+    })();
 
     const ASSET_HINTS = {
       photo: { label: 'Photo', context: 'This is a PHOTOGRAPH. Focus keywords on: subject, lighting, composition, mood, colors, season, location, photo-technical terms (bokeh, shallow depth of field, golden hour, backlit).', titleHint: 'Natural descriptive title as a photographer would caption it.' },
@@ -1096,20 +1120,20 @@
       const provider = PROVIDERS[providerId];
       if (!provider) throw new Error('Provider tidak dikenal.');
       if (!key) throw new Error('API Key kosong.');
+      // Hanya cek prefix kalau provider mendefinisikannya
       if (provider.keyPrefix && !key.startsWith(provider.keyPrefix)) {
         throw new Error('Format ' + provider.name + ' harus diawali "' + provider.keyPrefix + '".');
       }
-      // Verify with models endpoint
       try {
         const headers = { 'Authorization': 'Bearer ' + key };
         const res = await fetch(provider.modelsEndpoint, { method: 'GET', headers });
         if (!res.ok) {
-          if (res.status === 401 || res.status === 403) throw new Error(provider.name + ': API Key tidak valid.');
-          // Some endpoints might not respond OK for models list, but key works fine
+          if (res.status === 401 || res.status === 403) {
+            throw new Error(provider.name + ': API Key tidak valid.');
+          }
         }
       } catch (e) {
         if (e.message && (e.message.includes('tidak valid') || e.message.includes('Format'))) throw e;
-        // Network error - don't block, assume it might work
         console.warn('Verify ' + providerId + ' skipped:', e.message);
       }
       return true;
@@ -1148,7 +1172,6 @@
         errEl.style.display = 'block';
         return;
       }
-      // Clear inputs
       $('groqKeyInput').value = ''; $('geminiKeyInput').value = ''; $('openrouterKeyInput').value = '';
       showToast('Tersimpan: ' + saved.join(', ') + (errors.length ? ' | Gagal: ' + errors.join(' | ') : ''), errors.length ? 'warning' : 'success');
       showGate('main');
@@ -1197,6 +1220,7 @@
       });
     });
 
+    // ===== SAVE per provider =====
     document.querySelectorAll('.provider-card [data-save]').forEach(btn => {
       btn.addEventListener('click', async () => {
         const card = btn.closest('.provider-card');
@@ -1218,16 +1242,63 @@
       });
     });
 
+    // ===== HAPUS per provider → hapus permanen dari localStorage =====
     document.querySelectorAll('.provider-card [data-clear]').forEach(btn => {
       btn.addEventListener('click', () => {
         const card = btn.closest('.provider-card');
         const pid = card.dataset.provider;
-        if (!confirm('Hapus API Key ' + PROVIDERS[pid].name + '?')) return;
-        setKey(pid, '');
+        if (!confirm('Hapus API Key ' + PROVIDERS[pid].name + '?\n\nKey akan dihapus permanen dari browser.')) return;
+
+        // Hapus eksplisit dari localStorage
+        const storageKey = LS_KEYS[pid];
+        localStorage.removeItem(storageKey);
+
+        // Clear input field di card
+        const input = card.querySelector('[data-input]');
+        if (input) input.value = '';
+
+        // Clear juga input di gate screen
+        const gateMap = { groq: 'groqKeyInput', gemini: 'geminiKeyInput', openrouter: 'openrouterKeyInput' };
+        const gateEl = document.getElementById(gateMap[pid]);
+        if (gateEl) gateEl.value = '';
+
+        // Verifikasi benar-benar terhapus
+        const check = localStorage.getItem(storageKey);
+        if (check) {
+          showToast('GAGAL hapus! Coba clear cache browser.', 'error');
+          return;
+        }
+
         renderProviderCards();
         updateApiStatus();
-        showToast(PROVIDERS[pid].name + ' key dihapus.', 'info');
+        showToast(PROVIDERS[pid].name + ' key DIHAPUS dari localStorage.', 'success');
       });
+    });
+
+    // ===== HAPUS SEMUA KEY (RESET BERSIH) =====
+    $('btnClearAllKeys').addEventListener('click', () => {
+      if (!confirm('⚠️ Hapus SEMUA API Key dari browser?\n\nSemua provider (Groq, Gemini, OpenRouter) akan dihapus permanen.')) return;
+
+      Object.values(LS_KEYS).forEach(k => localStorage.removeItem(k));
+      // Legacy keys (kalau masih nyangkut)
+      ['akino_openrouter_api_key_old', 'metastock_api_key', 'apikey'].forEach(k => localStorage.removeItem(k));
+
+      // Clear semua input field
+      document.querySelectorAll('.provider-card [data-input]').forEach(inp => inp.value = '');
+      ['groqKeyInput','geminiKeyInput','openrouterKeyInput'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+
+      const remaining = Object.values(LS_KEYS).filter(k => localStorage.getItem(k));
+      if (remaining.length > 0) {
+        showToast('Beberapa key gagal dihapus. Coba clear cache browser.', 'warning');
+      } else {
+        showToast('Semua API Key berhasil dihapus. Silakan isi ulang.', 'success');
+      }
+
+      renderProviderCards();
+      updateApiStatus();
     });
 
     $('btnRefreshAccount').addEventListener('click', () => {
@@ -1516,7 +1587,6 @@
           setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = orig; }, 1600);
         });
       });
-      // Platform preview copy
       list.querySelectorAll('.btn-copy-preview').forEach(btn => {
         btn.addEventListener('click', async (e) => {
           e.stopPropagation();
@@ -1532,11 +1602,9 @@
       });
     }
 
-    /* Build result row text for a platform */
     function buildPlatformRow(item, lang, platform) {
       const r = item.result;
-      if (!r) return '';
-      const info = PLATFORM_INFO[platform] || PLATFORM_INFO.general;
+      if (!r) return [];
       let title = '', description = '', keywords = [];
       if (lang === 'both') {
         title = r.en?.title || r.id?.title || '';
@@ -1549,51 +1617,25 @@
       }
       const kwStr = keywords.join(', ');
       const kwStrComma = keywords.join(',');
-
       const userPrompt = $('extraDesc').value.trim();
 
       if (platform === 'freepik') {
-        const fn = normalizeFreepikFilename(item.fileName);
-        return [
-          fn,
-          title,
-          kwStrComma,
-          userPrompt || description,
-          'MetaStock AI'
-        ];
+        return [normalizeFreepikFilename(item.fileName), title, kwStrComma, userPrompt || description, 'MetaStock AI'];
       }
       if (platform === 'shutterstock') {
-        return [
-          item.fileName,
-          description,
-          kwStrComma,
-          '', // categories
-          'no', // editorial
-          'no', // mature
-          currentAssetType === 'vector' || currentAssetType === 'illustration' ? 'yes' : 'no'
-        ];
+        return [item.fileName, description, kwStrComma, '', 'no', 'no', (currentAssetType==='vector'||currentAssetType==='illustration')?'yes':'no'];
       }
-      if (platform === 'adobe') {
-        return [item.fileName, title, kwStrComma, '', ''];
-      }
-      if (platform === 'istock') {
-        return [item.fileName, title, description, kwStr];
-      }
-      if (platform === 'vecteezy') {
-        return [item.fileName, title, kwStrComma, description];
-      }
-      // general
+      if (platform === 'adobe') return [item.fileName, title, kwStrComma, '', ''];
+      if (platform === 'istock') return [item.fileName, title, description, kwStr];
+      if (platform === 'vecteezy') return [item.fileName, title, kwStrComma, description];
       return [item.fileName, currentAssetType, title, description, kwStr];
     }
 
     function formatPlatformPreview(item, lang, platform) {
-      const info = PLATFORM_INFO[platform] || PLATFORM_INFO.general;
       const row = buildPlatformRow(item, lang, platform);
       if (platform === 'freepik') {
-        // semicolon-separated, wrap with quotes
         return row.map(v => "'" + String(v || '').replace(/'/g, "''") + "'").join(';');
       }
-      // CSV with proper escaping
       return row.map(v => {
         const s = String(v == null ? '' : v);
         if (/[",\n\r]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
@@ -1609,7 +1651,6 @@
       const langs = lang === 'both' ? ['id', 'en'] : [lang];
       const blocks = [];
 
-      // Platform preview
       const previewText = formatPlatformPreview(item, lang, platform);
       const previewId = `pp-${item.id}`;
       const headerText = pInfo.fields.join(' | ');
@@ -1682,7 +1723,6 @@
       lines.push('=== FILE: ' + item.fileName + ' ===');
       lines.push('Platform: ' + (PLATFORM_INFO[platform]?.name || 'General'));
       lines.push('');
-      // Preview format
       lines.push('[PREVIEW FORMAT]');
       lines.push(formatPlatformPreview(item, lang, platform));
       lines.push('');
@@ -1775,7 +1815,14 @@
       if (!res.ok) {
         let errMsg = data.error?.message || data.message || ('HTTP ' + res.status);
         const err = new Error(errMsg);
-        if (res.status === 401 || res.status === 402 || res.status === 403) err.fatal = true;
+        // FATAL hanya untuk 401/402/403 (API key/saldo). 404 (model tidak ada) TIDAK fatal,
+        // supaya sistem tetap coba model berikutnya di provider yang sama.
+        if (res.status === 401 || res.status === 402 || res.status === 403) {
+          err.fatal = true;
+        }
+        if (res.status === 429) {
+          // Rate limit → bukan fatal, coba model/provider lain
+        }
         throw err;
       }
 
@@ -1809,7 +1856,6 @@
       return raw;
     }
 
-    /* Try all providers × models in order */
     async function callAIWithFallback(prompt, imageDataUrl, signal) {
       const activeProviders = getActiveProviders();
       if (activeProviders.length === 0) throw new Error('Tidak ada API Key aktif.');
@@ -1820,6 +1866,7 @@
       for (const pid of activeProviders) {
         if (stopRequested) throw new Error('STOP_REQUESTED');
         const provider = PROVIDERS[pid];
+        let providerFatal = false;
         for (const model of provider.models) {
           if (stopRequested) throw new Error('STOP_REQUESTED');
           try {
@@ -1836,13 +1883,15 @@
             lastErr = err;
             attemptedAny = true;
             if (err.fatal) {
-              // This provider has fatal issue; skip to next provider
-              console.warn('⏭️ Skip provider ' + provider.name + ' (fatal)');
-              break;
+              console.warn('⏭️ Skip provider ' + provider.name + ' (fatal, misal 401)');
+              providerFatal = true;
+              break; // langsung ke provider berikutnya
             }
+            // 404/429/500 → coba model berikutnya di provider yang sama
             await sleep(800);
           }
         }
+        if (providerFatal) continue;
       }
       if (!attemptedAny) throw new Error('Tidak ada provider yang bisa dicoba.');
       throw new Error('Semua provider gagal: ' + (lastErr?.message || 'unknown'));
@@ -2036,7 +2085,7 @@ ${structExample}
         if (i < targets.length - 1 && !stopRequested) await sleep(DELAY_BETWEEN_REQUESTS);
       }
 
-      // Auto retry rounds (skip if user stopped)
+      // Auto retry rounds
       let totalFixed = 0;
       if (!stopped) {
         for (let round = 1; round <= MAX_RETRY_ROUNDS; round++) {
@@ -2207,11 +2256,8 @@ ${structExample}
     }
 
     function doExportCSV(items, lang, platform) {
-      if (platform === 'freepik') {
-        exportCSVFreepik(items, lang);
-      } else {
-        exportCSVStandard(items, lang, platform);
-      }
+      if (platform === 'freepik') exportCSVFreepik(items, lang);
+      else exportCSVStandard(items, lang, platform);
     }
 
     function exportCSVFreepik(items, lang) {
@@ -2241,7 +2287,7 @@ ${structExample}
         ].join(';'));
       });
       const csv = rows.join('\r\n');
-      // Freepik: NO BOM
+      // Freepik: TANPA BOM
       downloadFile(csv, 'freepik-metadata-' + new Date().toISOString().slice(0,10) + '.csv', 'text/csv', true);
       showToast('CSV Freepik (' + items.length + ' baris, tanpa BOM).', 'success');
     }
@@ -2253,7 +2299,6 @@ ${structExample}
         if (/[",\n\r]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
         return s;
       }
-
       const info = PLATFORM_INFO[platform] || PLATFORM_INFO.general;
       let header, rows;
 
@@ -2314,7 +2359,6 @@ ${structExample}
           });
         }
       } else {
-        // general
         if (lang === 'both') {
           header = ['filename','asset_type','title_id','description_id','keywords_id','title_en','description_en','keywords_en'];
           rows = items.map(item => {
@@ -2354,12 +2398,8 @@ ${structExample}
       try { history = JSON.parse(localStorage.getItem(LS_HISTORY) || '[]'); } catch (e) {}
       if (!history.length) { showToast('Riwayat kosong.', 'warning'); return; }
       const platform = $('platform').value;
-      // Convert history items to shape compatible with export
-      const items = history.map(h => ({
-        fileName: h.fileName,
-        result: h.results
-      }));
       const lang = $('langSelect').value;
+      const items = history.map(h => ({ fileName: h.fileName, result: h.results }));
       doExportCSV(items, lang, platform);
     }
 
