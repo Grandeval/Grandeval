@@ -179,6 +179,15 @@
     .filter-tab.active[data-filter="error"] .ft-count{background:#ef4444;color:#fff;}
     .filter-tab.active[data-filter="processing"] .ft-count{background:var(--info);color:#fff;}
     .filter-tab.active[data-filter="pending"] .ft-count{background:#fb923c;color:#fff;}
+    .processing-banner{padding:0.85rem 1rem;background:linear-gradient(135deg,rgba(59,130,246,0.12),rgba(96,165,250,0.06));border:1px solid rgba(59,130,246,0.3);border-radius:var(--radius);animation:pulseBorder 1.6s infinite;margin-bottom:0.5rem;}
+    .processing-banner .pb-head{display:flex;align-items:center;justify-content:space-between;gap:0.5rem;margin-bottom:0.4rem;flex-wrap:wrap;}
+    .processing-banner .pb-title{display:flex;align-items:center;gap:0.55rem;font-family:var(--font-display);font-size:0.9rem;font-weight:700;color:var(--info);}
+    .processing-banner .pb-spinner{width:14px;height:14px;border:2px solid rgba(59,130,246,0.25);border-top-color:var(--info);border-radius:50%;animation:spin 0.7s linear infinite;display:inline-block;}
+    .processing-banner .pb-count{font-family:var(--font-display);font-size:0.85rem;font-weight:700;color:var(--info);background:rgba(59,130,246,0.15);padding:0.15rem 0.6rem;border-radius:50px;}
+    .processing-banner .pb-filename{font-size:0.78rem;color:var(--fg-dim);word-break:break-all;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:0.5rem;}
+    .processing-banner .pb-filename i{color:var(--info);margin-right:0.3rem;}
+    .processing-banner .pb-bar{height:5px;background:rgba(255,255,255,0.06);border-radius:5px;overflow:hidden;}
+    .processing-banner .pb-fill{height:100%;width:0%;background:linear-gradient(90deg,#3B82F6,#60a5fa);border-radius:5px;transition:width 0.4s ease;}
     .pagination-bar{display:flex;align-items:center;justify-content:space-between;gap:0.5rem;padding:0.6rem 0.9rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);flex-wrap:wrap;}
     .pagination-info{font-size:0.75rem;color:var(--muted);}
     .pagination-info strong{color:var(--fg);}
@@ -336,6 +345,8 @@
       .filter-tabs{padding:0.5rem 0.6rem;}
       .filter-tab{padding:0.4rem 0.7rem;font-size:0.7rem;}
       .filter-tab .ft-count{min-width:18px;height:18px;font-size:0.6rem;}
+      .processing-banner{padding:0.7rem 0.85rem;}
+      .processing-banner .pb-title{font-size:0.82rem;}
     }
   </style>
 </head>
@@ -541,6 +552,15 @@
           <button class="filter-tab" data-filter="error"><i class="fas fa-times-circle"></i> Gagal <span class="ft-count" data-count="error">0</span></button>
         </div>
 
+        <div class="processing-banner" id="processingBanner" style="display:none;">
+          <div class="pb-head">
+            <div class="pb-title"><span class="pb-spinner"></span><span id="pbLabel">Memproses...</span></div>
+            <div class="pb-count"><span id="pbCurrent">0</span> / <span id="pbTotal">0</span></div>
+          </div>
+          <div class="pb-filename" id="pbFileName">-</div>
+          <div class="pb-bar"><div class="pb-fill" id="pbFill"></div></div>
+        </div>
+
         <div class="queue-list" id="queueList">
           <div class="empty-queue">
             <div class="empty-icon"><i class="fas fa-cloud-upload-alt"></i></div>
@@ -729,6 +749,7 @@
     let pageSize = parseInt(localStorage.getItem(LS_PAGE_SIZE)) || 10;
     let firestoreUnsubscribe = null;
     let currentFilter = 'all';
+    let latestFirestoreSnap = null;
 
     const $ = id => document.getElementById(id);
     const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -845,40 +866,49 @@
       firestoreUnsubscribe=db.collection(FIRESTORE_COLLECTION)
         .where('userId','==',currentUser.uid)
         .onSnapshot(snap=>{
-          const dbItems=[];
-          snap.forEach(doc=>{
-            const d=doc.data();
-            dbItems.push({
-              firestoreId:doc.id,
-              id:doc.id,
-              dataUrl:d.cloudUrl||d.dataUrl||'',
-              cloudUrl:d.cloudUrl||'',
-              fileName:d.fileName||'',
-              assetType:d.assetType||'photo',
-              lang:d.lang||'en',
-              platform:d.platform||'general',
-              status:d.status||'pending',
-              result:d.result||null,
-              error:d.error||null,
-              providerUsed:d.provider||null,
-              modelUsed:d.model||null,
-              retryCount:0,
-              expanded:false,
-              _ts:d.updatedAt?.seconds?d.updatedAt.seconds*1000:(d.createdAt?.seconds?d.createdAt.seconds*1000:Date.now())
-            });
-          });
-          const expandedMap={};
-          currentItems.forEach(i=>{if(i.expanded)expandedMap[i.firestoreId||i.id]=true;});
-          dbItems.forEach(i=>{i.expanded=expandedMap[i.firestoreId]||false;});
-          const unsaved=currentItems.filter(i=>!i.firestoreId);
-          currentItems=[...unsaved,...dbItems];
-          currentItems.sort((a,b)=>(b._ts||0)-(a._ts||0));
-          renderQueue();
-          updateStats();
+          latestFirestoreSnap=snap;
+          if(isProcessing){
+            console.log('⏸️ Snapshot ditahan — processing berjalan');
+            return;
+          }
+          applyFirestoreSnap(snap);
         },err=>{
           console.error('Firestore listen error:',err);
           showToast('Gagal load data: '+err.message,'error');
         });
+    }
+
+    function applyFirestoreSnap(snap){
+      const dbItems=[];
+      snap.forEach(doc=>{
+        const d=doc.data();
+        dbItems.push({
+          firestoreId:doc.id,
+          id:doc.id,
+          dataUrl:d.cloudUrl||d.dataUrl||'',
+          cloudUrl:d.cloudUrl||'',
+          fileName:d.fileName||'',
+          assetType:d.assetType||'photo',
+          lang:d.lang||'en',
+          platform:d.platform||'general',
+          status:d.status||'pending',
+          result:d.result||null,
+          error:d.error||null,
+          providerUsed:d.provider||null,
+          modelUsed:d.model||null,
+          retryCount:0,
+          expanded:false,
+          _ts:d.updatedAt?.seconds?d.updatedAt.seconds*1000:(d.createdAt?.seconds?d.createdAt.seconds*1000:Date.now())
+        });
+      });
+      const expandedMap={};
+      currentItems.forEach(i=>{if(i.expanded)expandedMap[i.firestoreId||i.id]=true;});
+      dbItems.forEach(i=>{i.expanded=expandedMap[i.firestoreId]||false;});
+      const unsaved=currentItems.filter(i=>!i.firestoreId);
+      currentItems=[...unsaved,...dbItems];
+      currentItems.sort((a,b)=>(b._ts||0)-(a._ts||0));
+      renderQueue();
+      updateStats();
     }
 
     firebase.auth().onAuthStateChanged((user)=>{
@@ -886,6 +916,7 @@
       if(!user){
         if(firestoreUnsubscribe){firestoreUnsubscribe();firestoreUnsubscribe=null;}
         currentItems=[];
+        latestFirestoreSnap=null;
         showGate('login');
         return;
       }
@@ -928,6 +959,7 @@
         if(firestoreUnsubscribe){firestoreUnsubscribe();firestoreUnsubscribe=null;}
         await firebase.auth().signOut();
         currentItems=[];
+        latestFirestoreSnap=null;
         renderQueue();updateStats();
         $('settingsModal').classList.remove('active');
         showToast('Berhasil logout.','success');
@@ -1655,14 +1687,36 @@
 
     function showProgress(current,total,fileName){
       const bp=$('batchProgress');
-      if(total===0){bp.classList.remove('show');return;}
+      const banner=$('processingBanner');
+
+      if(total===0){
+        bp.classList.remove('show');
+        banner.style.display='none';
+        return;
+      }
+
+      // Panel kiri (batch progress)
       bp.classList.add('show');
       $('progressCount').textContent=current+' / '+total;
       $('progressFile').textContent=fileName||'-';
       const pct=total>0?Math.round((current/total)*100):0;
       $('progressFill').style.width=pct+'%';
+
+      // Banner di atas queue
+      banner.style.display='block';
+      $('pbCurrent').textContent=current;
+      $('pbTotal').textContent=total;
+      $('pbFill').style.width=pct+'%';
+      $('pbFileName').innerHTML='<i class="fas fa-image"></i> '+escHtml(fileName||'-');
+      $('pbLabel').textContent=current>=total?'Menyelesaikan...':'Sedang memproses';
     }
-    function hideProgress(){setTimeout(()=>{$('batchProgress').classList.remove('show');$('progressFill').style.width='0%';},800);}
+    function hideProgress(){
+      setTimeout(()=>{
+        $('batchProgress').classList.remove('show');
+        $('progressFill').style.width='0%';
+        $('processingBanner').style.display='none';
+      },800);
+    }
 
     async function callProvider(pid,apiKey,model,prompt,imageDataUrl,signal){
       const provider=PROVIDERS[pid];
@@ -1982,6 +2036,12 @@ CRITICAL OUTPUT RULES:
       }
       abortController=null;
       stopRequested=false;
+
+      // Apply snapshot Firestore terbaru setelah processing selesai
+      if(latestFirestoreSnap){
+        applyFirestoreSnap(latestFirestoreSnap);
+        latestFirestoreSnap=null;
+      }
     }
 
     async function retrySingle(id,isRegenerate){
@@ -2041,6 +2101,11 @@ CRITICAL OUTPUT RULES:
       renderQueue();updateStats();
       abortController=null;
       stopRequested=false;
+
+      if(latestFirestoreSnap){
+        applyFirestoreSnap(latestFirestoreSnap);
+        latestFirestoreSnap=null;
+      }
     }
 
     $('btnClearQueue').addEventListener('click',async()=>{
