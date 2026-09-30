@@ -287,6 +287,8 @@
     .key-item .ki-status.invalid{background:rgba(239,68,68,0.15);color:#f87171;}
     .key-item .ki-remove{width:26px;height:26px;border-radius:6px;background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.2);display:flex;align-items:center;justify-content:center;transition:all 0.2s;cursor:pointer;}
     .key-item .ki-remove:hover{background:rgba(239,68,68,0.2);}
+    .key-item .ki-check{width:26px;height:26px;border-radius:6px;background:rgba(59,130,246,0.1);color:#60a5fa;border:1px solid rgba(59,130,246,0.2);display:flex;align-items:center;justify-content:center;transition:all 0.2s;cursor:pointer;font-size:0.65rem;}
+    .key-item .ki-check:hover{background:rgba(59,130,246,0.2);}
     .add-key-row{display:flex;gap:0.4rem;}
     .add-key-row input{flex:1;padding:0.55rem 0.7rem;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--fg);font-size:0.75rem;outline:none;font-family:monospace;min-width:0;}
     .add-key-row input:focus{border-color:var(--accent);}
@@ -296,6 +298,7 @@
     .modal-actions button{flex:1;min-width:120px;padding:0.7rem 1rem;border-radius:var(--radius-sm);font-size:0.85rem;font-weight:600;transition:all var(--transition);display:inline-flex;align-items:center;justify-content:center;gap:0.4rem;border:none;cursor:pointer;}
     .btn-danger{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2) !important;color:#f87171;}
     .btn-cancel{background:var(--bg-input);border:1px solid var(--border);color:var(--muted-light);}
+    .btn-ok{background:linear-gradient(145deg,#FFDD57,#f5c842);color:#0a0a0f;}
     .toast-container{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:0.5rem;max-width:90%;}
     .toast{padding:0.7rem 1.3rem;background:rgba(20,20,30,0.95);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.06);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.4);display:flex;align-items:center;gap:0.55rem;font-size:0.82rem;border-left:3px solid var(--accent);color:var(--fg);}
     body.light-theme .toast{background:rgba(255,255,255,0.98);}
@@ -404,22 +407,32 @@
     <div class="gate-card">
       <div class="gate-icon"><i class="fas fa-key"></i></div>
       <h2>Setup API Keys</h2>
-      <p class="center">Tambahkan <strong>minimal 1 API Key</strong>. Bisa tambah banyak key — kalau kena limit, otomatis ganti ke key berikutnya.</p>
+      <p class="center">Isi <strong>minimal 1 API Key</strong>. Semakin banyak provider yang kamu isi, semakin jarang gagal. Sistem otomatis ganti kalau salah satu kena limit.</p>
       <div class="api-key-field">
-        <label><span><i class="fas fa-bolt"></i> Groq (tercepat)</span><a href="https://console.groq.com/keys" target="_blank">Dapatkan →</a></label>
+        <label><span><i class="fas fa-bolt"></i> Groq</span><a href="https://console.groq.com/keys" target="_blank">Dapatkan →</a></label>
         <input type="password" id="groqKeyInput" placeholder="gsk_..." autocomplete="off">
       </div>
-      <div class="provider-hint"><strong>Prioritas 1</strong> · Qwen 3.6 27B vision</div>
+      <div class="provider-hint">Cepat & gratis · Qwen 3.6 vision</div>
       <div class="api-key-field">
         <label><span><i class="fab fa-google"></i> Google Gemini</span><a href="https://aistudio.google.com/app/apikey" target="_blank">Dapatkan →</a></label>
         <input type="password" id="geminiKeyInput" placeholder="Tempel API Key Gemini" autocomplete="off">
       </div>
-      <div class="provider-hint"><strong>Prioritas 2</strong> · Gemini 3.8 / 2.5 Flash</div>
+      <div class="provider-hint">Stabil & gratis · Gemini Flash</div>
+      <div class="api-key-field">
+        <label><span><i class="fas fa-wind"></i> Mistral AI</span><a href="https://console.mistral.ai/api-keys/" target="_blank">Dapatkan →</a></label>
+        <input type="password" id="mistralKeyInput" placeholder="Tempel API Key Mistral" autocomplete="off">
+      </div>
+      <div class="provider-hint">Gratis · Pixtral vision</div>
+      <div class="api-key-field">
+        <label><span><i class="fas fa-people-group"></i> Together AI</span><a href="https://api.together.xyz/settings/api-keys" target="_blank">Dapatkan →</a></label>
+        <input type="password" id="togetherKeyInput" placeholder="Tempel API Key Together" autocomplete="off">
+      </div>
+      <div class="provider-hint">Free credit · Llama Vision</div>
       <div class="api-key-field">
         <label><span><i class="fas fa-route"></i> OpenRouter</span><a href="https://openrouter.ai/keys" target="_blank">Dapatkan →</a></label>
         <input type="password" id="openrouterKeyInput" placeholder="sk-or-v1-..." autocomplete="off">
       </div>
-      <div class="provider-hint"><strong>Prioritas 3</strong> · openrouter/free (auto-router)</div>
+      <div class="provider-hint">Gratis · auto-router</div>
       <div id="apiKeyError" style="display:none;text-align:left;margin-bottom:0.75rem;padding:0.5rem 0.7rem;border-radius:8px;font-size:0.78rem;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;"></div>
       <button class="btn-primary" id="btnSaveApiKey"><i class="fas fa-check"></i> Simpan & Lanjut</button>
       <button class="btn-ghost" id="btnLogoutFromGate" style="margin-top:0.6rem;width:100%;"><i class="fas fa-right-from-bracket"></i> Logout</button>
@@ -429,7 +442,7 @@
   <div class="page-header" id="pageHeader" style="display:none">
     <div class="page-header-text">
       <h1><i class="fas fa-wand-magic-sparkles"></i> MetaStock AI</h1>
-      <p>Multi-key rotation • Auto-save cloud • Data terisolasi per akun • Groq prioritas</p>
+      <p>Multi-key rotation • Auto-save cloud • Data terisolasi per akun</p>
     </div>
     <div class="page-header-actions">
       <div class="user-chip" id="userChip" style="display:none;">
@@ -520,6 +533,8 @@
           <span class="provider-dots" id="providerDots">
             <span class="provider-dot" data-provider="groq" title="Groq"></span>
             <span class="provider-dot" data-provider="gemini" title="Gemini"></span>
+            <span class="provider-dot" data-provider="mistral" title="Mistral"></span>
+            <span class="provider-dot" data-provider="together" title="Together"></span>
             <span class="provider-dot" data-provider="openrouter" title="OpenRouter"></span>
           </span>
           <span style="margin-left:auto;font-size:0.65rem;"><i class="fas fa-cloud"></i> Auto-save ON</span>
@@ -595,7 +610,7 @@
 
       <div class="provider-card expanded" data-provider="groq">
         <div class="pc-head">
-          <div class="pc-title"><i class="fas fa-bolt"></i> Groq <span style="font-size:0.6rem;color:var(--muted);font-weight:500;">(prioritas 1)</span></div>
+          <div class="pc-title"><i class="fas fa-bolt"></i> Groq</div>
           <span class="pc-status missing" data-status>Belum diset</span>
         </div>
         <div class="pc-body">
@@ -609,7 +624,7 @@
 
       <div class="provider-card" data-provider="gemini">
         <div class="pc-head">
-          <div class="pc-title"><i class="fab fa-google"></i> Google Gemini <span style="font-size:0.6rem;color:var(--muted);font-weight:500;">(prioritas 2)</span></div>
+          <div class="pc-title"><i class="fab fa-google"></i> Google Gemini</div>
           <span class="pc-status missing" data-status>Belum diset</span>
         </div>
         <div class="pc-body">
@@ -621,9 +636,37 @@
         </div>
       </div>
 
+      <div class="provider-card" data-provider="mistral">
+        <div class="pc-head">
+          <div class="pc-title"><i class="fas fa-wind"></i> Mistral AI</div>
+          <span class="pc-status missing" data-status>Belum diset</span>
+        </div>
+        <div class="pc-body">
+          <div class="key-list" data-key-list></div>
+          <div class="add-key-row">
+            <input type="password" data-new-key placeholder="Tempel API Key Mistral">
+            <button data-add>Tambah</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="provider-card" data-provider="together">
+        <div class="pc-head">
+          <div class="pc-title"><i class="fas fa-people-group"></i> Together AI</div>
+          <span class="pc-status missing" data-status>Belum diset</span>
+        </div>
+        <div class="pc-body">
+          <div class="key-list" data-key-list></div>
+          <div class="add-key-row">
+            <input type="password" data-new-key placeholder="Tempel API Key Together">
+            <button data-add>Tambah</button>
+          </div>
+        </div>
+      </div>
+
       <div class="provider-card" data-provider="openrouter">
         <div class="pc-head">
-          <div class="pc-title"><i class="fas fa-route"></i> OpenRouter <span style="font-size:0.6rem;color:var(--muted);font-weight:500;">(prioritas 3)</span></div>
+          <div class="pc-title"><i class="fas fa-route"></i> OpenRouter</div>
           <span class="pc-status missing" data-status>Belum diset</span>
         </div>
         <div class="pc-body">
@@ -636,6 +679,9 @@
       </div>
 
       <div style="margin-top:0.75rem;">
+        <button id="btnValidateAllKeys" style="width:100%;padding:0.7rem;border-radius:10px;font-size:0.78rem;font-weight:600;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.25);color:#60a5fa;display:flex;align-items:center;justify-content:center;gap:0.4rem;cursor:pointer;margin-bottom:0.5rem;">
+          <i class="fas fa-shield-check"></i> Cek Semua Key (Test Validity)
+        </button>
         <button id="btnClearAllKeys" style="width:100%;padding:0.7rem;border-radius:10px;font-size:0.78rem;font-weight:600;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);color:#f87171;display:flex;align-items:center;justify-content:center;gap:0.4rem;cursor:pointer;">
           <i class="fas fa-broom"></i> Hapus Semua API Key
         </button>
@@ -682,6 +728,8 @@
         endpoint: 'https://api.groq.com/openai/v1/chat/completions',
         modelsEndpoint: 'https://api.groq.com/openai/v1/models',
         keyPrefix: 'gsk_',
+        rateLimitCooldown: 30 * 1000,
+        invalidCooldown: 5 * 60 * 1000,
         models: ['qwen/qwen3.6-27b', 'qwen/qwen3.8-27b']
       },
       gemini: {
@@ -689,26 +737,56 @@
         endpoint: 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',
         modelsEndpoint: 'https://generativelanguage.googleapis.com/v1beta/openai/models',
         keyPrefix: '',
+        rateLimitCooldown: 5 * 60 * 1000,
+        invalidCooldown: 60 * 60 * 1000,
         models: ['gemini-3.8-flash', 'gemini-2.5-flash', 'gemini-3-flash-preview', 'gemini-2.5-flash-lite']
+      },
+      mistral: {
+        id: 'mistral', name: 'Mistral AI',
+        endpoint: 'https://api.mistral.ai/v1/chat/completions',
+        modelsEndpoint: 'https://api.mistral.ai/v1/models',
+        keyPrefix: '',
+        rateLimitCooldown: 5 * 60 * 1000,
+        invalidCooldown: 60 * 60 * 1000,
+        models: ['pixtral-large-latest', 'pixtral-12b-2409']
+      },
+      together: {
+        id: 'together', name: 'Together AI',
+        endpoint: 'https://api.together.xyz/v1/chat/completions',
+        modelsEndpoint: 'https://api.together.xyz/v1/models',
+        keyPrefix: '',
+        rateLimitCooldown: 5 * 60 * 1000,
+        invalidCooldown: 60 * 60 * 1000,
+        models: [
+          'meta-llama/Llama-3.2-11B-Vision-Instruct-Turbo',
+          'meta-llama/Llama-Vision-Free',
+          'meta-llama/Llama-4-Scout-17B-16E-Instruct'
+        ]
       },
       openrouter: {
         id: 'openrouter', name: 'OpenRouter',
         endpoint: 'https://openrouter.ai/api/v1/chat/completions',
         modelsEndpoint: 'https://openrouter.ai/api/v1/key',
         keyPrefix: 'sk-or-',
+        rateLimitCooldown: 5 * 60 * 1000,
+        invalidCooldown: 60 * 60 * 1000,
         models: ['openrouter/free']
       }
     };
-    const PROVIDER_ORDER = ['groq', 'gemini', 'openrouter'];
+    const PROVIDER_ORDER = ['groq', 'gemini', 'mistral', 'together', 'openrouter'];
     const LS_KEYS = {
-      groq: 'akino_groq_api_keys_v2',
-      gemini: 'akino_gemini_api_keys_v2',
-      openrouter: 'akino_openrouter_api_keys_v2'
+      groq: 'akino_groq_api_keys_v3',
+      gemini: 'akino_gemini_api_keys_v3',
+      mistral: 'akino_mistral_api_keys_v3',
+      together: 'akino_together_api_keys_v3',
+      openrouter: 'akino_openrouter_api_keys_v3'
     };
     const LS_KEYS_LEGACY = {
-      groq: 'akino_groq_api_key',
-      gemini: 'akino_gemini_api_key',
-      openrouter: 'akino_openrouter_api_key'
+      groq: 'akino_groq_api_keys_v2',
+      gemini: 'akino_gemini_api_keys_v2',
+      mistral: 'akino_mistral_api_key',
+      together: 'akino_together_api_key',
+      openrouter: 'akino_openrouter_api_keys_v2'
     };
     const LS_SETTINGS = 'akino_metastock_settings';
     const LS_PAGE_SIZE = 'akino_metastock_pagesize';
@@ -719,7 +797,8 @@
     const MAX_IMG_DIM = 1024;
     const DELAY_BETWEEN_REQUESTS = 1000;
     const MAX_RETRY_ROUNDS = 2;
-    const RATE_LIMIT_COOLDOWN = 5 * 60 * 1000;
+    const PROCESS_TIMEOUT = 5 * 60 * 1000;
+    const GROQ_RETRY_DELAY = 15000;
 
     const ASSET_HINTS = {
       photo:{label:'Photo',context:'PHOTOGRAPH. Focus keywords on: subject, lighting, composition, mood, colors, season, location, photo-technical terms.',titleHint:'Natural descriptive title as photographer.'},
@@ -750,6 +829,7 @@
     let firestoreUnsubscribe = null;
     let currentFilter = 'all';
     let latestFirestoreSnap = null;
+    let processStartedAt = 0;
 
     const $ = id => document.getElementById(id);
     const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -765,6 +845,14 @@
         if(raw){const p=JSON.parse(raw);if(Array.isArray(p))return p;}
         const legacy=localStorage.getItem(LS_KEYS_LEGACY[pid]);
         if(legacy){
+          try{
+            const p=JSON.parse(legacy);
+            if(Array.isArray(p)){
+              localStorage.setItem(LS_KEYS[pid],JSON.stringify(p));
+              localStorage.removeItem(LS_KEYS_LEGACY[pid]);
+              return p;
+            }
+          }catch(e){}
           const keys=[{id:genId('k'),key:legacy,addedAt:Date.now(),lastFailAt:0,failReason:null}];
           localStorage.setItem(LS_KEYS[pid],JSON.stringify(keys));
           localStorage.removeItem(LS_KEYS_LEGACY[pid]);
@@ -790,16 +878,31 @@
       const keys=getKeys(pid);const k=keys.find(x=>x.id===keyId);
       if(k&&k.lastFailAt){k.lastFailAt=0;k.failReason=null;setKeys(pid,keys);}
     }
+    function resetProviderRateLimits(pid){
+      const keys=getKeys(pid);
+      keys.forEach(k=>{
+        if(k.failReason==='rate_limit'){
+          k.lastFailAt=0;
+          k.failReason=null;
+        }
+      });
+      setKeys(pid,keys);
+    }
     function getActiveProviders(){return PROVIDER_ORDER.filter(p=>getKeys(p).length>0);}
-    function isKeyRateLimited(k){
+    function isKeyRateLimited(k,pid){
       if(!k.lastFailAt)return false;
-      if(k.failReason==='invalid')return true;
-      return (Date.now()-k.lastFailAt)<RATE_LIMIT_COOLDOWN;
+      const provider=PROVIDERS[pid];
+      if(k.failReason==='invalid'){
+        const cooldown=provider&&provider.invalidCooldown?provider.invalidCooldown:(60*60*1000);
+        return (Date.now()-k.lastFailAt)<cooldown;
+      }
+      const cooldown=provider&&provider.rateLimitCooldown?provider.rateLimitCooldown:(5*60*1000);
+      return (Date.now()-k.lastFailAt)<cooldown;
     }
     function getAvailableKeys(pid){
       const keys=getKeys(pid);
-      const ready=keys.filter(k=>!isKeyRateLimited(k));
-      const limited=keys.filter(k=>isKeyRateLimited(k));
+      const ready=keys.filter(k=>!isKeyRateLimited(k,pid));
+      const limited=keys.filter(k=>isKeyRateLimited(k,pid));
       return ready.length>0?ready:keys;
     }
 
@@ -868,8 +971,14 @@
         .onSnapshot(snap=>{
           latestFirestoreSnap=snap;
           if(isProcessing){
-            console.log('⏸️ Snapshot ditahan — processing berjalan');
-            return;
+            const elapsed=Date.now()-processStartedAt;
+            if(elapsed<PROCESS_TIMEOUT){
+              console.log('⏸️ Snapshot ditahan ('+Math.round(elapsed/1000)+'s / '+Math.round(PROCESS_TIMEOUT/1000)+'s)');
+              return;
+            }
+            console.warn('⏰ Processing timeout, force apply snapshot');
+            isProcessing=false;
+            if(abortController){try{abortController.abort();}catch(e){}}
           }
           applyFirestoreSnap(snap);
         },err=>{
@@ -917,6 +1026,7 @@
         if(firestoreUnsubscribe){firestoreUnsubscribe();firestoreUnsubscribe=null;}
         currentItems=[];
         latestFirestoreSnap=null;
+        isProcessing=false;
         showGate('login');
         return;
       }
@@ -960,6 +1070,7 @@
         await firebase.auth().signOut();
         currentItems=[];
         latestFirestoreSnap=null;
+        isProcessing=false;
         renderQueue();updateStats();
         $('settingsModal').classList.remove('active');
         showToast('Berhasil logout.','success');
@@ -972,7 +1083,13 @@
       if(!key)throw new Error('API Key kosong.');
       if(p.keyPrefix&&!key.startsWith(p.keyPrefix))throw new Error('Format '+p.name+' harus diawali "'+p.keyPrefix+'".');
       try{
-        const res=await fetch(p.modelsEndpoint,{method:'GET',headers:{'Authorization':'Bearer '+key}});
+        const headers={};
+        if(p.modelsEndpoint.includes('generativelanguage')){
+          headers['Authorization']='Bearer '+key;
+        }else{
+          headers['Authorization']='Bearer '+key;
+        }
+        const res=await fetch(p.modelsEndpoint,{method:'GET',headers});
         if(!res.ok){
           if(res.status===401||res.status===403)throw new Error(p.name+': API Key tidak valid.');
         }
@@ -988,6 +1105,8 @@
       const inputs={
         groq:$('groqKeyInput').value.trim(),
         gemini:$('geminiKeyInput').value.trim(),
+        mistral:$('mistralKeyInput').value.trim(),
+        together:$('togetherKeyInput').value.trim(),
         openrouter:$('openrouterKeyInput').value.trim()
       };
       const filled=Object.keys(inputs).filter(k=>inputs[k]);
@@ -1001,7 +1120,7 @@
       }
       btn.disabled=false;btn.innerHTML='<i class="fas fa-check"></i> Simpan & Lanjut';
       if(saved.length===0){errEl.textContent=errors.join(' | ');errEl.style.display='block';return;}
-      $('groqKeyInput').value='';$('geminiKeyInput').value='';$('openrouterKeyInput').value='';
+      ['groqKeyInput','geminiKeyInput','mistralKeyInput','togetherKeyInput','openrouterKeyInput'].forEach(id=>{const el=$(id);if(el)el.value='';});
       showToast('Tersimpan: '+saved.join(', '),'success');
       showGate('main');
       loadSettings();updateApiStatus();
@@ -1022,10 +1141,10 @@
         const keys=getKeys(pid);
         const statusEl=card.querySelector('[data-status]');
         const listEl=card.querySelector('[data-key-list]');
-        const totalReady=keys.filter(k=>!isKeyRateLimited(k)).length;
+        const totalReady=keys.filter(k=>!isKeyRateLimited(k,pid)).length;
 
         if(keys.length===0){statusEl.className='pc-status missing';statusEl.textContent='Belum diset';}
-        else if(totalReady===0){statusEl.className='pc-status missing';statusEl.textContent=keys.length+' key (semua limit)';}
+        else if(totalReady===0){statusEl.className='pc-status missing';statusEl.textContent=keys.length+' key (limit)';}
         else{statusEl.className='pc-status ok';statusEl.textContent=totalReady+'/'+keys.length+' aktif';}
 
         if(keys.length===0){
@@ -1034,7 +1153,7 @@
           listEl.innerHTML=keys.map(k=>{
             let sClass='ready',sLabel='Ready',cardClass='';
             if(k.failReason==='invalid'){sClass='invalid';sLabel='Invalid';cardClass='invalid';}
-            else if(isKeyRateLimited(k)){sClass='limited';sLabel='Rate Limited';cardClass='rate-limited';}
+            else if(isKeyRateLimited(k,pid)){sClass='limited';sLabel='Rate Limited';cardClass='rate-limited';}
             const meta=k.lastFailAt?'Gagal: '+new Date(k.lastFailAt).toLocaleTimeString('id-ID'):'Ditambah: '+new Date(k.addedAt).toLocaleDateString('id-ID');
             return `<div class="key-item ${cardClass}">
               <div class="ki-info">
@@ -1042,7 +1161,8 @@
                 <div class="ki-meta">${meta}</div>
               </div>
               <span class="ki-status ${sClass}">${sLabel}</span>
-              <button class="ki-remove" data-remove-key="${k.id}"><i class="fas fa-times"></i></button>
+              <button class="ki-check" data-check-key="${k.id}" title="Cek validitas"><i class="fas fa-shield-check"></i></button>
+              <button class="ki-remove" data-remove-key="${k.id}" title="Hapus"><i class="fas fa-times"></i></button>
             </div>`;
           }).join('');
         }
@@ -1054,6 +1174,29 @@
             removeKey(pid,keyId);
             renderProviderCards();updateApiStatus();
             showToast('Key dihapus.','info');
+          });
+        });
+
+        listEl.querySelectorAll('[data-check-key]').forEach(btn=>{
+          btn.addEventListener('click',async()=>{
+            const keyId=btn.dataset.checkKey;
+            const k=getKeys(pid).find(x=>x.id===keyId);
+            if(!k)return;
+            btn.disabled=true;
+            const orig=btn.innerHTML;
+            btn.innerHTML='<i class="fas fa-spinner fa-spin"></i>';
+            try{
+              await verifyProviderKey(pid,k.key);
+              markKeyOK(pid,keyId);
+              showToast(PROVIDERS[pid].name+' key valid ✓','success');
+            }catch(err){
+              markKeyFail(pid,keyId,'invalid');
+              showToast(PROVIDERS[pid].name+': '+err.message,'error');
+            }
+            renderProviderCards();
+            updateApiStatus();
+            btn.disabled=false;
+            btn.innerHTML=orig;
           });
         });
       });
@@ -1082,12 +1225,42 @@
       });
     });
 
+    $('btnValidateAllKeys').addEventListener('click',async()=>{
+      const btn=$('btnValidateAllKeys');
+      btn.disabled=true;
+      const orig=btn.innerHTML;
+      btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Memeriksa semua key...';
+      let totalChecked=0,validCount=0,invalidCount=0;
+      for(const pid of PROVIDER_ORDER){
+        const keys=getKeys(pid);
+        for(const k of keys){
+          totalChecked++;
+          try{
+            await verifyProviderKey(pid,k.key);
+            markKeyOK(pid,k.id);
+            validCount++;
+          }catch(err){
+            if(err.message&&err.message.includes('tidak valid')){
+              markKeyFail(pid,k.id,'invalid');
+              invalidCount++;
+            }
+          }
+        }
+      }
+      renderProviderCards();
+      updateApiStatus();
+      btn.disabled=false;
+      btn.innerHTML=orig;
+      if(totalChecked===0)showToast('Belum ada key untuk dicek.','info');
+      else showToast('Selesai cek: '+validCount+' valid, '+invalidCount+' invalid, dari '+totalChecked+' key.','success');
+    });
+
     $('btnClearAllKeys').addEventListener('click',()=>{
       if(!confirm('⚠️ Hapus SEMUA API Key dari browser?'))return;
       Object.values(LS_KEYS).forEach(k=>localStorage.removeItem(k));
       Object.values(LS_KEYS_LEGACY).forEach(k=>localStorage.removeItem(k));
       document.querySelectorAll('.provider-card [data-new-key]').forEach(inp=>inp.value='');
-      ['groqKeyInput','geminiKeyInput','openrouterKeyInput'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+      ['groqKeyInput','geminiKeyInput','mistralKeyInput','togetherKeyInput','openrouterKeyInput'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
       renderProviderCards();updateApiStatus();
       showToast('Semua API Key dihapus.','success');
     });
@@ -1404,7 +1577,6 @@
     });
 
     function renderQueue(){
-      // Sort priority: processing > pending > error > done (terbaru dulu di tiap grup)
       const _pri={processing:0,pending:1,error:2,done:3};
       currentItems.sort((a,b)=>{
         const pa=_pri[a.status]!==undefined?_pri[a.status]:99;
@@ -1695,14 +1867,12 @@
         return;
       }
 
-      // Panel kiri (batch progress)
       bp.classList.add('show');
       $('progressCount').textContent=current+' / '+total;
       $('progressFile').textContent=fileName||'-';
       const pct=total>0?Math.round((current/total)*100):0;
       $('progressFill').style.width=pct+'%';
 
-      // Banner di atas queue
       banner.style.display='block';
       $('pbCurrent').textContent=current;
       $('pbTotal').textContent=total;
@@ -1767,47 +1937,74 @@
       return raw;
     }
 
+    async function tryProvider(pid,prompt,imageDataUrl,signal){
+      const provider=PROVIDERS[pid];
+      const keys=getAvailableKeys(pid);
+      let lastErr=null;
+
+      for(const keyObj of keys){
+        if(stopRequested)throw new Error('STOP_REQUESTED');
+        if(isKeyRateLimited(keyObj,pid))continue;
+        let keyFatal=false;
+
+        for(const model of provider.models){
+          if(stopRequested)throw new Error('STOP_REQUESTED');
+          try{
+            console.log('▶️ '+provider.name+' ['+maskApiKey(keyObj.key)+'] / '+model);
+            const raw=await callProvider(pid,keyObj.key,model,prompt,imageDataUrl,signal);
+            const parsed=parseAIResponse(raw);
+            parsed.__provider=provider.name;
+            parsed.__model=model;
+            markKeyOK(pid,keyObj.id);
+            console.log('✅ Sukses: '+provider.name+' / '+model);
+            return parsed;
+          }catch(err){
+            if(err.message==='STOP_REQUESTED')throw err;
+            console.warn('❌ '+provider.name+'/'+model+' gagal:',err.message);
+            lastErr=err;
+            if(err.fatal){markKeyFail(pid,keyObj.id,'invalid');keyFatal=true;break;}
+            if(err.rateLimited){markKeyFail(pid,keyObj.id,'rate_limit');keyFatal=true;break;}
+            await sleep(600);
+          }
+        }
+        if(keyFatal)continue;
+      }
+      throw lastErr||new Error('Provider '+provider.name+' tidak menghasilkan respon.');
+    }
+
     async function callAIWithFallback(prompt,imageDataUrl,signal){
       const activeProviders=getActiveProviders();
       if(activeProviders.length===0)throw new Error('Tidak ada API Key aktif.');
       let lastErr=null;
-      let attemptedAny=false;
 
+      // Cycle 1: semua provider secara berurutan
       for(const pid of activeProviders){
         if(stopRequested)throw new Error('STOP_REQUESTED');
-        const provider=PROVIDERS[pid];
-        const keys=getAvailableKeys(pid);
-
-        for(const keyObj of keys){
-          if(stopRequested)throw new Error('STOP_REQUESTED');
-          if(isKeyRateLimited(keyObj))continue;
-          let keyFatal=false;
-
-          for(const model of provider.models){
-            if(stopRequested)throw new Error('STOP_REQUESTED');
-            try{
-              console.log('▶️ '+provider.name+' ['+maskApiKey(keyObj.key)+'] / '+model);
-              const raw=await callProvider(pid,keyObj.key,model,prompt,imageDataUrl,signal);
-              const parsed=parseAIResponse(raw);
-              parsed.__provider=provider.name;
-              parsed.__model=model;
-              markKeyOK(pid,keyObj.id);
-              console.log('✅ Sukses: '+provider.name+' / '+model);
-              return parsed;
-            }catch(err){
-              if(err.message==='STOP_REQUESTED')throw err;
-              console.warn('❌ '+provider.name+'/'+model+' gagal:',err.message);
-              lastErr=err;
-              attemptedAny=true;
-              if(err.fatal){markKeyFail(pid,keyObj.id,'invalid');keyFatal=true;break;}
-              if(err.rateLimited){markKeyFail(pid,keyObj.id,'rate_limit');keyFatal=true;break;}
-              await sleep(600);
-            }
-          }
-          if(keyFatal)continue;
+        try{
+          const result=await tryProvider(pid,prompt,imageDataUrl,signal);
+          return result;
+        }catch(err){
+          if(err.message==='STOP_REQUESTED')throw err;
+          lastErr=err;
         }
       }
-      if(!attemptedAny)throw new Error('Tidak ada provider yang bisa dicoba.');
+
+      // Cycle 2: reset rate_limit Groq, tunggu, coba Groq lagi
+      if(activeProviders.includes('groq')&&!stopRequested){
+        console.log('🔄 Cycle 2: reset Groq rate_limit & retry setelah '+Math.round(GROQ_RETRY_DELAY/1000)+'s');
+        resetProviderRateLimits('groq');
+        await sleep(GROQ_RETRY_DELAY);
+        if(stopRequested)throw new Error('STOP_REQUESTED');
+        try{
+          const result=await tryProvider('groq',prompt,imageDataUrl,signal);
+          console.log('✅ Cycle 2 sukses via Groq');
+          return result;
+        }catch(err){
+          if(err.message==='STOP_REQUESTED')throw err;
+          lastErr=err;
+        }
+      }
+
       throw new Error('Semua provider gagal: '+(lastErr?.message||'unknown'));
     }
 
@@ -1892,6 +2089,7 @@ CRITICAL OUTPUT RULES:
 
     function setProcessingUI(on){
       isProcessing=on;
+      if(on)processStartedAt=Date.now();
       $('btnGenerate').disabled=on;
       $('btnStopGenerate').classList.toggle('show',on);
       if(on)$('btnGenerate').innerHTML='<span class="spinner-small"></span> Memproses...';
@@ -2037,7 +2235,6 @@ CRITICAL OUTPUT RULES:
       abortController=null;
       stopRequested=false;
 
-      // Apply snapshot Firestore terbaru setelah processing selesai
       if(latestFirestoreSnap){
         applyFirestoreSnap(latestFirestoreSnap);
         latestFirestoreSnap=null;
