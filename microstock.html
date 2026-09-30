@@ -13,7 +13,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/d39mdjct/image/upload/w_180,h_180,c_fit/v1783493763/apk_pgxcmo.png" />
 
   <title>MetaStock AI - Generator Metadata Microstock | Akino Store</title>
-  <meta name="description" content="Generate judul, deskripsi, dan keyword microstock profesional dengan AI OpenRouter. Support batch upload & export CSV.">
+  <meta name="description" content="Generate judul, deskripsi, dan keyword microstock profesional dengan AI OpenRouter. Upload tanpa batas, auto-retry, export CSV.">
   <link rel="canonical" href="https://akinocpm.my.id/metastock.html">
   <link rel="icon" href="https://res.cloudinary.com/d39mdjct/image/upload/v1783478697/icon_tnzy32.ico" />
 
@@ -29,7 +29,6 @@
   <style>
     :root {
       --bg: #07070d;
-      --bg-soft: #0a0a14;
       --bg-card: rgba(255,255,255,0.04);
       --bg-card-hover: rgba(255,255,255,0.08);
       --bg-elevated: #0e0e18;
@@ -40,7 +39,6 @@
       --muted-light: #a0a0b8;
       --accent: #FFDD57;
       --accent-soft: rgba(255,221,87,0.12);
-      --accent-hover: #f5c842;
       --border: rgba(255,255,255,0.06);
       --border-hover: rgba(255,255,255,0.12);
       --radius: 16px;
@@ -49,9 +47,8 @@
       --font-display: 'Space Grotesk', sans-serif;
       --font-body: 'DM Sans', sans-serif;
       --shadow-card: 0 8px 32px rgba(0,0,0,0.3);
-      --shadow-hover: 0 16px 48px rgba(0,0,0,0.5);
       --nav-bg: rgba(7,7,13,0.7);
-      --transition: 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+      --transition: 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
       --success: #22c55e;
       --warning: #fb923c;
       --danger: #ef4444;
@@ -59,7 +56,6 @@
     }
     body.light-theme {
       --bg: #f5f5fa;
-      --bg-soft: #ffffff;
       --bg-card: rgba(0,0,0,0.03);
       --bg-card-hover: rgba(0,0,0,0.06);
       --bg-elevated: #ffffff;
@@ -71,7 +67,6 @@
       --border: rgba(0,0,0,0.08);
       --border-hover: rgba(0,0,0,0.14);
       --shadow-card: 0 8px 32px rgba(0,0,0,0.06);
-      --shadow-hover: 0 16px 48px rgba(0,0,0,0.1);
       --nav-bg: rgba(245,245,250,0.75);
     }
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -85,9 +80,9 @@
       min-height:100vh;
       transition: background var(--transition), color var(--transition);
     }
-    ::-webkit-scrollbar { width:5px; height:5px; }
+    ::-webkit-scrollbar { width:6px; height:6px; }
     ::-webkit-scrollbar-track { background:transparent; }
-    ::-webkit-scrollbar-thumb { background:var(--border); border-radius:10px; }
+    ::-webkit-scrollbar-thumb { background:var(--border-hover); border-radius:10px; }
     ::selection { background:var(--accent); color:#000; }
     a { text-decoration:none; color:inherit; }
     button { font-family:inherit; cursor:pointer; border:none; background:none; color:inherit; }
@@ -95,10 +90,7 @@
     input, select, textarea { font-family:inherit; }
 
     .ambient-glows { position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
-    .ambient-glows .glow {
-      position:absolute; border-radius:50%; filter:blur(120px);
-      opacity:0.06; transition:opacity 0.3s;
-    }
+    .ambient-glows .glow { position:absolute; border-radius:50%; filter:blur(120px); opacity:0.06; }
     .ambient-glows .glow-1 { width:500px; height:500px; top:-150px; left:-100px; background:#FFDD57; animation:glowFloat1 12s ease-in-out infinite; }
     .ambient-glows .glow-2 { width:400px; height:400px; bottom:-100px; right:-80px; background:#FFA726; animation:glowFloat2 15s ease-in-out infinite; }
     .ambient-glows .glow-3 { width:300px; height:300px; top:50%; left:50%; transform:translate(-50%,-50%); background:#FFDD57; animation:glowFloat3 18s ease-in-out infinite; }
@@ -106,7 +98,7 @@
     @keyframes glowFloat2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-50px,-70px)} }
     @keyframes glowFloat3 { 0%,100%{transform:translate(-50%,-50%) scale(1)} 50%{transform:translate(-50%,-50%) scale(1.25)} }
 
-    /* ===== NAVBAR ===== */
+    /* NAVBAR */
     .navbar {
       position:fixed; top:0; left:0; right:0; z-index:100;
       display:flex; justify-content:space-between; align-items:center;
@@ -114,8 +106,8 @@
       background:var(--nav-bg);
       backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
       border-bottom:1px solid var(--border);
-      transition:all var(--transition);
       min-height:60px;
+      transition:all var(--transition);
     }
     .navbar.scrolled { box-shadow:0 4px 30px rgba(0,0,0,0.2); }
     .nav-brand {
@@ -123,14 +115,13 @@
       color:var(--accent); letter-spacing:-0.3px;
       display:flex; align-items:center; gap:0.4rem;
     }
-    .nav-brand i { font-size:0.95rem; opacity:0.8; }
     .nav-actions { display:flex; align-items:center; gap:0.4rem; }
     .icon-btn {
       background:var(--bg-card); border:1px solid var(--border);
       color:var(--muted); width:38px; height:38px;
       border-radius:10px; cursor:pointer;
       display:flex; align-items:center; justify-content:center;
-      font-size:0.85rem; transition:all 0.25s ease;
+      font-size:0.85rem; transition:all 0.25s;
     }
     .icon-btn:hover { color:var(--accent); border-color:var(--accent); background:var(--accent-soft); }
     .menu-toggle { display:none; }
@@ -146,7 +137,6 @@
       display:none; position:absolute; top:calc(100% + 6px); left:50%;
       transform:translateX(-50%);
       background:rgba(15,15,25,0.96); backdrop-filter:blur(20px);
-      -webkit-backdrop-filter:blur(20px);
       border:1px solid var(--border); border-radius:var(--radius);
       min-width:240px; padding:0.4rem;
       box-shadow:0 24px 64px rgba(0,0,0,0.5);
@@ -160,40 +150,37 @@
     }
     .dropdown-menu a:hover { background:var(--accent-soft); color:var(--accent); }
 
-    /* ===== PAGE HEADER (COMPACT) ===== */
+    /* PAGE HEADER */
     .page-header {
-      max-width:1400px; margin:0 auto;
+      max-width:1500px; margin:0 auto;
       padding:4.5rem 1.5rem 1rem;
       display:flex; justify-content:space-between; align-items:flex-end;
       gap:1rem; flex-wrap:wrap;
     }
     .page-header-text h1 {
       font-family:var(--font-display);
-      font-size:clamp(1.4rem, 3vw, 1.9rem);
+      font-size:clamp(1.3rem, 3vw, 1.75rem);
       font-weight:700; letter-spacing:-0.5px;
       margin-bottom:0.2rem;
       display:flex; align-items:center; gap:0.5rem;
     }
-    .page-header-text h1 i { color:var(--accent); font-size:1.3rem; }
-    .page-header-text p {
-      color:var(--muted-light); font-size:0.88rem;
-    }
+    .page-header-text h1 i { color:var(--accent); font-size:1.2rem; }
+    .page-header-text p { color:var(--muted-light); font-size:0.85rem; }
     .page-header-actions { display:flex; gap:0.4rem; }
 
-    /* ===== CONTAINER ===== */
+    /* CONTAINER */
     .container {
-      max-width:1400px; margin:0 auto;
+      max-width:1500px; margin:0 auto;
       padding:0 1.5rem 3rem;
       position:relative; z-index:2;
     }
 
-    /* ===== GATE ===== */
+    /* GATE */
     .gate-screen { max-width:520px; margin:2rem auto; padding:0 1rem; }
     .gate-card {
       background:var(--bg-card); border:1px solid var(--border);
       border-radius:var(--radius-lg); padding:2.5rem 2rem;
       text-align:center; box-shadow:var(--shadow-card);
-      backdrop-filter:blur(10px);
     }
     .gate-card .gate-icon {
       width:72px; height:72px; border-radius:20px;
@@ -217,9 +204,7 @@
       width:100%; padding:0.85rem 1rem;
       background:var(--bg-input); border:1px solid var(--border);
       border-radius:var(--radius-sm); color:var(--fg);
-      font-size:0.88rem;
-      outline:none; margin-bottom:0.75rem;
-      transition:border-color 0.2s, box-shadow 0.2s;
+      font-size:0.88rem; outline:none; margin-bottom:0.75rem;
       text-align:center;
     }
     .gate-card input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
@@ -272,24 +257,21 @@
     .helper-steps ol li { margin-bottom:0.3rem; }
     .helper-steps a { color:var(--accent); font-weight:600; }
 
-    /* ===== MAIN LAYOUT (mirip meita.ai) ===== */
+    /* LAYOUT */
     .studio-layout {
       display:grid;
-      grid-template-columns: 400px 1fr;
+      grid-template-columns: 380px 1fr;
       gap:1.25rem;
       align-items:start;
     }
-    @media (max-width:1024px) {
-      .studio-layout { grid-template-columns: 1fr; }
-    }
+    @media (max-width:1024px) { .studio-layout { grid-template-columns: 1fr; } }
 
-    /* ===== LEFT PANEL: UPLOAD + SETTINGS ===== */
+    /* LEFT PANEL */
     .studio-panel {
       background:var(--bg-card);
       border:1px solid var(--border);
       border-radius:var(--radius-lg);
       padding:1.25rem;
-      transition:all var(--transition);
     }
     @media (min-width:1025px) {
       .studio-panel { position:sticky; top:80px; max-height:calc(100vh - 100px); overflow-y:auto; }
@@ -300,27 +282,13 @@
     .panel-section { margin-bottom:1.25rem; }
     .panel-section:last-child { margin-bottom:0; }
     .panel-section-title {
-      font-size:0.72rem;
-      font-weight:700;
-      letter-spacing:0.8px;
-      text-transform:uppercase;
-      color:var(--muted);
-      margin-bottom:0.6rem;
+      font-size:0.72rem; font-weight:700;
+      letter-spacing:0.8px; text-transform:uppercase;
+      color:var(--muted); margin-bottom:0.6rem;
       display:flex; align-items:center; gap:0.4rem;
     }
     .panel-section-title i { color:var(--accent); font-size:0.7rem; }
-    .panel-section-title .count-badge {
-      margin-left:auto;
-      font-family:var(--font-display);
-      font-size:0.65rem;
-      padding:0.1rem 0.5rem;
-      border-radius:50px;
-      background:var(--accent-soft);
-      color:var(--accent);
-      font-weight:700;
-    }
 
-    /* Upload zone */
     .upload-zone {
       position:relative; width:100%;
       border:2px dashed var(--border);
@@ -340,93 +308,32 @@
     }
     .upload-zone .upload-icon {
       width:44px; height:44px; border-radius:12px;
-      background:var(--accent-soft);
-      color:var(--accent);
+      background:var(--accent-soft); color:var(--accent);
       display:flex; align-items:center; justify-content:center;
-      font-size:1.15rem;
-      margin-bottom:0.3rem;
+      font-size:1.15rem; margin-bottom:0.3rem;
     }
     .upload-zone .upload-title {
       font-family:var(--font-display);
       font-size:0.88rem; font-weight:600;
     }
     .upload-zone .upload-sub {
-      font-size:0.72rem; color:var(--muted);
-      line-height:1.4;
+      font-size:0.72rem; color:var(--muted); line-height:1.4;
     }
     .upload-zone .upload-sub strong { color:var(--accent); }
     .upload-zone input[type=file] { display:none; }
 
-    /* Upload thumbnails grid */
-    .upload-grid {
-      display:grid;
-      grid-template-columns:repeat(auto-fill, minmax(64px, 1fr));
-      gap:0.4rem;
-      margin-top:0.6rem;
-    }
-    .upload-grid:empty { display:none; margin:0; }
-    .upload-thumb {
-      position:relative;
-      aspect-ratio:1;
-      border-radius:10px;
-      overflow:hidden;
-      background:#0a0a12;
-      border:2px solid var(--border);
-      transition:all 0.2s;
-    }
-    .upload-thumb.processing { border-color:var(--info); animation:pulseBorder 1.2s infinite; }
-    .upload-thumb.done { border-color:var(--success); }
-    .upload-thumb.error { border-color:var(--danger); }
-    .upload-thumb img { width:100%; height:100%; object-fit:cover; }
-    .upload-thumb .thumb-overlay {
-      position:absolute; inset:0;
-      background:linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.85));
-      pointer-events:none;
-    }
-    .upload-thumb .thumb-status {
-      position:absolute; bottom:4px; left:4px; right:4px;
-      font-size:0.5rem; font-weight:700;
-      text-align:center; color:#fff;
-      text-transform:uppercase; letter-spacing:0.3px;
-      text-shadow:0 1px 2px rgba(0,0,0,0.5);
-    }
-    .upload-thumb .thumb-status.processing { color:#93c5fd; }
-    .upload-thumb .thumb-status.done { color:#86efac; }
-    .upload-thumb .thumb-status.error { color:#fca5a5; }
-    .upload-thumb .thumb-remove {
-      position:absolute; top:3px; right:3px;
-      width:20px; height:20px; border-radius:50%;
-      background:rgba(0,0,0,0.75);
-      border:1px solid rgba(255,255,255,0.15);
-      color:#fff; font-size:0.55rem; cursor:pointer;
-      display:flex; align-items:center; justify-content:center;
-      z-index:2; transition:all 0.2s;
-    }
-    .upload-thumb .thumb-remove:hover { background:rgba(239,68,68,0.95); transform:scale(1.1); }
-    @keyframes pulseBorder {
-      0%,100% { box-shadow:0 0 0 0 rgba(59,130,246,0.4); }
-      50% { box-shadow:0 0 0 4px rgba(59,130,246,0.15); }
-    }
-
-    /* Form fields */
     .field { margin-bottom:0.8rem; }
     .field:last-child { margin-bottom:0; }
     .field label {
       display:flex; align-items:center; gap:0.3rem;
       font-size:0.72rem; font-weight:600;
       color:var(--muted-light); margin-bottom:0.3rem;
-      letter-spacing:0.2px;
-    }
-    .field label .info-icon {
-      font-size:0.65rem; color:var(--muted);
-      cursor:help; margin-left:auto;
     }
     .field select, .field input[type=text] {
       width:100%; padding:0.55rem 0.8rem;
       background:var(--bg-input); border:1px solid var(--border);
       border-radius:var(--radius-sm); color:var(--fg);
-      font-size:0.82rem;
-      outline:none; transition:all 0.2s;
+      font-size:0.82rem; outline:none; transition:all 0.2s;
       -webkit-appearance:none; appearance:none;
       background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7a90' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
       background-repeat:no-repeat; background-position:right 0.7rem center;
@@ -440,10 +347,8 @@
       width:100%; padding:0.55rem 0.8rem;
       background:var(--bg-input); border:1px solid var(--border);
       border-radius:var(--radius-sm); color:var(--fg);
-      font-size:0.82rem;
-      outline:none; transition:all 0.2s;
+      font-size:0.82rem; outline:none; transition:all 0.2s;
       resize:vertical; min-height:56px;
-      font-family:var(--font-body);
     }
     .field textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
     .field textarea::placeholder, .field input::placeholder { color:var(--muted); opacity:0.7; }
@@ -451,28 +356,20 @@
     .two-col { display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; }
     @media (max-width:480px) { .two-col { grid-template-columns:1fr; } }
 
-    /* Asset type pills */
     .asset-pills {
-      display:grid;
-      grid-template-columns:repeat(3, 1fr);
-      gap:0.35rem;
+      display:grid; grid-template-columns:repeat(3, 1fr); gap:0.35rem;
     }
     .asset-pill {
       display:flex; flex-direction:column; align-items:center; gap:0.15rem;
       padding:0.5rem 0.3rem;
-      background:var(--bg-input);
-      border:1px solid var(--border);
-      border-radius:10px;
-      cursor:pointer;
+      background:var(--bg-input); border:1px solid var(--border);
+      border-radius:10px; cursor:pointer;
       transition:all 0.2s;
-      font-size:0.65rem;
-      font-weight:600;
-      color:var(--muted-light);
-      text-align:center;
+      font-size:0.65rem; font-weight:600;
+      color:var(--muted-light); text-align:center;
     }
-    .asset-pill i { font-size:0.95rem; color:var(--muted); transition:color 0.2s; }
+    .asset-pill i { font-size:0.95rem; color:var(--muted); }
     .asset-pill:hover { border-color:var(--border-hover); color:var(--fg); }
-    .asset-pill:hover i { color:var(--fg-dim); }
     .asset-pill.active {
       border-color:var(--accent);
       background:var(--accent-soft);
@@ -480,9 +377,8 @@
     }
     .asset-pill.active i { color:var(--accent); }
 
-    /* Progress bar */
     .batch-progress {
-      margin-top:0.5rem; padding:0.6rem 0.8rem;
+      margin-top:0.6rem; padding:0.6rem 0.8rem;
       background:rgba(59,130,246,0.08);
       border:1px solid rgba(59,130,246,0.2);
       border-radius:10px; font-size:0.75rem; display:none;
@@ -498,7 +394,7 @@
     .batch-progress .progress-file {
       font-size:0.68rem; color:var(--muted);
       white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-      max-width:180px;
+      max-width:160px;
     }
     .batch-progress .progress-bar {
       height:4px; background:rgba(255,255,255,0.06);
@@ -509,14 +405,12 @@
       border-radius:4px; transition:width 0.3s ease; width:0%;
     }
 
-    /* Settings row bottom */
     .settings-bar {
       display:flex; flex-wrap:wrap; gap:0.4rem;
       align-items:center; margin-top:0.75rem;
       padding-top:0.75rem;
       border-top:1px solid var(--border);
-      font-size:0.7rem;
-      color:var(--muted);
+      font-size:0.7rem; color:var(--muted);
     }
     .api-status {
       display:inline-flex; align-items:center; gap:0.3rem;
@@ -534,14 +428,56 @@
       color:var(--warning);
     }
 
-    /* ===== RIGHT: RESULTS ===== */
-    .results-panel {
+    /* ===== RIGHT PANEL ===== */
+    .queue-panel {
       display:flex; flex-direction:column;
-      gap:1rem;
-      min-width:0;
+      gap:1rem; min-width:0;
     }
 
-    .results-toolbar {
+    /* Stats Bar */
+    .stats-bar {
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:0.5rem;
+      padding:0.85rem;
+      background:var(--bg-card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+    }
+    @media (max-width:600px) { .stats-bar { grid-template-columns:repeat(2, 1fr); } }
+    .stat-box {
+      padding:0.5rem 0.6rem;
+      border-radius:10px;
+      background:var(--bg-input);
+      border:1px solid var(--border);
+      display:flex; flex-direction:column;
+      align-items:center;
+      text-align:center;
+      transition:all 0.2s;
+    }
+    .stat-box .stat-num {
+      font-family:var(--font-display);
+      font-size:1.35rem;
+      font-weight:700;
+      line-height:1.2;
+      color:var(--fg);
+    }
+    .stat-box .stat-num.blue { color:var(--info); }
+    .stat-box .stat-num.green { color:var(--success); }
+    .stat-box .stat-num.orange { color:var(--warning); }
+    .stat-box .stat-num.red { color:var(--danger); }
+    .stat-box .stat-label {
+      font-size:0.62rem;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+      font-weight:600;
+      margin-top:0.1rem;
+    }
+    .stat-box .stat-label i { margin-right:0.15rem; }
+
+    /* Toolbar */
+    .queue-toolbar {
       display:flex; align-items:center;
       gap:0.5rem; flex-wrap:wrap;
       padding:0.75rem 1rem;
@@ -549,85 +485,150 @@
       border:1px solid var(--border);
       border-radius:var(--radius);
     }
-    .results-toolbar .rt-info {
+    .queue-toolbar .qt-info {
       flex:1;
       display:flex; align-items:center; gap:0.5rem;
       font-size:0.8rem; color:var(--muted-light);
       min-width:120px;
     }
-    .results-toolbar .rt-info strong { color:var(--fg); font-family:var(--font-display); }
-    .results-toolbar .rt-actions { display:flex; gap:0.35rem; flex-wrap:wrap; }
+    .queue-toolbar .qt-actions {
+      display:flex; gap:0.35rem; flex-wrap:wrap;
+    }
 
     .btn-toolbar {
       display:inline-flex; align-items:center; gap:0.3rem;
-      padding:0.35rem 0.8rem;
+      padding:0.4rem 0.85rem;
       background:var(--bg-input);
       border:1px solid var(--border);
       border-radius:8px;
       color:var(--muted-light);
       font-size:0.72rem; font-weight:600;
       cursor:pointer; transition:all 0.2s;
+      white-space:nowrap;
     }
-    .btn-toolbar:hover { color:var(--fg); border-color:var(--border-hover); }
+    .btn-toolbar:hover:not(:disabled) { color:var(--fg); border-color:var(--border-hover); }
+    .btn-toolbar:disabled { opacity:0.4; cursor:not-allowed; }
     .btn-toolbar.btn-csv {
-      background:rgba(34,197,94,0.1);
-      border-color:rgba(34,197,94,0.2);
-      color:#4ade80;
+      background:linear-gradient(145deg, #22c55e, #16a34a);
+      border-color:#16a34a;
+      color:#fff;
+      box-shadow:0 2px 10px rgba(34,197,94,0.2);
     }
-    .btn-toolbar.btn-csv:hover { background:rgba(34,197,94,0.2); }
+    .btn-toolbar.btn-csv:hover:not(:disabled) {
+      transform:translateY(-1px);
+      box-shadow:0 4px 18px rgba(34,197,94,0.35);
+    }
     .btn-toolbar.btn-danger {
       background:rgba(239,68,68,0.08);
       border-color:rgba(239,68,68,0.15);
       color:#f87171;
     }
-    .btn-toolbar.btn-danger:hover { background:rgba(239,68,68,0.15); }
+    .btn-toolbar.btn-danger:hover:not(:disabled) { background:rgba(239,68,68,0.15); }
+    .btn-toolbar.btn-retry {
+      background:rgba(251,146,60,0.1);
+      border-color:rgba(251,146,60,0.2);
+      color:#fb923c;
+    }
+    .btn-toolbar.btn-retry:hover:not(:disabled) { background:rgba(251,146,60,0.2); }
 
-    /* Result cards */
-    .result-card {
+    /* Queue List */
+    .queue-list {
+      display:flex; flex-direction:column;
+      gap:0.6rem;
+    }
+
+    .queue-item {
       background:var(--bg-card);
       border:1px solid var(--border);
       border-radius:var(--radius);
       overflow:hidden;
       transition:all var(--transition);
-      animation:fadeUp 0.35s ease both;
+      animation:fadeUp 0.25s ease both;
     }
-    .result-card:hover { border-color:var(--border-hover); }
-    .result-card.error-card { border-color:rgba(239,68,68,0.25); background:rgba(239,68,68,0.03); }
-    .result-card .rc-header {
-      display:flex; align-items:center; gap:0.6rem;
-      padding:0.7rem 1rem;
-      border-bottom:1px solid var(--border);
-      background:rgba(255,255,255,0.01);
+    .queue-item:hover { border-color:var(--border-hover); }
+    .queue-item.processing { border-color:rgba(59,130,246,0.4); animation:pulseBorder 1.4s infinite; }
+    .queue-item.done { border-color:rgba(34,197,94,0.25); }
+    .queue-item.error { border-color:rgba(239,68,68,0.35); background:rgba(239,68,68,0.03); }
+
+    @keyframes pulseBorder {
+      0%,100% { box-shadow:0 0 0 0 rgba(59,130,246,0.3); }
+      50% { box-shadow:0 0 0 4px rgba(59,130,246,0.1); }
     }
-    .result-card .rc-thumb {
-      width:44px; height:44px; border-radius:8px;
+    @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+    .queue-item-header {
+      display:flex; align-items:center; gap:0.75rem;
+      padding:0.7rem 0.9rem;
+      cursor:pointer;
+      user-select:none;
+    }
+    .queue-item-thumb {
+      width:52px; height:52px; border-radius:10px;
       object-fit:cover; flex-shrink:0;
       border:1px solid var(--border);
       background:#0a0a12;
     }
-    .result-card .rc-meta { flex:1; min-width:0; }
-    .result-card .rc-filename {
-      font-size:0.8rem; font-weight:600;
+    .queue-item-info { flex:1; min-width:0; }
+    .queue-item-name {
+      font-size:0.82rem; font-weight:600;
       white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      display:flex; align-items:center; gap:0.4rem;
     }
-    .result-card .rc-status {
-      font-size:0.62rem; font-weight:700;
-      letter-spacing:0.4px; text-transform:uppercase;
-      color:var(--success);
-      display:flex; align-items:center; gap:0.25rem;
-      margin-top:0.1rem;
+    .queue-item-status {
+      font-size:0.65rem; font-weight:600;
+      display:inline-flex; align-items:center; gap:0.3rem;
+      margin-top:0.15rem;
     }
-    .result-card.error-card .rc-status { color:var(--danger); }
+    .queue-item-status.pending { color:var(--muted); }
+    .queue-item-status.processing { color:var(--info); }
+    .queue-item-status.done { color:var(--success); }
+    .queue-item-status.error { color:var(--danger); }
+    .queue-item-retry-badge {
+      font-size:0.6rem;
+      padding:0.1rem 0.4rem;
+      border-radius:50px;
+      background:rgba(251,146,60,0.15);
+      color:#fb923c;
+      font-weight:700;
+    }
+    .queue-item-actions {
+      display:flex; gap:0.25rem; flex-shrink:0;
+    }
+    .queue-item-actions button {
+      width:30px; height:30px; border-radius:8px;
+      background:var(--bg-input);
+      border:1px solid var(--border);
+      color:var(--muted);
+      font-size:0.7rem;
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; transition:all 0.2s;
+    }
+    .queue-item-actions button:hover { color:var(--accent); border-color:var(--accent); }
+    .queue-item-actions button.del:hover { color:#ef4444; border-color:#ef4444; }
 
-    .result-card .rc-body { padding:0; }
+    .queue-item-body {
+      display:none;
+      border-top:1px solid var(--border);
+      background:rgba(255,255,255,0.01);
+    }
+    .queue-item.expanded .queue-item-body { display:block; }
+
+    .queue-item-error-msg {
+      padding:0.75rem 0.9rem;
+      font-size:0.8rem;
+      color:#f87171;
+      background:rgba(239,68,68,0.04);
+    }
+
+    /* Result rows */
     .result-row {
-      padding:0.75rem 1rem;
+      padding:0.75rem 0.9rem;
       border-bottom:1px solid var(--border);
     }
     .result-row:last-child { border-bottom:none; }
     .result-row-head {
       display:flex; align-items:center; justify-content:space-between;
-      margin-bottom:0.4rem; gap:0.5rem;
+      margin-bottom:0.4rem; gap:0.5rem; flex-wrap:wrap;
     }
     .result-row-label {
       font-size:0.68rem; font-weight:700;
@@ -636,18 +637,13 @@
       display:flex; align-items:center; gap:0.35rem;
     }
     .result-row-label .char-count {
-      font-weight:500;
-      color:var(--muted);
-      font-size:0.62rem;
-      margin-left:0.3rem;
-      text-transform:none;
-      letter-spacing:0;
+      font-weight:500; color:var(--muted); font-size:0.62rem;
+      margin-left:0.3rem; text-transform:none; letter-spacing:0;
     }
     .result-row-actions { display:flex; gap:0.3rem; }
-
     .btn-copy-xs {
       display:inline-flex; align-items:center; gap:0.25rem;
-      padding:0.18rem 0.5rem;
+      padding:0.2rem 0.55rem;
       background:var(--bg-input);
       border:1px solid var(--border);
       border-radius:6px;
@@ -659,12 +655,11 @@
     .btn-copy-xs.copied { border-color:var(--success); color:var(--success); }
 
     .result-row-content {
-      font-size:0.84rem;
-      line-height:1.55;
+      font-size:0.84rem; line-height:1.55;
       color:var(--fg);
       word-break:break-word;
       white-space:pre-wrap;
-      max-height:120px;
+      max-height:140px;
       overflow-y:auto;
     }
     .result-row-content::-webkit-scrollbar { width:3px; }
@@ -672,7 +667,7 @@
 
     .keywords-chips {
       display:flex; flex-wrap:wrap; gap:0.3rem;
-      max-height:140px; overflow-y:auto;
+      max-height:160px; overflow-y:auto;
       padding:0.1rem 0;
     }
     .keywords-chips::-webkit-scrollbar { width:3px; }
@@ -685,7 +680,6 @@
       border-radius:50px;
       color:var(--fg-dim);
       transition:all 0.15s;
-      cursor:default;
     }
     .kw-chip:hover {
       border-color:var(--accent);
@@ -693,15 +687,8 @@
       background:var(--accent-soft);
     }
 
-    .result-row-error {
-      padding:0.75rem 1rem;
-      font-size:0.8rem;
-      color:#f87171;
-      background:rgba(239,68,68,0.04);
-    }
-
-    /* Empty / loading state */
-    .empty-results {
+    /* Empty state */
+    .empty-queue {
       padding:3rem 1.5rem;
       text-align:center;
       background:var(--bg-card);
@@ -709,37 +696,20 @@
       border-radius:var(--radius);
       color:var(--muted);
     }
-    .empty-results .empty-icon {
-      width:60px; height:60px; border-radius:16px;
-      background:var(--accent-soft);
-      color:var(--accent);
+    .empty-queue .empty-icon {
+      width:64px; height:64px; border-radius:18px;
+      background:var(--accent-soft); color:var(--accent);
       display:flex; align-items:center; justify-content:center;
-      font-size:1.5rem;
-      margin:0 auto 0.9rem;
-      opacity:0.9;
+      font-size:1.6rem; margin:0 auto 0.9rem;
     }
-    .empty-results h3 {
+    .empty-queue h3 {
       font-family:var(--font-display);
       font-size:1rem; font-weight:600;
-      color:var(--fg);
-      margin-bottom:0.3rem;
+      color:var(--fg); margin-bottom:0.3rem;
     }
-    .empty-results p {
-      font-size:0.82rem;
-      color:var(--muted-light);
-      max-width:340px;
-      margin:0 auto;
-      line-height:1.6;
-    }
-    .empty-results .empty-hint {
-      margin-top:0.9rem;
-      font-size:0.72rem;
-      color:var(--muted);
-      display:inline-flex; align-items:center; gap:0.35rem;
-      padding:0.35rem 0.8rem;
-      border-radius:50px;
-      background:var(--bg-input);
-      border:1px solid var(--border);
+    .empty-queue p {
+      font-size:0.82rem; color:var(--muted-light);
+      max-width:360px; margin:0 auto; line-height:1.6;
     }
 
     .spinner {
@@ -756,13 +726,18 @@
       border-top-color:#0a0a0f;
       border-radius:50%; animation:spin 0.7s linear infinite;
     }
+    .spinner-xs {
+      display:inline-block; width:12px; height:12px;
+      border:2px solid rgba(255,255,255,0.15);
+      border-top-color:var(--accent);
+      border-radius:50%; animation:spin 0.7s linear infinite;
+    }
     @keyframes spin { to { transform:rotate(360deg); } }
 
-    /* ===== MODAL ===== */
+    /* MODAL */
     .modal-overlay {
       position:fixed; inset:0; z-index:9998;
       background:rgba(0,0,0,0.75); backdrop-filter:blur(12px);
-      -webkit-backdrop-filter:blur(12px);
       display:none; align-items:center; justify-content:center;
       padding:1.5rem;
     }
@@ -788,7 +763,6 @@
       background:var(--bg-input); border:1px solid var(--border);
       color:var(--fg); font-size:0.95rem; cursor:pointer;
       display:flex; align-items:center; justify-content:center;
-      transition:all var(--transition);
     }
     .modal-close:hover { background:var(--bg-card-hover); }
     .modal-title {
@@ -814,14 +788,11 @@
     .setting-row .sr-label i { color:var(--accent); }
     .setting-row .sr-value {
       font-size:0.78rem; font-weight:600;
-      color:var(--fg-dim);
-      text-align:right;
+      color:var(--fg-dim); text-align:right;
       word-break:break-all;
     }
     .setting-row .sr-value.ok { color:var(--success); }
-    .setting-row .sr-value.missing { color:var(--warning); }
     .setting-row .sr-value.masked { font-family:monospace; letter-spacing:0.5px; }
-
     .modal-input-group { margin-bottom:0.75rem; }
     .modal-input-group label {
       display:block; font-size:0.72rem; font-weight:600;
@@ -831,11 +802,9 @@
       width:100%; padding:0.7rem 0.9rem;
       background:var(--bg-input); border:1px solid var(--border);
       border-radius:var(--radius-sm); color:var(--fg);
-      font-size:0.85rem;
-      outline:none; transition:all 0.2s;
+      font-size:0.85rem; outline:none;
     }
     .modal-input-group input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
-
     .modal-actions { display:flex; gap:0.5rem; margin-top:1rem; flex-wrap:wrap; }
     .modal-actions button {
       flex:1; min-width:120px;
@@ -845,10 +814,7 @@
       display:inline-flex; align-items:center; justify-content:center; gap:0.4rem;
       border:none;
     }
-    .btn-ok {
-      background:linear-gradient(145deg, #FFDD57, #f5c842);
-      color:#0a0a0f;
-    }
+    .btn-ok { background:linear-gradient(145deg, #FFDD57, #f5c842); color:#0a0a0f; }
     .btn-ok:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(255,221,87,0.3); }
     .btn-danger {
       background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2) !important;
@@ -861,7 +827,7 @@
     }
     .btn-cancel:hover { border-color:var(--border-hover); color:var(--fg); }
 
-    /* ===== HISTORY ===== */
+    /* HISTORY */
     .history-section {
       margin-top:2rem;
       background:var(--bg-card); border:1px solid var(--border);
@@ -879,8 +845,7 @@
     .history-title i { color:var(--accent); }
     .history-title .hcount {
       font-family:var(--font-display);
-      font-size:0.65rem;
-      padding:0.1rem 0.5rem;
+      font-size:0.65rem; padding:0.1rem 0.5rem;
       border-radius:50px;
       background:var(--accent-soft);
       color:var(--accent);
@@ -921,9 +886,7 @@
     .history-item .hi-actions button.del:hover { color:#ef4444; border-color:#ef4444; }
     .history-empty { text-align:center; padding:1.5rem; color:var(--muted); font-size:0.78rem; }
 
-    @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
-
-    /* ===== TOAST ===== */
+    /* TOAST */
     .toast-container {
       position:fixed; bottom:24px; right:24px; z-index:9999;
       display:flex; flex-direction:column; gap:0.5rem; max-width:90%;
@@ -946,7 +909,7 @@
     .toast.warning { border-left-color:var(--warning); } .toast.warning i { color:var(--warning); }
     @keyframes slideInToast { from { opacity:0; transform:translateX(60px) scale(0.9); } to { opacity:1; transform:translateX(0) scale(1); } }
 
-    /* ===== MISC ===== */
+    /* MISC */
     .chat-float {
       position:fixed; bottom:1.25rem; right:1.25rem; z-index:99;
       display:flex; flex-direction:column; align-items:flex-end; gap:0.5rem;
@@ -967,7 +930,7 @@
       display:flex; align-items:center; justify-content:center;
       color:#fff; font-size:1.4rem;
       box-shadow:0 4px 24px rgba(37,211,102,0.35);
-      transition:all var(--transition); text-decoration:none;
+      transition:all var(--transition);
     }
     .chat-float-btn:hover { transform:scale(1.08); }
 
@@ -989,7 +952,7 @@
       margin-top:2rem;
     }
     .footer-inner {
-      max-width:1400px; margin:0 auto;
+      max-width:1500px; margin:0 auto;
       display:flex; justify-content:space-between; align-items:center;
       gap:1rem; flex-wrap:wrap;
       font-size:0.78rem; color:var(--muted);
@@ -1012,14 +975,14 @@
     }
     .social-row a:hover { color:var(--accent); border-color:var(--accent); background:var(--accent-soft); transform:translateY(-3px); }
 
-    /* ===== RESPONSIVE ===== */
+    /* RESPONSIVE */
     @media (max-width:768px) {
       .navbar { padding:0.6rem 1rem; min-height:56px; }
       .menu-toggle { display:flex; }
       .nav-links {
         display:none; position:absolute; top:100%; left:0; right:0;
         flex-direction:column; background:rgba(7,7,13,0.98);
-        backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+        backdrop-filter:blur(24px);
         border-bottom:1px solid var(--border);
         padding:0.8rem; gap:0.1rem;
       }
@@ -1034,16 +997,17 @@
       .dropdown:hover .dropdown-menu { display:none; }
       .dropdown.active .dropdown-menu { display:block !important; }
       .page-header { padding:4rem 1rem 1rem; }
-      .page-header-text h1 { font-size:1.25rem; }
+      .page-header-text h1 { font-size:1.2rem; }
       .container { padding:0 1rem 2.5rem; }
       .studio-layout { gap:1rem; }
       .studio-panel { padding:1rem; }
       .toast-container { bottom:70px; right:12px; left:12px; align-items:center; }
-      .upload-grid { grid-template-columns:repeat(auto-fill, minmax(56px, 1fr)); }
-      .results-toolbar .rt-actions { width:100%; }
-      .results-toolbar .rt-actions .btn-toolbar { flex:1; justify-content:center; }
+      .queue-toolbar .qt-actions { width:100%; }
+      .queue-toolbar .qt-actions .btn-toolbar { flex:1; justify-content:center; }
       .footer-inner { justify-content:center; text-align:center; flex-direction:column; }
-      .asset-pills { grid-template-columns:repeat(3, 1fr); }
+      .queue-item-thumb { width:44px; height:44px; }
+      .queue-item-actions button { width:26px; height:26px; font-size:0.65rem; }
+      .stat-box .stat-num { font-size:1.15rem; }
     }
   </style>
 </head>
@@ -1055,11 +1019,11 @@
     <div class="glow glow-3"></div>
   </div>
 
-  <!-- ===== NAVBAR ===== -->
-  <nav class="navbar" id="navbar" aria-label="Navigasi utama">
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
     <a href="index.html" class="nav-brand"><i class="fas fa-store"></i> Akino Store</a>
     <div class="nav-actions">
-      <button class="icon-btn" id="themeToggle" aria-label="Toggle tema"><i class="fas fa-moon"></i></button>
+      <button class="icon-btn" id="themeToggle" aria-label="Tema"><i class="fas fa-moon"></i></button>
       <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
     </div>
     <ul class="nav-links" id="navLinks">
@@ -1081,12 +1045,12 @@
     </ul>
   </nav>
 
-  <!-- ===== GATE 1: LOGIN ===== -->
+  <!-- GATE LOGIN -->
   <div class="gate-screen" id="gateLogin" style="display:none">
     <div class="gate-card">
       <div class="gate-icon"><i class="fas fa-lock"></i></div>
       <h2>Login Diperlukan</h2>
-      <p class="center">Untuk menggunakan MetaStock AI, silakan login dengan akun Google Anda.</p>
+      <p class="center">Silakan login dengan akun Google Anda untuk memakai MetaStock AI.</p>
       <button class="btn-google" id="btnLoginGoogle">
         <svg viewBox="0 0 48 48" width="20" height="20">
           <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
@@ -1099,13 +1063,12 @@
     </div>
   </div>
 
-  <!-- ===== GATE 2: API KEY ===== -->
+  <!-- GATE API KEY -->
   <div class="gate-screen" id="gateApiKey" style="display:none">
     <div class="gate-card">
       <div class="gate-icon"><i class="fas fa-key"></i></div>
       <h2>Setup OpenRouter API Key</h2>
-      <p class="center">MetaStock AI memakai <strong>OpenRouter</strong>. <strong>Gratis!</strong></p>
-
+      <p class="center">MetaStock AI memakai <strong>OpenRouter</strong> (gratis).</p>
       <div class="helper-steps">
         <strong>Cara dapat API Key gratis:</strong>
         <ol>
@@ -1116,49 +1079,40 @@
           <li>Paste di bawah ini</li>
         </ol>
       </div>
-
-      <input type="password" id="apiKeyInput" placeholder="sk-or-v1-... (paste di sini)" autocomplete="off" spellcheck="false">
-      <div id="apiKeyError" class="notice error" style="display:none;text-align:left;margin-bottom:0.75rem;padding:0.5rem 0.7rem;border-radius:8px;font-size:0.78rem;"></div>
+      <input type="password" id="apiKeyInput" placeholder="sk-or-v1-..." autocomplete="off" spellcheck="false">
+      <div id="apiKeyError" style="display:none;text-align:left;margin-bottom:0.75rem;padding:0.5rem 0.7rem;border-radius:8px;font-size:0.78rem;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;"></div>
       <button class="btn-primary" id="btnSaveApiKey"><i class="fas fa-check"></i> Simpan & Verifikasi</button>
       <button class="btn-ghost" id="btnLogoutFromGate" style="margin-top:0.6rem;width:100%;"><i class="fas fa-right-from-bracket"></i> Logout</button>
     </div>
   </div>
 
-  <!-- ===== PAGE HEADER ===== -->
+  <!-- PAGE HEADER -->
   <div class="page-header" id="pageHeader" style="display:none">
     <div class="page-header-text">
       <h1><i class="fas fa-wand-magic-sparkles"></i> MetaStock AI</h1>
-      <p>Generator metadata microstock otomatis — judul, deskripsi, & keyword untuk foto, vector, video, dan lainnya.</p>
+      <p>Upload tanpa batas • Auto-retry gagal • Export CSV/JSON</p>
     </div>
     <div class="page-header-actions">
       <button class="btn-ghost" id="btnOpenSettings"><i class="fas fa-cog"></i> Pengaturan</button>
     </div>
   </div>
 
-  <!-- ===== STUDIO LAYOUT ===== -->
+  <!-- MAIN STUDIO -->
   <div class="container" id="studioContainer" style="display:none">
-
     <div class="studio-layout">
 
-      <!-- ===== LEFT: STUDIO PANEL ===== -->
+      <!-- LEFT PANEL -->
       <div class="studio-panel">
-
-        <!-- Upload section -->
         <div class="panel-section">
           <div class="panel-section-title">
-            <i class="fas fa-images"></i> Upload Aset
-            <span class="count-badge" id="uploadCountBadge">0 / 8</span>
+            <i class="fas fa-cloud-upload-alt"></i> Upload Aset
           </div>
-
           <div class="upload-zone" id="uploadZone">
-            <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+            <div class="upload-icon"><i class="fas fa-plus"></i></div>
             <div class="upload-title">Klik atau Drop File</div>
-            <div class="upload-sub">Maks <strong id="maxUploadLabel">8</strong> file • 5MB/file</div>
+            <div class="upload-sub"><strong>Tanpa batas</strong> • Maks 5MB/file • JPG/PNG/WEBP</div>
             <input type="file" id="fileInput" accept="image/*" multiple>
           </div>
-
-          <div class="upload-grid" id="uploadGrid"></div>
-
           <div class="batch-progress" id="batchProgress">
             <div class="progress-info">
               <span class="progress-count" id="progressCount">0 / 0</span>
@@ -1170,45 +1124,20 @@
           </div>
         </div>
 
-        <!-- Tipe aset -->
         <div class="panel-section">
-          <div class="panel-section-title">
-            <i class="fas fa-layer-group"></i> Tipe Aset
-          </div>
+          <div class="panel-section-title"><i class="fas fa-layer-group"></i> Tipe Aset</div>
           <div class="asset-pills" id="assetPills">
-            <div class="asset-pill active" data-type="photo">
-              <i class="fas fa-camera"></i>
-              <span>Photo</span>
-            </div>
-            <div class="asset-pill" data-type="vector">
-              <i class="fas fa-bezier-curve"></i>
-              <span>Vector</span>
-            </div>
-            <div class="asset-pill" data-type="illustration">
-              <i class="fas fa-paint-brush"></i>
-              <span>Illustration</span>
-            </div>
-            <div class="asset-pill" data-type="video">
-              <i class="fas fa-video"></i>
-              <span>Video</span>
-            </div>
-            <div class="asset-pill" data-type="3d">
-              <i class="fas fa-cube"></i>
-              <span>3D Render</span>
-            </div>
-            <div class="asset-pill" data-type="editorial">
-              <i class="fas fa-newspaper"></i>
-              <span>Editorial</span>
-            </div>
+            <div class="asset-pill active" data-type="photo"><i class="fas fa-camera"></i><span>Photo</span></div>
+            <div class="asset-pill" data-type="vector"><i class="fas fa-bezier-curve"></i><span>Vector</span></div>
+            <div class="asset-pill" data-type="illustration"><i class="fas fa-paint-brush"></i><span>Ilustrasi</span></div>
+            <div class="asset-pill" data-type="video"><i class="fas fa-video"></i><span>Video</span></div>
+            <div class="asset-pill" data-type="3d"><i class="fas fa-cube"></i><span>3D</span></div>
+            <div class="asset-pill" data-type="editorial"><i class="fas fa-newspaper"></i><span>Editorial</span></div>
           </div>
         </div>
 
-        <!-- Settings -->
         <div class="panel-section">
-          <div class="panel-section-title">
-            <i class="fas fa-sliders"></i> Pengaturan Output
-          </div>
-
+          <div class="panel-section-title"><i class="fas fa-sliders"></i> Pengaturan Output</div>
           <div class="two-col">
             <div class="field">
               <label>Bahasa</label>
@@ -1221,18 +1150,17 @@
             <div class="field">
               <label>Jumlah Keyword</label>
               <select id="kwCount">
-                <option value="20">20 keyword</option>
-                <option value="30" selected>30 keyword</option>
-                <option value="40">40 keyword</option>
-                <option value="50">50 keyword</option>
+                <option value="20">20</option>
+                <option value="30" selected>30</option>
+                <option value="40">40</option>
+                <option value="50">50</option>
               </select>
             </div>
           </div>
-
           <div class="field">
             <label>Platform Target</label>
             <select id="platform">
-              <option value="general" selected>General (semua platform)</option>
+              <option value="general" selected>General (semua)</option>
               <option value="shutterstock">Shutterstock</option>
               <option value="adobe">Adobe Stock</option>
               <option value="freepik">Freepik</option>
@@ -1240,78 +1168,84 @@
               <option value="vecteezy">Vecteezy</option>
             </select>
           </div>
-
-          <div class="field">
-            <label>Batas Upload per Batch <i class="fas fa-info-circle info-icon" title="Berapa file maksimal yang bisa diupload sekaligus"></i></label>
-            <select id="uploadLimit">
-              <option value="4">4 file</option>
-              <option value="6">6 file</option>
-              <option value="8" selected>8 file (rekomendasi)</option>
-              <option value="12">12 file</option>
-              <option value="16">16 file</option>
-              <option value="20">20 file (maks)</option>
-            </select>
-          </div>
-
           <div class="field">
             <label>Konteks Tambahan <span style="color:var(--muted);font-weight:400;">(opsional)</span></label>
-            <textarea id="extraDesc" placeholder="Contoh: fokus untuk brand travel, tone hangat, target Asia Tenggara..."></textarea>
+            <textarea id="extraDesc" placeholder="Contoh: tone hangat, target pasar Asia Tenggara..."></textarea>
           </div>
         </div>
 
-        <!-- Generate button -->
         <button class="btn-primary" id="btnGenerate">
           <i class="fas fa-wand-magic-sparkles"></i> Generate Semua
         </button>
 
-        <!-- Status bar -->
         <div class="settings-bar">
           <span class="api-status ok" id="apiStatus">
             <i class="fas fa-check-circle"></i> API Key OK
           </span>
           <span style="margin-left:auto;font-size:0.65rem;">
-            <i class="fas fa-bolt"></i> via OpenRouter
+            <i class="fas fa-rotate"></i> Auto-retry ON
           </span>
         </div>
       </div>
 
-      <!-- ===== RIGHT: RESULTS ===== -->
-      <div class="results-panel">
+      <!-- RIGHT PANEL -->
+      <div class="queue-panel">
 
-        <div class="results-toolbar">
-          <div class="rt-info">
-            <i class="fas fa-list-check"></i>
-            <span id="resultsInfo">Belum ada hasil</span>
+        <!-- STATS BAR -->
+        <div class="stats-bar">
+          <div class="stat-box">
+            <span class="stat-num" id="statTotal">0</span>
+            <span class="stat-label"><i class="fas fa-file-image"></i> Total</span>
           </div>
-          <div class="rt-actions" id="resultsActions" style="display:none">
-            <button class="btn-toolbar btn-csv" id="btnExportCSV">
-              <i class="fas fa-file-csv"></i> CSV
+          <div class="stat-box">
+            <span class="stat-num green" id="statDone">0</span>
+            <span class="stat-label"><i class="fas fa-check-circle"></i> Selesai</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-num blue" id="statProcessing">0</span>
+            <span class="stat-label"><i class="fas fa-spinner"></i> Diproses</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-num orange" id="statPending">0</span>
+            <span class="stat-label"><i class="fas fa-clock"></i> Menunggu</span>
+          </div>
+        </div>
+
+        <!-- TOOLBAR -->
+        <div class="queue-toolbar">
+          <div class="qt-info" id="queueInfo">
+            <i class="fas fa-list-check"></i>
+            <span id="queueStats">Belum ada file</span>
+          </div>
+          <div class="qt-actions" id="queueActions">
+            <button class="btn-toolbar btn-retry" id="btnRetryFailed" style="display:none;">
+              <i class="fas fa-rotate"></i> Retry Gagal
             </button>
-            <button class="btn-toolbar" id="btnExportJSON">
+            <button class="btn-toolbar btn-csv" id="btnExportCSV" disabled>
+              <i class="fas fa-file-csv"></i> Export CSV
+            </button>
+            <button class="btn-toolbar" id="btnExportJSON" disabled>
               <i class="fas fa-code"></i> JSON
             </button>
-            <button class="btn-toolbar btn-danger" id="btnClearResults">
+            <button class="btn-toolbar btn-danger" id="btnClearQueue">
               <i class="fas fa-trash"></i> Clear
             </button>
           </div>
         </div>
 
-        <div id="resultContainer">
-          <div class="empty-results">
-            <div class="empty-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
-            <h3>Belum ada hasil</h3>
+        <!-- QUEUE LIST -->
+        <div class="queue-list" id="queueList">
+          <div class="empty-queue">
+            <div class="empty-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+            <h3>Belum ada file</h3>
             <p>Upload gambar di panel kiri, pilih tipe aset, lalu klik <strong>Generate Semua</strong>.</p>
-            <div class="empty-hint">
-              <i class="fas fa-lightbulb"></i> AI akan buat judul, deskripsi & keyword
-            </div>
           </div>
         </div>
 
       </div>
-
     </div>
 
-    <!-- ===== HISTORY ===== -->
+    <!-- HISTORY -->
     <div class="history-section">
       <div class="history-header">
         <div class="history-title">
@@ -1327,10 +1261,9 @@
         <div class="history-empty"><i class="fas fa-inbox"></i><br>Belum ada riwayat.</div>
       </div>
     </div>
-
   </div>
 
-  <!-- ===== SETTINGS MODAL ===== -->
+  <!-- SETTINGS MODAL -->
   <div class="modal-overlay" id="settingsModal">
     <div class="modal-box">
       <button class="modal-close" id="btnCloseSettings"><i class="fas fa-xmark"></i></button>
@@ -1371,7 +1304,6 @@
     </div>
   </div>
 
-  <!-- ===== FOOTER ===== -->
   <div class="social-row">
     <a href="https://www.tiktok.com/@akinolaset_" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
     <a href="https://www.instagram.com/akinostore_" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
@@ -1381,9 +1313,7 @@
 
   <footer class="footer">
     <div class="footer-inner">
-      <div>
-        <span class="brand">Akino Store</span> &copy; 2022. Jasa digital & AI tools.
-      </div>
+      <div><span class="brand">Akino Store</span> &copy; 2022. Jasa digital & AI tools.</div>
       <div class="links">
         <a href="about.html">About</a>
         <a href="privacy.html">Privasi</a>
@@ -1400,7 +1330,7 @@
     </a>
   </div>
 
-  <button class="back-to-top" id="backToTop" aria-label="Kembali ke atas">
+  <button class="back-to-top" id="backToTop" aria-label="Ke atas">
     <i class="fas fa-arrow-up"></i>
   </button>
 
@@ -1418,6 +1348,7 @@
     const MAX_FILE_SIZE = 5 * 1024 * 1024;
     const MAX_IMG_DIM = 1024;
     const DELAY_BETWEEN_REQUESTS = 1000;
+    const MAX_RETRY_ROUNDS = 2;
 
     const MODEL_CHAIN = [
       'openrouter/free',
@@ -1426,54 +1357,35 @@
       'google/gemini-flash-1.5-8b'
     ];
 
-    // Asset type → prompt hints
     const ASSET_HINTS = {
-      photo: {
-        label: 'Photo',
-        context: 'This is a PHOTOGRAPH. Focus keywords on: subject, lighting, composition, mood, colors, season, location, and photo-technical terms (bokeh, shallow depth of field, golden hour, backlit, etc).',
-        titleHint: 'Natural descriptive title as a photographer would caption it.'
-      },
-      vector: {
-        label: 'Vector',
-        context: 'This is a VECTOR GRAPHIC / editable illustration. Focus keywords on: flat design, icon, graphic, editable, scalable, isolated, silhouette, simple, minimal, modern, web, ui. Include "vector", "illustration", "icon", "clipart", "graphic element".',
-        titleHint: 'Title should mention "vector" or "icon" and describe style (flat, minimal, gradient).'
-      },
-      illustration: {
-        label: 'Illustration',
-        context: 'This is an ILLUSTRATION / digital artwork. Focus keywords on: artwork, drawn, painting, digital art, artistic, character, scene, narrative, stylized, colorful, cartoon, anime, comic. Include the art medium or style if visible.',
-        titleHint: 'Title should mention illustration/artwork and describe subject and style.'
-      },
-      video: {
-        label: 'Video',
-        context: 'This is a VIDEO / motion footage still. Focus keywords on: video, footage, clip, motion, cinematic, footage, 4K, HD, slow motion, timelapse, aerial, drone, lifestyle, cinematic, background video. Include camera motion terms if applicable.',
-        titleHint: 'Title should mention "video" or "footage" and describe the scene and action.'
-      },
-      '3d': {
-        label: '3D Render',
-        context: 'This is a 3D RENDER / CGI. Focus keywords on: 3D render, CGI, realistic render, octane, blender, cinema 4d, mockup, 3d model, digital, rendered, studio lighting, product visualization. Include "3d" and "render" as keywords.',
-        titleHint: 'Title should mention "3D render" or "CGI" and describe the subject.'
-      },
-      editorial: {
-        label: 'Editorial',
-        context: 'This is EDITORIAL / newsworthy content. Focus keywords on: editorial, news, journalism, documentary, real life, event, reportage, candid, social issues, current events. Avoid commercial-heavy keywords.',
-        titleHint: 'Title should be factual and newsworthy, describing the event/scene.'
-      }
+      photo: { label: 'Photo', context: 'This is a PHOTOGRAPH. Focus keywords on: subject, lighting, composition, mood, colors, season, location, photo-technical terms (bokeh, shallow depth of field, golden hour, backlit).', titleHint: 'Natural descriptive title as a photographer would caption it.' },
+      vector: { label: 'Vector', context: 'This is a VECTOR GRAPHIC / editable illustration. Focus keywords on: flat design, icon, graphic, editable, scalable, isolated, silhouette, minimal, modern, web, ui. Include "vector", "illustration", "icon", "clipart".', titleHint: 'Title should mention "vector" or "icon" and describe style.' },
+      illustration: { label: 'Illustration', context: 'This is an ILLUSTRATION / digital artwork. Focus keywords on: artwork, drawn, painting, digital art, artistic, character, scene, narrative, stylized, colorful, cartoon, anime.', titleHint: 'Title should mention illustration/artwork and describe subject & style.' },
+      video: { label: 'Video', context: 'This is a VIDEO / motion footage still. Focus keywords on: video, footage, clip, motion, cinematic, 4K, HD, slow motion, timelapse, aerial, drone, lifestyle, background video.', titleHint: 'Title should mention "video" or "footage" and describe the scene.' },
+      '3d': { label: '3D Render', context: 'This is a 3D RENDER / CGI. Focus keywords on: 3D render, CGI, realistic render, octane, blender, mockup, 3d model, digital, rendered, studio lighting, product visualization.', titleHint: 'Title should mention "3D render" or "CGI" and describe the subject.' },
+      editorial: { label: 'Editorial', context: 'This is EDITORIAL / newsworthy content. Focus keywords on: editorial, news, journalism, documentary, real life, event, reportage, candid, social issues.', titleHint: 'Title should be factual and newsworthy.' }
     };
 
     // ============================================================
     // STATE
     // ============================================================
     let currentUser = null;
-    let currentImages = [];
+    let currentItems = []; // { id, dataUrl, fileName, fileSize, originalSize, status, result, error, retryCount, expanded }
     let isProcessing = false;
     let currentAssetType = 'photo';
-    let maxUploadLimit = 8;
 
     // ============================================================
     // HELPERS
     // ============================================================
     const $ = id => document.getElementById(id);
     const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+    function escHtml(str) {
+      if (str === null || str === undefined) return '';
+      const d = document.createElement('div');
+      d.textContent = String(str);
+      return d.innerHTML;
+    }
 
     function showToast(message, type = 'info') {
       const container = $('toastContainer');
@@ -1489,13 +1401,6 @@
       }, 4200);
     }
 
-    function escHtml(str) {
-      if (str === null || str === undefined) return '';
-      const d = document.createElement('div');
-      d.textContent = String(str);
-      return d.innerHTML;
-    }
-
     function timeAgo(ts) {
       const diff = Math.floor((Date.now() - ts) / 1000);
       if (diff < 60) return 'Baru saja';
@@ -1505,8 +1410,10 @@
       return new Date(ts).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' });
     }
 
+    let idCounter = 0;
     function genId(prefix) {
-      return (prefix || 'id') + '_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+      idCounter++;
+      return (prefix || 'id') + '_' + Date.now() + '_' + idCounter + '_' + Math.random().toString(36).substr(2, 4);
     }
 
     function maskApiKey(key) {
@@ -1517,14 +1424,12 @@
 
     function saveSettings() {
       try {
-        const s = {
+        localStorage.setItem(LS_SETTINGS, JSON.stringify({
           assetType: currentAssetType,
-          uploadLimit: parseInt($('uploadLimit').value) || 8,
           lang: $('langSelect').value,
           kwCount: $('kwCount').value,
           platform: $('platform').value
-        };
-        localStorage.setItem(LS_SETTINGS, JSON.stringify(s));
+        }));
       } catch(e) {}
     }
 
@@ -1537,15 +1442,9 @@
             p.classList.toggle('active', p.dataset.type === s.assetType);
           });
         }
-        if (s.uploadLimit) {
-          maxUploadLimit = s.uploadLimit;
-          $('uploadLimit').value = String(s.uploadLimit);
-          $('maxUploadLabel').textContent = s.uploadLimit;
-        }
         if (s.lang) $('langSelect').value = s.lang;
         if (s.kwCount) $('kwCount').value = s.kwCount;
         if (s.platform) $('platform').value = s.platform;
-        updateUploadCountBadge();
       } catch(e) {}
     }
 
@@ -1578,23 +1477,33 @@
       }
     }
 
-    function updateUploadCountBadge() {
-      const badge = $('uploadCountBadge');
-      if (badge) badge.textContent = currentImages.length + ' / ' + maxUploadLimit;
-    }
+    function updateStats() {
+      const total = currentItems.length;
+      const done = currentItems.filter(i => i.status === 'done').length;
+      const processing = currentItems.filter(i => i.status === 'processing').length;
+      const pending = currentItems.filter(i => i.status === 'pending').length;
+      const error = currentItems.filter(i => i.status === 'error').length;
 
-    function updateResultsInfo() {
-      const done = currentImages.filter(i => i.status === 'done').length;
-      const total = currentImages.length;
-      const info = $('resultsInfo');
-      const actions = $('resultsActions');
-      if (total === 0) {
-        info.innerHTML = 'Belum ada hasil';
-        actions.style.display = 'none';
+      $('statTotal').textContent = total;
+      $('statDone').textContent = done;
+      $('statProcessing').textContent = processing;
+      $('statPending').textContent = pending;
+
+      // Queue info
+      const info = $('queueStats');
+      if (!total) {
+        info.textContent = 'Belum ada file';
       } else {
-        info.innerHTML = '<strong>' + done + '</strong> / <strong>' + total + '</strong> aset selesai';
-        actions.style.display = done > 0 ? 'flex' : 'none';
+        const parts = [`<strong>${total}</strong> file`];
+        if (done) parts.push(`<span style="color:var(--success)">${done} ✓</span>`);
+        if (error) parts.push(`<span style="color:var(--danger)">${error} ✗</span>`);
+        info.innerHTML = parts.join(' · ');
       }
+
+      // Buttons state
+      $('btnExportCSV').disabled = done === 0;
+      $('btnExportJSON').disabled = done === 0;
+      $('btnRetryFailed').style.display = error > 0 ? 'inline-flex' : 'none';
     }
 
     // ============================================================
@@ -1602,17 +1511,15 @@
     // ============================================================
     firebase.auth().onAuthStateChanged((user) => {
       currentUser = user;
-      if (!user) {
-        showGate('login');
-        return;
-      }
+      if (!user) { showGate('login'); return; }
       const key = localStorage.getItem(LS_API_KEY);
-      if (!key) {
-        showGate('apiKey');
-      } else {
+      if (!key) { showGate('apiKey'); }
+      else {
         showGate('main');
         loadSettings();
         updateApiStatus();
+        renderQueue();
+        updateStats();
         renderHistory();
       }
     });
@@ -1626,13 +1533,12 @@
         const provider = new firebase.auth.GoogleAuthProvider();
         await firebase.auth().signInWithPopup(provider);
       } catch (err) {
-        console.error('Google login error:', { code: err.code, message: err.message });
+        console.error('Login error:', err);
         let msg = '';
         if (err.code === 'auth/popup-closed-by-user') msg = 'Login dibatalkan.';
-        else if (err.code === 'auth/unauthorized-domain') msg = 'Domain ' + window.location.hostname + ' belum diizinkan.';
-        else if (err.code === 'auth/popup-blocked') msg = 'Popup diblokir browser.';
-        else if (err.code === 'auth/network-request-failed') msg = 'Koneksi gagal.';
-        else msg = 'Firebase [' + (err.code || 'unknown') + ']';
+        else if (err.code === 'auth/unauthorized-domain') msg = 'Domain belum diizinkan.';
+        else if (err.code === 'auth/popup-blocked') msg = 'Popup diblokir.';
+        else msg = 'Firebase [' + (err.code || '?') + ']';
         showToast(msg, 'error');
       } finally {
         btn.disabled = false;
@@ -1647,14 +1553,12 @@
       if (!confirm('Yakin ingin logout?')) return;
       try {
         await firebase.auth().signOut();
-        currentImages = [];
-        renderUploadGrid();
-        resetResultUI();
+        currentItems = [];
+        renderQueue();
+        updateStats();
         $('settingsModal').classList.remove('active');
         showToast('Berhasil logout.', 'success');
-      } catch (err) {
-        showToast('Gagal logout: ' + err.message, 'error');
-      }
+      } catch (err) { showToast('Gagal logout.', 'error'); }
     }
 
     // ============================================================
@@ -1666,7 +1570,7 @@
         headers: { 'Authorization': 'Bearer ' + key }
       });
       if (!res.ok) {
-        if (res.status === 401) throw new Error('API Key tidak valid atau sudah expired.');
+        if (res.status === 401) throw new Error('API Key tidak valid.');
         const data = await res.json().catch(() => ({}));
         throw new Error(data.error?.message || ('HTTP ' + res.status));
       }
@@ -1679,16 +1583,8 @@
       const errEl = $('apiKeyError');
       errEl.style.display = 'none';
 
-      if (!key) {
-        errEl.textContent = 'API Key tidak boleh kosong.';
-        errEl.style.display = 'block';
-        return;
-      }
-      if (!key.startsWith('sk-or-')) {
-        errEl.textContent = 'Format API Key harus dimulai dengan "sk-or-".';
-        errEl.style.display = 'block';
-        return;
-      }
+      if (!key) { errEl.textContent = 'API Key kosong.'; errEl.style.display = 'block'; return; }
+      if (!key.startsWith('sk-or-')) { errEl.textContent = 'Format harus "sk-or-".'; errEl.style.display = 'block'; return; }
 
       const btn = $('btnSaveApiKey');
       btn.disabled = true;
@@ -1697,7 +1593,7 @@
         await verifyApiKey(key);
         localStorage.setItem(LS_API_KEY, key);
         input.value = '';
-        showToast('API Key berhasil disimpan!', 'success');
+        showToast('API Key disimpan!', 'success');
         showGate('main');
         loadSettings();
         updateApiStatus();
@@ -1721,7 +1617,6 @@
       $('settingsModal').classList.add('active');
       await loadAccountInfo();
     });
-
     $('btnCloseSettings').addEventListener('click', () => $('settingsModal').classList.remove('active'));
     $('settingsModal').addEventListener('click', (e) => {
       if (e.target === $('settingsModal')) $('settingsModal').classList.remove('active');
@@ -1740,21 +1635,16 @@
       try {
         const data = await verifyApiKey(key);
         const d = data.data || data;
-        const credits = (d.limit_remaining !== null && d.limit_remaining !== undefined)
-          ? '$' + parseFloat(d.limit_remaining).toFixed(4)
-          : 'Unlimited';
-        const usage = (d.usage !== undefined && d.usage !== null)
-          ? '$' + parseFloat(d.usage).toFixed(4)
-          : '$0.0000';
-        $('srCredits').textContent = credits;
-        $('srUsage').textContent = usage;
+        $('srCredits').textContent = (d.limit_remaining !== null && d.limit_remaining !== undefined)
+          ? '$' + parseFloat(d.limit_remaining).toFixed(4) : 'Unlimited';
+        $('srUsage').textContent = (d.usage !== undefined && d.usage !== null)
+          ? '$' + parseFloat(d.usage).toFixed(4) : '$0.0000';
         $('srStatus').textContent = d.is_free_tier ? 'Free Tier' : 'Aktif';
         $('srStatus').className = 'sr-value ok';
       } catch (err) {
         $('srCredits').textContent = 'Error';
         $('srUsage').textContent = 'Error';
         $('srStatus').textContent = 'Error';
-        $('srStatus').className = 'sr-value missing';
       }
     }
 
@@ -1766,7 +1656,7 @@
     $('btnSaveNewKey').addEventListener('click', async () => {
       const newKey = $('modalApiKeyInput').value.trim();
       if (!newKey) { showToast('API Key kosong.', 'info'); return; }
-      if (!newKey.startsWith('sk-or-')) { showToast('Format salah (harus sk-or-).', 'error'); return; }
+      if (!newKey.startsWith('sk-or-')) { showToast('Format salah.', 'error'); return; }
       const btn = $('btnSaveNewKey');
       btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
       try {
@@ -1774,7 +1664,7 @@
         localStorage.setItem(LS_API_KEY, newKey);
         $('srApiKeyMasked').textContent = maskApiKey(newKey);
         $('modalApiKeyInput').value = '';
-        showToast('API Key berhasil diganti!', 'success');
+        showToast('API Key diganti!', 'success');
         await loadAccountInfo();
       } catch (err) {
         showToast(err.message || 'API Key tidak valid.', 'error');
@@ -1814,7 +1704,6 @@
           }
         });
       }
-
       const themeToggle = $('themeToggle');
       const themeIcon = themeToggle ? themeToggle.querySelector('i') : null;
       const curTheme = localStorage.getItem('theme') || 'dark';
@@ -1833,7 +1722,7 @@
     })();
 
     // ============================================================
-    // ASSET TYPE PILLS
+    // ASSET PILLS
     // ============================================================
     $('assetPills').addEventListener('click', (e) => {
       const pill = e.target.closest('.asset-pill');
@@ -1848,33 +1737,15 @@
       showToast('Tipe aset: ' + ASSET_HINTS[type].label, 'info');
     });
 
-    // ============================================================
-    // UPLOAD LIMIT
-    // ============================================================
-    $('uploadLimit').addEventListener('change', (e) => {
-      maxUploadLimit = parseInt(e.target.value) || 8;
-      $('maxUploadLabel').textContent = maxUploadLimit;
-      // Kalau current lebih dari limit baru, hapus kelebihan
-      if (currentImages.length > maxUploadLimit) {
-        currentImages = currentImages.slice(0, maxUploadLimit);
-        renderUploadGrid();
-        showToast('Upload dibatasi ke ' + maxUploadLimit + ' file.', 'warning');
-      }
-      updateUploadCountBadge();
-      saveSettings();
-    });
-
-    // Save settings other fields
     ['langSelect', 'kwCount', 'platform'].forEach(id => {
       $(id).addEventListener('change', saveSettings);
     });
 
     // ============================================================
-    // UPLOAD
+    // UPLOAD (UNLIMITED)
     // ============================================================
     const uploadZone = $('uploadZone');
     const fileInput = $('fileInput');
-    const uploadGrid = $('uploadGrid');
 
     uploadZone.addEventListener('click', () => fileInput.click());
     uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('dragover'); });
@@ -1891,23 +1762,14 @@
 
     async function handleFiles(fileList) {
       const files = Array.from(fileList);
-      const remaining = maxUploadLimit - currentImages.length;
-      if (remaining <= 0) {
-        showToast('Sudah mencapai batas ' + maxUploadLimit + ' file. Hapus beberapa dulu.', 'warning');
-        return;
-      }
-      const toProcess = files.slice(0, remaining);
-      if (files.length > remaining) {
-        showToast('Hanya ' + remaining + ' file ditambahkan (limit: ' + maxUploadLimit + ').', 'warning');
-      }
+      let added = 0, skipped = 0;
 
-      let added = 0;
-      for (const file of toProcess) {
-        if (!file.type.startsWith('image/')) { showToast('"' + file.name + '" bukan gambar.', 'error'); continue; }
-        if (file.size > MAX_FILE_SIZE) { showToast('"' + file.name + '" >5MB.', 'error'); continue; }
+      for (const file of files) {
+        if (!file.type.startsWith('image/')) { skipped++; continue; }
+        if (file.size > MAX_FILE_SIZE) { showToast('"' + file.name + '" >5MB, skip.', 'warning'); skipped++; continue; }
         try {
           const compressed = await compressImage(file);
-          currentImages.push({
+          currentItems.push({
             id: genId('img'),
             dataUrl: compressed.dataUrl,
             fileName: file.name,
@@ -1915,16 +1777,22 @@
             originalSize: file.size,
             status: 'pending',
             result: null,
-            error: null
+            error: null,
+            retryCount: 0,
+            expanded: false
           });
           added++;
         } catch (err) {
           showToast('Gagal "' + file.name + '": ' + err.message, 'error');
+          skipped++;
         }
       }
-      renderUploadGrid();
-      updateResultsInfo();
+
+      renderQueue();
+      updateStats();
+
       if (added > 0) showToast(added + ' file ditambahkan.', 'success');
+      if (skipped > 0 && added === 0) showToast('Tidak ada file yang valid.', 'warning');
     }
 
     function compressImage(file) {
@@ -1963,37 +1831,194 @@
       });
     }
 
-    function renderUploadGrid() {
-      updateUploadCountBadge();
-      if (!currentImages.length) { uploadGrid.innerHTML = ''; return; }
-      uploadGrid.innerHTML = currentImages.map(img => {
-        const statusLabel = {
-          pending: 'Pending',
-          processing: 'AI...',
-          done: '✓',
-          error: '✗'
-        }[img.status] || img.status;
-        return `
-          <div class="upload-thumb ${img.status}" data-id="${img.id}">
-            <img src="${img.dataUrl}" alt="${escHtml(img.fileName)}">
-            <div class="thumb-overlay"></div>
-            <button class="thumb-remove" data-remove="${img.id}" title="Hapus"><i class="fas fa-times"></i></button>
-            <div class="thumb-status ${img.status}">${statusLabel}</div>
-          </div>
-        `;
-      }).join('');
+    // ============================================================
+    // RENDER QUEUE
+    // ============================================================
+    function renderQueue() {
+      const list = $('queueList');
+      if (!currentItems.length) {
+        list.innerHTML = `
+          <div class="empty-queue">
+            <div class="empty-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+            <h3>Belum ada file</h3>
+            <p>Upload gambar di panel kiri, pilih tipe aset, lalu klik <strong>Generate Semua</strong>.</p>
+          </div>`;
+        return;
+      }
 
-      uploadGrid.querySelectorAll('[data-remove]').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          if (isProcessing) { showToast('Tidak bisa hapus saat proses berjalan.', 'warning'); return; }
-          const id = btn.dataset.remove;
-          currentImages = currentImages.filter(x => x.id !== id);
-          renderUploadGrid();
-          renderResults();
-          updateResultsInfo();
+      const lang = $('langSelect').value;
+      const html = [];
+
+      currentItems.forEach((item) => {
+        const statusIcon = {
+          pending: '<i class="fas fa-clock"></i>',
+          processing: '<span class="spinner-xs"></span>',
+          done: '<i class="fas fa-check-circle"></i>',
+          error: '<i class="fas fa-times-circle"></i>'
+        }[item.status] || '';
+
+        const statusText = {
+          pending: 'Menunggu',
+          processing: 'AI memproses...',
+          done: 'Selesai',
+          error: 'Gagal'
+        }[item.status] || item.status;
+
+        const retryBadge = item.retryCount > 0
+          ? `<span class="queue-item-retry-badge"><i class="fas fa-rotate"></i> Retry ${item.retryCount}x</span>`
+          : '';
+
+        let bodyHtml = '';
+        if (item.status === 'error') {
+          bodyHtml = `<div class="queue-item-error-msg">
+            <i class="fas fa-exclamation-circle"></i> ${escHtml(item.error || 'Error tidak diketahui.')}
+          </div>`;
+        } else if (item.status === 'done' && item.result) {
+          bodyHtml = renderResultBody(item, lang);
+        }
+
+        html.push(`
+          <div class="queue-item ${item.status} ${item.expanded ? 'expanded' : ''}" data-id="${item.id}">
+            <div class="queue-item-header" data-toggle="${item.id}">
+              <img src="${item.dataUrl}" alt="" class="queue-item-thumb" loading="lazy">
+              <div class="queue-item-info">
+                <div class="queue-item-name">
+                  <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escHtml(item.fileName)}</span>
+                  ${retryBadge}
+                </div>
+                <div class="queue-item-status ${item.status}">${statusIcon} ${statusText}</div>
+              </div>
+              <div class="queue-item-actions" onclick="event.stopPropagation()">
+                ${item.status === 'error' ? `<button data-retry="${item.id}" title="Retry"><i class="fas fa-rotate"></i></button>` : ''}
+                ${item.status === 'done' ? `<button data-expand="${item.id}" title="Detail"><i class="fas fa-chevron-${item.expanded ? 'up' : 'down'}"></i></button>` : ''}
+                <button class="del" data-remove="${item.id}" title="Hapus"><i class="fas fa-times"></i></button>
+              </div>
+            </div>
+            <div class="queue-item-body">${bodyHtml}</div>
+          </div>
+        `);
+      });
+
+      list.innerHTML = html.join('');
+      attachQueueHandlers();
+    }
+
+    function attachQueueHandlers() {
+      const list = $('queueList');
+
+      list.querySelectorAll('[data-toggle]').forEach(el => {
+        el.addEventListener('click', (e) => {
+          if (e.target.closest('.queue-item-actions')) return;
+          const id = el.dataset.toggle;
+          const item = currentItems.find(x => x.id === id);
+          if (item && item.status === 'done') {
+            item.expanded = !item.expanded;
+            renderQueue();
+          }
         });
       });
+
+      list.querySelectorAll('[data-expand]').forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = el.dataset.expand;
+          const item = currentItems.find(x => x.id === id);
+          if (item) { item.expanded = !item.expanded; renderQueue(); }
+        });
+      });
+
+      list.querySelectorAll('[data-remove]').forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (isProcessing) { showToast('Tidak bisa hapus saat proses berjalan.', 'warning'); return; }
+          const id = el.dataset.remove;
+          currentItems = currentItems.filter(x => x.id !== id);
+          renderQueue();
+          updateStats();
+        });
+      });
+
+      list.querySelectorAll('[data-retry]').forEach(el => {
+        el.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          if (isProcessing) return;
+          const id = el.dataset.retry;
+          await retrySingle(id);
+        });
+      });
+
+      // Copy handlers
+      list.querySelectorAll('.btn-copy-xs').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const targetId = btn.dataset.copyTarget;
+          const jsonId = btn.dataset.copyJson;
+          let text = '';
+          if (targetId) {
+            const el = document.getElementById(targetId);
+            if (el) text = el.textContent;
+          } else if (jsonId) {
+            const el = document.getElementById(jsonId);
+            if (el) {
+              const chips = Array.from(el.querySelectorAll('.kw-chip')).map(c => c.textContent);
+              text = JSON.stringify(chips, null, 2);
+            }
+          }
+          if (!text) return;
+          await copyText(text);
+          btn.classList.add('copied');
+          const orig = btn.innerHTML;
+          btn.innerHTML = '<i class="fas fa-check"></i>';
+          setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = orig; }, 1400);
+        });
+      });
+    }
+
+    function renderResultBody(item, lang) {
+      const r = item.result;
+      if (!r) return '';
+      const langs = lang === 'both' ? ['id', 'en'] : [lang];
+      const blocks = [];
+
+      langs.forEach(code => {
+        const node = r[code];
+        if (!node) return;
+        const langLabel = code === 'id' ? '🇮🇩 ID' : '🇬🇧 EN';
+        const kws = node.keywords || [];
+        const tid = `t-${item.id}-${code}`;
+        const did = `d-${item.id}-${code}`;
+        const kid = `k-${item.id}-${code}`;
+
+        blocks.push(`
+          <div class="result-row">
+            <div class="result-row-head">
+              <div class="result-row-label">${langLabel} · Title<span class="char-count">${(node.title || '').length} chars</span></div>
+              <div class="result-row-actions"><button class="btn-copy-xs" data-copy-target="${tid}"><i class="fas fa-copy"></i> Copy</button></div>
+            </div>
+            <div class="result-row-content" id="${tid}">${escHtml(node.title || '-')}</div>
+          </div>
+          <div class="result-row">
+            <div class="result-row-head">
+              <div class="result-row-label">${langLabel} · Description<span class="char-count">${(node.description || '').length} chars</span></div>
+              <div class="result-row-actions"><button class="btn-copy-xs" data-copy-target="${did}"><i class="fas fa-copy"></i> Copy</button></div>
+            </div>
+            <div class="result-row-content" id="${did}">${escHtml(node.description || '-')}</div>
+          </div>
+          <div class="result-row">
+            <div class="result-row-head">
+              <div class="result-row-label">${langLabel} · Keywords<span class="char-count">${kws.length} keyword</span></div>
+              <div class="result-row-actions">
+                <button class="btn-copy-xs" data-copy-target="${kid}"><i class="fas fa-copy"></i> Copy</button>
+                <button class="btn-copy-xs" data-copy-json="${kid}"><i class="fas fa-code"></i> JSON</button>
+              </div>
+            </div>
+            <div class="keywords-chips" id="${kid}">
+              ${kws.map(k => `<span class="kw-chip">${escHtml(k)}</span>`).join('') || '-'}
+            </div>
+          </div>
+        `);
+      });
+      return blocks.join('');
     }
 
     // ============================================================
@@ -2016,14 +2041,11 @@
     }
 
     // ============================================================
-    // CALL OPENROUTER (retry chain)
+    // OPENROUTER CALL
     // ============================================================
     async function callOpenRouterSingle(apiKey, model, prompt, imageDataUrl) {
       const content = imageDataUrl
-        ? [
-            { type: 'text', text: prompt },
-            { type: 'image_url', image_url: { url: imageDataUrl } }
-          ]
+        ? [{ type: 'text', text: prompt }, { type: 'image_url', image_url: { url: imageDataUrl } }]
         : prompt;
 
       const body = {
@@ -2078,7 +2100,7 @@
       let raw = message.content;
 
       if ((raw === null || raw === undefined || raw === '') && message.reasoning) {
-        if (finishReason === 'length') throw new Error('Reasoning model kehabisan token.');
+        if (finishReason === 'length') throw new Error('Reasoning kehabisan token.');
         raw = message.reasoning;
       }
       if (Array.isArray(raw)) {
@@ -2087,14 +2109,8 @@
       raw = String(raw || '').trim();
 
       if (!raw) throw new Error('Model tidak menghasilkan teks.');
-
-      // Skip output guard/reasoning prefix
-      if (/^user safety:|^thinking process:/i.test(raw)) {
-        throw new Error('Output guard terdeteksi.');
-      }
-      if (raw.indexOf('{') === -1 || raw.indexOf('}') === -1) {
-        throw new Error('Tidak mengandung JSON.');
-      }
+      if (/^user safety:|^thinking process:/i.test(raw)) throw new Error('Output guard.');
+      if (raw.indexOf('{') === -1 || raw.indexOf('}') === -1) throw new Error('Tidak ada JSON.');
 
       return raw;
     }
@@ -2104,7 +2120,7 @@
       for (let i = 0; i < MODEL_CHAIN.length; i++) {
         const model = MODEL_CHAIN[i];
         try {
-          if (i > 0) console.log('🔄 Retry dengan:', model);
+          if (i > 0) console.log('🔄 Retry model:', model);
           const raw = await callOpenRouterSingle(apiKey, model, prompt, imageDataUrl);
           const parsed = parseAIResponse(raw);
           console.log('✅ Sukses dengan:', model);
@@ -2116,20 +2132,20 @@
           if (i < MODEL_CHAIN.length - 1) await sleep(1500);
         }
       }
-      throw new Error('Semua model gagal. Coba lagi. Detail: ' + (lastErr?.message || 'unknown'));
+      throw new Error('Semua model gagal: ' + (lastErr?.message || 'unknown'));
     }
 
     // ============================================================
-    // BUILD PROMPT (adaptive per asset type)
+    // BUILD PROMPT
     // ============================================================
     function buildPrompt({ kwCount, platform, extraDesc, assetType, lang }) {
       const platformHints = {
         general: 'Shutterstock, Adobe Stock, Freepik, iStock, dan platform microstock umum.',
-        shutterstock: 'Shutterstock (title maksimal 200 karakter, 7-50 keyword).',
-        adobe: 'Adobe Stock (title maksimal 70 karakter, maksimal 49 keyword).',
-        freepik: 'Freepik (title maksimal 100 karakter, keyword relevan).',
-        istock: 'iStock/Getty Images (title deskriptif, keyword relevan).',
-        vecteezy: 'Vecteezy (title maksimal 100 karakter, keyword relevan).'
+        shutterstock: 'Shutterstock (title maks 200, 7-50 keyword).',
+        adobe: 'Adobe Stock (title maks 70, maks 49 keyword).',
+        freepik: 'Freepik (title maks 100).',
+        istock: 'iStock/Getty (title deskriptif).',
+        vecteezy: 'Vecteezy (title maks 100).'
       };
       const platformHint = platformHints[platform] || platformHints.general;
       const assetHint = ASSET_HINTS[assetType] || ASSET_HINTS.photo;
@@ -2137,48 +2153,39 @@
 
       const langInstr = lang === 'both'
         ? '5. Output language: BOTH Indonesian and English. Use "id" and "en" keys.'
-        : lang === 'id'
-          ? '5. Output language: Indonesian (Bahasa Indonesia).'
-          : '5. Output language: English.';
+        : lang === 'id' ? '5. Output language: Indonesian.'
+        : '5. Output language: English.';
 
       const structExample = lang === 'both'
-        ? `{
-  "id": { "title": "...", "description": "...", "keywords": ["...", "..."] },
-  "en": { "title": "...", "description": "...", "keywords": ["...", "..."] }
-}`
-        : `{
-  "${lang}": { "title": "...", "description": "...", "keywords": ["...", "..."] }
-}`;
+        ? `{\n  "id": { "title": "...", "description": "...", "keywords": ["...", "..."] },\n  "en": { "title": "...", "description": "...", "keywords": ["...", "..."] }\n}`
+        : `{\n  "${lang}": { "title": "...", "description": "...", "keywords": ["...", "..."] }\n}`;
 
-      return `You are a professional microstock metadata expert with 10 years of experience. Your task is to analyze the asset and create SEO-friendly, accurate, and attractive microstock metadata for platforms like ${platformHint}
+      return `You are a professional microstock metadata expert with 10 years of experience. Create SEO-friendly, accurate, and attractive microstock metadata for platforms like ${platformHint}
 
 ASSET TYPE: ${assetHint.label}
 ${assetHint.context}
 
 INSTRUCTIONS:
-1. Analyze the asset in detail: main subject/object, style, composition, mood, colors, theme, and visual elements.
-2. Create TITLE: descriptive, starts with main keyword, natural, attractive. NO "photo of" / "image of". Avoid trademarks/brands. ${assetHint.titleHint}
-3. Create DESCRIPTION: 1-2 sentences explaining the asset contextually, suitable for commercial use.
-4. Create KEYWORDS: exactly ${kwCount} high-quality keywords (mix single & multi-word), no duplicates, no generic overuse. Keywords in English even if title is Indonesian.
+1. Analyze the asset in detail: main subject/object, style, composition, mood, colors, theme.
+2. Create TITLE: descriptive, starts with main keyword, natural, attractive. NO "photo of"/"image of". Avoid trademarks. ${assetHint.titleHint}
+3. Create DESCRIPTION: 1-2 sentences explaining the asset contextually, commercial-friendly.
+4. Create KEYWORDS: exactly ${kwCount} high-quality keywords (mix single & multi-word), no duplicates, no generic overuse. Keywords in English.
 ${langInstr}
-6. Content type auto-detected: ${assetHint.label}.${themeHint}
+6. Auto-detected content type: ${assetHint.label}.${themeHint}
 
 CRITICAL OUTPUT RULES:
-- Return ONLY valid JSON. NO explanations, NO markdown code blocks, NO comments.
-- JSON format:
+- Return ONLY valid JSON. NO explanations, NO markdown code, NO comments.
+- Format:
 ${structExample}
 
-- "keywords" must be array of strings, min ${Math.max(15, kwCount - 5)} and max ${kwCount} keywords.
-- Ensure JSON is valid and parseable by JSON.parse().`;
+- "keywords" must be array of strings, min ${Math.max(15, kwCount - 5)}, max ${kwCount}.
+- Ensure JSON is valid and parseable.`;
     }
 
     function parseAIResponse(raw) {
       let text = String(raw).trim();
       text = text.replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/i, '').trim();
-
-      if (/^thinking process/i.test(text)) {
-        throw new Error('Model reasoning bukan JSON.');
-      }
+      if (/^thinking process/i.test(text)) throw new Error('Model reasoning bukan JSON.');
 
       const firstBrace = text.indexOf('{');
       const lastBrace = text.lastIndexOf('}');
@@ -2189,21 +2196,18 @@ ${structExample}
       const jsonText = text.substring(firstBrace, lastBrace + 1);
       let parsed;
       try { parsed = JSON.parse(jsonText); }
-      catch (e) { throw new Error('JSON tidak valid (mungkin kepotong).'); }
+      catch (e) { throw new Error('JSON tidak valid.'); }
 
-      // Normalisasi: support single lang, both lang, atau flat
-      let result;
       const lang = $('langSelect').value;
-
+      let result;
       if (lang === 'both') {
         result = { id: normalizeNode(parsed.id), en: normalizeNode(parsed.en) };
-        if (!result.id && !result.en) throw new Error('Format JSON tidak lengkap (butuh id & en).');
+        if (!result.id && !result.en) throw new Error('JSON tidak lengkap.');
       } else {
         const node = parsed[lang] || parsed;
         result = normalizeNode(node);
         if (!result) throw new Error('Format JSON tidak sesuai.');
       }
-
       return result;
     }
 
@@ -2233,23 +2237,30 @@ ${structExample}
     // ============================================================
     // GENERATE
     // ============================================================
-    $('btnGenerate').addEventListener('click', generateAll);
+    $('btnGenerate').addEventListener('click', () => generateAll(false));
 
-    async function generateAll() {
+    async function generateAll(onlyFailed) {
       if (isProcessing) return;
       const apiKey = localStorage.getItem(LS_API_KEY);
       if (!apiKey) { showToast('API Key belum diset.', 'error'); showGate('apiKey'); return; }
-      if (!currentImages.length) { showToast('Upload minimal 1 gambar.', 'error'); return; }
+
+      const targets = onlyFailed
+        ? currentItems.filter(i => i.status === 'error')
+        : currentItems.filter(i => i.status === 'pending' || i.status === 'error');
+
+      if (!targets.length) {
+        showToast(onlyFailed ? 'Tidak ada file gagal.' : 'Tidak ada file untuk diproses.', 'info');
+        return;
+      }
 
       isProcessing = true;
       const btn = $('btnGenerate');
       btn.disabled = true;
       btn.innerHTML = '<span class="spinner-small"></span> Memproses...';
 
-      currentImages.forEach(img => { img.status = 'pending'; img.result = null; img.error = null; });
-      renderUploadGrid();
-      renderResults();
-      updateResultsInfo();
+      targets.forEach(t => { t.status = 'pending'; t.error = null; t.expanded = false; });
+      renderQueue();
+      updateStats();
 
       const opts = {
         kwCount: parseInt($('kwCount').value) || 30,
@@ -2259,239 +2270,198 @@ ${structExample}
         lang: $('langSelect').value
       };
 
-      const total = currentImages.length;
       let success = 0, fail = 0;
 
-      for (let i = 0; i < currentImages.length; i++) {
-        const img = currentImages[i];
-        img.status = 'processing';
-        renderUploadGrid();
-        showProgress(i, total, img.fileName);
+      // ROUND 1: Initial generate
+      for (let i = 0; i < targets.length; i++) {
+        const item = targets[i];
+        item.status = 'processing';
+        renderQueue();
+        updateStats();
+        showProgress(i, targets.length, item.fileName);
 
         try {
           const prompt = buildPrompt(opts);
-          const parsed = await callOpenRouterWithRetry(apiKey, prompt, img.dataUrl);
+          const parsed = await callOpenRouterWithRetry(apiKey, prompt, item.dataUrl);
 
-          // Validasi per language
           const lang = opts.lang;
           if (lang === 'both') {
-            if (!parsed.en || !parsed.en.title) throw new Error('AI tidak menghasilkan EN.');
+            if (!parsed.en?.title && !parsed.id?.title) throw new Error('AI tidak menghasilkan title.');
           } else {
             if (!parsed.title) throw new Error('AI tidak menghasilkan title.');
-            if (!parsed.keywords.length) throw new Error('AI tidak menghasilkan keyword.');
+            if (!parsed.keywords || !parsed.keywords.length) throw new Error('AI tidak menghasilkan keyword.');
           }
 
-          img.result = parsed;
-          img.status = 'done';
+          item.result = parsed;
+          item.status = 'done';
+          item.expanded = true;
           success++;
 
           saveToHistory({
             id: genId('ms'),
             ts: Date.now(),
-            preview: img.dataUrl,
-            fileName: img.fileName,
+            preview: item.dataUrl,
+            fileName: item.fileName,
             assetType: currentAssetType,
             lang: lang,
             results: parsed
           });
         } catch (err) {
-          console.error('Error [' + img.fileName + ']:', err);
-          img.status = 'error';
-          img.error = err.message || 'Error.';
+          console.error('Error [' + item.fileName + ']:', err);
+          item.status = 'error';
+          item.error = err.message || 'Error.';
           fail++;
         }
 
-        renderUploadGrid();
-        renderResults();
-        updateResultsInfo();
-        showProgress(i + 1, total, img.fileName);
-        if (i < currentImages.length - 1) await sleep(DELAY_BETWEEN_REQUESTS);
+        renderQueue();
+        updateStats();
+        showProgress(i + 1, targets.length, item.fileName);
+        if (i < targets.length - 1) await sleep(DELAY_BETWEEN_REQUESTS);
+      }
+
+      // AUTO-RETRY ROUNDS
+      let totalFixed = 0;
+      for (let round = 1; round <= MAX_RETRY_ROUNDS; round++) {
+        const errors = currentItems.filter(i => i.status === 'error' && i.retryCount < round);
+        if (!errors.length) break;
+
+        console.log('🔁 Auto-retry round ' + round + ' untuk ' + errors.length + ' file');
+        showToast('Auto-retry round ' + round + ': ' + errors.length + ' file...', 'info');
+
+        for (let i = 0; i < errors.length; i++) {
+          const item = errors[i];
+          item.retryCount = round;
+          item.status = 'processing';
+          renderQueue();
+          updateStats();
+          showProgress(i, errors.length, item.fileName + ' (retry ' + round + ')');
+
+          try {
+            await sleep(2000);
+            const prompt = buildPrompt(opts);
+            const parsed = await callOpenRouterWithRetry(apiKey, prompt, item.dataUrl);
+
+            const lang = opts.lang;
+            if (lang === 'both') {
+              if (!parsed.en?.title && !parsed.id?.title) throw new Error('AI tidak menghasilkan title.');
+            } else {
+              if (!parsed.title) throw new Error('AI tidak menghasilkan title.');
+              if (!parsed.keywords || !parsed.keywords.length) throw new Error('AI tidak menghasilkan keyword.');
+            }
+
+            item.result = parsed;
+            item.status = 'done';
+            item.expanded = true;
+            totalFixed++;
+
+            saveToHistory({
+              id: genId('ms'),
+              ts: Date.now(),
+              preview: item.dataUrl,
+              fileName: item.fileName,
+              assetType: currentAssetType,
+              lang: lang,
+              results: parsed
+            });
+          } catch (err) {
+            console.warn('Retry round ' + round + ' gagal:', err.message);
+            item.status = 'error';
+            item.error = err.message;
+          }
+          renderQueue();
+          updateStats();
+          showProgress(i + 1, errors.length, item.fileName);
+          if (i < errors.length - 1) await sleep(DELAY_BETWEEN_REQUESTS);
+        }
       }
 
       isProcessing = false;
       btn.disabled = false;
       btn.innerHTML = '<i class="fas fa-wand-magic-sparkles"></i> Generate Semua';
       hideProgress();
-      renderResults();
-      updateResultsInfo();
+      renderQueue();
+      updateStats();
 
-      if (fail === 0) showToast('Selesai! ' + success + ' aset berhasil.', 'success');
-      else if (success === 0) showToast('Gagal semua.', 'error');
-      else showToast(success + ' berhasil, ' + fail + ' gagal.', 'warning');
+      const remainingErr = currentItems.filter(i => i.status === 'error').length;
+      let msg = 'Selesai! ' + success + ' berhasil';
+      if (totalFixed > 0) msg += ', ' + totalFixed + ' di-retry';
+      if (remainingErr > 0) msg += ', ' + remainingErr + ' masih gagal';
+      showToast(msg, remainingErr > 0 ? 'warning' : 'success');
     }
 
-    // ============================================================
-    // RENDER RESULTS
-    // ============================================================
-    function renderResults() {
-      const container = $('resultContainer');
-      const lang = $('langSelect').value;
+    async function retrySingle(id) {
+      const item = currentItems.find(x => x.id === id);
+      if (!item) return;
+      const apiKey = localStorage.getItem(LS_API_KEY);
+      if (!apiKey) { showToast('API Key belum diset.', 'error'); return; }
 
-      if (!currentImages.length) {
-        container.innerHTML = `
-          <div class="empty-results">
-            <div class="empty-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
-            <h3>Belum ada hasil</h3>
-            <p>Upload gambar di panel kiri, pilih tipe aset, lalu klik <strong>Generate Semua</strong>.</p>
-            <div class="empty-hint"><i class="fas fa-lightbulb"></i> AI akan buat judul, deskripsi & keyword</div>
-          </div>`;
-        return;
-      }
+      isProcessing = true;
+      const btn = $('btnGenerate');
+      btn.disabled = true;
 
-      const pending = currentImages.filter(i => i.status === 'pending' || i.status === 'processing');
-      if (pending.length === currentImages.length && !isProcessing) {
-        container.innerHTML = `
-          <div class="empty-results">
-            <div class="empty-icon"><i class="fas fa-hourglass-half"></i></div>
-            <h3>${currentImages.length} aset siap diproses</h3>
-            <p>Klik "Generate Semua" untuk memulai.</p>
-          </div>`;
-        return;
-      }
+      item.status = 'processing';
+      item.error = null;
+      renderQueue();
+      updateStats();
 
-      const html = [];
-      currentImages.forEach((img) => {
-        if (img.status === 'pending' || img.status === 'processing') return;
+      const opts = {
+        kwCount: parseInt($('kwCount').value) || 30,
+        platform: $('platform').value,
+        extraDesc: $('extraDesc').value.trim(),
+        assetType: currentAssetType,
+        lang: $('langSelect').value
+      };
 
-        if (img.status === 'error') {
-          html.push(`
-            <div class="result-card error-card">
-              <div class="rc-header">
-                <img src="${img.dataUrl}" alt="" class="rc-thumb">
-                <div class="rc-meta">
-                  <div class="rc-filename">${escHtml(img.fileName)}</div>
-                  <div class="rc-status" style="color:var(--danger);"><i class="fas fa-times-circle"></i> Error</div>
-                </div>
-              </div>
-              <div class="result-row-error">${escHtml(img.error || 'Gagal.')}</div>
-            </div>
-          `);
-          return;
+      try {
+        const prompt = buildPrompt(opts);
+        const parsed = await callOpenRouterWithRetry(apiKey, prompt, item.dataUrl);
+        const lang = opts.lang;
+        if (lang === 'both') {
+          if (!parsed.en?.title && !parsed.id?.title) throw new Error('AI tidak menghasilkan title.');
+        } else {
+          if (!parsed.title) throw new Error('AI tidak menghasilkan title.');
         }
-        if (!img.result) return;
-
-        const idBase = img.id;
-        const r = img.result;
-        const langs = lang === 'both' ? ['id', 'en'] : [lang];
-        const blocks = [];
-
-        langs.forEach(code => {
-          const node = r[code];
-          if (!node) return;
-          const langLabel = code === 'id' ? '🇮🇩 ID' : '🇬🇧 EN';
-          const kws = node.keywords || [];
-          const tid = `t-${idBase}-${code}`;
-          const did = `d-${idBase}-${code}`;
-          const kid = `k-${idBase}-${code}`;
-
-          blocks.push(`
-            <div class="result-row">
-              <div class="result-row-head">
-                <div class="result-row-label">
-                  ${langLabel} &middot; Title
-                  <span class="char-count">${(node.title || '').length} chars</span>
-                </div>
-                <div class="result-row-actions">
-                  <button class="btn-copy-xs" data-copy-target="${tid}"><i class="fas fa-copy"></i> Copy</button>
-                </div>
-              </div>
-              <div class="result-row-content" id="${tid}">${escHtml(node.title || '-')}</div>
-            </div>
-            <div class="result-row">
-              <div class="result-row-head">
-                <div class="result-row-label">
-                  ${langLabel} &middot; Description
-                  <span class="char-count">${(node.description || '').length} chars</span>
-                </div>
-                <div class="result-row-actions">
-                  <button class="btn-copy-xs" data-copy-target="${did}"><i class="fas fa-copy"></i> Copy</button>
-                </div>
-              </div>
-              <div class="result-row-content" id="${did}">${escHtml(node.description || '-')}</div>
-            </div>
-            <div class="result-row">
-              <div class="result-row-head">
-                <div class="result-row-label">
-                  ${langLabel} &middot; Keywords
-                  <span class="char-count">${kws.length} keyword</span>
-                </div>
-                <div class="result-row-actions">
-                  <button class="btn-copy-xs" data-copy-target="${kid}"><i class="fas fa-copy"></i> Copy</button>
-                  <button class="btn-copy-xs" data-copy-json="${kid}"><i class="fas fa-code"></i> JSON</button>
-                </div>
-              </div>
-              <div class="keywords-chips" id="${kid}">
-                ${kws.map(k => `<span class="kw-chip">${escHtml(k)}</span>`).join('') || '-'}
-              </div>
-            </div>
-          `);
+        item.result = parsed;
+        item.status = 'done';
+        item.expanded = true;
+        item.retryCount++;
+        saveToHistory({
+          id: genId('ms'),
+          ts: Date.now(),
+          preview: item.dataUrl,
+          fileName: item.fileName,
+          assetType: currentAssetType,
+          lang: lang,
+          results: parsed
         });
-
-        html.push(`
-          <div class="result-card">
-            <div class="rc-header">
-              <img src="${img.dataUrl}" alt="" class="rc-thumb">
-              <div class="rc-meta">
-                <div class="rc-filename">${escHtml(img.fileName)}</div>
-                <div class="rc-status"><i class="fas fa-check-circle"></i> Selesai &middot; ${ASSET_HINTS[img.result ? (currentAssetType) : 'photo']?.label || ''}</div>
-              </div>
-            </div>
-            <div class="rc-body">${blocks.join('')}</div>
-          </div>
-        `);
-      });
-
-      if (!html.length) {
-        container.innerHTML = `<div class="empty-results"><div class="spinner"></div><p>Memproses...</p></div>`;
-        return;
+        showToast('Berhasil di-retry!', 'success');
+      } catch (err) {
+        item.status = 'error';
+        item.error = err.message;
+        item.retryCount++;
+        showToast('Retry gagal: ' + err.message, 'error');
       }
-      container.innerHTML = html.join('');
 
-      // Copy handlers
-      container.querySelectorAll('.btn-copy-xs').forEach(btn => {
-        btn.addEventListener('click', async () => {
-          const targetId = btn.dataset.copyTarget;
-          const jsonId = btn.dataset.copyJson;
-          let text = '';
-          if (targetId) {
-            const el = document.getElementById(targetId);
-            if (el) text = el.textContent;
-          } else if (jsonId) {
-            const el = document.getElementById(jsonId);
-            if (el) {
-              const chips = Array.from(el.querySelectorAll('.kw-chip')).map(c => c.textContent);
-              text = JSON.stringify(chips, null, 2);
-            }
-          }
-          if (!text) return;
-          await copyText(text);
-          btn.classList.add('copied');
-          const orig = btn.innerHTML;
-          btn.innerHTML = '<i class="fas fa-check"></i>';
-          setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = orig; }, 1400);
-        });
-      });
+      isProcessing = false;
+      btn.disabled = false;
+      renderQueue();
+      updateStats();
     }
 
-    function resetResultUI() {
-      $('resultContainer').innerHTML = `
-        <div class="empty-results">
-          <div class="empty-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
-          <h3>Belum ada hasil</h3>
-          <p>Upload gambar di panel kiri, pilih tipe aset, lalu klik <strong>Generate Semua</strong>.</p>
-        </div>`;
-      updateResultsInfo();
-    }
+    $('btnRetryFailed').addEventListener('click', () => generateAll(true));
 
-    $('btnClearResults').addEventListener('click', () => {
-      if (isProcessing) return;
-      if (!confirm('Bersihkan hasil generate? (gambar tetap ada)')) return;
-      currentImages.forEach(img => { img.status = 'pending'; img.result = null; img.error = null; });
-      renderUploadGrid();
-      resetResultUI();
-      showToast('Hasil dibersihkan.', 'info');
+    $('btnClearQueue').addEventListener('click', () => {
+      if (isProcessing) { showToast('Tidak bisa clear saat proses berjalan.', 'warning'); return; }
+      if (!confirm('Hapus semua file dari antrian?')) return;
+      currentItems = [];
+      renderQueue();
+      updateStats();
+      showToast('Antrian dibersihkan.', 'info');
     });
 
+    // ============================================================
+    // COPY
+    // ============================================================
     async function copyText(text) {
       try {
         if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -2520,23 +2490,37 @@ ${structExample}
     }
 
     function exportCSV() {
-      const done = currentImages.filter(i => i.status === 'done' && i.result);
+      const done = currentItems.filter(i => i.status === 'done' && i.result);
       if (!done.length) { showToast('Belum ada hasil.', 'warning'); return; }
       const lang = $('langSelect').value;
       let header, rows;
       if (lang === 'both') {
         header = ['filename','asset_type','title_id','description_id','keywords_id','title_en','description_en','keywords_en'];
-        rows = done.map(img => {
-          const i = img.result.id || {};
-          const e = img.result.en || {};
-          return [img.fileName, currentAssetType, i.title || '', i.description || '', (i.keywords||[]).join(', '),
-                  e.title || '', e.description || '', (e.keywords||[]).join(', ')];
+        rows = done.map(item => {
+          const i = item.result.id || {};
+          const e = item.result.en || {};
+          return [
+            item.fileName,
+            currentAssetType,
+            i.title || '',
+            i.description || '',
+            (i.keywords || []).join(', '),
+            e.title || '',
+            e.description || '',
+            (e.keywords || []).join(', ')
+          ];
         });
       } else {
         header = ['filename','asset_type','title','description','keywords'];
-        rows = done.map(img => {
-          const n = img.result || {};
-          return [img.fileName, currentAssetType, n.title || '', n.description || '', (n.keywords||[]).join(', ')];
+        rows = done.map(item => {
+          const n = item.result || {};
+          return [
+            item.fileName,
+            currentAssetType,
+            n.title || '',
+            n.description || '',
+            (n.keywords || []).join(', ')
+          ];
         });
       }
       const csv = [header, ...rows].map(r => r.map(csvEscape).join(',')).join('\r\n');
@@ -2545,12 +2529,12 @@ ${structExample}
     }
 
     function exportJSON() {
-      const done = currentImages.filter(i => i.status === 'done' && i.result);
+      const done = currentItems.filter(i => i.status === 'done' && i.result);
       if (!done.length) { showToast('Belum ada hasil.', 'warning'); return; }
-      const payload = done.map(img => ({
-        filename: img.fileName,
+      const payload = done.map(item => ({
+        filename: item.fileName,
         asset_type: currentAssetType,
-        results: img.result
+        results: item.result
       }));
       const json = JSON.stringify(payload, null, 2);
       downloadFile(json, 'metastock-' + new Date().toISOString().slice(0,10) + '.json', 'application/json');
@@ -2602,10 +2586,10 @@ ${structExample}
           : (item.results?.title || item.fileName);
         const typeLabel = ASSET_HINTS[item.assetType]?.label || 'Photo';
         div.innerHTML = `
-          <div class="hi-thumb">${item.preview ? `<img src="${item.preview}" alt="">` : '<i class="fas fa-image"></i>'}</div>
+          <div class="hi-thumb">${item.preview ? `<img src="${item.preview}" alt="" loading="lazy">` : '<i class="fas fa-image"></i>'}</div>
           <div class="hi-info">
             <div class="hi-title">${escHtml(preview)}</div>
-            <div class="hi-time">${timeAgo(item.ts)} &middot; ${escHtml(typeLabel)}</div>
+            <div class="hi-time">${timeAgo(item.ts)} · ${escHtml(typeLabel)}</div>
           </div>
           <div class="hi-actions">
             <button title="Copy JSON" data-action="copy" data-id="${item.id}"><i class="fas fa-copy"></i></button>
