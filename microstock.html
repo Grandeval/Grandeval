@@ -13,7 +13,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/d39mdjct/image/upload/w_180,h_180,c_fit/v1783493763/apk_pgxcmo.png" />
 
   <title>MetaStock AI - Generator Metadata Microstock | Akino Store</title>
-  <meta name="description" content="Generate judul, deskripsi, dan keyword microstock profesional dengan AI OpenRouter. Upload tanpa batas, auto-retry, export CSV.">
+  <meta name="description" content="Generate judul, deskripsi, dan keyword microstock profesional dengan AI multi-provider (Groq, Gemini, OpenRouter). Upload tanpa batas, auto-retry, export CSV.">
   <link rel="canonical" href="https://akinocpm.my.id/metastock.html">
   <link rel="icon" href="https://res.cloudinary.com/d39mdjct/image/upload/v1783478697/icon_tnzy32.ico" />
 
@@ -71,15 +71,7 @@
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     html { scroll-behavior:smooth; -webkit-tap-highlight-color:transparent; }
-    body {
-      font-family: var(--font-body);
-      background: var(--bg);
-      color: var(--fg);
-      overflow-x:hidden;
-      line-height:1.6;
-      min-height:100vh;
-      transition: background var(--transition), color var(--transition);
-    }
+    body { font-family: var(--font-body); background: var(--bg); color: var(--fg); overflow-x:hidden; line-height:1.6; min-height:100vh; transition: background var(--transition), color var(--transition); }
     ::-webkit-scrollbar { width:6px; height:6px; }
     ::-webkit-scrollbar-track { background:transparent; }
     ::-webkit-scrollbar-thumb { background:var(--border-hover); border-radius:10px; }
@@ -98,175 +90,68 @@
     @keyframes glowFloat2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-50px,-70px)} }
     @keyframes glowFloat3 { 0%,100%{transform:translate(-50%,-50%) scale(1)} 50%{transform:translate(-50%,-50%) scale(1.25)} }
 
-    .navbar {
-      position:fixed; top:0; left:0; right:0; z-index:100;
-      display:flex; justify-content:space-between; align-items:center;
-      padding:0.75rem 2rem;
-      background:var(--nav-bg);
-      backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
-      border-bottom:1px solid var(--border);
-      min-height:60px;
-      transition:all var(--transition);
-    }
+    .navbar { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; justify-content:space-between; align-items:center; padding:0.75rem 2rem; background:var(--nav-bg); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-bottom:1px solid var(--border); min-height:60px; transition:all var(--transition); }
     .navbar.scrolled { box-shadow:0 4px 30px rgba(0,0,0,0.2); }
-    .nav-brand {
-      font-family:var(--font-display); font-size:1.15rem; font-weight:700;
-      color:var(--accent); letter-spacing:-0.3px;
-      display:flex; align-items:center; gap:0.4rem;
-    }
+    .nav-brand { font-family:var(--font-display); font-size:1.15rem; font-weight:700; color:var(--accent); letter-spacing:-0.3px; display:flex; align-items:center; gap:0.4rem; }
     .nav-actions { display:flex; align-items:center; gap:0.4rem; }
-    .icon-btn {
-      background:var(--bg-card); border:1px solid var(--border);
-      color:var(--muted); width:38px; height:38px;
-      border-radius:10px; cursor:pointer;
-      display:flex; align-items:center; justify-content:center;
-      font-size:0.85rem; transition:all 0.25s;
-    }
+    .icon-btn { background:var(--bg-card); border:1px solid var(--border); color:var(--muted); width:38px; height:38px; border-radius:10px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:0.85rem; transition:all 0.25s; }
     .icon-btn:hover { color:var(--accent); border-color:var(--accent); background:var(--accent-soft); }
     .menu-toggle { display:none; }
     .nav-links { list-style:none; display:flex; gap:0.15rem; align-items:center; }
-    .nav-links a {
-      color:var(--muted); padding:0.4rem 0.9rem; border-radius:10px;
-      font-size:0.85rem; font-weight:500; transition:all var(--transition);
-    }
+    .nav-links a { color:var(--muted); padding:0.4rem 0.9rem; border-radius:10px; font-size:0.85rem; font-weight:500; transition:all var(--transition); }
     .nav-links a:hover, .nav-links a.active { color:var(--fg); background:var(--bg-card); }
     .nav-links a.active { color:var(--accent); background:var(--accent-soft); }
     .dropdown { position:relative; }
-    .dropdown-menu {
-      display:none; position:absolute; top:calc(100% + 6px); left:50%;
-      transform:translateX(-50%);
-      background:rgba(15,15,25,0.96); backdrop-filter:blur(20px);
-      border:1px solid var(--border); border-radius:var(--radius);
-      min-width:240px; padding:0.4rem;
-      box-shadow:0 24px 64px rgba(0,0,0,0.5);
-    }
+    .dropdown-menu { display:none; position:absolute; top:calc(100% + 6px); left:50%; transform:translateX(-50%); background:rgba(15,15,25,0.96); backdrop-filter:blur(20px); border:1px solid var(--border); border-radius:var(--radius); min-width:240px; padding:0.4rem; box-shadow:0 24px 64px rgba(0,0,0,0.5); }
     body.light-theme .dropdown-menu { background:rgba(255,255,255,0.98); }
     .dropdown:hover .dropdown-menu { display:block; }
-    .dropdown-menu a {
-      display:block; padding:0.5rem 0.9rem; border-radius:10px;
-      font-size:0.82rem; white-space:nowrap;
-      color:var(--muted); transition:all var(--transition);
-    }
+    .dropdown-menu a { display:block; padding:0.5rem 0.9rem; border-radius:10px; font-size:0.82rem; white-space:nowrap; color:var(--muted); transition:all var(--transition); }
     .dropdown-menu a:hover { background:var(--accent-soft); color:var(--accent); }
 
-    .page-header {
-      max-width:1500px; margin:0 auto;
-      padding:4.5rem 1.5rem 1rem;
-      display:flex; justify-content:space-between; align-items:flex-end;
-      gap:1rem; flex-wrap:wrap;
-    }
-    .page-header-text h1 {
-      font-family:var(--font-display);
-      font-size:clamp(1.3rem, 3vw, 1.75rem);
-      font-weight:700; letter-spacing:-0.5px;
-      margin-bottom:0.2rem;
-      display:flex; align-items:center; gap:0.5rem;
-    }
+    .page-header { max-width:1500px; margin:0 auto; padding:4.5rem 1.5rem 1rem; display:flex; justify-content:space-between; align-items:flex-end; gap:1rem; flex-wrap:wrap; }
+    .page-header-text h1 { font-family:var(--font-display); font-size:clamp(1.3rem, 3vw, 1.75rem); font-weight:700; letter-spacing:-0.5px; margin-bottom:0.2rem; display:flex; align-items:center; gap:0.5rem; }
     .page-header-text h1 i { color:var(--accent); font-size:1.2rem; }
     .page-header-text p { color:var(--muted-light); font-size:0.85rem; }
     .page-header-actions { display:flex; gap:0.4rem; }
 
-    .container {
-      max-width:1500px; margin:0 auto;
-      padding:0 1.5rem 3rem;
-      position:relative; z-index:2;
-    }
+    .container { max-width:1500px; margin:0 auto; padding:0 1.5rem 3rem; position:relative; z-index:2; }
 
     .gate-screen { max-width:520px; margin:2rem auto; padding:0 1rem; }
-    .gate-card {
-      background:var(--bg-card); border:1px solid var(--border);
-      border-radius:var(--radius-lg); padding:2.5rem 2rem;
-      text-align:center; box-shadow:var(--shadow-card);
-    }
-    .gate-card .gate-icon {
-      width:72px; height:72px; border-radius:20px;
-      background:var(--accent-soft); color:var(--accent);
-      display:flex; align-items:center; justify-content:center;
-      font-size:1.8rem; margin:0 auto 1rem;
-      border:1px solid rgba(255,221,87,0.15);
-    }
-    .gate-card h2 {
-      font-family:var(--font-display); font-size:1.3rem;
-      font-weight:700; margin-bottom:0.4rem;
-    }
-    .gate-card p {
-      color:var(--muted-light); font-size:0.88rem;
-      line-height:1.7; margin-bottom:1rem; text-align:left;
-    }
+    .gate-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:2.5rem 2rem; text-align:center; box-shadow:var(--shadow-card); }
+    .gate-card .gate-icon { width:72px; height:72px; border-radius:20px; background:var(--accent-soft); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:1.8rem; margin:0 auto 1rem; border:1px solid rgba(255,221,87,0.15); }
+    .gate-card h2 { font-family:var(--font-display); font-size:1.3rem; font-weight:700; margin-bottom:0.4rem; }
+    .gate-card p { color:var(--muted-light); font-size:0.88rem; line-height:1.7; margin-bottom:1rem; text-align:left; }
     .gate-card p.center { text-align:center; }
     .gate-card a { color:var(--accent); font-weight:500; }
     .gate-card a:hover { text-decoration:underline; }
-    .gate-card input {
-      width:100%; padding:0.85rem 1rem;
-      background:var(--bg-input); border:1px solid var(--border);
-      border-radius:var(--radius-sm); color:var(--fg);
-      font-size:0.88rem; outline:none; margin-bottom:0.75rem;
-      text-align:center;
-    }
-    .gate-card input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
-    .btn-google {
-      display:flex; align-items:center; justify-content:center; gap:0.7rem;
-      width:100%; padding:0.85rem 1.2rem;
-      background:linear-gradient(145deg, #FFDD57, #f5c842);
-      color:#0a0a0f; font-weight:600; font-size:0.9rem;
-      border-radius:var(--radius-sm); border:none;
-      cursor:pointer; transition:all var(--transition);
-      box-shadow:0 4px 20px rgba(255,221,87,0.2);
-    }
+    .btn-google { display:flex; align-items:center; justify-content:center; gap:0.7rem; width:100%; padding:0.85rem 1.2rem; background:linear-gradient(145deg, #FFDD57, #f5c842); color:#0a0a0f; font-weight:600; font-size:0.9rem; border-radius:var(--radius-sm); border:none; cursor:pointer; transition:all var(--transition); box-shadow:0 4px 20px rgba(255,221,87,0.2); }
     .btn-google:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 8px 28px rgba(255,221,87,0.35); }
     .btn-google:disabled { opacity:0.7; cursor:wait; }
     .btn-google svg { width:20px; height:20px; flex-shrink:0; }
-    .btn-primary {
-      display:flex; align-items:center; justify-content:center; gap:0.5rem;
-      width:100%; padding:0.75rem 1.2rem;
-      background:linear-gradient(145deg, #FFDD57, #f5c842);
-      color:#0a0a0f; font-weight:600; font-size:0.88rem;
-      border-radius:var(--radius-sm); border:none;
-      cursor:pointer; transition:all var(--transition);
-      box-shadow:0 4px 20px rgba(255,221,87,0.2);
-    }
+    .btn-primary { display:flex; align-items:center; justify-content:center; gap:0.5rem; width:100%; padding:0.75rem 1.2rem; background:linear-gradient(145deg, #FFDD57, #f5c842); color:#0a0a0f; font-weight:600; font-size:0.88rem; border-radius:var(--radius-sm); border:none; cursor:pointer; transition:all var(--transition); box-shadow:0 4px 20px rgba(255,221,87,0.2); }
     .btn-primary:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 8px 28px rgba(255,221,87,0.35); }
     .btn-primary:active:not(:disabled) { transform:scale(0.98); }
     .btn-primary:disabled { opacity:0.4; cursor:not-allowed; transform:none; box-shadow:none; }
-    .btn-ghost {
-      display:inline-flex; align-items:center; justify-content:center; gap:0.4rem;
-      padding:0.5rem 1rem; background:var(--bg-card);
-      border:1px solid var(--border); border-radius:var(--radius-sm);
-      color:var(--muted-light); font-size:0.8rem; font-weight:500;
-      cursor:pointer; transition:all var(--transition);
-    }
+    .btn-ghost { display:inline-flex; align-items:center; justify-content:center; gap:0.4rem; padding:0.5rem 1rem; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-sm); color:var(--muted-light); font-size:0.8rem; font-weight:500; cursor:pointer; transition:all var(--transition); }
     .btn-ghost:hover { border-color:var(--border-hover); color:var(--fg); }
 
-    .helper-steps {
-      text-align:left;
-      background:rgba(59,130,246,0.06);
-      border:1px solid rgba(59,130,246,0.15);
-      border-radius:var(--radius-sm);
-      padding:0.9rem 1rem;
-      margin-bottom:1rem;
-      font-size:0.82rem;
-      line-height:1.7;
-      color:var(--fg-dim);
-    }
-    .helper-steps strong { color:var(--fg); }
-    .helper-steps ol { margin-left:1.2rem; margin-top:0.3rem; }
-    .helper-steps ol li { margin-bottom:0.3rem; }
-    .helper-steps a { color:var(--accent); font-weight:600; }
+    .api-key-field { text-align:left; margin-bottom:0.9rem; }
+    .api-key-field label { display:flex; justify-content:space-between; align-items:center; font-size:0.72rem; font-weight:600; color:var(--muted-light); margin-bottom:0.35rem; gap:0.5rem; }
+    .api-key-field label span { display:flex; align-items:center; gap:0.35rem; }
+    .api-key-field label i { color:var(--accent); }
+    .api-key-field label a { font-size:0.65rem; color:var(--accent); font-weight:500; }
+    .api-key-field label a:hover { text-decoration:underline; }
+    .api-key-field input { width:100%; padding:0.7rem 0.9rem; background:var(--bg-input); border:1px solid var(--border); border-radius:var(--radius-sm); color:var(--fg); font-size:0.78rem; outline:none; font-family:monospace; }
+    .api-key-field input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+    .api-key-field input::placeholder { color:var(--muted); opacity:0.5; font-family:var(--font-body); }
 
-    .studio-layout {
-      display:grid;
-      grid-template-columns: 380px 1fr;
-      gap:1.25rem;
-      align-items:start;
-    }
+    .provider-hint { font-size:0.68rem; color:var(--muted); margin-top:-0.2rem; margin-bottom:0.9rem; text-align:left; padding-left:0.2rem; }
+    .provider-hint strong { color:var(--accent); }
+
+    .studio-layout { display:grid; grid-template-columns: 380px 1fr; gap:1.25rem; align-items:start; }
     @media (max-width:1024px) { .studio-layout { grid-template-columns: 1fr; } }
 
-    .studio-panel {
-      background:var(--bg-card);
-      border:1px solid var(--border);
-      border-radius:var(--radius-lg);
-      padding:1.25rem;
-    }
+    .studio-panel { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.25rem; }
     @media (min-width:1025px) {
       .studio-panel { position:sticky; top:80px; max-height:calc(100vh - 100px); overflow-y:auto; }
       .studio-panel::-webkit-scrollbar { width:4px; }
@@ -275,592 +160,240 @@
 
     .panel-section { margin-bottom:1.25rem; }
     .panel-section:last-child { margin-bottom:0; }
-    .panel-section-title {
-      font-size:0.72rem; font-weight:700;
-      letter-spacing:0.8px; text-transform:uppercase;
-      color:var(--muted); margin-bottom:0.6rem;
-      display:flex; align-items:center; gap:0.4rem;
-    }
+    .panel-section-title { font-size:0.72rem; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:var(--muted); margin-bottom:0.6rem; display:flex; align-items:center; gap:0.4rem; }
     .panel-section-title i { color:var(--accent); font-size:0.7rem; }
 
-    .upload-zone {
-      position:relative; width:100%;
-      border:2px dashed var(--border);
-      border-radius:var(--radius);
-      cursor:pointer;
-      display:flex; flex-direction:column;
-      align-items:center; justify-content:center;
-      gap:0.4rem; text-align:center;
-      transition:all var(--transition);
-      background:rgba(255,255,255,0.01);
-      padding:1.5rem 1rem;
-      min-height:130px;
-    }
-    .upload-zone:hover, .upload-zone.dragover {
-      border-color:var(--accent);
-      background:var(--accent-soft);
-    }
-    .upload-zone .upload-icon {
-      width:44px; height:44px; border-radius:12px;
-      background:var(--accent-soft); color:var(--accent);
-      display:flex; align-items:center; justify-content:center;
-      font-size:1.15rem; margin-bottom:0.3rem;
-    }
-    .upload-zone .upload-title {
-      font-family:var(--font-display);
-      font-size:0.88rem; font-weight:600;
-    }
-    .upload-zone .upload-sub {
-      font-size:0.72rem; color:var(--muted); line-height:1.4;
-    }
+    .upload-zone { position:relative; width:100%; border:2px dashed var(--border); border-radius:var(--radius); cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.4rem; text-align:center; transition:all var(--transition); background:rgba(255,255,255,0.01); padding:1.5rem 1rem; min-height:130px; }
+    .upload-zone:hover, .upload-zone.dragover { border-color:var(--accent); background:var(--accent-soft); }
+    .upload-zone .upload-icon { width:44px; height:44px; border-radius:12px; background:var(--accent-soft); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:1.15rem; margin-bottom:0.3rem; }
+    .upload-zone .upload-title { font-family:var(--font-display); font-size:0.88rem; font-weight:600; }
+    .upload-zone .upload-sub { font-size:0.72rem; color:var(--muted); line-height:1.4; }
     .upload-zone .upload-sub strong { color:var(--accent); }
     .upload-zone input[type=file] { display:none; }
 
     .field { margin-bottom:0.8rem; }
     .field:last-child { margin-bottom:0; }
-    .field label {
-      display:flex; align-items:center; gap:0.3rem;
-      font-size:0.72rem; font-weight:600;
-      color:var(--muted-light); margin-bottom:0.3rem;
-    }
-    .field select, .field input[type=text] {
-      width:100%; padding:0.55rem 0.8rem;
-      background:var(--bg-input); border:1px solid var(--border);
-      border-radius:var(--radius-sm); color:var(--fg);
-      font-size:0.82rem; outline:none; transition:all 0.2s;
-      -webkit-appearance:none; appearance:none;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7a90' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
-      background-repeat:no-repeat; background-position:right 0.7rem center;
-      padding-right:2rem;
-    }
+    .field label { display:flex; align-items:center; gap:0.3rem; font-size:0.72rem; font-weight:600; color:var(--muted-light); margin-bottom:0.3rem; }
+    .field select, .field input[type=text] { width:100%; padding:0.55rem 0.8rem; background:var(--bg-input); border:1px solid var(--border); border-radius:var(--radius-sm); color:var(--fg); font-size:0.82rem; outline:none; transition:all 0.2s; -webkit-appearance:none; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7a90' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 0.7rem center; padding-right:2rem; }
     .field input[type=text] { background-image:none; padding-right:0.8rem; }
     .field select option { background:#0e0e18; color:#f0f0f5; }
     body.light-theme .field select option { background:#ffffff; color:#1a1a24; }
     .field select:focus, .field input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
-    .field textarea {
-      width:100%; padding:0.55rem 0.8rem;
-      background:var(--bg-input); border:1px solid var(--border);
-      border-radius:var(--radius-sm); color:var(--fg);
-      font-size:0.82rem; outline:none; transition:all 0.2s;
-      resize:vertical; min-height:56px;
-    }
+    .field textarea { width:100%; padding:0.55rem 0.8rem; background:var(--bg-input); border:1px solid var(--border); border-radius:var(--radius-sm); color:var(--fg); font-size:0.82rem; outline:none; transition:all 0.2s; resize:vertical; min-height:56px; }
     .field textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
     .field textarea::placeholder, .field input::placeholder { color:var(--muted); opacity:0.7; }
 
     .two-col { display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; }
     @media (max-width:480px) { .two-col { grid-template-columns:1fr; } }
 
-    .asset-pills {
-      display:grid; grid-template-columns:repeat(3, 1fr); gap:0.35rem;
-    }
-    .asset-pill {
-      display:flex; flex-direction:column; align-items:center; gap:0.15rem;
-      padding:0.5rem 0.3rem;
-      background:var(--bg-input); border:1px solid var(--border);
-      border-radius:10px; cursor:pointer;
-      transition:all 0.2s;
-      font-size:0.65rem; font-weight:600;
-      color:var(--muted-light); text-align:center;
-    }
+    .asset-pills { display:grid; grid-template-columns:repeat(3, 1fr); gap:0.35rem; }
+    .asset-pill { display:flex; flex-direction:column; align-items:center; gap:0.15rem; padding:0.5rem 0.3rem; background:var(--bg-input); border:1px solid var(--border); border-radius:10px; cursor:pointer; transition:all 0.2s; font-size:0.65rem; font-weight:600; color:var(--muted-light); text-align:center; }
     .asset-pill i { font-size:0.95rem; color:var(--muted); }
     .asset-pill:hover { border-color:var(--border-hover); color:var(--fg); }
-    .asset-pill.active {
-      border-color:var(--accent);
-      background:var(--accent-soft);
-      color:var(--accent);
-    }
+    .asset-pill.active { border-color:var(--accent); background:var(--accent-soft); color:var(--accent); }
     .asset-pill.active i { color:var(--accent); }
 
-    .batch-progress {
-      margin-top:0.6rem; padding:0.6rem 0.8rem;
-      background:rgba(59,130,246,0.08);
-      border:1px solid rgba(59,130,246,0.2);
-      border-radius:10px; font-size:0.75rem; display:none;
-    }
+    .batch-progress { margin-top:0.6rem; padding:0.6rem 0.8rem; background:rgba(59,130,246,0.08); border:1px solid rgba(59,130,246,0.2); border-radius:10px; font-size:0.75rem; display:none; }
     .batch-progress.show { display:block; }
-    .batch-progress .progress-info {
-      display:flex; justify-content:space-between; align-items:center;
-      gap:0.5rem; flex-wrap:wrap;
-    }
-    .batch-progress .progress-count {
-      font-family:var(--font-display); font-weight:700; color:var(--info);
-    }
-    .batch-progress .progress-file {
-      font-size:0.68rem; color:var(--muted);
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-      max-width:160px;
-    }
-    .batch-progress .progress-bar {
-      height:4px; background:rgba(255,255,255,0.06);
-      border-radius:4px; margin-top:0.4rem; overflow:hidden;
-    }
-    .batch-progress .progress-fill {
-      height:100%; background:linear-gradient(90deg, #3B82F6, #60a5fa);
-      border-radius:4px; transition:width 0.3s ease; width:0%;
-    }
+    .batch-progress .progress-info { display:flex; justify-content:space-between; align-items:center; gap:0.5rem; flex-wrap:wrap; }
+    .batch-progress .progress-count { font-family:var(--font-display); font-weight:700; color:var(--info); }
+    .batch-progress .progress-file { font-size:0.68rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:160px; }
+    .batch-progress .progress-bar { height:4px; background:rgba(255,255,255,0.06); border-radius:4px; margin-top:0.4rem; overflow:hidden; }
+    .batch-progress .progress-fill { height:100%; background:linear-gradient(90deg, #3B82F6, #60a5fa); border-radius:4px; transition:width 0.3s ease; width:0%; }
 
-    .settings-bar {
-      display:flex; flex-wrap:wrap; gap:0.4rem;
-      align-items:center; margin-top:0.75rem;
-      padding-top:0.75rem;
-      border-top:1px solid var(--border);
-      font-size:0.7rem; color:var(--muted);
-    }
-    .api-status {
-      display:inline-flex; align-items:center; gap:0.3rem;
-      padding:0.2rem 0.6rem; border-radius:50px;
-      font-weight:600; font-size:0.65rem;
-    }
-    .api-status.ok {
-      background:rgba(34,197,94,0.1);
-      border:1px solid rgba(34,197,94,0.2);
-      color:var(--success);
-    }
-    .api-status.missing {
-      background:rgba(251,146,60,0.1);
-      border:1px solid rgba(251,146,60,0.2);
-      color:var(--warning);
-    }
+    .generate-actions { display:flex; gap:0.5rem; }
+    .generate-actions .btn-primary { flex:1; }
+    .btn-stop { display:none; align-items:center; justify-content:center; gap:0.4rem; padding:0.75rem 1rem; background:linear-gradient(145deg, #ef4444, #dc2626); color:#fff; font-weight:600; font-size:0.85rem; border-radius:var(--radius-sm); border:none; cursor:pointer; transition:all var(--transition); box-shadow:0 4px 20px rgba(239,68,68,0.25); }
+    .btn-stop:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(239,68,68,0.4); }
+    .btn-stop.show { display:flex; }
+
+    .settings-bar { display:flex; flex-wrap:wrap; gap:0.4rem; align-items:center; margin-top:0.75rem; padding-top:0.75rem; border-top:1px solid var(--border); font-size:0.7rem; color:var(--muted); }
+    .api-status { display:inline-flex; align-items:center; gap:0.3rem; padding:0.2rem 0.6rem; border-radius:50px; font-weight:600; font-size:0.65rem; }
+    .api-status.ok { background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.2); color:var(--success); }
+    .api-status.missing { background:rgba(251,146,60,0.1); border:1px solid rgba(251,146,60,0.2); color:var(--warning); }
+    .provider-dots { display:inline-flex; align-items:center; gap:0.3rem; }
+    .provider-dot { width:8px; height:8px; border-radius:50%; background:var(--border-hover); transition:all 0.2s; }
+    .provider-dot.active { background:var(--success); box-shadow:0 0 8px rgba(34,197,94,0.6); }
 
     .queue-panel { display:flex; flex-direction:column; gap:1rem; min-width:0; }
 
-    .stats-bar {
-      display:grid; grid-template-columns:repeat(4, 1fr);
-      gap:0.5rem; padding:0.85rem;
-      background:var(--bg-card); border:1px solid var(--border);
-      border-radius:var(--radius);
-    }
+    .stats-bar { display:grid; grid-template-columns:repeat(4, 1fr); gap:0.5rem; padding:0.85rem; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); }
     @media (max-width:600px) { .stats-bar { grid-template-columns:repeat(2, 1fr); } }
-    .stat-box {
-      padding:0.5rem 0.6rem; border-radius:10px;
-      background:var(--bg-input); border:1px solid var(--border);
-      display:flex; flex-direction:column; align-items:center;
-      text-align:center; transition:all 0.2s;
-    }
-    .stat-box .stat-num {
-      font-family:var(--font-display);
-      font-size:1.35rem; font-weight:700; line-height:1.2;
-      color:var(--fg);
-    }
+    .stat-box { padding:0.5rem 0.6rem; border-radius:10px; background:var(--bg-input); border:1px solid var(--border); display:flex; flex-direction:column; align-items:center; text-align:center; transition:all 0.2s; }
+    .stat-box .stat-num { font-family:var(--font-display); font-size:1.35rem; font-weight:700; line-height:1.2; color:var(--fg); }
     .stat-box .stat-num.blue { color:var(--info); }
     .stat-box .stat-num.green { color:var(--success); }
     .stat-box .stat-num.orange { color:var(--warning); }
-    .stat-box .stat-label {
-      font-size:0.62rem; color:var(--muted);
-      text-transform:uppercase; letter-spacing:0.5px;
-      font-weight:600; margin-top:0.1rem;
-    }
+    .stat-box .stat-label { font-size:0.62rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; font-weight:600; margin-top:0.1rem; }
     .stat-box .stat-label i { margin-right:0.15rem; }
 
-    .queue-toolbar {
-      display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;
-      padding:0.75rem 1rem;
-      background:var(--bg-card); border:1px solid var(--border);
-      border-radius:var(--radius);
-    }
-    .queue-toolbar .qt-info {
-      flex:1; display:flex; align-items:center; gap:0.5rem;
-      font-size:0.8rem; color:var(--muted-light); min-width:120px;
-    }
+    .queue-toolbar { display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap; padding:0.75rem 1rem; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); }
+    .queue-toolbar .qt-info { flex:1; display:flex; align-items:center; gap:0.5rem; font-size:0.8rem; color:var(--muted-light); min-width:120px; }
     .queue-toolbar .qt-actions { display:flex; gap:0.35rem; flex-wrap:wrap; }
 
-    .btn-toolbar {
-      display:inline-flex; align-items:center; gap:0.3rem;
-      padding:0.4rem 0.85rem;
-      background:var(--bg-input); border:1px solid var(--border);
-      border-radius:8px; color:var(--muted-light);
-      font-size:0.72rem; font-weight:600;
-      cursor:pointer; transition:all 0.2s; white-space:nowrap;
-    }
+    .btn-toolbar { display:inline-flex; align-items:center; gap:0.3rem; padding:0.4rem 0.85rem; background:var(--bg-input); border:1px solid var(--border); border-radius:8px; color:var(--muted-light); font-size:0.72rem; font-weight:600; cursor:pointer; transition:all 0.2s; white-space:nowrap; }
     .btn-toolbar:hover:not(:disabled) { color:var(--fg); border-color:var(--border-hover); }
     .btn-toolbar:disabled { opacity:0.4; cursor:not-allowed; }
-    .btn-toolbar.btn-csv {
-      background:linear-gradient(145deg, #22c55e, #16a34a);
-      border-color:#16a34a; color:#fff;
-      box-shadow:0 2px 10px rgba(34,197,94,0.2);
-    }
-    .btn-toolbar.btn-csv:hover:not(:disabled) {
-      transform:translateY(-1px);
-      box-shadow:0 4px 18px rgba(34,197,94,0.35);
-    }
-    .btn-toolbar.btn-danger {
-      background:rgba(239,68,68,0.08);
-      border-color:rgba(239,68,68,0.15); color:#f87171;
-    }
+    .btn-toolbar.btn-csv { background:linear-gradient(145deg, #22c55e, #16a34a); border-color:#16a34a; color:#fff; box-shadow:0 2px 10px rgba(34,197,94,0.2); }
+    .btn-toolbar.btn-csv:hover:not(:disabled) { transform:translateY(-1px); box-shadow:0 4px 18px rgba(34,197,94,0.35); }
+    .btn-toolbar.btn-danger { background:rgba(239,68,68,0.08); border-color:rgba(239,68,68,0.15); color:#f87171; }
     .btn-toolbar.btn-danger:hover:not(:disabled) { background:rgba(239,68,68,0.15); }
-    .btn-toolbar.btn-retry {
-      background:rgba(251,146,60,0.1);
-      border-color:rgba(251,146,60,0.2); color:#fb923c;
-    }
+    .btn-toolbar.btn-retry { background:rgba(251,146,60,0.1); border-color:rgba(251,146,60,0.2); color:#fb923c; }
     .btn-toolbar.btn-retry:hover:not(:disabled) { background:rgba(251,146,60,0.2); }
 
     .queue-list { display:flex; flex-direction:column; gap:0.6rem; }
 
-    .queue-item {
-      background:var(--bg-card); border:1px solid var(--border);
-      border-radius:var(--radius); overflow:hidden;
-      transition:all var(--transition);
-      animation:fadeUp 0.25s ease both;
-    }
+    .queue-item { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; transition:all var(--transition); animation:fadeUp 0.25s ease both; }
     .queue-item:hover { border-color:var(--border-hover); }
     .queue-item.processing { border-color:rgba(59,130,246,0.4); animation:pulseBorder 1.4s infinite; }
     .queue-item.done { border-color:rgba(34,197,94,0.25); }
     .queue-item.error { border-color:rgba(239,68,68,0.35); background:rgba(239,68,68,0.03); }
 
-    @keyframes pulseBorder {
-      0%,100% { box-shadow:0 0 0 0 rgba(59,130,246,0.3); }
-      50% { box-shadow:0 0 0 4px rgba(59,130,246,0.1); }
-    }
+    @keyframes pulseBorder { 0%,100% { box-shadow:0 0 0 0 rgba(59,130,246,0.3); } 50% { box-shadow:0 0 0 4px rgba(59,130,246,0.1); } }
     @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
 
-    .queue-item-header {
-      display:flex; align-items:center; gap:0.75rem;
-      padding:0.7rem 0.9rem; cursor:pointer; user-select:none;
-    }
-    .queue-item-thumb {
-      width:52px; height:52px; border-radius:10px;
-      object-fit:cover; flex-shrink:0;
-      border:1px solid var(--border); background:#0a0a12;
-    }
+    .queue-item-header { display:flex; align-items:center; gap:0.75rem; padding:0.7rem 0.9rem; cursor:pointer; user-select:none; }
+    .queue-item-thumb { width:52px; height:52px; border-radius:10px; object-fit:cover; flex-shrink:0; border:1px solid var(--border); background:#0a0a12; }
     .queue-item-info { flex:1; min-width:0; }
-    .queue-item-name {
-      font-size:0.82rem; font-weight:600;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-      display:flex; align-items:center; gap:0.4rem;
-    }
-    .queue-item-status {
-      font-size:0.65rem; font-weight:600;
-      display:inline-flex; align-items:center; gap:0.3rem;
-      margin-top:0.15rem;
-    }
+    .queue-item-name { font-size:0.82rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; gap:0.4rem; }
+    .queue-item-status { font-size:0.65rem; font-weight:600; display:inline-flex; align-items:center; gap:0.3rem; margin-top:0.15rem; }
     .queue-item-status.pending { color:var(--muted); }
     .queue-item-status.processing { color:var(--info); }
     .queue-item-status.done { color:var(--success); }
     .queue-item-status.error { color:var(--danger); }
-    .queue-item-retry-badge {
-      font-size:0.6rem; padding:0.1rem 0.4rem;
-      border-radius:50px; background:rgba(251,146,60,0.15);
-      color:#fb923c; font-weight:700;
-    }
+    .queue-item-retry-badge { font-size:0.6rem; padding:0.1rem 0.4rem; border-radius:50px; background:rgba(251,146,60,0.15); color:#fb923c; font-weight:700; }
+    .queue-item-provider { font-size:0.58rem; padding:0.1rem 0.4rem; border-radius:50px; background:rgba(59,130,246,0.15); color:#60a5fa; font-weight:700; text-transform:uppercase; }
     .queue-item-actions { display:flex; gap:0.25rem; flex-shrink:0; }
-    .queue-item-actions button {
-      width:30px; height:30px; border-radius:8px;
-      background:var(--bg-input); border:1px solid var(--border);
-      color:var(--muted); font-size:0.7rem;
-      display:flex; align-items:center; justify-content:center;
-      cursor:pointer; transition:all 0.2s;
-    }
+    .queue-item-actions button { width:30px; height:30px; border-radius:8px; background:var(--bg-input); border:1px solid var(--border); color:var(--muted); font-size:0.7rem; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all 0.2s; }
     .queue-item-actions button:hover { color:var(--accent); border-color:var(--accent); }
     .queue-item-actions button.del:hover { color:#ef4444; border-color:#ef4444; }
 
-    .queue-item-body {
-      display:none; border-top:1px solid var(--border);
-      background:rgba(255,255,255,0.01);
-    }
+    .queue-item-body { display:none; border-top:1px solid var(--border); background:rgba(255,255,255,0.01); }
     .queue-item.expanded .queue-item-body { display:block; }
+    .queue-item-error-msg { padding:0.75rem 0.9rem; font-size:0.8rem; color:#f87171; background:rgba(239,68,68,0.04); }
 
-    .queue-item-error-msg {
-      padding:0.75rem 0.9rem; font-size:0.8rem;
-      color:#f87171; background:rgba(239,68,68,0.04);
-    }
+    .platform-format-badge { display:inline-flex; align-items:center; gap:0.35rem; padding:0.25rem 0.7rem; border-radius:50px; background:rgba(255,221,87,0.1); border:1px solid rgba(255,221,87,0.2); color:var(--accent); font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
+    .platform-format-badge i { font-size:0.6rem; }
 
-    .copy-all-bar {
-      padding:0.6rem 0.9rem;
-      background:rgba(255,221,87,0.04);
-      border-bottom:1px solid var(--border);
-      display:flex;
-      align-items:center;
-      gap:0.5rem;
-      flex-wrap:wrap;
-    }
-    .copy-all-bar .cab-info {
-      flex:1;
-      font-size:0.7rem;
-      color:var(--muted);
-      min-width:100px;
-    }
-    .btn-copy-all {
-      display:inline-flex; align-items:center; gap:0.35rem;
-      padding:0.35rem 0.85rem;
-      background:linear-gradient(145deg, #FFDD57, #f5c842);
-      border-radius:8px;
-      color:#0a0a0f;
-      font-size:0.7rem; font-weight:700;
-      cursor:pointer; transition:all 0.2s;
-      border:none;
-    }
+    .copy-all-bar { padding:0.6rem 0.9rem; background:rgba(255,221,87,0.04); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap; }
+    .copy-all-bar .cab-info { flex:1; font-size:0.7rem; color:var(--muted); min-width:100px; }
+    .btn-copy-all { display:inline-flex; align-items:center; gap:0.35rem; padding:0.35rem 0.85rem; background:linear-gradient(145deg, #FFDD57, #f5c842); border-radius:8px; color:#0a0a0f; font-size:0.7rem; font-weight:700; cursor:pointer; transition:all 0.2s; border:none; }
     .btn-copy-all:hover { transform:translateY(-1px); box-shadow:0 4px 16px rgba(255,221,87,0.3); }
     .btn-copy-all.copied { background:linear-gradient(145deg, #22c55e, #16a34a); color:#fff; }
 
+    .platform-preview { padding:0.75rem 0.9rem; background:rgba(59,130,246,0.04); border-bottom:1px solid var(--border); }
+    .platform-preview .pp-head { display:flex; align-items:center; justify-content:space-between; gap:0.5rem; margin-bottom:0.4rem; flex-wrap:wrap; }
+    .platform-preview .pp-title { font-size:0.68rem; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:var(--info); display:flex; align-items:center; gap:0.35rem; }
+    .platform-preview .pp-content { font-family:monospace; font-size:0.72rem; line-height:1.55; color:var(--fg-dim); background:rgba(0,0,0,0.2); border-radius:6px; padding:0.5rem 0.65rem; white-space:pre-wrap; word-break:break-all; max-height:140px; overflow-y:auto; }
+    body.light-theme .platform-preview .pp-content { background:rgba(0,0,0,0.04); }
+
     .result-row { padding:0.75rem 0.9rem; border-bottom:1px solid var(--border); }
     .result-row:last-child { border-bottom:none; }
-    .result-row-head {
-      display:flex; align-items:center; justify-content:space-between;
-      margin-bottom:0.4rem; gap:0.5rem; flex-wrap:wrap;
-    }
-    .result-row-label {
-      font-size:0.68rem; font-weight:700;
-      letter-spacing:0.6px; text-transform:uppercase;
-      color:var(--accent); display:flex; align-items:center; gap:0.35rem;
-    }
-    .result-row-label .char-count {
-      font-weight:500; color:var(--muted); font-size:0.62rem;
-      margin-left:0.3rem; text-transform:none; letter-spacing:0;
-    }
+    .result-row-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:0.4rem; gap:0.5rem; flex-wrap:wrap; }
+    .result-row-label { font-size:0.68rem; font-weight:700; letter-spacing:0.6px; text-transform:uppercase; color:var(--accent); display:flex; align-items:center; gap:0.35rem; }
+    .result-row-label .char-count { font-weight:500; color:var(--muted); font-size:0.62rem; margin-left:0.3rem; text-transform:none; letter-spacing:0; }
     .result-row-actions { display:flex; gap:0.3rem; }
-    .btn-copy-xs {
-      display:inline-flex; align-items:center; gap:0.25rem;
-      padding:0.2rem 0.55rem;
-      background:var(--bg-input); border:1px solid var(--border);
-      border-radius:6px; color:var(--muted-light);
-      font-size:0.62rem; font-weight:600;
-      cursor:pointer; transition:all 0.2s;
-    }
+    .btn-copy-xs { display:inline-flex; align-items:center; gap:0.25rem; padding:0.2rem 0.55rem; background:var(--bg-input); border:1px solid var(--border); border-radius:6px; color:var(--muted-light); font-size:0.62rem; font-weight:600; cursor:pointer; transition:all 0.2s; }
     .btn-copy-xs:hover { border-color:var(--accent); color:var(--accent); }
     .btn-copy-xs.copied { border-color:var(--success); color:var(--success); }
 
-    .result-row-content {
-      font-size:0.84rem; line-height:1.55;
-      color:var(--fg); word-break:break-word;
-      white-space:pre-wrap; max-height:140px; overflow-y:auto;
-      cursor:text;
-      user-select:text;
-      padding:0.4rem;
-      background:rgba(255,255,255,0.015);
-      border-radius:6px;
-      border:1px solid transparent;
-      transition:border 0.2s;
-    }
+    .result-row-content { font-size:0.84rem; line-height:1.55; color:var(--fg); word-break:break-word; white-space:pre-wrap; max-height:140px; overflow-y:auto; cursor:text; user-select:text; padding:0.4rem; background:rgba(255,255,255,0.015); border-radius:6px; border:1px solid transparent; transition:border 0.2s; }
     .result-row-content:hover { border-color:var(--border); }
     .result-row-content::-webkit-scrollbar { width:3px; }
     .result-row-content::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
 
-    .keywords-chips {
-      display:flex; flex-wrap:wrap; gap:0.3rem;
-      max-height:160px; overflow-y:auto; padding:0.3rem;
-      background:rgba(255,255,255,0.015);
-      border-radius:6px;
-      border:1px solid transparent;
-    }
+    .keywords-chips { display:flex; flex-wrap:wrap; gap:0.3rem; max-height:160px; overflow-y:auto; padding:0.3rem; background:rgba(255,255,255,0.015); border-radius:6px; border:1px solid transparent; }
     .keywords-chips:hover { border-color:var(--border); }
     .keywords-chips::-webkit-scrollbar { width:3px; }
     .keywords-chips::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
-    .kw-chip {
-      font-size:0.72rem; padding:0.2rem 0.55rem;
-      background:var(--bg-input); border:1px solid var(--border);
-      border-radius:50px; color:var(--fg-dim);
-      transition:all 0.15s;
-      user-select:text;
-    }
-    .kw-chip:hover {
-      border-color:var(--accent); color:var(--accent);
-      background:var(--accent-soft);
-    }
+    .kw-chip { font-size:0.72rem; padding:0.2rem 0.55rem; background:var(--bg-input); border:1px solid var(--border); border-radius:50px; color:var(--fg-dim); transition:all 0.15s; user-select:text; }
+    .kw-chip:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
 
-    .empty-queue {
-      padding:3rem 1.5rem; text-align:center;
-      background:var(--bg-card); border:1px dashed var(--border);
-      border-radius:var(--radius); color:var(--muted);
-    }
-    .empty-queue .empty-icon {
-      width:64px; height:64px; border-radius:18px;
-      background:var(--accent-soft); color:var(--accent);
-      display:flex; align-items:center; justify-content:center;
-      font-size:1.6rem; margin:0 auto 0.9rem;
-    }
-    .empty-queue h3 {
-      font-family:var(--font-display);
-      font-size:1rem; font-weight:600;
-      color:var(--fg); margin-bottom:0.3rem;
-    }
-    .empty-queue p {
-      font-size:0.82rem; color:var(--muted-light);
-      max-width:360px; margin:0 auto; line-height:1.6;
-    }
+    .empty-queue { padding:3rem 1.5rem; text-align:center; background:var(--bg-card); border:1px dashed var(--border); border-radius:var(--radius); color:var(--muted); }
+    .empty-queue .empty-icon { width:64px; height:64px; border-radius:18px; background:var(--accent-soft); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:1.6rem; margin:0 auto 0.9rem; }
+    .empty-queue h3 { font-family:var(--font-display); font-size:1rem; font-weight:600; color:var(--fg); margin-bottom:0.3rem; }
+    .empty-queue p { font-size:0.82rem; color:var(--muted-light); max-width:360px; margin:0 auto; line-height:1.6; }
 
-    .spinner {
-      width:36px; height:36px;
-      border:3px solid var(--border);
-      border-top-color:var(--accent);
-      border-radius:50%; animation:spin 0.8s linear infinite;
-      margin:0 auto 0.75rem;
-    }
-    .spinner-small {
-      display:inline-block; width:14px; height:14px;
-      border:2px solid rgba(10,10,15,0.3);
-      border-top-color:#0a0a0f;
-      border-radius:50%; animation:spin 0.7s linear infinite;
-    }
-    .spinner-xs {
-      display:inline-block; width:12px; height:12px;
-      border:2px solid rgba(255,255,255,0.15);
-      border-top-color:var(--accent);
-      border-radius:50%; animation:spin 0.7s linear infinite;
-    }
+    .spinner { width:36px; height:36px; border:3px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 0.75rem; }
+    .spinner-small { display:inline-block; width:14px; height:14px; border:2px solid rgba(10,10,15,0.3); border-top-color:#0a0a0f; border-radius:50%; animation:spin 0.7s linear infinite; }
+    .spinner-xs { display:inline-block; width:12px; height:12px; border:2px solid rgba(255,255,255,0.15); border-top-color:var(--accent); border-radius:50%; animation:spin 0.7s linear infinite; }
     @keyframes spin { to { transform:rotate(360deg); } }
 
-    .modal-overlay {
-      position:fixed; inset:0; z-index:9998;
-      background:rgba(0,0,0,0.75); backdrop-filter:blur(12px);
-      display:none; align-items:center; justify-content:center;
-      padding:1.5rem;
-    }
+    .modal-overlay { position:fixed; inset:0; z-index:9998; background:rgba(0,0,0,0.75); backdrop-filter:blur(12px); display:none; align-items:center; justify-content:center; padding:1.5rem; }
     .modal-overlay.active { display:flex; animation:fadeIn 0.25s ease; }
     @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-    .modal-box {
-      background:var(--bg-elevated); border:1px solid var(--border);
-      border-radius:var(--radius-lg); padding:2rem 1.75rem;
-      max-width:520px; width:100%; max-height:90vh; overflow-y:auto;
-      box-shadow:0 24px 64px rgba(0,0,0,0.6);
-      animation:scaleIn 0.3s cubic-bezier(0.32,0.72,0,1);
-      position:relative;
-    }
-    @keyframes scaleIn {
-      from { opacity:0; transform:scale(0.94) translateY(20px); }
-      to { opacity:1; transform:scale(1) translateY(0); }
-    }
+    .modal-box { background:var(--bg-elevated); border:1px solid var(--border); border-radius:var(--radius-lg); padding:2rem 1.75rem; max-width:560px; width:100%; max-height:90vh; overflow-y:auto; box-shadow:0 24px 64px rgba(0,0,0,0.6); animation:scaleIn 0.3s cubic-bezier(0.32,0.72,0,1); position:relative; }
+    @keyframes scaleIn { from { opacity:0; transform:scale(0.94) translateY(20px); } to { opacity:1; transform:scale(1) translateY(0); } }
     .modal-box::-webkit-scrollbar { width:4px; }
     .modal-box::-webkit-scrollbar-thumb { background:var(--border); border-radius:10px; }
-    .modal-close {
-      position:absolute; top:1rem; right:1rem;
-      width:34px; height:34px; border-radius:50%;
-      background:var(--bg-input); border:1px solid var(--border);
-      color:var(--fg); font-size:0.95rem; cursor:pointer;
-      display:flex; align-items:center; justify-content:center;
-    }
+    .modal-close { position:absolute; top:1rem; right:1rem; width:34px; height:34px; border-radius:50%; background:var(--bg-input); border:1px solid var(--border); color:var(--fg); font-size:0.95rem; cursor:pointer; display:flex; align-items:center; justify-content:center; }
     .modal-close:hover { background:var(--bg-card-hover); }
-    .modal-title {
-      font-family:var(--font-display); font-size:1.15rem;
-      font-weight:700; margin-bottom:0.3rem;
-      display:flex; align-items:center; gap:0.5rem;
-    }
+    .modal-title { font-family:var(--font-display); font-size:1.15rem; font-weight:700; margin-bottom:0.3rem; display:flex; align-items:center; gap:0.5rem; }
     .modal-title i { color:var(--accent); }
-    .modal-sub {
-      color:var(--muted-light); font-size:0.82rem;
-      margin-bottom:1.25rem; line-height:1.6;
-    }
-    .setting-row {
-      display:flex; justify-content:space-between; align-items:center;
-      gap:0.75rem; padding:0.7rem 0.9rem;
-      background:var(--bg-input); border:1px solid var(--border);
-      border-radius:var(--radius-sm); margin-bottom:0.5rem;
-    }
-    .setting-row .sr-label {
-      font-size:0.78rem; color:var(--muted-light);
-      display:flex; align-items:center; gap:0.4rem;
-    }
+    .modal-sub { color:var(--muted-light); font-size:0.82rem; margin-bottom:1.25rem; line-height:1.6; }
+    .setting-row { display:flex; justify-content:space-between; align-items:center; gap:0.75rem; padding:0.7rem 0.9rem; background:var(--bg-input); border:1px solid var(--border); border-radius:var(--radius-sm); margin-bottom:0.5rem; }
+    .setting-row .sr-label { font-size:0.78rem; color:var(--muted-light); display:flex; align-items:center; gap:0.4rem; }
     .setting-row .sr-label i { color:var(--accent); }
-    .setting-row .sr-value {
-      font-size:0.78rem; font-weight:600;
-      color:var(--fg-dim); text-align:right;
-      word-break:break-all;
-    }
+    .setting-row .sr-value { font-size:0.78rem; font-weight:600; color:var(--fg-dim); text-align:right; word-break:break-all; }
     .setting-row .sr-value.ok { color:var(--success); }
     .setting-row .sr-value.masked { font-family:monospace; letter-spacing:0.5px; }
+
+    .provider-card { border:1px solid var(--border); border-radius:var(--radius-sm); margin-bottom:0.75rem; overflow:hidden; background:var(--bg-input); }
+    .provider-card .pc-head { padding:0.6rem 0.85rem; display:flex; align-items:center; justify-content:space-between; gap:0.5rem; border-bottom:1px solid var(--border); cursor:pointer; }
+    .provider-card .pc-title { display:flex; align-items:center; gap:0.5rem; font-size:0.82rem; font-weight:700; }
+    .provider-card .pc-title i { color:var(--accent); }
+    .provider-card .pc-status { font-size:0.65rem; padding:0.15rem 0.5rem; border-radius:50px; font-weight:700; }
+    .provider-card .pc-status.ok { background:rgba(34,197,94,0.15); color:var(--success); }
+    .provider-card .pc-status.missing { background:rgba(251,146,60,0.15); color:var(--warning); }
+    .provider-card .pc-body { padding:0.75rem 0.85rem; display:none; }
+    .provider-card.expanded .pc-body { display:block; }
+    .provider-card .pc-row { display:flex; justify-content:space-between; align-items:center; gap:0.5rem; margin-bottom:0.5rem; font-size:0.72rem; }
+    .provider-card .pc-row .pc-label { color:var(--muted); }
+    .provider-card .pc-row .pc-val { font-family:monospace; color:var(--fg-dim); font-size:0.7rem; word-break:break-all; text-align:right; }
+    .provider-card .pc-input { width:100%; padding:0.55rem 0.7rem; background:var(--bg-input); border:1px solid var(--border); border-radius:8px; color:var(--fg); font-size:0.75rem; outline:none; font-family:monospace; margin-bottom:0.4rem; }
+    .provider-card .pc-input:focus { border-color:var(--accent); }
+    .provider-card .pc-actions { display:flex; gap:0.4rem; }
+    .provider-card .pc-actions button { flex:1; padding:0.5rem; border-radius:8px; font-size:0.72rem; font-weight:600; cursor:pointer; }
+    .pc-btn-save { background:linear-gradient(145deg, #FFDD57, #f5c842); color:#0a0a0f; border:none; }
+    .pc-btn-clear { background:rgba(239,68,68,0.1); color:#f87171; border:1px solid rgba(239,68,68,0.2); }
+
     .modal-input-group { margin-bottom:0.75rem; }
-    .modal-input-group label {
-      display:block; font-size:0.72rem; font-weight:600;
-      color:var(--muted-light); margin-bottom:0.35rem;
-    }
-    .modal-input-group input {
-      width:100%; padding:0.7rem 0.9rem;
-      background:var(--bg-input); border:1px solid var(--border);
-      border-radius:var(--radius-sm); color:var(--fg);
-      font-size:0.85rem; outline:none;
-    }
+    .modal-input-group label { display:block; font-size:0.72rem; font-weight:600; color:var(--muted-light); margin-bottom:0.35rem; }
+    .modal-input-group input { width:100%; padding:0.7rem 0.9rem; background:var(--bg-input); border:1px solid var(--border); border-radius:var(--radius-sm); color:var(--fg); font-size:0.85rem; outline:none; }
     .modal-input-group input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
     .modal-actions { display:flex; gap:0.5rem; margin-top:1rem; flex-wrap:wrap; }
-    .modal-actions button {
-      flex:1; min-width:120px;
-      padding:0.7rem 1rem; border-radius:var(--radius-sm);
-      font-size:0.85rem; font-weight:600;
-      cursor:pointer; transition:all var(--transition);
-      display:inline-flex; align-items:center; justify-content:center; gap:0.4rem;
-      border:none;
-    }
+    .modal-actions button { flex:1; min-width:120px; padding:0.7rem 1rem; border-radius:var(--radius-sm); font-size:0.85rem; font-weight:600; cursor:pointer; transition:all var(--transition); display:inline-flex; align-items:center; justify-content:center; gap:0.4rem; border:none; }
     .btn-ok { background:linear-gradient(145deg, #FFDD57, #f5c842); color:#0a0a0f; }
     .btn-ok:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(255,221,87,0.3); }
-    .btn-danger {
-      background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2) !important;
-      color:#f87171;
-    }
+    .btn-danger { background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2) !important; color:#f87171; }
     .btn-danger:hover { background:rgba(239,68,68,0.2); }
-    .btn-cancel {
-      background:var(--bg-input); border:1px solid var(--border);
-      color:var(--muted-light);
-    }
+    .btn-cancel { background:var(--bg-input); border:1px solid var(--border); color:var(--muted-light); }
     .btn-cancel:hover { border-color:var(--border-hover); color:var(--fg); }
 
-    .history-section {
-      margin-top:2rem;
-      background:var(--bg-card); border:1px solid var(--border);
-      border-radius:var(--radius-lg); padding:1.25rem;
-    }
-    .history-header {
-      display:flex; align-items:center; justify-content:space-between;
-      margin-bottom:0.9rem; gap:0.5rem; flex-wrap:wrap;
-    }
-    .history-title {
-      font-family:var(--font-display);
-      font-size:0.95rem; font-weight:700;
-      display:flex; align-items:center; gap:0.5rem;
-    }
+    .history-section { margin-top:2rem; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.25rem; }
+    .history-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:0.9rem; gap:0.5rem; flex-wrap:wrap; }
+    .history-title { font-family:var(--font-display); font-size:0.95rem; font-weight:700; display:flex; align-items:center; gap:0.5rem; }
     .history-title i { color:var(--accent); }
-    .history-title .hcount {
-      font-family:var(--font-display);
-      font-size:0.65rem; padding:0.1rem 0.5rem;
-      border-radius:50px; background:var(--accent-soft);
-      color:var(--accent); font-weight:700;
-    }
+    .history-title .hcount { font-family:var(--font-display); font-size:0.65rem; padding:0.1rem 0.5rem; border-radius:50px; background:var(--accent-soft); color:var(--accent); font-weight:700; }
+    .history-actions { display:flex; gap:0.35rem; flex-wrap:wrap; }
     .history-list { display:flex; flex-direction:column; gap:0.5rem; max-height:400px; overflow-y:auto; }
     .history-list::-webkit-scrollbar { width:4px; }
     .history-list::-webkit-scrollbar-thumb { background:var(--border); border-radius:10px; }
-    .history-item {
-      background:var(--bg-input); border:1px solid var(--border);
-      border-radius:var(--radius-sm); padding:0.65rem 0.85rem;
-      display:flex; align-items:center; gap:0.7rem;
-      transition:all var(--transition);
-    }
+    .history-item { background:var(--bg-input); border:1px solid var(--border); border-radius:var(--radius-sm); padding:0.65rem 0.85rem; display:flex; align-items:center; gap:0.7rem; transition:all var(--transition); }
     .history-item:hover { border-color:var(--border-hover); background:var(--bg-card-hover); }
-    .history-item .hi-thumb {
-      width:40px; height:40px; border-radius:8px;
-      background:var(--bg-elevated); flex-shrink:0; overflow:hidden;
-      display:flex; align-items:center; justify-content:center;
-      color:var(--muted); font-size:0.9rem;
-    }
+    .history-item .hi-thumb { width:40px; height:40px; border-radius:8px; background:var(--bg-elevated); flex-shrink:0; overflow:hidden; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:0.9rem; }
     .history-item .hi-thumb img { width:100%; height:100%; object-fit:cover; }
     .history-item .hi-info { flex:1; min-width:0; }
-    .history-item .hi-title {
-      font-size:0.78rem; font-weight:600;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
+    .history-item .hi-title { font-size:0.78rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .history-item .hi-time { font-size:0.6rem; color:var(--muted); margin-top:0.1rem; }
     .history-item .hi-actions { display:flex; gap:0.25rem; flex-shrink:0; }
-    .history-item .hi-actions button {
-      width:26px; height:26px; border-radius:6px;
-      background:var(--bg-card); border:1px solid var(--border);
-      color:var(--muted); font-size:0.65rem; cursor:pointer;
-      display:flex; align-items:center; justify-content:center;
-      transition:all 0.2s;
-    }
+    .history-item .hi-actions button { width:26px; height:26px; border-radius:6px; background:var(--bg-card); border:1px solid var(--border); color:var(--muted); font-size:0.65rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
     .history-item .hi-actions button:hover { color:var(--accent); border-color:var(--accent); }
     .history-item .hi-actions button.del:hover { color:#ef4444; border-color:#ef4444; }
     .history-empty { text-align:center; padding:1.5rem; color:var(--muted); font-size:0.78rem; }
 
-    .toast-container {
-      position:fixed; bottom:24px; right:24px; z-index:9999;
-      display:flex; flex-direction:column; gap:0.5rem; max-width:90%;
-    }
-    .toast {
-      padding:0.7rem 1.3rem;
-      background:rgba(20,20,30,0.95); backdrop-filter:blur(16px);
-      border:1px solid rgba(255,255,255,0.06); border-radius:12px;
-      box-shadow:0 8px 32px rgba(0,0,0,0.4);
-      display:flex; align-items:center; gap:0.55rem;
-      animation:slideInToast 0.35s cubic-bezier(0.34,1.56,0.64,1);
-      font-size:0.82rem; border-left:3px solid var(--accent);
-      color:var(--fg);
-    }
+    .toast-container { position:fixed; bottom:24px; right:24px; z-index:9999; display:flex; flex-direction:column; gap:0.5rem; max-width:90%; }
+    .toast { padding:0.7rem 1.3rem; background:rgba(20,20,30,0.95); backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,0.06); border-radius:12px; box-shadow:0 8px 32px rgba(0,0,0,0.4); display:flex; align-items:center; gap:0.55rem; animation:slideInToast 0.35s cubic-bezier(0.34,1.56,0.64,1); font-size:0.82rem; border-left:3px solid var(--accent); color:var(--fg); }
     body.light-theme .toast { background:rgba(255,255,255,0.98); }
     .toast i { color:var(--accent); font-size:0.9rem; }
     .toast.success { border-left-color:var(--success); } .toast.success i { color:var(--success); }
@@ -869,89 +402,36 @@
     .toast.warning { border-left-color:var(--warning); } .toast.warning i { color:var(--warning); }
     @keyframes slideInToast { from { opacity:0; transform:translateX(60px) scale(0.9); } to { opacity:1; transform:translateX(0) scale(1); } }
 
-    .chat-float {
-      position:fixed; bottom:1.25rem; right:1.25rem; z-index:99;
-      display:flex; flex-direction:column; align-items:flex-end; gap:0.5rem;
-    }
-    .chat-float-label {
-      background:rgba(12,12,24,0.92); backdrop-filter:blur(12px);
-      border:1px solid var(--border); border-radius:10px;
-      padding:0.4rem 0.9rem; font-size:0.72rem; color:var(--muted);
-      white-space:nowrap; opacity:0; transform:translateY(6px) scale(0.95);
-      transition:all 0.3s ease; pointer-events:none;
-    }
+    .chat-float { position:fixed; bottom:1.25rem; right:1.25rem; z-index:99; display:flex; flex-direction:column; align-items:flex-end; gap:0.5rem; }
+    .chat-float-label { background:rgba(12,12,24,0.92); backdrop-filter:blur(12px); border:1px solid var(--border); border-radius:10px; padding:0.4rem 0.9rem; font-size:0.72rem; color:var(--muted); white-space:nowrap; opacity:0; transform:translateY(6px) scale(0.95); transition:all 0.3s ease; pointer-events:none; }
     .chat-float:hover .chat-float-label { opacity:1; transform:translateY(0) scale(1); }
     .chat-float-label span { color:var(--accent); font-weight:600; }
-    .chat-float-btn {
-      width:52px; height:52px; border-radius:16px;
-      background:linear-gradient(145deg, #25D366, #1da851);
-      border:none; cursor:pointer;
-      display:flex; align-items:center; justify-content:center;
-      color:#fff; font-size:1.4rem;
-      box-shadow:0 4px 24px rgba(37,211,102,0.35);
-      transition:all var(--transition);
-    }
+    .chat-float-btn { width:52px; height:52px; border-radius:16px; background:linear-gradient(145deg, #25D366, #1da851); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.4rem; box-shadow:0 4px 24px rgba(37,211,102,0.35); transition:all var(--transition); }
     .chat-float-btn:hover { transform:scale(1.08); }
 
-    .back-to-top {
-      position:fixed; bottom:1.25rem; left:1.25rem; z-index:90;
-      width:42px; height:42px; border-radius:10px;
-      background:var(--bg-card); border:1px solid var(--border);
-      color:var(--muted); font-size:0.9rem; cursor:pointer;
-      display:flex; align-items:center; justify-content:center;
-      opacity:0; transform:translateY(10px); pointer-events:none;
-      transition:all 0.3s ease; backdrop-filter:blur(12px);
-    }
+    .back-to-top { position:fixed; bottom:1.25rem; left:1.25rem; z-index:90; width:42px; height:42px; border-radius:10px; background:var(--bg-card); border:1px solid var(--border); color:var(--muted); font-size:0.9rem; cursor:pointer; display:flex; align-items:center; justify-content:center; opacity:0; transform:translateY(10px); pointer-events:none; transition:all 0.3s ease; backdrop-filter:blur(12px); }
     .back-to-top.show { opacity:1; transform:translateY(0); pointer-events:auto; }
     .back-to-top:hover { color:var(--accent); border-color:var(--accent); background:var(--accent-soft); }
 
-    .footer {
-      padding:2.5rem 1.5rem 1.5rem;
-      border-top:1px solid var(--border);
-      margin-top:2rem;
-    }
-    .footer-inner {
-      max-width:1500px; margin:0 auto;
-      display:flex; justify-content:space-between; align-items:center;
-      gap:1rem; flex-wrap:wrap;
-      font-size:0.78rem; color:var(--muted);
-    }
+    .footer { padding:2.5rem 1.5rem 1.5rem; border-top:1px solid var(--border); margin-top:2rem; }
+    .footer-inner { max-width:1500px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; font-size:0.78rem; color:var(--muted); }
     .footer-inner a { color:var(--muted); transition:color 0.2s; }
     .footer-inner a:hover { color:var(--accent); }
     .footer-inner .brand { font-weight:600; color:var(--accent); }
     .footer-inner .links { display:flex; gap:1rem; flex-wrap:wrap; }
 
-    .social-row {
-      display:flex; justify-content:center; gap:0.6rem;
-      padding:1rem 1rem 0.5rem;
-    }
-    .social-row a {
-      width:38px; height:38px; border-radius:10px;
-      background:var(--bg-card); border:1px solid var(--border);
-      display:flex; align-items:center; justify-content:center;
-      color:var(--muted); font-size:0.9rem;
-      transition:all var(--transition);
-    }
+    .social-row { display:flex; justify-content:center; gap:0.6rem; padding:1rem 1rem 0.5rem; }
+    .social-row a { width:38px; height:38px; border-radius:10px; background:var(--bg-card); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:0.9rem; transition:all var(--transition); }
     .social-row a:hover { color:var(--accent); border-color:var(--accent); background:var(--accent-soft); transform:translateY(-3px); }
 
     @media (max-width:768px) {
       .navbar { padding:0.6rem 1rem; min-height:56px; }
       .menu-toggle { display:flex; }
-      .nav-links {
-        display:none; position:absolute; top:100%; left:0; right:0;
-        flex-direction:column; background:rgba(7,7,13,0.98);
-        backdrop-filter:blur(24px);
-        border-bottom:1px solid var(--border);
-        padding:0.8rem; gap:0.1rem;
-      }
+      .nav-links { display:none; position:absolute; top:100%; left:0; right:0; flex-direction:column; background:rgba(7,7,13,0.98); backdrop-filter:blur(24px); border-bottom:1px solid var(--border); padding:0.8rem; gap:0.1rem; }
       body.light-theme .nav-links { background:rgba(245,245,250,0.98); }
       .nav-links.active { display:flex; }
       .nav-links a { padding:0.5rem 0.8rem; width:100%; }
-      .dropdown-menu {
-        position:static; transform:none; box-shadow:none;
-        background:rgba(255,255,255,0.03); border:none;
-        min-width:auto; padding:0.2rem 0 0.2rem 1rem;
-      }
+      .dropdown-menu { position:static; transform:none; box-shadow:none; background:rgba(255,255,255,0.03); border:none; min-width:auto; padding:0.2rem 0 0.2rem 1rem; }
       .dropdown:hover .dropdown-menu { display:none; }
       .dropdown.active .dropdown-menu { display:block !important; }
       .page-header { padding:4rem 1rem 1rem; }
@@ -1022,19 +502,36 @@
   <div class="gate-screen" id="gateApiKey" style="display:none">
     <div class="gate-card">
       <div class="gate-icon"><i class="fas fa-key"></i></div>
-      <h2>Setup OpenRouter API Key</h2>
-      <p class="center">MetaStock AI memakai <strong>OpenRouter</strong> (gratis).</p>
-      <div class="helper-steps">
-        <strong>Cara dapat API Key gratis:</strong>
-        <ol>
-          <li>Buka <a href="https://openrouter.ai/keys" target="_blank" rel="noopener">openrouter.ai/keys</a></li>
-          <li>Login dengan Google (gratis)</li>
-          <li>Klik <strong>"Create Key"</strong></li>
-          <li>Copy API Key (format: <code>sk-or-v1-...</code>)</li>
-          <li>Paste di bawah ini</li>
-        </ol>
+      <h2>Setup API Keys</h2>
+      <p class="center">Isi <strong>minimal 1 API Key</strong>. Sistem akan otomatis fallback ke provider lain jika salah satu gagal.</p>
+
+      <div class="api-key-field">
+        <label>
+          <span><i class="fas fa-bolt"></i> Groq (tercepat & gratis)</span>
+          <a href="https://console.groq.com/keys" target="_blank" rel="noopener">Dapatkan →</a>
+        </label>
+        <input type="password" id="groqKeyInput" placeholder="gsk_..." autocomplete="off" spellcheck="false">
       </div>
-      <input type="password" id="apiKeyInput" placeholder="sk-or-v1-..." autocomplete="off" spellcheck="false">
+      <div class="provider-hint"><strong>Prioritas 1</strong> · Llama 4 Scout vision · super cepat</div>
+
+      <div class="api-key-field">
+        <label>
+          <span><i class="fab fa-google"></i> Google Gemini (gratis)</span>
+          <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Dapatkan →</a>
+        </label>
+        <input type="password" id="geminiKeyInput" placeholder="AIza..." autocomplete="off" spellcheck="false">
+      </div>
+      <div class="provider-hint"><strong>Prioritas 2</strong> · Gemini 2.0 / 1.5 Flash</div>
+
+      <div class="api-key-field">
+        <label>
+          <span><i class="fas fa-route"></i> OpenRouter (gratis)</span>
+          <a href="https://openrouter.ai/keys" target="_blank" rel="noopener">Dapatkan →</a>
+        </label>
+        <input type="password" id="openrouterKeyInput" placeholder="sk-or-v1-..." autocomplete="off" spellcheck="false">
+      </div>
+      <div class="provider-hint"><strong>Prioritas 3</strong> · banyak model fallback</div>
+
       <div id="apiKeyError" style="display:none;text-align:left;margin-bottom:0.75rem;padding:0.5rem 0.7rem;border-radius:8px;font-size:0.78rem;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;"></div>
       <button class="btn-primary" id="btnSaveApiKey"><i class="fas fa-check"></i> Simpan & Verifikasi</button>
       <button class="btn-ghost" id="btnLogoutFromGate" style="margin-top:0.6rem;width:100%;"><i class="fas fa-right-from-bracket"></i> Logout</button>
@@ -1044,7 +541,7 @@
   <div class="page-header" id="pageHeader" style="display:none">
     <div class="page-header-text">
       <h1><i class="fas fa-wand-magic-sparkles"></i> MetaStock AI</h1>
-      <p>Upload tanpa batas • Auto-retry gagal • Klik item untuk lihat & copy metadata</p>
+      <p>Multi-provider fallback (Groq → Gemini → OpenRouter) • Auto-retry • Klik item untuk lihat format microstock</p>
     </div>
     <div class="page-header-actions">
       <button class="btn-ghost" id="btnOpenSettings"><i class="fas fa-cog"></i> Pengaturan</button>
@@ -1126,13 +623,23 @@
           </div>
         </div>
 
-        <button class="btn-primary" id="btnGenerate">
-          <i class="fas fa-wand-magic-sparkles"></i> Generate Semua
-        </button>
+        <div class="generate-actions">
+          <button class="btn-primary" id="btnGenerate">
+            <i class="fas fa-wand-magic-sparkles"></i> Generate Semua
+          </button>
+          <button class="btn-stop" id="btnStopGenerate">
+            <i class="fas fa-stop"></i> Stop
+          </button>
+        </div>
 
         <div class="settings-bar">
           <span class="api-status ok" id="apiStatus">
             <i class="fas fa-check-circle"></i> API Key OK
+          </span>
+          <span class="provider-dots" id="providerDots" title="Provider aktif">
+            <span class="provider-dot" data-provider="groq" title="Groq"></span>
+            <span class="provider-dot" data-provider="gemini" title="Gemini"></span>
+            <span class="provider-dot" data-provider="openrouter" title="OpenRouter"></span>
           </span>
           <span style="margin-left:auto;font-size:0.65rem;">
             <i class="fas fa-rotate"></i> Auto-retry ON
@@ -1198,9 +705,17 @@
           Riwayat Generate
           <span class="hcount" id="historyCount">0</span>
         </div>
-        <button class="btn-toolbar btn-danger" id="btnClearHistory">
-          <i class="fas fa-trash"></i> Hapus Semua
-        </button>
+        <div class="history-actions">
+          <button class="btn-toolbar btn-csv" id="btnExportHistoryCSV" disabled>
+            <i class="fas fa-file-csv"></i> Export CSV
+          </button>
+          <button class="btn-toolbar" id="btnExportHistoryJSON" disabled>
+            <i class="fas fa-code"></i> JSON
+          </button>
+          <button class="btn-toolbar btn-danger" id="btnClearHistory">
+            <i class="fas fa-trash"></i> Hapus Semua
+          </button>
+        </div>
       </div>
       <div class="history-list" id="historyList">
         <div class="history-empty"><i class="fas fa-inbox"></i><br>Belum ada riwayat.</div>
@@ -1211,36 +726,56 @@
   <div class="modal-overlay" id="settingsModal">
     <div class="modal-box">
       <button class="modal-close" id="btnCloseSettings"><i class="fas fa-xmark"></i></button>
-      <div class="modal-title"><i class="fas fa-cog"></i> Pengaturan</div>
-      <div class="modal-sub">Kelola API Key dan lihat status akun OpenRouter Anda.</div>
+      <div class="modal-title"><i class="fas fa-cog"></i> Pengaturan Provider AI</div>
+      <div class="modal-sub">Kelola API Key untuk tiap provider. Sistem akan mencoba dari prioritas tertinggi → terendah, lalu fallback otomatis.</div>
 
-      <div class="setting-row">
-        <span class="sr-label"><i class="fas fa-key"></i> API Key</span>
-        <span class="sr-value masked" id="srApiKeyMasked">-</span>
-      </div>
-      <div class="setting-row">
-        <span class="sr-label"><i class="fas fa-wallet"></i> Kredit</span>
-        <span class="sr-value" id="srCredits">-</span>
-      </div>
-      <div class="setting-row">
-        <span class="sr-label"><i class="fas fa-gauge-high"></i> Usage</span>
-        <span class="sr-value" id="srUsage">-</span>
-      </div>
-      <div class="setting-row">
-        <span class="sr-label"><i class="fas fa-user-check"></i> Status</span>
-        <span class="sr-value ok" id="srStatus">Aktif</span>
+      <div class="provider-card expanded" data-provider="groq">
+        <div class="pc-head">
+          <div class="pc-title"><i class="fas fa-bolt"></i> Groq <span style="font-size:0.6rem;color:var(--muted);font-weight:500;">(prioritas 1)</span></div>
+          <span class="pc-status missing" data-status>Belum diset</span>
+        </div>
+        <div class="pc-body">
+          <div class="pc-row"><span class="pc-label">Status</span><span class="pc-val" data-info>-</span></div>
+          <input type="password" class="pc-input" data-input placeholder="gsk_...">
+          <div class="pc-actions">
+            <button class="pc-btn-save" data-save>Simpan</button>
+            <button class="pc-btn-clear" data-clear>Hapus</button>
+          </div>
+        </div>
       </div>
 
-      <div class="modal-input-group" style="margin-top:1rem;">
-        <label>Ganti API Key (opsional)</label>
-        <input type="password" id="modalApiKeyInput" placeholder="sk-or-v1-...">
+      <div class="provider-card" data-provider="gemini">
+        <div class="pc-head">
+          <div class="pc-title"><i class="fab fa-google"></i> Google Gemini <span style="font-size:0.6rem;color:var(--muted);font-weight:500;">(prioritas 2)</span></div>
+          <span class="pc-status missing" data-status>Belum diset</span>
+        </div>
+        <div class="pc-body">
+          <div class="pc-row"><span class="pc-label">Status</span><span class="pc-val" data-info>-</span></div>
+          <input type="password" class="pc-input" data-input placeholder="AIza...">
+          <div class="pc-actions">
+            <button class="pc-btn-save" data-save>Simpan</button>
+            <button class="pc-btn-clear" data-clear>Hapus</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="provider-card" data-provider="openrouter">
+        <div class="pc-head">
+          <div class="pc-title"><i class="fas fa-route"></i> OpenRouter <span style="font-size:0.6rem;color:var(--muted);font-weight:500;">(prioritas 3)</span></div>
+          <span class="pc-status missing" data-status>Belum diset</span>
+        </div>
+        <div class="pc-body">
+          <div class="pc-row"><span class="pc-label">Status</span><span class="pc-val" data-info>-</span></div>
+          <input type="password" class="pc-input" data-input placeholder="sk-or-v1-...">
+          <div class="pc-actions">
+            <button class="pc-btn-save" data-save>Simpan</button>
+            <button class="pc-btn-clear" data-clear>Hapus</button>
+          </div>
+        </div>
       </div>
 
       <div class="modal-actions">
         <button class="btn-cancel" id="btnRefreshAccount"><i class="fas fa-sync"></i> Refresh</button>
-        <button class="btn-ok" id="btnSaveNewKey"><i class="fas fa-check"></i> Simpan</button>
-      </div>
-      <div class="modal-actions">
         <button class="btn-danger" id="btnLogoutModal" style="flex:1;">
           <i class="fas fa-right-from-bracket"></i> Logout
         </button>
@@ -1281,22 +816,62 @@
   <div class="toast-container" id="toastContainer"></div>
 
   <script>
-    const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
-    const OPENROUTER_KEY_URL = 'https://openrouter.ai/api/v1/key';
-    const LS_API_KEY = 'akino_openrouter_api_key';
+    /* ============ CONFIG ============ */
+    const PROVIDERS = {
+      groq: {
+        id: 'groq',
+        name: 'Groq',
+        endpoint: 'https://api.groq.com/openai/v1/chat/completions',
+        modelsEndpoint: 'https://api.groq.com/openai/v1/models',
+        keysUrl: 'https://console.groq.com/keys',
+        keyPrefix: 'gsk_',
+        models: [
+          'meta-llama/llama-4-scout-17b-16e-instruct',
+          'meta-llama/llama-4-maverick-17b-128e-instruct',
+          'llama-3.2-11b-vision-preview',
+          'llama-3.2-90b-vision-preview'
+        ]
+      },
+      gemini: {
+        id: 'gemini',
+        name: 'Google Gemini',
+        endpoint: 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',
+        modelsEndpoint: 'https://generativelanguage.googleapis.com/v1beta/openai/models',
+        keysUrl: 'https://aistudio.google.com/app/apikey',
+        keyPrefix: 'AIza',
+        models: [
+          'gemini-2.0-flash-exp',
+          'gemini-1.5-flash',
+          'gemini-1.5-flash-8b'
+        ]
+      },
+      openrouter: {
+        id: 'openrouter',
+        name: 'OpenRouter',
+        endpoint: 'https://openrouter.ai/api/v1/chat/completions',
+        modelsEndpoint: 'https://openrouter.ai/api/v1/key',
+        keysUrl: 'https://openrouter.ai/keys',
+        keyPrefix: 'sk-or-',
+        models: [
+          'meta-llama/llama-3.2-11b-vision-instruct:free',
+          'qwen/qwen-2-vl-7b-instruct:free',
+          'google/gemini-flash-1.5-8b',
+          'openrouter/free'
+        ]
+      }
+    };
+    const PROVIDER_ORDER = ['groq', 'gemini', 'openrouter'];
+    const LS_KEYS = {
+      groq: 'akino_groq_api_key',
+      gemini: 'akino_gemini_api_key',
+      openrouter: 'akino_openrouter_api_key'
+    };
     const LS_HISTORY = 'akino_metastock_history';
     const LS_SETTINGS = 'akino_metastock_settings';
     const MAX_FILE_SIZE = 5 * 1024 * 1024;
     const MAX_IMG_DIM = 1024;
     const DELAY_BETWEEN_REQUESTS = 1000;
     const MAX_RETRY_ROUNDS = 2;
-
-    const MODEL_CHAIN = [
-      'openrouter/free',
-      'meta-llama/llama-3.2-11b-vision-instruct:free',
-      'qwen/qwen-2-vl-7b-instruct:free',
-      'google/gemini-flash-1.5-8b'
-    ];
 
     const ASSET_HINTS = {
       photo: { label: 'Photo', context: 'This is a PHOTOGRAPH. Focus keywords on: subject, lighting, composition, mood, colors, season, location, photo-technical terms (bokeh, shallow depth of field, golden hour, backlit).', titleHint: 'Natural descriptive title as a photographer would caption it.' },
@@ -1307,10 +882,22 @@
       editorial: { label: 'Editorial', context: 'This is EDITORIAL / newsworthy content. Focus keywords on: editorial, news, journalism, documentary, real life, event, reportage, candid, social issues.', titleHint: 'Title should be factual and newsworthy.' }
     };
 
+    const PLATFORM_INFO = {
+      general: { name: 'General', icon: 'fa-globe', fields: ['filename','asset_type','title','description','keywords'] },
+      freepik: { name: 'Freepik', icon: 'fa-palette', fields: ['filename','title','keywords','prompt','ai_model'] },
+      shutterstock: { name: 'Shutterstock', icon: 'fa-camera-retro', fields: ['filename','description','keywords','categories','editorial','mature_content','illustration'] },
+      adobe: { name: 'Adobe Stock', icon: 'fa-bezier-curve', fields: ['filename','title','keywords','category','releases'] },
+      istock: { name: 'iStock / Getty', icon: 'fa-images', fields: ['filename','title','description','keywords'] },
+      vecteezy: { name: 'Vecteezy', icon: 'fa-vector-square', fields: ['filename','title','keywords','description'] }
+    };
+
+    /* ============ STATE ============ */
     let currentUser = null;
     let currentItems = [];
     let isProcessing = false;
     let currentAssetType = 'photo';
+    let abortController = null;
+    let stopRequested = false;
 
     const $ = id => document.getElementById(id);
     const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -1320,6 +907,14 @@
       const d = document.createElement('div');
       d.textContent = String(str);
       return d.innerHTML;
+    }
+    function getKey(providerId) { return localStorage.getItem(LS_KEYS[providerId]) || ''; }
+    function setKey(providerId, val) {
+      if (val) localStorage.setItem(LS_KEYS[providerId], val);
+      else localStorage.removeItem(LS_KEYS[providerId]);
+    }
+    function getActiveProviders() {
+      return PROVIDER_ORDER.filter(p => !!getKey(p));
     }
 
     function showToast(message, type = 'info') {
@@ -1350,21 +945,17 @@
       idCounter++;
       return (prefix || 'id') + '_' + Date.now() + '_' + idCounter + '_' + Math.random().toString(36).substr(2, 4);
     }
-
     function maskApiKey(key) {
       if (!key) return '-';
       if (key.length < 15) return '***';
       return key.substring(0, 10) + '...' + key.substring(key.length - 4);
     }
-
     function normalizeFreepikFilename(filename) {
       if (!filename) return 'file.jpg';
       const lastDot = filename.lastIndexOf('.');
       let base = lastDot > 0 ? filename.substring(0, lastDot) : filename;
       let ext = lastDot > 0 ? filename.substring(lastDot) : '.jpg';
-      base = base.replace(/[^a-zA-Z0-9_\-\s]/g, '-');
-      base = base.replace(/-+/g, '-');
-      base = base.replace(/^-+|-+$/g, '');
+      base = base.replace(/[^a-zA-Z0-9_\-\s]/g, '-').replace(/-+/g, '-').replace(/^-+|-+$/g, '');
       if (!base) base = 'file';
       ext = ext.replace(/[^a-zA-Z0-9.]/g, '').toLowerCase();
       if (!ext || ext === '.') ext = '.jpg';
@@ -1381,7 +972,6 @@
         }));
       } catch(e) {}
     }
-
     function loadSettings() {
       try {
         const s = JSON.parse(localStorage.getItem(LS_SETTINGS) || '{}');
@@ -1412,15 +1002,18 @@
     }
 
     function updateApiStatus() {
-      const key = localStorage.getItem(LS_API_KEY);
+      const active = getActiveProviders();
       const el = $('apiStatus');
-      if (key) {
+      if (active.length > 0) {
         el.className = 'api-status ok';
-        el.innerHTML = '<i class="fas fa-check-circle"></i> API Key OK';
+        el.innerHTML = '<i class="fas fa-check-circle"></i> ' + active.length + ' provider aktif';
       } else {
         el.className = 'api-status missing';
-        el.innerHTML = '<i class="fas fa-exclamation-triangle"></i> API Key belum diset';
+        el.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Belum ada API Key';
       }
+      document.querySelectorAll('.provider-dot').forEach(dot => {
+        dot.classList.toggle('active', active.includes(dot.dataset.provider));
+      });
     }
 
     function updateStats() {
@@ -1436,25 +1029,24 @@
       $('statPending').textContent = pending;
 
       const info = $('queueStats');
-      if (!total) {
-        info.textContent = 'Belum ada file';
-      } else {
+      if (!total) info.textContent = 'Belum ada file';
+      else {
         const parts = [`<strong>${total}</strong> file`];
         if (done) parts.push(`<span style="color:var(--success)">${done} ✓</span>`);
         if (error) parts.push(`<span style="color:var(--danger)">${error} ✗</span>`);
         info.innerHTML = parts.join(' · ');
       }
-
       $('btnExportCSV').disabled = done === 0;
       $('btnExportJSON').disabled = done === 0;
       $('btnRetryFailed').style.display = error > 0 ? 'inline-flex' : 'none';
     }
 
+    /* ============ AUTH ============ */
     firebase.auth().onAuthStateChanged((user) => {
       currentUser = user;
       if (!user) { showGate('login'); return; }
-      const key = localStorage.getItem(LS_API_KEY);
-      if (!key) { showGate('apiKey'); }
+      const active = getActiveProviders();
+      if (active.length === 0) { showGate('apiKey'); }
       else {
         showGate('main');
         loadSettings();
@@ -1474,12 +1066,10 @@
         const provider = new firebase.auth.GoogleAuthProvider();
         await firebase.auth().signInWithPopup(provider);
       } catch (err) {
-        console.error('Login error:', err);
-        let msg = '';
+        let msg = 'Firebase [' + (err.code || '?') + ']';
         if (err.code === 'auth/popup-closed-by-user') msg = 'Login dibatalkan.';
         else if (err.code === 'auth/unauthorized-domain') msg = 'Domain belum diizinkan.';
         else if (err.code === 'auth/popup-blocked') msg = 'Popup diblokir.';
-        else msg = 'Firebase [' + (err.code || '?') + ']';
         showToast(msg, 'error');
       } finally {
         btn.disabled = false;
@@ -1489,7 +1079,6 @@
 
     $('btnLogoutFromGate').addEventListener('click', doLogout);
     $('btnLogoutModal').addEventListener('click', doLogout);
-
     async function doLogout() {
       if (!confirm('Yakin ingin logout?')) return;
       try {
@@ -1502,55 +1091,76 @@
       } catch (err) { showToast('Gagal logout.', 'error'); }
     }
 
-    async function verifyApiKey(key) {
-      const res = await fetch(OPENROUTER_KEY_URL, {
-        method: 'GET',
-        headers: { 'Authorization': 'Bearer ' + key }
-      });
-      if (!res.ok) {
-        if (res.status === 401) throw new Error('API Key tidak valid.');
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error?.message || ('HTTP ' + res.status));
+    /* ============ PROVIDER VERIFY ============ */
+    async function verifyProviderKey(providerId, key) {
+      const provider = PROVIDERS[providerId];
+      if (!provider) throw new Error('Provider tidak dikenal.');
+      if (!key) throw new Error('API Key kosong.');
+      if (provider.keyPrefix && !key.startsWith(provider.keyPrefix)) {
+        throw new Error('Format ' + provider.name + ' harus diawali "' + provider.keyPrefix + '".');
       }
-      return await res.json();
+      // Verify with models endpoint
+      try {
+        const headers = { 'Authorization': 'Bearer ' + key };
+        const res = await fetch(provider.modelsEndpoint, { method: 'GET', headers });
+        if (!res.ok) {
+          if (res.status === 401 || res.status === 403) throw new Error(provider.name + ': API Key tidak valid.');
+          // Some endpoints might not respond OK for models list, but key works fine
+        }
+      } catch (e) {
+        if (e.message && (e.message.includes('tidak valid') || e.message.includes('Format'))) throw e;
+        // Network error - don't block, assume it might work
+        console.warn('Verify ' + providerId + ' skipped:', e.message);
+      }
+      return true;
     }
 
     $('btnSaveApiKey').addEventListener('click', async () => {
-      const input = $('apiKeyInput');
-      const key = input.value.trim();
       const errEl = $('apiKeyError');
       errEl.style.display = 'none';
-
-      if (!key) { errEl.textContent = 'API Key kosong.'; errEl.style.display = 'block'; return; }
-      if (!key.startsWith('sk-or-')) { errEl.textContent = 'Format harus "sk-or-".'; errEl.style.display = 'block'; return; }
-
+      const inputs = {
+        groq: $('groqKeyInput').value.trim(),
+        gemini: $('geminiKeyInput').value.trim(),
+        openrouter: $('openrouterKeyInput').value.trim()
+      };
+      const filled = Object.keys(inputs).filter(k => inputs[k]);
+      if (filled.length === 0) {
+        errEl.textContent = 'Isi minimal 1 API Key.'; errEl.style.display = 'block'; return;
+      }
       const btn = $('btnSaveApiKey');
       btn.disabled = true;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memverifikasi...';
-      try {
-        await verifyApiKey(key);
-        localStorage.setItem(LS_API_KEY, key);
-        input.value = '';
-        showToast('API Key disimpan!', 'success');
-        showGate('main');
-        loadSettings();
-        updateApiStatus();
-        renderHistory();
-      } catch (err) {
-        errEl.textContent = err.message || 'API Key tidak valid.';
-        errEl.style.display = 'block';
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-check"></i> Simpan & Verifikasi';
+      const saved = [];
+      const errors = [];
+      for (const pid of filled) {
+        try {
+          await verifyProviderKey(pid, inputs[pid]);
+          setKey(pid, inputs[pid]);
+          saved.push(PROVIDERS[pid].name);
+        } catch (err) {
+          errors.push(PROVIDERS[pid].name + ': ' + err.message);
+        }
       }
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-check"></i> Simpan & Verifikasi';
+      if (saved.length === 0) {
+        errEl.textContent = errors.join(' | ');
+        errEl.style.display = 'block';
+        return;
+      }
+      // Clear inputs
+      $('groqKeyInput').value = ''; $('geminiKeyInput').value = ''; $('openrouterKeyInput').value = '';
+      showToast('Tersimpan: ' + saved.join(', ') + (errors.length ? ' | Gagal: ' + errors.join(' | ') : ''), errors.length ? 'warning' : 'success');
+      showGate('main');
+      loadSettings();
+      updateApiStatus();
+      renderHistory();
     });
 
-    $('btnOpenSettings').addEventListener('click', async () => {
-      const key = localStorage.getItem(LS_API_KEY) || '';
-      $('srApiKeyMasked').textContent = maskApiKey(key);
-      $('modalApiKeyInput').value = '';
+    /* ============ SETTINGS MODAL ============ */
+    $('btnOpenSettings').addEventListener('click', () => {
       $('settingsModal').classList.add('active');
-      await loadAccountInfo();
+      renderProviderCards();
     });
     $('btnCloseSettings').addEventListener('click', () => $('settingsModal').classList.remove('active'));
     $('settingsModal').addEventListener('click', (e) => {
@@ -1562,52 +1172,71 @@
       }
     });
 
-    async function loadAccountInfo() {
-      const key = localStorage.getItem(LS_API_KEY);
-      if (!key) return;
-      $('srCredits').textContent = 'Memuat...';
-      $('srUsage').textContent = 'Memuat...';
-      try {
-        const data = await verifyApiKey(key);
-        const d = data.data || data;
-        $('srCredits').textContent = (d.limit_remaining !== null && d.limit_remaining !== undefined)
-          ? '$' + parseFloat(d.limit_remaining).toFixed(4) : 'Unlimited';
-        $('srUsage').textContent = (d.usage !== undefined && d.usage !== null)
-          ? '$' + parseFloat(d.usage).toFixed(4) : '$0.0000';
-        $('srStatus').textContent = d.is_free_tier ? 'Free Tier' : 'Aktif';
-        $('srStatus').className = 'sr-value ok';
-      } catch (err) {
-        $('srCredits').textContent = 'Error';
-        $('srUsage').textContent = 'Error';
-        $('srStatus').textContent = 'Error';
-      }
+    function renderProviderCards() {
+      document.querySelectorAll('.provider-card').forEach(card => {
+        const pid = card.dataset.provider;
+        const key = getKey(pid);
+        const statusEl = card.querySelector('[data-status]');
+        const infoEl = card.querySelector('[data-info]');
+        if (key) {
+          statusEl.className = 'pc-status ok';
+          statusEl.textContent = 'Aktif';
+          infoEl.textContent = maskApiKey(key);
+        } else {
+          statusEl.className = 'pc-status missing';
+          statusEl.textContent = 'Belum diset';
+          infoEl.textContent = '-';
+        }
+      });
     }
 
-    $('btnRefreshAccount').addEventListener('click', async () => {
-      await loadAccountInfo();
+    document.querySelectorAll('.provider-card .pc-head').forEach(head => {
+      head.addEventListener('click', () => {
+        const card = head.closest('.provider-card');
+        card.classList.toggle('expanded');
+      });
+    });
+
+    document.querySelectorAll('.provider-card [data-save]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const card = btn.closest('.provider-card');
+        const pid = card.dataset.provider;
+        const input = card.querySelector('[data-input]');
+        const val = input.value.trim();
+        if (!val) { showToast('API Key kosong.', 'warning'); return; }
+        btn.disabled = true; const orig = btn.textContent; btn.textContent = '...';
+        try {
+          await verifyProviderKey(pid, val);
+          setKey(pid, val);
+          input.value = '';
+          renderProviderCards();
+          updateApiStatus();
+          showToast(PROVIDERS[pid].name + ' key disimpan.', 'success');
+        } catch (err) {
+          showToast(err.message, 'error');
+        } finally { btn.disabled = false; btn.textContent = orig; }
+      });
+    });
+
+    document.querySelectorAll('.provider-card [data-clear]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const card = btn.closest('.provider-card');
+        const pid = card.dataset.provider;
+        if (!confirm('Hapus API Key ' + PROVIDERS[pid].name + '?')) return;
+        setKey(pid, '');
+        renderProviderCards();
+        updateApiStatus();
+        showToast(PROVIDERS[pid].name + ' key dihapus.', 'info');
+      });
+    });
+
+    $('btnRefreshAccount').addEventListener('click', () => {
+      renderProviderCards();
+      updateApiStatus();
       showToast('Info di-refresh.', 'info');
     });
 
-    $('btnSaveNewKey').addEventListener('click', async () => {
-      const newKey = $('modalApiKeyInput').value.trim();
-      if (!newKey) { showToast('API Key kosong.', 'info'); return; }
-      if (!newKey.startsWith('sk-or-')) { showToast('Format salah.', 'error'); return; }
-      const btn = $('btnSaveNewKey');
-      btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-      try {
-        await verifyApiKey(newKey);
-        localStorage.setItem(LS_API_KEY, newKey);
-        $('srApiKeyMasked').textContent = maskApiKey(newKey);
-        $('modalApiKeyInput').value = '';
-        showToast('API Key diganti!', 'success');
-        await loadAccountInfo();
-      } catch (err) {
-        showToast(err.message || 'API Key tidak valid.', 'error');
-      } finally {
-        btn.disabled = false; btn.innerHTML = '<i class="fas fa-check"></i> Simpan';
-      }
-    });
-
+    /* ============ NAV / THEME ============ */
     (function setupNav() {
       window.addEventListener('scroll', () => {
         $('navbar').classList.toggle('scrolled', window.scrollY > 40);
@@ -1653,6 +1282,7 @@
       }
     })();
 
+    /* ============ ASSET & SETTINGS ============ */
     $('assetPills').addEventListener('click', (e) => {
       const pill = e.target.closest('.asset-pill');
       if (!pill) return;
@@ -1665,14 +1295,13 @@
       saveSettings();
       showToast('Tipe aset: ' + ASSET_HINTS[type].label, 'info');
     });
-
     ['langSelect', 'kwCount', 'platform'].forEach(id => {
-      $(id).addEventListener('change', saveSettings);
+      $(id).addEventListener('change', () => { saveSettings(); renderQueue(); });
     });
 
+    /* ============ UPLOAD ============ */
     const uploadZone = $('uploadZone');
     const fileInput = $('fileInput');
-
     uploadZone.addEventListener('click', () => fileInput.click());
     uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('dragover'); });
     uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
@@ -1689,7 +1318,6 @@
     async function handleFiles(fileList) {
       const files = Array.from(fileList);
       let added = 0, skipped = 0;
-
       for (const file of files) {
         if (!file.type.startsWith('image/')) { skipped++; continue; }
         if (file.size > MAX_FILE_SIZE) { showToast('"' + file.name + '" >5MB, skip.', 'warning'); skipped++; continue; }
@@ -1705,7 +1333,8 @@
             result: null,
             error: null,
             retryCount: 0,
-            expanded: false
+            expanded: false,
+            providerUsed: null
           });
           added++;
         } catch (err) {
@@ -1713,10 +1342,8 @@
           skipped++;
         }
       }
-
       renderQueue();
       updateStats();
-
       if (added > 0) showToast(added + ' file ditambahkan.', 'success');
       if (skipped > 0 && added === 0) showToast('Tidak ada file yang valid.', 'warning');
     }
@@ -1729,17 +1356,11 @@
           img.onload = () => {
             let { width, height } = img;
             if (width > MAX_IMG_DIM || height > MAX_IMG_DIM) {
-              if (width >= height) {
-                height = Math.round(height * MAX_IMG_DIM / width);
-                width = MAX_IMG_DIM;
-              } else {
-                width = Math.round(width * MAX_IMG_DIM / height);
-                height = MAX_IMG_DIM;
-              }
+              if (width >= height) { height = Math.round(height * MAX_IMG_DIM / width); width = MAX_IMG_DIM; }
+              else { width = Math.round(width * MAX_IMG_DIM / height); height = MAX_IMG_DIM; }
             }
             const canvas = document.createElement('canvas');
-            canvas.width = width;
-            canvas.height = height;
+            canvas.width = width; canvas.height = height;
             const ctx = canvas.getContext('2d');
             ctx.fillStyle = '#ffffff';
             ctx.fillRect(0, 0, width, height);
@@ -1757,6 +1378,7 @@
       });
     }
 
+    /* ============ RENDER QUEUE ============ */
     function renderQueue() {
       const list = $('queueList');
       if (!currentItems.length) {
@@ -1768,10 +1390,8 @@
           </div>`;
         return;
       }
-
       const lang = $('langSelect').value;
       const html = [];
-
       currentItems.forEach((item) => {
         const statusIcon = {
           pending: '<i class="fas fa-clock"></i>',
@@ -1779,23 +1399,20 @@
           done: '<i class="fas fa-check-circle"></i>',
           error: '<i class="fas fa-times-circle"></i>'
         }[item.status] || '';
-
         const statusText = {
           pending: 'Menunggu',
           processing: 'AI memproses...',
-          done: 'Selesai · Klik untuk lihat & copy',
+          done: 'Selesai · Klik untuk lihat detail',
           error: 'Gagal'
         }[item.status] || item.status;
-
         const retryBadge = item.retryCount > 0
-          ? `<span class="queue-item-retry-badge"><i class="fas fa-rotate"></i> Retry ${item.retryCount}x</span>`
-          : '';
+          ? `<span class="queue-item-retry-badge"><i class="fas fa-rotate"></i> Retry ${item.retryCount}x</span>` : '';
+        const providerBadge = item.providerUsed
+          ? `<span class="queue-item-provider">${escHtml(item.providerUsed)}</span>` : '';
 
         let bodyHtml = '';
         if (item.status === 'error') {
-          bodyHtml = `<div class="queue-item-error-msg">
-            <i class="fas fa-exclamation-circle"></i> ${escHtml(item.error || 'Error tidak diketahui.')}
-          </div>`;
+          bodyHtml = `<div class="queue-item-error-msg"><i class="fas fa-exclamation-circle"></i> ${escHtml(item.error || 'Error tidak diketahui.')}</div>`;
         } else if (item.status === 'done' && item.result) {
           bodyHtml = renderResultBody(item, lang);
         }
@@ -1807,7 +1424,7 @@
               <div class="queue-item-info">
                 <div class="queue-item-name">
                   <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escHtml(item.fileName)}</span>
-                  ${retryBadge}
+                  ${retryBadge}${providerBadge}
                 </div>
                 <div class="queue-item-status ${item.status}">${statusIcon} ${statusText}</div>
               </div>
@@ -1821,26 +1438,20 @@
           </div>
         `);
       });
-
       list.innerHTML = html.join('');
       attachQueueHandlers();
     }
 
     function attachQueueHandlers() {
       const list = $('queueList');
-
       list.querySelectorAll('[data-toggle]').forEach(el => {
         el.addEventListener('click', (e) => {
           if (e.target.closest('.queue-item-actions')) return;
           const id = el.dataset.toggle;
           const item = currentItems.find(x => x.id === id);
-          if (item && item.status === 'done') {
-            item.expanded = !item.expanded;
-            renderQueue();
-          }
+          if (item && item.status === 'done') { item.expanded = !item.expanded; renderQueue(); }
         });
       });
-
       list.querySelectorAll('[data-expand]').forEach(el => {
         el.addEventListener('click', (e) => {
           e.stopPropagation();
@@ -1849,27 +1460,22 @@
           if (item) { item.expanded = !item.expanded; renderQueue(); }
         });
       });
-
       list.querySelectorAll('[data-remove]').forEach(el => {
         el.addEventListener('click', (e) => {
           e.stopPropagation();
           if (isProcessing) { showToast('Tidak bisa hapus saat proses berjalan.', 'warning'); return; }
           const id = el.dataset.remove;
           currentItems = currentItems.filter(x => x.id !== id);
-          renderQueue();
-          updateStats();
+          renderQueue(); updateStats();
         });
       });
-
       list.querySelectorAll('[data-retry]').forEach(el => {
         el.addEventListener('click', async (e) => {
           e.stopPropagation();
           if (isProcessing) return;
-          const id = el.dataset.retry;
-          await retrySingle(id);
+          await retrySingle(el.dataset.retry);
         });
       });
-
       list.querySelectorAll('.btn-copy-xs').forEach(btn => {
         btn.addEventListener('click', async (e) => {
           e.stopPropagation();
@@ -1894,7 +1500,6 @@
           setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = orig; }, 1400);
         });
       });
-
       list.querySelectorAll('.btn-copy-all').forEach(btn => {
         btn.addEventListener('click', async (e) => {
           e.stopPropagation();
@@ -1902,7 +1507,8 @@
           const item = currentItems.find(x => x.id === id);
           if (!item || !item.result) return;
           const lang = $('langSelect').value;
-          const text = buildCopyAllText(item, lang);
+          const platform = $('platform').value;
+          const text = buildCopyAllText(item, lang, platform);
           await copyText(text);
           btn.classList.add('copied');
           const orig = btn.innerHTML;
@@ -1910,35 +1516,115 @@
           setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = orig; }, 1600);
         });
       });
+      // Platform preview copy
+      list.querySelectorAll('.btn-copy-preview').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const pid = btn.dataset.preview;
+          const el = document.getElementById(pid);
+          if (el) {
+            await copyText(el.textContent);
+            const orig = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i>';
+            setTimeout(() => btn.innerHTML = orig, 1400);
+          }
+        });
+      });
     }
 
-    function buildCopyAllText(item, lang) {
+    /* Build result row text for a platform */
+    function buildPlatformRow(item, lang, platform) {
       const r = item.result;
       if (!r) return '';
-      const lines = [];
-      lines.push('=== FILE: ' + item.fileName + ' ===');
-      lines.push('');
+      const info = PLATFORM_INFO[platform] || PLATFORM_INFO.general;
+      let title = '', description = '', keywords = [];
+      if (lang === 'both') {
+        title = r.en?.title || r.id?.title || '';
+        description = r.en?.description || r.id?.description || '';
+        keywords = r.en?.keywords || r.id?.keywords || [];
+      } else {
+        title = r.title || '';
+        description = r.description || '';
+        keywords = r.keywords || [];
+      }
+      const kwStr = keywords.join(', ');
+      const kwStrComma = keywords.join(',');
 
-      const langs = lang === 'both' ? ['id', 'en'] : [lang];
-      langs.forEach(code => {
-        const node = r[code];
-        if (!node) return;
-        const label = code === 'id' ? '[INDONESIA]' : '[ENGLISH]';
-        lines.push(label);
-        lines.push('Title: ' + (node.title || ''));
-        lines.push('Description: ' + (node.description || ''));
-        lines.push('Keywords: ' + (node.keywords || []).join(', '));
-        lines.push('');
-      });
+      const userPrompt = $('extraDesc').value.trim();
 
-      return lines.join('\n').trim();
+      if (platform === 'freepik') {
+        const fn = normalizeFreepikFilename(item.fileName);
+        return [
+          fn,
+          title,
+          kwStrComma,
+          userPrompt || description,
+          'MetaStock AI'
+        ];
+      }
+      if (platform === 'shutterstock') {
+        return [
+          item.fileName,
+          description,
+          kwStrComma,
+          '', // categories
+          'no', // editorial
+          'no', // mature
+          currentAssetType === 'vector' || currentAssetType === 'illustration' ? 'yes' : 'no'
+        ];
+      }
+      if (platform === 'adobe') {
+        return [item.fileName, title, kwStrComma, '', ''];
+      }
+      if (platform === 'istock') {
+        return [item.fileName, title, description, kwStr];
+      }
+      if (platform === 'vecteezy') {
+        return [item.fileName, title, kwStrComma, description];
+      }
+      // general
+      return [item.fileName, currentAssetType, title, description, kwStr];
+    }
+
+    function formatPlatformPreview(item, lang, platform) {
+      const info = PLATFORM_INFO[platform] || PLATFORM_INFO.general;
+      const row = buildPlatformRow(item, lang, platform);
+      if (platform === 'freepik') {
+        // semicolon-separated, wrap with quotes
+        return row.map(v => "'" + String(v || '').replace(/'/g, "''") + "'").join(';');
+      }
+      // CSV with proper escaping
+      return row.map(v => {
+        const s = String(v == null ? '' : v);
+        if (/[",\n\r]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
+        return s;
+      }).join(',');
     }
 
     function renderResultBody(item, lang) {
       const r = item.result;
       if (!r) return '';
+      const platform = $('platform').value;
+      const pInfo = PLATFORM_INFO[platform] || PLATFORM_INFO.general;
       const langs = lang === 'both' ? ['id', 'en'] : [lang];
       const blocks = [];
+
+      // Platform preview
+      const previewText = formatPlatformPreview(item, lang, platform);
+      const previewId = `pp-${item.id}`;
+      const headerText = pInfo.fields.join(' | ');
+      blocks.push(`
+        <div class="platform-preview">
+          <div class="pp-head">
+            <div class="pp-title"><i class="fas ${pInfo.icon}"></i> Format ${pInfo.name}</div>
+            <div class="result-row-actions">
+              <button class="btn-copy-xs btn-copy-preview" data-preview="${previewId}"><i class="fas fa-copy"></i> Copy Row CSV</button>
+            </div>
+          </div>
+          <div style="font-size:0.6rem;color:var(--muted);margin-bottom:0.3rem;letter-spacing:0.3px;">Kolom: ${escHtml(headerText)}</div>
+          <div class="pp-content" id="${previewId}">${escHtml(previewText)}</div>
+        </div>
+      `);
 
       blocks.push(`
         <div class="copy-all-bar">
@@ -1957,7 +1643,6 @@
         const tid = `t-${item.id}-${code}`;
         const did = `d-${item.id}-${code}`;
         const kid = `k-${item.id}-${code}`;
-
         blocks.push(`
           <div class="result-row">
             <div class="result-row-head">
@@ -1990,6 +1675,31 @@
       return blocks.join('');
     }
 
+    function buildCopyAllText(item, lang, platform) {
+      const r = item.result;
+      if (!r) return '';
+      const lines = [];
+      lines.push('=== FILE: ' + item.fileName + ' ===');
+      lines.push('Platform: ' + (PLATFORM_INFO[platform]?.name || 'General'));
+      lines.push('');
+      // Preview format
+      lines.push('[PREVIEW FORMAT]');
+      lines.push(formatPlatformPreview(item, lang, platform));
+      lines.push('');
+      const langs = lang === 'both' ? ['id', 'en'] : [lang];
+      langs.forEach(code => {
+        const node = r[code];
+        if (!node) return;
+        const label = code === 'id' ? '[INDONESIA]' : '[ENGLISH]';
+        lines.push(label);
+        lines.push('Title: ' + (node.title || ''));
+        lines.push('Description: ' + (node.description || ''));
+        lines.push('Keywords: ' + (node.keywords || []).join(', '));
+        lines.push('');
+      });
+      return lines.join('\n').trim();
+    }
+
     function selectText(el) {
       if (window.getSelection) {
         const sel = window.getSelection();
@@ -2016,7 +1726,12 @@
       }, 800);
     }
 
-    async function callOpenRouterSingle(apiKey, model, prompt, imageDataUrl) {
+    /* ============ PROVIDER CALL ============ */
+    async function callProvider(providerId, model, prompt, imageDataUrl, signal) {
+      const provider = PROVIDERS[providerId];
+      const apiKey = getKey(providerId);
+      if (!apiKey) throw new Error('No API key for ' + provider.name);
+
       const content = imageDataUrl
         ? [{ type: 'text', text: prompt }, { type: 'image_url', image_url: { url: imageDataUrl } }]
         : prompt;
@@ -2028,39 +1743,45 @@
         max_tokens: 4000
       };
 
-      const res = await fetch(OPENROUTER_API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + apiKey,
-          'HTTP-Referer': window.location.origin,
-          'X-Title': 'MetaStock AI - Akino Store'
-        },
-        body: JSON.stringify(body)
-      });
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + apiKey
+      };
+      if (providerId === 'openrouter') {
+        headers['HTTP-Referer'] = window.location.origin;
+        headers['X-Title'] = 'MetaStock AI - Akino Store';
+      }
+
+      let res;
+      try {
+        res = await fetch(provider.endpoint, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(body),
+          signal
+        });
+      } catch (err) {
+        if (err.name === 'AbortError') throw new Error('STOP_REQUESTED');
+        throw err;
+      }
 
       const rawText = await res.text();
-      console.log('🔍 [' + model + '] [' + res.status + ']:', rawText.substring(0, 300));
+      console.log('🔍 [' + providerId + '/' + model + '] [' + res.status + ']:', rawText.substring(0, 300));
 
       let data;
       try { data = JSON.parse(rawText); }
       catch (e) { throw new Error('Response bukan JSON.'); }
 
       if (!res.ok) {
-        let errMsg = data.error?.message || ('HTTP ' + res.status);
-        if (res.status === 401) errMsg = 'API Key invalid.';
-        else if (res.status === 402) errMsg = 'Saldo tidak cukup.';
-        else if (res.status === 429) errMsg = 'Rate limit.';
+        let errMsg = data.error?.message || data.message || ('HTTP ' + res.status);
         const err = new Error(errMsg);
-        err.fatal = (res.status === 401 || res.status === 402);
+        if (res.status === 401 || res.status === 402 || res.status === 403) err.fatal = true;
         throw err;
       }
 
       if (data.error) {
         const errMsg = data.error.message || JSON.stringify(data.error);
-        const err = new Error('OpenRouter: ' + errMsg);
-        if (/rate.?limit/i.test(errMsg)) err.fatal = false;
-        throw err;
+        throw new Error('API: ' + errMsg);
       }
 
       if (!data.choices || !Array.isArray(data.choices) || data.choices.length === 0) {
@@ -2088,26 +1809,46 @@
       return raw;
     }
 
-    async function callOpenRouterWithRetry(apiKey, prompt, imageDataUrl) {
+    /* Try all providers × models in order */
+    async function callAIWithFallback(prompt, imageDataUrl, signal) {
+      const activeProviders = getActiveProviders();
+      if (activeProviders.length === 0) throw new Error('Tidak ada API Key aktif.');
+
       let lastErr = null;
-      for (let i = 0; i < MODEL_CHAIN.length; i++) {
-        const model = MODEL_CHAIN[i];
-        try {
-          if (i > 0) console.log('🔄 Retry model:', model);
-          const raw = await callOpenRouterSingle(apiKey, model, prompt, imageDataUrl);
-          const parsed = parseAIResponse(raw);
-          console.log('✅ Sukses dengan:', model);
-          return parsed;
-        } catch (err) {
-          console.warn('❌ ' + model + ' gagal:', err.message);
-          lastErr = err;
-          if (err.fatal) throw err;
-          if (i < MODEL_CHAIN.length - 1) await sleep(1500);
+      let attemptedAny = false;
+
+      for (const pid of activeProviders) {
+        if (stopRequested) throw new Error('STOP_REQUESTED');
+        const provider = PROVIDERS[pid];
+        for (const model of provider.models) {
+          if (stopRequested) throw new Error('STOP_REQUESTED');
+          try {
+            console.log('▶️ Coba ' + provider.name + ' / ' + model);
+            const raw = await callProvider(pid, model, prompt, imageDataUrl, signal);
+            const parsed = parseAIResponse(raw);
+            parsed.__provider = provider.name;
+            parsed.__model = model;
+            console.log('✅ Sukses dengan ' + provider.name + ' / ' + model);
+            return parsed;
+          } catch (err) {
+            if (err.message === 'STOP_REQUESTED') throw err;
+            console.warn('❌ ' + provider.name + '/' + model + ' gagal:', err.message);
+            lastErr = err;
+            attemptedAny = true;
+            if (err.fatal) {
+              // This provider has fatal issue; skip to next provider
+              console.warn('⏭️ Skip provider ' + provider.name + ' (fatal)');
+              break;
+            }
+            await sleep(800);
+          }
         }
       }
-      throw new Error('Semua model gagal: ' + (lastErr?.message || 'unknown'));
+      if (!attemptedAny) throw new Error('Tidak ada provider yang bisa dicoba.');
+      throw new Error('Semua provider gagal: ' + (lastErr?.message || 'unknown'));
     }
 
+    /* ============ PROMPT ============ */
     function buildPrompt({ kwCount, platform, extraDesc, assetType, lang }) {
       const platformHints = {
         general: 'Shutterstock, Adobe Stock, Freepik, iStock, dan platform microstock umum.',
@@ -2156,18 +1897,13 @@ ${structExample}
       let text = String(raw).trim();
       text = text.replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/i, '').trim();
       if (/^thinking process/i.test(text)) throw new Error('Model reasoning bukan JSON.');
-
       const firstBrace = text.indexOf('{');
       const lastBrace = text.lastIndexOf('}');
-      if (firstBrace === -1 || lastBrace === -1 || lastBrace <= firstBrace) {
-        throw new Error('Respons tidak mengandung JSON.');
-      }
-
+      if (firstBrace === -1 || lastBrace === -1 || lastBrace <= firstBrace) throw new Error('Respons tidak mengandung JSON.');
       const jsonText = text.substring(firstBrace, lastBrace + 1);
       let parsed;
       try { parsed = JSON.parse(jsonText); }
       catch (e) { throw new Error('JSON tidak valid.'); }
-
       const lang = $('langSelect').value;
       let result;
       if (lang === 'both') {
@@ -2185,17 +1921,13 @@ ${structExample}
       if (!node || typeof node !== 'object') return null;
       let keywords = [];
       const k = node.keywords || node.hashtags || [];
-      if (Array.isArray(k)) {
-        keywords = k.map(x => String(x).trim()).filter(Boolean);
-      } else if (typeof k === 'string') {
-        keywords = k.split(/[\s,]+/).map(x => x.replace(/^#/, '').trim()).filter(Boolean);
-      }
+      if (Array.isArray(k)) keywords = k.map(x => String(x).trim()).filter(Boolean);
+      else if (typeof k === 'string') keywords = k.split(/[\s,]+/).map(x => x.replace(/^#/, '').trim()).filter(Boolean);
       const seen = new Set();
       keywords = keywords.filter(x => {
         const key = x.toLowerCase();
         if (seen.has(key)) return false;
-        seen.add(key);
-        return true;
+        seen.add(key); return true;
       });
       return {
         title: String(node.title || '').trim(),
@@ -2204,12 +1936,32 @@ ${structExample}
       };
     }
 
+    /* ============ GENERATE ============ */
     $('btnGenerate').addEventListener('click', () => generateAll(false));
+    $('btnRetryFailed').addEventListener('click', () => generateAll(true));
+
+    $('btnStopGenerate').addEventListener('click', () => {
+      if (!isProcessing) return;
+      stopRequested = true;
+      if (abortController) abortController.abort();
+      showToast('Menghentikan proses...', 'warning');
+    });
+
+    function setProcessingUI(on) {
+      isProcessing = on;
+      $('btnGenerate').disabled = on;
+      $('btnStopGenerate').classList.toggle('show', on);
+      if (on) {
+        $('btnGenerate').innerHTML = '<span class="spinner-small"></span> Memproses...';
+      } else {
+        $('btnGenerate').innerHTML = '<i class="fas fa-wand-magic-sparkles"></i> Generate Semua';
+      }
+    }
 
     async function generateAll(onlyFailed) {
       if (isProcessing) return;
-      const apiKey = localStorage.getItem(LS_API_KEY);
-      if (!apiKey) { showToast('API Key belum diset.', 'error'); showGate('apiKey'); return; }
+      const activeProviders = getActiveProviders();
+      if (activeProviders.length === 0) { showToast('Belum ada API Key.', 'error'); showGate('apiKey'); return; }
 
       const targets = onlyFailed
         ? currentItems.filter(i => i.status === 'error')
@@ -2220,14 +1972,12 @@ ${structExample}
         return;
       }
 
-      isProcessing = true;
-      const btn = $('btnGenerate');
-      btn.disabled = true;
-      btn.innerHTML = '<span class="spinner-small"></span> Memproses...';
+      stopRequested = false;
+      abortController = new AbortController();
+      setProcessingUI(true);
 
-      targets.forEach(t => { t.status = 'pending'; t.error = null; t.expanded = false; });
-      renderQueue();
-      updateStats();
+      targets.forEach(t => { t.status = 'pending'; t.error = null; t.expanded = false; t.providerUsed = null; });
+      renderQueue(); updateStats();
 
       const opts = {
         kwCount: parseInt($('kwCount').value) || 30,
@@ -2237,19 +1987,25 @@ ${structExample}
         lang: $('langSelect').value
       };
 
-      let success = 0, fail = 0;
+      let success = 0, fail = 0, stopped = false;
 
       for (let i = 0; i < targets.length; i++) {
+        if (stopRequested) { stopped = true; break; }
         const item = targets[i];
         item.status = 'processing';
-        renderQueue();
-        updateStats();
+        renderQueue(); updateStats();
         showProgress(i, targets.length, item.fileName);
 
         try {
           const prompt = buildPrompt(opts);
-          const parsed = await callOpenRouterWithRetry(apiKey, prompt, item.dataUrl);
+          const parsed = await callAIWithFallback(prompt, item.dataUrl, abortController.signal);
 
+          const providerName = parsed.__provider || 'AI';
+          const modelName = parsed.__model || '';
+          delete parsed.__provider;
+          delete parsed.__model;
+
+          item.providerUsed = providerName;
           const lang = opts.lang;
           if (lang === 'both') {
             if (!parsed.en?.title && !parsed.id?.title) throw new Error('AI tidak menghasilkan title.');
@@ -2257,117 +2013,114 @@ ${structExample}
             if (!parsed.title) throw new Error('AI tidak menghasilkan title.');
             if (!parsed.keywords || !parsed.keywords.length) throw new Error('AI tidak menghasilkan keyword.');
           }
-
           item.result = parsed;
           item.status = 'done';
           item.expanded = false;
           success++;
-
           saveToHistory({
-            id: genId('ms'),
-            ts: Date.now(),
-            preview: item.dataUrl,
-            fileName: item.fileName,
-            assetType: currentAssetType,
-            lang: lang,
+            id: genId('ms'), ts: Date.now(), preview: item.dataUrl, fileName: item.fileName,
+            assetType: currentAssetType, lang: lang, provider: providerName, model: modelName,
+            platform: opts.platform,
             results: parsed
           });
         } catch (err) {
+          if (err.message === 'STOP_REQUESTED' || stopRequested) { stopped = true; break; }
           console.error('Error [' + item.fileName + ']:', err);
           item.status = 'error';
           item.error = err.message || 'Error.';
           fail++;
         }
 
-        renderQueue();
-        updateStats();
+        renderQueue(); updateStats();
         showProgress(i + 1, targets.length, item.fileName);
-        if (i < targets.length - 1) await sleep(DELAY_BETWEEN_REQUESTS);
+        if (i < targets.length - 1 && !stopRequested) await sleep(DELAY_BETWEEN_REQUESTS);
       }
 
+      // Auto retry rounds (skip if user stopped)
       let totalFixed = 0;
-      for (let round = 1; round <= MAX_RETRY_ROUNDS; round++) {
-        const errors = currentItems.filter(i => i.status === 'error' && i.retryCount < round);
-        if (!errors.length) break;
+      if (!stopped) {
+        for (let round = 1; round <= MAX_RETRY_ROUNDS; round++) {
+          if (stopRequested) break;
+          const errors = currentItems.filter(i => i.status === 'error' && i.retryCount < round);
+          if (!errors.length) break;
+          console.log('🔁 Auto-retry round ' + round + ' untuk ' + errors.length + ' file');
+          showToast('Auto-retry round ' + round + ': ' + errors.length + ' file...', 'info');
 
-        console.log('🔁 Auto-retry round ' + round + ' untuk ' + errors.length + ' file');
-        showToast('Auto-retry round ' + round + ': ' + errors.length + ' file...', 'info');
-
-        for (let i = 0; i < errors.length; i++) {
-          const item = errors[i];
-          item.retryCount = round;
-          item.status = 'processing';
-          renderQueue();
-          updateStats();
-          showProgress(i, errors.length, item.fileName + ' (retry ' + round + ')');
-
-          try {
-            await sleep(2000);
-            const prompt = buildPrompt(opts);
-            const parsed = await callOpenRouterWithRetry(apiKey, prompt, item.dataUrl);
-
-            const lang = opts.lang;
-            if (lang === 'both') {
-              if (!parsed.en?.title && !parsed.id?.title) throw new Error('AI tidak menghasilkan title.');
-            } else {
-              if (!parsed.title) throw new Error('AI tidak menghasilkan title.');
-              if (!parsed.keywords || !parsed.keywords.length) throw new Error('AI tidak menghasilkan keyword.');
+          for (let i = 0; i < errors.length; i++) {
+            if (stopRequested) { stopped = true; break; }
+            const item = errors[i];
+            item.retryCount = round;
+            item.status = 'processing';
+            renderQueue(); updateStats();
+            showProgress(i, errors.length, item.fileName + ' (retry ' + round + ')');
+            try {
+              await sleep(2000);
+              const prompt = buildPrompt(opts);
+              const parsed = await callAIWithFallback(prompt, item.dataUrl, abortController.signal);
+              const providerName = parsed.__provider || 'AI';
+              const modelName = parsed.__model || '';
+              delete parsed.__provider; delete parsed.__model;
+              item.providerUsed = providerName;
+              const lang = opts.lang;
+              if (lang === 'both') {
+                if (!parsed.en?.title && !parsed.id?.title) throw new Error('AI tidak menghasilkan title.');
+              } else {
+                if (!parsed.title) throw new Error('AI tidak menghasilkan title.');
+                if (!parsed.keywords || !parsed.keywords.length) throw new Error('AI tidak menghasilkan keyword.');
+              }
+              item.result = parsed;
+              item.status = 'done';
+              item.expanded = false;
+              totalFixed++;
+              saveToHistory({
+                id: genId('ms'), ts: Date.now(), preview: item.dataUrl, fileName: item.fileName,
+                assetType: currentAssetType, lang: lang, provider: providerName, model: modelName,
+                platform: opts.platform, results: parsed
+              });
+            } catch (err) {
+              if (err.message === 'STOP_REQUESTED' || stopRequested) { stopped = true; break; }
+              console.warn('Retry gagal:', err.message);
+              item.status = 'error';
+              item.error = err.message;
             }
-
-            item.result = parsed;
-            item.status = 'done';
-            item.expanded = false;
-            totalFixed++;
-
-            saveToHistory({
-              id: genId('ms'),
-              ts: Date.now(),
-              preview: item.dataUrl,
-              fileName: item.fileName,
-              assetType: currentAssetType,
-              lang: lang,
-              results: parsed
-            });
-          } catch (err) {
-            console.warn('Retry round ' + round + ' gagal:', err.message);
-            item.status = 'error';
-            item.error = err.message;
+            renderQueue(); updateStats();
+            showProgress(i + 1, errors.length, item.fileName);
+            if (i < errors.length - 1 && !stopRequested) await sleep(DELAY_BETWEEN_REQUESTS);
           }
-          renderQueue();
-          updateStats();
-          showProgress(i + 1, errors.length, item.fileName);
-          if (i < errors.length - 1) await sleep(DELAY_BETWEEN_REQUESTS);
+          if (stopped) break;
         }
       }
 
-      isProcessing = false;
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fas fa-wand-magic-sparkles"></i> Generate Semua';
+      setProcessingUI(false);
       hideProgress();
-      renderQueue();
-      updateStats();
+      renderQueue(); updateStats();
 
       const remainingErr = currentItems.filter(i => i.status === 'error').length;
-      let msg = 'Selesai! ' + success + ' berhasil';
-      if (totalFixed > 0) msg += ', ' + totalFixed + ' di-retry';
-      if (remainingErr > 0) msg += ', ' + remainingErr + ' masih gagal';
-      showToast(msg, remainingErr > 0 ? 'warning' : 'success');
+      if (stopped) {
+        showToast('Dihentikan. ' + success + ' selesai, ' + remainingErr + ' gagal.', 'warning');
+      } else {
+        let msg = 'Selesai! ' + success + ' berhasil';
+        if (totalFixed > 0) msg += ', ' + totalFixed + ' di-retry';
+        if (remainingErr > 0) msg += ', ' + remainingErr + ' masih gagal';
+        showToast(msg, remainingErr > 0 ? 'warning' : 'success');
+      }
+      abortController = null;
+      stopRequested = false;
     }
 
     async function retrySingle(id) {
       const item = currentItems.find(x => x.id === id);
       if (!item) return;
-      const apiKey = localStorage.getItem(LS_API_KEY);
-      if (!apiKey) { showToast('API Key belum diset.', 'error'); return; }
+      const activeProviders = getActiveProviders();
+      if (activeProviders.length === 0) { showToast('Belum ada API Key.', 'error'); return; }
 
-      isProcessing = true;
-      const btn = $('btnGenerate');
-      btn.disabled = true;
+      stopRequested = false;
+      abortController = new AbortController();
+      setProcessingUI(true);
 
       item.status = 'processing';
       item.error = null;
-      renderQueue();
-      updateStats();
+      renderQueue(); updateStats();
 
       const opts = {
         kwCount: parseInt($('kwCount').value) || 30,
@@ -2379,7 +2132,10 @@ ${structExample}
 
       try {
         const prompt = buildPrompt(opts);
-        const parsed = await callOpenRouterWithRetry(apiKey, prompt, item.dataUrl);
+        const parsed = await callAIWithFallback(prompt, item.dataUrl, abortController.signal);
+        const providerName = parsed.__provider || 'AI';
+        delete parsed.__provider; delete parsed.__model;
+        item.providerUsed = providerName;
         const lang = opts.lang;
         if (lang === 'both') {
           if (!parsed.en?.title && !parsed.id?.title) throw new Error('AI tidak menghasilkan title.');
@@ -2391,39 +2147,37 @@ ${structExample}
         item.expanded = false;
         item.retryCount++;
         saveToHistory({
-          id: genId('ms'),
-          ts: Date.now(),
-          preview: item.dataUrl,
-          fileName: item.fileName,
-          assetType: currentAssetType,
-          lang: lang,
-          results: parsed
+          id: genId('ms'), ts: Date.now(), preview: item.dataUrl, fileName: item.fileName,
+          assetType: currentAssetType, lang: lang, provider: providerName,
+          platform: opts.platform, results: parsed
         });
         showToast('Berhasil di-retry!', 'success');
       } catch (err) {
-        item.status = 'error';
-        item.error = err.message;
-        item.retryCount++;
-        showToast('Retry gagal: ' + err.message, 'error');
+        if (err.message === 'STOP_REQUESTED') {
+          item.status = 'pending';
+        } else {
+          item.status = 'error';
+          item.error = err.message;
+          item.retryCount++;
+          showToast('Retry gagal: ' + err.message, 'error');
+        }
       }
 
-      isProcessing = false;
-      btn.disabled = false;
-      renderQueue();
-      updateStats();
+      setProcessingUI(false);
+      renderQueue(); updateStats();
+      abortController = null;
+      stopRequested = false;
     }
-
-    $('btnRetryFailed').addEventListener('click', () => generateAll(true));
 
     $('btnClearQueue').addEventListener('click', () => {
       if (isProcessing) { showToast('Tidak bisa clear saat proses berjalan.', 'warning'); return; }
       if (!confirm('Hapus semua file dari antrian?')) return;
       currentItems = [];
-      renderQueue();
-      updateStats();
+      renderQueue(); updateStats();
       showToast('Antrian dibersihkan.', 'info');
     });
 
+    /* ============ COPY ============ */
     async function copyText(text) {
       try {
         if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -2438,19 +2192,25 @@ ${structExample}
       } catch (e) { showToast('Gagal menyalin.', 'error'); }
     }
 
+    /* ============ EXPORT ============ */
     $('btnExportCSV').addEventListener('click', exportCSV);
     $('btnExportJSON').addEventListener('click', exportJSON);
+    $('btnExportHistoryCSV').addEventListener('click', exportHistoryCSV);
+    $('btnExportHistoryJSON').addEventListener('click', exportHistoryJSON);
 
     function exportCSV() {
       const done = currentItems.filter(i => i.status === 'done' && i.result);
       if (!done.length) { showToast('Belum ada hasil untuk diexport.', 'warning'); return; }
       const lang = $('langSelect').value;
       const platform = $('platform').value;
+      doExportCSV(done, lang, platform);
+    }
 
+    function doExportCSV(items, lang, platform) {
       if (platform === 'freepik') {
-        exportCSVFreepik(done, lang);
+        exportCSVFreepik(items, lang);
       } else {
-        exportCSVStandard(done, lang);
+        exportCSVStandard(items, lang, platform);
       }
     }
 
@@ -2460,15 +2220,11 @@ ${structExample}
         const s = String(val).replace(/'/g, "''");
         return "'" + s + "'";
       }
-
       const userPrompt = $('extraDesc').value.trim();
-      const aiModel = 'MetaStock AI';
-
       const rows = [];
       items.forEach(item => {
         const r = item.result || {};
         let title = '', keywords = '', description = '';
-
         if (lang === 'both') {
           title = (r.en?.title || r.id?.title || '').trim();
           keywords = (r.en?.keywords || r.id?.keywords || []).join(',');
@@ -2478,25 +2234,19 @@ ${structExample}
           keywords = (r.keywords || []).join(',');
           description = (r.description || '').trim();
         }
-
         const prompt = userPrompt || description;
         const normalizedFilename = normalizeFreepikFilename(item.fileName);
-
         rows.push([
-          wrap(normalizedFilename),
-          wrap(title),
-          wrap(keywords),
-          wrap(prompt),
-          wrap(aiModel)
+          wrap(normalizedFilename), wrap(title), wrap(keywords), wrap(prompt), wrap('MetaStock AI')
         ].join(';'));
       });
-
       const csv = rows.join('\r\n');
+      // Freepik: NO BOM
       downloadFile(csv, 'freepik-metadata-' + new Date().toISOString().slice(0,10) + '.csv', 'text/csv', true);
-      showToast('CSV Freepik diexport (' + items.length + ' baris, tanpa BOM).', 'success');
+      showToast('CSV Freepik (' + items.length + ' baris, tanpa BOM).', 'success');
     }
 
-    function exportCSVStandard(items, lang) {
+    function exportCSVStandard(items, lang, platform) {
       function csvEscape(val) {
         if (val === null || val === undefined) return '';
         const s = String(val);
@@ -2504,40 +2254,85 @@ ${structExample}
         return s;
       }
 
+      const info = PLATFORM_INFO[platform] || PLATFORM_INFO.general;
       let header, rows;
-      if (lang === 'both') {
-        header = ['filename','asset_type','title_id','description_id','keywords_id','title_en','description_en','keywords_en'];
-        rows = items.map(item => {
-          const i = item.result.id || {};
-          const e = item.result.en || {};
-          return [
-            item.fileName,
-            currentAssetType,
-            i.title || '',
-            i.description || '',
-            (i.keywords || []).join(', '),
-            e.title || '',
-            e.description || '',
-            (e.keywords || []).join(', ')
-          ];
-        });
+
+      if (platform === 'shutterstock') {
+        if (lang === 'both') {
+          header = ['filename','description_id','keywords_id','description_en','keywords_en','categories','editorial','mature_content','illustration'];
+          rows = items.map(item => {
+            const i = item.result.id || {}; const e = item.result.en || {};
+            return [item.fileName, i.description || '', (i.keywords||[]).join(','), e.description || '', (e.keywords||[]).join(','), '', 'no', 'no', (currentAssetType==='vector'||currentAssetType==='illustration')?'yes':'no'];
+          });
+        } else {
+          header = ['filename','description','keywords','categories','editorial','mature_content','illustration'];
+          rows = items.map(item => {
+            const n = item.result || {};
+            return [item.fileName, n.description || '', (n.keywords||[]).join(','), '', 'no', 'no', (currentAssetType==='vector'||currentAssetType==='illustration')?'yes':'no'];
+          });
+        }
+      } else if (platform === 'adobe') {
+        if (lang === 'both') {
+          header = ['filename','title_id','keywords_id','title_en','keywords_en','category','releases'];
+          rows = items.map(item => {
+            const i = item.result.id || {}; const e = item.result.en || {};
+            return [item.fileName, i.title || '', (i.keywords||[]).join(','), e.title || '', (e.keywords||[]).join(','), '', ''];
+          });
+        } else {
+          header = ['filename','title','keywords','category','releases'];
+          rows = items.map(item => {
+            const n = item.result || {};
+            return [item.fileName, n.title || '', (n.keywords||[]).join(','), '', ''];
+          });
+        }
+      } else if (platform === 'istock') {
+        if (lang === 'both') {
+          header = ['filename','title_id','description_id','keywords_id','title_en','description_en','keywords_en'];
+          rows = items.map(item => {
+            const i = item.result.id || {}; const e = item.result.en || {};
+            return [item.fileName, i.title||'', i.description||'', (i.keywords||[]).join(','), e.title||'', e.description||'', (e.keywords||[]).join(',')];
+          });
+        } else {
+          header = ['filename','title','description','keywords'];
+          rows = items.map(item => {
+            const n = item.result || {};
+            return [item.fileName, n.title||'', n.description||'', (n.keywords||[]).join(',')];
+          });
+        }
+      } else if (platform === 'vecteezy') {
+        if (lang === 'both') {
+          header = ['filename','title_id','keywords_id','description_id','title_en','keywords_en','description_en'];
+          rows = items.map(item => {
+            const i = item.result.id || {}; const e = item.result.en || {};
+            return [item.fileName, i.title||'', (i.keywords||[]).join(','), i.description||'', e.title||'', (e.keywords||[]).join(','), e.description||''];
+          });
+        } else {
+          header = ['filename','title','keywords','description'];
+          rows = items.map(item => {
+            const n = item.result || {};
+            return [item.fileName, n.title||'', (n.keywords||[]).join(','), n.description||''];
+          });
+        }
       } else {
-        header = ['filename','asset_type','title','description','keywords'];
-        rows = items.map(item => {
-          const n = item.result || {};
-          return [
-            item.fileName,
-            currentAssetType,
-            n.title || '',
-            n.description || '',
-            (n.keywords || []).join(', ')
-          ];
-        });
+        // general
+        if (lang === 'both') {
+          header = ['filename','asset_type','title_id','description_id','keywords_id','title_en','description_en','keywords_en'];
+          rows = items.map(item => {
+            const i = item.result.id || {}; const e = item.result.en || {};
+            return [item.fileName, currentAssetType, i.title||'', i.description||'', (i.keywords||[]).join(', '), e.title||'', e.description||'', (e.keywords||[]).join(', ')];
+          });
+        } else {
+          header = ['filename','asset_type','title','description','keywords'];
+          rows = items.map(item => {
+            const n = item.result || {};
+            return [item.fileName, currentAssetType, n.title||'', n.description||'', (n.keywords||[]).join(', ')];
+          });
+        }
       }
 
       const csv = [header, ...rows].map(r => r.map(csvEscape).join(',')).join('\r\n');
-      downloadFile(csv, 'metastock-' + new Date().toISOString().slice(0,10) + '.csv', 'text/csv');
-      showToast('CSV Standard diexport (' + items.length + ' baris).', 'success');
+      downloadFile(csv, 'metastock-' + platform + '-' + new Date().toISOString().slice(0,10) + '.csv', 'text/csv');
+      showToast('CSV ' + info.name + ' (' + items.length + ' baris).', 'success');
     }
 
     function exportJSON() {
@@ -2546,11 +2341,43 @@ ${structExample}
       const payload = done.map(item => ({
         filename: item.fileName,
         asset_type: currentAssetType,
+        provider: item.providerUsed || null,
         results: item.result
       }));
       const json = JSON.stringify(payload, null, 2);
       downloadFile(json, 'metastock-' + new Date().toISOString().slice(0,10) + '.json', 'application/json');
       showToast('JSON diexport.', 'success');
+    }
+
+    function exportHistoryCSV() {
+      let history = [];
+      try { history = JSON.parse(localStorage.getItem(LS_HISTORY) || '[]'); } catch (e) {}
+      if (!history.length) { showToast('Riwayat kosong.', 'warning'); return; }
+      const platform = $('platform').value;
+      // Convert history items to shape compatible with export
+      const items = history.map(h => ({
+        fileName: h.fileName,
+        result: h.results
+      }));
+      const lang = $('langSelect').value;
+      doExportCSV(items, lang, platform);
+    }
+
+    function exportHistoryJSON() {
+      let history = [];
+      try { history = JSON.parse(localStorage.getItem(LS_HISTORY) || '[]'); } catch (e) {}
+      if (!history.length) { showToast('Riwayat kosong.', 'warning'); return; }
+      const payload = history.map(h => ({
+        filename: h.fileName,
+        asset_type: h.assetType,
+        platform: h.platform || null,
+        provider: h.provider || null,
+        ts: h.ts,
+        results: h.results
+      }));
+      const json = JSON.stringify(payload, null, 2);
+      downloadFile(json, 'metastock-history-' + new Date().toISOString().slice(0,10) + '.json', 'application/json');
+      showToast('JSON riwayat diexport.', 'success');
     }
 
     function downloadFile(content, filename, mimeType, skipBOM) {
@@ -2565,6 +2392,7 @@ ${structExample}
       URL.revokeObjectURL(url);
     }
 
+    /* ============ HISTORY ============ */
     function saveToHistory(item) {
       try {
         let h = JSON.parse(localStorage.getItem(LS_HISTORY) || '[]');
@@ -2581,6 +2409,9 @@ ${structExample}
       let history = [];
       try { history = JSON.parse(localStorage.getItem(LS_HISTORY) || '[]'); } catch (e) {}
       if (countEl) countEl.textContent = history.length;
+      $('btnExportHistoryCSV').disabled = history.length === 0;
+      $('btnExportHistoryJSON').disabled = history.length === 0;
+
       if (!history.length) {
         list.innerHTML = '<div class="history-empty"><i class="fas fa-inbox"></i><br>Belum ada riwayat.</div>';
         return;
@@ -2594,11 +2425,13 @@ ${structExample}
           ? (item.results?.en?.title || item.results?.id?.title || item.fileName)
           : (item.results?.title || item.fileName);
         const typeLabel = ASSET_HINTS[item.assetType]?.label || 'Photo';
+        const platformLabel = item.platform ? (PLATFORM_INFO[item.platform]?.name || '') : '';
+        const providerLabel = item.provider || '';
         div.innerHTML = `
           <div class="hi-thumb">${item.preview ? `<img src="${item.preview}" alt="" loading="lazy">` : '<i class="fas fa-image"></i>'}</div>
           <div class="hi-info">
             <div class="hi-title">${escHtml(preview)}</div>
-            <div class="hi-time">${timeAgo(item.ts)} · ${escHtml(typeLabel)}</div>
+            <div class="hi-time">${timeAgo(item.ts)} · ${escHtml(typeLabel)}${platformLabel ? ' · ' + escHtml(platformLabel) : ''}${providerLabel ? ' · ' + escHtml(providerLabel) : ''}</div>
           </div>
           <div class="hi-actions">
             <button title="Copy JSON" data-action="copy" data-id="${item.id}"><i class="fas fa-copy"></i></button>
