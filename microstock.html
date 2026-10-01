@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <link rel="apple-touch-icon" href="https://res.cloudinary.com/d39mdjct/image/upload/w_180,h_180,c_fit/v1783493763/apk_pgxcmo.png" />
   <title>MetaStock AI - Generator Metadata Microstock | Akino Store</title>
-  <meta name="description" content="Generate judul, deskripsi, dan keyword microstock profesional dengan AI multi-provider. Upload tanpa batas, auto-save cloud, export CSV.">
+  <meta name="description" content="Generate judul, deskripsi, dan keyword microstock profesional dengan AI multi-provider gratis. Upload tanpa batas, auto-save cloud, export CSV.">
   <link rel="canonical" href="https://akinocpm.my.id/metastock.html">
   <link rel="icon" href="https://res.cloudinary.com/d39mdjct/image/upload/v1783478697/icon_tnzy32.ico" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -424,11 +424,6 @@
       </div>
       <div class="provider-hint">Gratis · Pixtral vision</div>
       <div class="api-key-field">
-        <label><span><i class="fas fa-people-group"></i> Together AI</span><a href="https://api.together.xyz/settings/api-keys" target="_blank">Dapatkan →</a></label>
-        <input type="password" id="togetherKeyInput" placeholder="Tempel API Key Together" autocomplete="off">
-      </div>
-      <div class="provider-hint">Free credit · Llama Vision</div>
-      <div class="api-key-field">
         <label><span><i class="fas fa-route"></i> OpenRouter</span><a href="https://openrouter.ai/keys" target="_blank">Dapatkan →</a></label>
         <input type="password" id="openrouterKeyInput" placeholder="sk-or-v1-..." autocomplete="off">
       </div>
@@ -534,7 +529,6 @@
             <span class="provider-dot" data-provider="groq" title="Groq"></span>
             <span class="provider-dot" data-provider="gemini" title="Gemini"></span>
             <span class="provider-dot" data-provider="mistral" title="Mistral"></span>
-            <span class="provider-dot" data-provider="together" title="Together"></span>
             <span class="provider-dot" data-provider="openrouter" title="OpenRouter"></span>
           </span>
           <span style="margin-left:auto;font-size:0.65rem;"><i class="fas fa-cloud"></i> Auto-save ON</span>
@@ -650,20 +644,6 @@
         </div>
       </div>
 
-      <div class="provider-card" data-provider="together">
-        <div class="pc-head">
-          <div class="pc-title"><i class="fas fa-people-group"></i> Together AI</div>
-          <span class="pc-status missing" data-status>Belum diset</span>
-        </div>
-        <div class="pc-body">
-          <div class="key-list" data-key-list></div>
-          <div class="add-key-row">
-            <input type="password" data-new-key placeholder="Tempel API Key Together">
-            <button data-add>Tambah</button>
-          </div>
-        </div>
-      </div>
-
       <div class="provider-card" data-provider="openrouter">
         <div class="pc-head">
           <div class="pc-title"><i class="fas fa-route"></i> OpenRouter</div>
@@ -680,7 +660,7 @@
 
       <div style="margin-top:0.75rem;">
         <button id="btnValidateAllKeys" style="width:100%;padding:0.7rem;border-radius:10px;font-size:0.78rem;font-weight:600;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.25);color:#60a5fa;display:flex;align-items:center;justify-content:center;gap:0.4rem;cursor:pointer;margin-bottom:0.5rem;">
-          <i class="fas fa-shield-check"></i> Cek Semua Key (Test Validity)
+          <i class="fas fa-shield-halved"></i> Cek Semua Key (Test Validity)
         </button>
         <button id="btnClearAllKeys" style="width:100%;padding:0.7rem;border-radius:10px;font-size:0.78rem;font-weight:600;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);color:#f87171;display:flex;align-items:center;justify-content:center;gap:0.4rem;cursor:pointer;">
           <i class="fas fa-broom"></i> Hapus Semua API Key
@@ -722,6 +702,8 @@
   <div class="toast-container" id="toastContainer"></div>
 
   <script>
+    const DAY_MS = 24 * 60 * 60 * 1000;
+
     const PROVIDERS = {
       groq: {
         id: 'groq', name: 'Groq',
@@ -737,8 +719,8 @@
         endpoint: 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',
         modelsEndpoint: 'https://generativelanguage.googleapis.com/v1beta/openai/models',
         keyPrefix: '',
-        rateLimitCooldown: 5 * 60 * 1000,
-        invalidCooldown: 60 * 60 * 1000,
+        rateLimitCooldown: DAY_MS,
+        invalidCooldown: DAY_MS,
         models: ['gemini-3.8-flash', 'gemini-2.5-flash', 'gemini-3-flash-preview', 'gemini-2.5-flash-lite']
       },
       mistral: {
@@ -746,47 +728,32 @@
         endpoint: 'https://api.mistral.ai/v1/chat/completions',
         modelsEndpoint: 'https://api.mistral.ai/v1/models',
         keyPrefix: '',
-        rateLimitCooldown: 5 * 60 * 1000,
-        invalidCooldown: 60 * 60 * 1000,
+        rateLimitCooldown: DAY_MS,
+        invalidCooldown: DAY_MS,
         models: ['pixtral-large-latest', 'pixtral-12b-2409']
-      },
-      together: {
-        id: 'together', name: 'Together AI',
-        endpoint: 'https://api.together.xyz/v1/chat/completions',
-        modelsEndpoint: 'https://api.together.xyz/v1/models',
-        keyPrefix: '',
-        rateLimitCooldown: 5 * 60 * 1000,
-        invalidCooldown: 60 * 60 * 1000,
-        models: [
-          'meta-llama/Llama-3.2-11B-Vision-Instruct-Turbo',
-          'meta-llama/Llama-Vision-Free',
-          'meta-llama/Llama-4-Scout-17B-16E-Instruct'
-        ]
       },
       openrouter: {
         id: 'openrouter', name: 'OpenRouter',
         endpoint: 'https://openrouter.ai/api/v1/chat/completions',
         modelsEndpoint: 'https://openrouter.ai/api/v1/key',
         keyPrefix: 'sk-or-',
-        rateLimitCooldown: 5 * 60 * 1000,
-        invalidCooldown: 60 * 60 * 1000,
+        rateLimitCooldown: DAY_MS,
+        invalidCooldown: DAY_MS,
         models: ['openrouter/free']
       }
     };
-    const PROVIDER_ORDER = ['groq', 'gemini', 'mistral', 'together', 'openrouter'];
+    const PROVIDER_ORDER = ['groq', 'gemini', 'mistral', 'openrouter'];
     const LS_KEYS = {
+      groq: 'akino_groq_api_keys_v4',
+      gemini: 'akino_gemini_api_keys_v4',
+      mistral: 'akino_mistral_api_keys_v4',
+      openrouter: 'akino_openrouter_api_keys_v4'
+    };
+    const LS_KEYS_LEGACY = {
       groq: 'akino_groq_api_keys_v3',
       gemini: 'akino_gemini_api_keys_v3',
       mistral: 'akino_mistral_api_keys_v3',
-      together: 'akino_together_api_keys_v3',
       openrouter: 'akino_openrouter_api_keys_v3'
-    };
-    const LS_KEYS_LEGACY = {
-      groq: 'akino_groq_api_keys_v2',
-      gemini: 'akino_gemini_api_keys_v2',
-      mistral: 'akino_mistral_api_key',
-      together: 'akino_together_api_key',
-      openrouter: 'akino_openrouter_api_keys_v2'
     };
     const LS_SETTINGS = 'akino_metastock_settings';
     const LS_PAGE_SIZE = 'akino_metastock_pagesize';
@@ -809,10 +776,29 @@
       editorial:{label:'Editorial',context:'EDITORIAL. Focus: editorial, news, journalism, documentary, reportage, candid.',titleHint:'Title factual newsworthy.'}
     };
 
+    const SHUTTERSTOCK_CATEGORIES = ['Abstract','Animals/Wildlife','The Arts','Backgrounds/Textures','Beauty/Fashion','Buildings/Landmarks','Business/Finance','Celebrities','Education','Food and Drink','Healthcare/Medical','Holidays','Industrial','Interiors','Miscellaneous','Nature','Objects','Parks/Outdoor','People','Religion','Science','Signs/Symbols','Sports/Recreation','Technology','Transportation','Vintage'];
+
+    function validateSsCategories(cats){
+      if(!cats||!cats.length)return[];
+      return cats.filter(c=>SHUTTERSTOCK_CATEGORIES.includes(c));
+    }
+
+    function defaultSsCategory(assetType){
+      const map={
+        photo:['Nature','Objects'],
+        vector:['Abstract','Signs/Symbols'],
+        illustration:['The Arts','Abstract'],
+        video:['Miscellaneous','Nature'],
+        '3d':['Technology','Abstract'],
+        editorial:['Miscellaneous','People']
+      };
+      return map[assetType]||['Miscellaneous'];
+    }
+
     const PLATFORM_INFO = {
       general:{name:'General',icon:'fa-globe',fields:['filename','asset_type','title','description','keywords']},
       freepik:{name:'Freepik',icon:'fa-palette',fields:['filename','title','keywords','prompt','ai_model']},
-      shutterstock:{name:'Shutterstock',icon:'fa-camera-retro',fields:['filename','description','keywords','categories','editorial','mature_content','illustration']},
+      shutterstock:{name:'Shutterstock',icon:'fa-camera-retro',fields:['Filename','Description','Keywords','Categories','Editorial','Mature content','illustration']},
       adobe:{name:'Adobe Stock',icon:'fa-bezier-curve',fields:['filename','title','keywords','category','releases']},
       istock:{name:'iStock / Getty',icon:'fa-images',fields:['filename','title','description','keywords']},
       vecteezy:{name:'Vecteezy',icon:'fa-vector-square',fields:['filename','title','keywords','description']}
@@ -893,7 +879,7 @@
       if(!k.lastFailAt)return false;
       const provider=PROVIDERS[pid];
       if(k.failReason==='invalid'){
-        const cooldown=provider&&provider.invalidCooldown?provider.invalidCooldown:(60*60*1000);
+        const cooldown=provider&&provider.invalidCooldown?provider.invalidCooldown:DAY_MS;
         return (Date.now()-k.lastFailAt)<cooldown;
       }
       const cooldown=provider&&provider.rateLimitCooldown?provider.rateLimitCooldown:(5*60*1000);
@@ -905,6 +891,15 @@
       const limited=keys.filter(k=>isKeyRateLimited(k,pid));
       return ready.length>0?ready:keys;
     }
+    function allProvidersExhausted(){
+      const active=getActiveProviders();
+      if(active.length===0)return false;
+      return active.every(pid=>{
+        const keys=getKeys(pid);
+        if(keys.length===0)return true;
+        return keys.every(k=>isKeyRateLimited(k,pid));
+      });
+    }
 
     function showToast(message,type='info'){
       const c=$('toastContainer');const t=document.createElement('div');
@@ -912,7 +907,7 @@
       const icons={info:'fa-info-circle',success:'fa-check-circle',error:'fa-exclamation-circle',warning:'fa-triangle-exclamation'};
       t.innerHTML=`<i class="fas ${icons[type]||icons.info}"></i> <span>${escHtml(message)}</span>`;
       c.appendChild(t);
-      setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(40px) scale(0.9)';setTimeout(()=>t.remove(),300);},4200);
+      setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(40px) scale(0.9)';setTimeout(()=>t.remove(),300);},5000);
     }
 
     async function uploadToCloudinary(dataUrl){
@@ -1083,12 +1078,7 @@
       if(!key)throw new Error('API Key kosong.');
       if(p.keyPrefix&&!key.startsWith(p.keyPrefix))throw new Error('Format '+p.name+' harus diawali "'+p.keyPrefix+'".');
       try{
-        const headers={};
-        if(p.modelsEndpoint.includes('generativelanguage')){
-          headers['Authorization']='Bearer '+key;
-        }else{
-          headers['Authorization']='Bearer '+key;
-        }
+        const headers={'Authorization':'Bearer '+key};
         const res=await fetch(p.modelsEndpoint,{method:'GET',headers});
         if(!res.ok){
           if(res.status===401||res.status===403)throw new Error(p.name+': API Key tidak valid.');
@@ -1106,7 +1096,6 @@
         groq:$('groqKeyInput').value.trim(),
         gemini:$('geminiKeyInput').value.trim(),
         mistral:$('mistralKeyInput').value.trim(),
-        together:$('togetherKeyInput').value.trim(),
         openrouter:$('openrouterKeyInput').value.trim()
       };
       const filled=Object.keys(inputs).filter(k=>inputs[k]);
@@ -1120,7 +1109,7 @@
       }
       btn.disabled=false;btn.innerHTML='<i class="fas fa-check"></i> Simpan & Lanjut';
       if(saved.length===0){errEl.textContent=errors.join(' | ');errEl.style.display='block';return;}
-      ['groqKeyInput','geminiKeyInput','mistralKeyInput','togetherKeyInput','openrouterKeyInput'].forEach(id=>{const el=$(id);if(el)el.value='';});
+      ['groqKeyInput','geminiKeyInput','mistralKeyInput','openrouterKeyInput'].forEach(id=>{const el=$(id);if(el)el.value='';});
       showToast('Tersimpan: '+saved.join(', '),'success');
       showGate('main');
       loadSettings();updateApiStatus();
@@ -1153,15 +1142,15 @@
           listEl.innerHTML=keys.map(k=>{
             let sClass='ready',sLabel='Ready',cardClass='';
             if(k.failReason==='invalid'){sClass='invalid';sLabel='Invalid';cardClass='invalid';}
-            else if(isKeyRateLimited(k,pid)){sClass='limited';sLabel='Rate Limited';cardClass='rate-limited';}
-            const meta=k.lastFailAt?'Gagal: '+new Date(k.lastFailAt).toLocaleTimeString('id-ID'):'Ditambah: '+new Date(k.addedAt).toLocaleDateString('id-ID');
+            else if(isKeyRateLimited(k,pid)){sClass='limited';sLabel='Limit';cardClass='rate-limited';}
+            const meta=k.lastFailAt?'Gagal: '+new Date(k.lastFailAt).toLocaleString('id-ID'):'Ditambah: '+new Date(k.addedAt).toLocaleDateString('id-ID');
             return `<div class="key-item ${cardClass}">
               <div class="ki-info">
                 <div class="ki-masked">${escHtml(maskApiKey(k.key))}</div>
                 <div class="ki-meta">${meta}</div>
               </div>
               <span class="ki-status ${sClass}">${sLabel}</span>
-              <button class="ki-check" data-check-key="${k.id}" title="Cek validitas"><i class="fas fa-shield-check"></i></button>
+              <button class="ki-check" data-check-key="${k.id}" title="Cek validitas"><i class="fas fa-shield-halved"></i></button>
               <button class="ki-remove" data-remove-key="${k.id}" title="Hapus"><i class="fas fa-times"></i></button>
             </div>`;
           }).join('');
@@ -1260,7 +1249,7 @@
       Object.values(LS_KEYS).forEach(k=>localStorage.removeItem(k));
       Object.values(LS_KEYS_LEGACY).forEach(k=>localStorage.removeItem(k));
       document.querySelectorAll('.provider-card [data-new-key]').forEach(inp=>inp.value='');
-      ['groqKeyInput','geminiKeyInput','mistralKeyInput','togetherKeyInput','openrouterKeyInput'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+      ['groqKeyInput','geminiKeyInput','mistralKeyInput','openrouterKeyInput'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
       renderProviderCards();updateApiStatus();
       showToast('Semua API Key dihapus.','success');
     });
@@ -1752,7 +1741,11 @@
       const kwStrComma=keywords.join(',');
       const userPrompt=$('extraDesc').value.trim();
       if(platform==='freepik')return[normalizeFreepikFilename(item.fileName),title,kwStrComma,userPrompt||description,'MetaStock AI'];
-      if(platform==='shutterstock')return[item.fileName,description,kwStrComma,'','no','no',(item.assetType==='vector'||item.assetType==='illustration')?'yes':'no'];
+      if(platform==='shutterstock'){
+        let ssCats=validateSsCategories(r.categories||r.en?.categories||r.id?.categories||[]);
+        if(!ssCats.length)ssCats=defaultSsCategory(item.assetType||currentAssetType);
+        return[item.fileName,description,kwStrComma,ssCats.join(','),'no','no',(item.assetType==='vector'||item.assetType==='illustration')?'yes':'no'];
+      }
       if(platform==='adobe')return[item.fileName,title,kwStrComma,'',''];
       if(platform==='istock')return[item.fileName,title,description,kwStr];
       if(platform==='vecteezy')return[item.fileName,title,kwStrComma,description];
@@ -1806,6 +1799,19 @@
         const tid=`t-${item.id}-${code}`;
         const did=`d-${item.id}-${code}`;
         const kid=`k-${item.id}-${code}`;
+        const cats=(node.categories||[]).filter(Boolean);
+        const cid=`c-${item.id}-${code}`;
+        let catBlock='';
+        if(platform==='shutterstock'&&cats.length){
+          catBlock=`
+            <div class="result-row">
+              <div class="result-row-head">
+                <div class="result-row-label">${langLabel} · Categories<span class="char-count">${cats.length} kategori</span></div>
+                <div class="result-row-actions"><button class="btn-copy-xs" data-copy-target="${cid}"><i class="fas fa-copy"></i> Copy</button></div>
+              </div>
+              <div class="keywords-chips" id="${cid}">${cats.map(k=>`<span class="kw-chip">${escHtml(k)}</span>`).join('')}</div>
+            </div>`;
+        }
         blocks.push(`
           <div class="result-row">
             <div class="result-row-head">
@@ -1830,7 +1836,8 @@
               </div>
             </div>
             <div class="keywords-chips" id="${kid}">${kws.map(k=>`<span class="kw-chip">${escHtml(k)}</span>`).join('')||'-'}</div>
-          </div>`);
+          </div>
+          ${catBlock}`);
       });
       return blocks.join('');
     }
@@ -1852,6 +1859,9 @@
         lines.push('Title: '+(node.title||''));
         lines.push('Description: '+(node.description||''));
         lines.push('Keywords: '+(node.keywords||[]).join(', '));
+        if(platform==='shutterstock'&&node.categories&&node.categories.length){
+          lines.push('Categories: '+node.categories.join(', '));
+        }
         lines.push('');
       });
       return lines.join('\n').trim();
@@ -1977,32 +1987,39 @@
       if(activeProviders.length===0)throw new Error('Tidak ada API Key aktif.');
       let lastErr=null;
 
-      // Cycle 1: semua provider secara berurutan
       for(const pid of activeProviders){
         if(stopRequested)throw new Error('STOP_REQUESTED');
         try{
-          const result=await tryProvider(pid,prompt,imageDataUrl,signal);
-          return result;
+          return await tryProvider(pid,prompt,imageDataUrl,signal);
         }catch(err){
           if(err.message==='STOP_REQUESTED')throw err;
           lastErr=err;
         }
       }
 
-      // Cycle 2: reset rate_limit Groq, tunggu, coba Groq lagi
       if(activeProviders.includes('groq')&&!stopRequested){
-        console.log('🔄 Cycle 2: reset Groq rate_limit & retry setelah '+Math.round(GROQ_RETRY_DELAY/1000)+'s');
-        resetProviderRateLimits('groq');
-        await sleep(GROQ_RETRY_DELAY);
-        if(stopRequested)throw new Error('STOP_REQUESTED');
-        try{
-          const result=await tryProvider('groq',prompt,imageDataUrl,signal);
-          console.log('✅ Cycle 2 sukses via Groq');
-          return result;
-        }catch(err){
-          if(err.message==='STOP_REQUESTED')throw err;
-          lastErr=err;
+        const groqKeys=getKeys('groq');
+        const allGroqLimited=groqKeys.length>0&&groqKeys.every(k=>isKeyRateLimited(k,'groq'));
+        if(allGroqLimited){
+          console.log('🔄 Cycle 2: reset Groq rate_limit & retry setelah '+Math.round(GROQ_RETRY_DELAY/1000)+'s');
+          resetProviderRateLimits('groq');
+          await sleep(GROQ_RETRY_DELAY);
+          if(stopRequested)throw new Error('STOP_REQUESTED');
+          try{
+            const result=await tryProvider('groq',prompt,imageDataUrl,signal);
+            console.log('✅ Cycle 2 sukses via Groq');
+            return result;
+          }catch(err){
+            if(err.message==='STOP_REQUESTED')throw err;
+            lastErr=err;
+          }
         }
+      }
+
+      if(allProvidersExhausted()){
+        const err=new Error('LIMIT_REACHED');
+        err.limitReached=true;
+        throw err;
       }
 
       throw new Error('Semua provider gagal: '+(lastErr?.message||'unknown'));
@@ -2022,9 +2039,13 @@
       const themeHint=extraDesc?`\n7. Extra context: "${extraDesc}"`:'';
       const langInstr=lang==='both'?'5. Output language: BOTH Indonesian and English. Use "id" and "en" keys.':
         lang==='id'?'5. Output language: Indonesian.':'5. Output language: English.';
+      const wantCategories=platform==='shutterstock';
+      const categoryInstr=wantCategories
+        ?`\n8. CATEGORIES (Shutterstock only): Pick 1-2 categories from this list ONLY, comma-separated inside a "categories" array: ${SHUTTERSTOCK_CATEGORIES.join(', ')}.`
+        :'';
       const structExample=lang==='both'
-        ?`{\n  "id": { "title": "...", "description": "...", "keywords": ["...", "..."] },\n  "en": { "title": "...", "description": "...", "keywords": ["...", "..."] }\n}`
-        :`{\n  "${lang}": { "title": "...", "description": "...", "keywords": ["...", "..."] }\n}`;
+        ?`{\n  "id": { "title": "...", "description": "...", "keywords": ["...", "..."], "categories": ["..."] },\n  "en": { "title": "...", "description": "...", "keywords": ["...", "..."], "categories": ["..."] }\n}`
+        :`{\n  "${lang}": { "title": "...", "description": "...", "keywords": ["...", "..."], "categories": ["..."] }\n}`;
       return `You are a professional microstock metadata expert. Create SEO-friendly metadata for platforms like ${platformHint}
 
 ASSET TYPE: ${assetHint.label}
@@ -2036,7 +2057,7 @@ INSTRUCTIONS:
 3. DESCRIPTION: 1-2 sentences contextual, commercial-friendly.
 4. KEYWORDS: exactly ${kwCount} high-quality keywords (mix single & multi-word), no duplicates. Keywords in English.
 ${langInstr}
-6. Auto-detected type: ${assetHint.label}.${themeHint}
+6. Auto-detected type: ${assetHint.label}.${themeHint}${categoryInstr}
 
 CRITICAL OUTPUT RULES:
 - Return ONLY valid JSON. NO explanations, NO markdown.
@@ -2074,7 +2095,11 @@ CRITICAL OUTPUT RULES:
       else if(typeof k==='string')keywords=k.split(/[\s,]+/).map(x=>x.replace(/^#/,'').trim()).filter(Boolean);
       const seen=new Set();
       keywords=keywords.filter(x=>{const key=x.toLowerCase();if(seen.has(key))return false;seen.add(key);return true;});
-      return{title:String(node.title||'').trim(),description:String(node.description||'').trim(),keywords};
+      let categories=[];
+      const c=node.categories||node.category||[];
+      if(Array.isArray(c))categories=c.map(x=>String(x).trim()).filter(Boolean);
+      else if(typeof c==='string')categories=c.split(',').map(x=>x.trim()).filter(Boolean);
+      return{title:String(node.title||'').trim(),description:String(node.description||'').trim(),keywords,categories};
     }
 
     $('btnGenerate').addEventListener('click',()=>generateAll(false));
@@ -2101,6 +2126,11 @@ CRITICAL OUTPUT RULES:
       const activeProviders=getActiveProviders();
       if(activeProviders.length===0){showToast('Belum ada API Key.','error');showGate('apiKey');return;}
 
+      if(allProvidersExhausted()){
+        showToast('Semua API Key sudah mencapai limit. Tambah key baru atau tunggu reset besok.','warning');
+        return;
+      }
+
       const targets=onlyFailed
         ?currentItems.filter(i=>i.status==='error')
         :currentItems.filter(i=>i.status==='pending'||i.status==='error');
@@ -2125,7 +2155,7 @@ CRITICAL OUTPUT RULES:
         lang:$('langSelect').value
       };
 
-      let success=0,fail=0,stopped=false;
+      let success=0,fail=0,stopped=false,limitHit=false;
 
       for(let i=0;i<targets.length;i++){
         if(stopRequested){stopped=true;break;}
@@ -2160,6 +2190,14 @@ CRITICAL OUTPUT RULES:
           await saveItemToFirestore(item);
         }catch(err){
           if(err.message==='STOP_REQUESTED'||stopRequested){stopped=true;break;}
+          if(err.limitReached){
+            item.status='error';
+            item.error='Limit semua provider tercapai';
+            fail++;
+            if(item.firestoreId)await saveItemToFirestore(item);
+            limitHit=true;
+            break;
+          }
           console.error('Error ['+item.fileName+']:',err);
           item.status='error';
           item.error=err.message||'Error.';
@@ -2169,18 +2207,20 @@ CRITICAL OUTPUT RULES:
 
         renderQueue();updateStats();
         showProgress(i+1,targets.length,item.fileName);
-        if(i<targets.length-1&&!stopRequested)await sleep(DELAY_BETWEEN_REQUESTS);
+        if(i<targets.length-1&&!stopRequested&&!limitHit)await sleep(DELAY_BETWEEN_REQUESTS);
       }
 
       let totalFixed=0;
-      if(!stopped){
+      if(!stopped&&!limitHit){
         for(let round=1;round<=MAX_RETRY_ROUNDS;round++){
           if(stopRequested)break;
+          if(allProvidersExhausted()){limitHit=true;break;}
           const errors=currentItems.filter(i=>i.status==='error'&&i.retryCount<round);
           if(!errors.length)break;
           showToast('Auto-retry round '+round+': '+errors.length+' file...','info');
           for(let i=0;i<errors.length;i++){
             if(stopRequested){stopped=true;break;}
+            if(allProvidersExhausted()){limitHit=true;break;}
             const item=errors[i];
             item.retryCount=round;
             item.status='processing';
@@ -2209,14 +2249,15 @@ CRITICAL OUTPUT RULES:
               await saveItemToFirestore(item);
             }catch(err){
               if(err.message==='STOP_REQUESTED'||stopRequested){stopped=true;break;}
+              if(err.limitReached){limitHit=true;break;}
               item.status='error';
               item.error=err.message;
               if(item.firestoreId)await saveItemToFirestore(item);
             }
             renderQueue();updateStats();
-            if(i<errors.length-1&&!stopRequested)await sleep(DELAY_BETWEEN_REQUESTS);
+            if(i<errors.length-1&&!stopRequested&&!limitHit)await sleep(DELAY_BETWEEN_REQUESTS);
           }
-          if(stopped)break;
+          if(stopped||limitHit)break;
         }
       }
 
@@ -2225,8 +2266,11 @@ CRITICAL OUTPUT RULES:
       renderQueue();updateStats();
 
       const remainingErr=currentItems.filter(i=>i.status==='error').length;
-      if(stopped)showToast('Dihentikan. '+success+' selesai, '+remainingErr+' gagal.','warning');
-      else{
+      if(limitHit){
+        showToast('⚠️ Semua API Key sudah mencapai limit. Proses dihentikan. Tambah key baru atau tunggu reset besok.', 'warning');
+      }else if(stopped){
+        showToast('Dihentikan. '+success+' selesai, '+remainingErr+' gagal.','warning');
+      }else{
         let msg='Selesai! '+success+' berhasil';
         if(totalFixed>0)msg+=', '+totalFixed+' di-retry';
         if(remainingErr>0)msg+=', '+remainingErr+' masih gagal';
@@ -2246,6 +2290,11 @@ CRITICAL OUTPUT RULES:
       if(!item)return;
       const activeProviders=getActiveProviders();
       if(activeProviders.length===0){showToast('Belum ada API Key.','error');return;}
+
+      if(allProvidersExhausted()){
+        showToast('Semua API Key sudah mencapai limit. Tambah key baru atau tunggu reset besok.','warning');
+        return;
+      }
 
       stopRequested=false;
       abortController=new AbortController();
@@ -2285,7 +2334,12 @@ CRITICAL OUTPUT RULES:
         showToast(isRegenerate?'Berhasil regenerate!':'Berhasil di-retry!','success');
       }catch(err){
         if(err.message==='STOP_REQUESTED'){item.status='pending';}
-        else{
+        else if(err.limitReached){
+          item.status='error';
+          item.error='Limit semua provider tercapai';
+          if(item.firestoreId)await saveItemToFirestore(item);
+          showToast('⚠️ Semua API Key sudah mencapai limit. Tambah key baru atau tunggu reset besok.','warning');
+        }else{
           item.status='error';
           item.error=err.message;
           item.retryCount++;
@@ -2386,13 +2440,24 @@ CRITICAL OUTPUT RULES:
       const info=PLATFORM_INFO[platform]||PLATFORM_INFO.general;
       let header,rows;
       if(platform==='shutterstock'){
-        if(lang==='both'){
-          header=['filename','description_id','keywords_id','description_en','keywords_en','categories','editorial','mature_content','illustration'];
-          rows=items.map(item=>{const i=item.result.id||{};const e=item.result.en||{};return[item.fileName,i.description||'',(i.keywords||[]).join(','),e.description||'',(e.keywords||[]).join(','),'','no','no',(item.assetType==='vector'||item.assetType==='illustration')?'yes':'no'];});
-        }else{
-          header=['filename','description','keywords','categories','editorial','mature_content','illustration'];
-          rows=items.map(item=>{const n=item.result||{};return[item.fileName,n.description||'',(n.keywords||[]).join(','),'','no','no',(item.assetType==='vector'||item.assetType==='illustration')?'yes':'no'];});
-        }
+        header=['Filename','Description','Keywords','Categories','Editorial','Mature content','illustration'];
+        rows=items.map(item=>{
+          const node=lang==='both'?(item.result.en||item.result.id||{}):(item.result||{});
+          const desc=node.description||'';
+          const kws=(node.keywords||[]).join(',');
+          let ssCats=validateSsCategories(node.categories||[]);
+          if(!ssCats.length)ssCats=defaultSsCategory(item.assetType||currentAssetType);
+          const cats=ssCats.join(',');
+          return [
+            item.fileName,
+            desc,
+            kws,
+            cats,
+            'no',
+            'no',
+            (item.assetType==='vector'||item.assetType==='illustration')?'yes':'no'
+          ];
+        });
       }else if(platform==='adobe'){
         if(lang==='both'){
           header=['filename','title_id','keywords_id','title_en','keywords_en','category','releases'];
