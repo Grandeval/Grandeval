@@ -766,6 +766,7 @@
     const MAX_RETRY_ROUNDS = 2;
     const PROCESS_TIMEOUT = 5 * 60 * 1000;
     const GROQ_RETRY_DELAY = 15000;
+    const ADOBE_MAX_KEYWORDS = 49;
 
     const ASSET_HINTS = {
       photo:{label:'Photo',context:'PHOTOGRAPH. Focus keywords on: subject, lighting, composition, mood, colors, season, location, photo-technical terms.',titleHint:'Natural descriptive title as photographer.'},
@@ -795,11 +796,40 @@
       return map[assetType]||['Miscellaneous'];
     }
 
+    const ADOBE_CATEGORIES = {
+      1:'Animals',2:'Buildings and Architecture',3:'Business',4:'Drinks',5:'The Environment',
+      6:'States of Mind',7:'Food',8:'Graphic Resources',9:'Hobbies and Leisure',10:'Industry',
+      11:'Landscapes',12:'Lifestyle',13:'People',14:'Plants and Flowers',15:'Culture and Religion',
+      16:'Science',17:'Social Issues',18:'Sports',19:'Technology',20:'Transport',21:'Travel'
+    };
+
+    function validateAdobeCategory(num){
+      const n=parseInt(num,10);
+      if(!n||n<1||n>21)return null;
+      return n;
+    }
+
+    function defaultAdobeCategory(assetType){
+      const map={
+        photo:'12',
+        vector:'8',
+        illustration:'8',
+        video:'12',
+        '3d':'8',
+        editorial:'17'
+      };
+      return map[assetType]||'12';
+    }
+
+    function getAdobeCategoryName(num){
+      return ADOBE_CATEGORIES[parseInt(num,10)]||'-';
+    }
+
     const PLATFORM_INFO = {
       general:{name:'General',icon:'fa-globe',fields:['filename','asset_type','title','description','keywords']},
       freepik:{name:'Freepik',icon:'fa-palette',fields:['filename','title','keywords','prompt','ai_model']},
       shutterstock:{name:'Shutterstock',icon:'fa-camera-retro',fields:['Filename','Description','Keywords','Categories','Editorial','Mature content','illustration']},
-      adobe:{name:'Adobe Stock',icon:'fa-bezier-curve',fields:['filename','title','keywords','category','releases']},
+      adobe:{name:'Adobe Stock',icon:'fa-bezier-curve',fields:['Filename','Title','Keywords','Category','Releases']},
       istock:{name:'iStock / Getty',icon:'fa-images',fields:['filename','title','description','keywords']},
       vecteezy:{name:'Vecteezy',icon:'fa-vector-square',fields:['filename','title','keywords','description']}
     };
@@ -1746,7 +1776,14 @@
         if(!ssCats.length)ssCats=defaultSsCategory(item.assetType||currentAssetType);
         return[item.fileName,description,kwStrComma,ssCats.join(','),'no','no',(item.assetType==='vector'||item.assetType==='illustration')?'yes':'no'];
       }
-      if(platform==='adobe')return[item.fileName,title,kwStrComma,'',''];
+      if(platform==='adobe'){
+        const node=lang==='both'?(r.en||r.id||{}):(r);
+        const catRaw=node.category||r.category||'';
+        const cat=validateAdobeCategory(catRaw);
+        const finalCat=cat?String(cat):defaultAdobeCategory(item.assetType||currentAssetType);
+        const adobeKw=keywords.slice(0,ADOBE_MAX_KEYWORDS).join(', ');
+        return[item.fileName,title,adobeKw,finalCat,''];
+      }
       if(platform==='istock')return[item.fileName,title,description,kwStr];
       if(platform==='vecteezy')return[item.fileName,title,kwStrComma,description];
       return[item.fileName,item.assetType||currentAssetType,title,description,kwStr];
@@ -1812,6 +1849,22 @@
               <div class="keywords-chips" id="${cid}">${cats.map(k=>`<span class="kw-chip">${escHtml(k)}</span>`).join('')}</div>
             </div>`;
         }
+        let adobeCatBlock='';
+        if(platform==='adobe'){
+          const catRaw=node.category||r.category||'';
+          const cat=validateAdobeCategory(catRaw);
+          const finalCat=cat?String(cat):defaultAdobeCategory(item.assetType||currentAssetType);
+          const catName=getAdobeCategoryName(finalCat);
+          const acid=`ac-${item.id}-${code}`;
+          adobeCatBlock=`
+            <div class="result-row">
+              <div class="result-row-head">
+                <div class="result-row-label">${langLabel} · Category<span class="char-count">${escHtml(catName)} (${finalCat})</span></div>
+                <div class="result-row-actions"><button class="btn-copy-xs" data-copy-target="${acid}"><i class="fas fa-copy"></i> Copy</button></div>
+              </div>
+              <div class="result-row-content" id="${acid}">${escHtml(catName+' ('+finalCat+')')}</div>
+            </div>`;
+        }
         blocks.push(`
           <div class="result-row">
             <div class="result-row-head">
@@ -1837,7 +1890,7 @@
             </div>
             <div class="keywords-chips" id="${kid}">${kws.map(k=>`<span class="kw-chip">${escHtml(k)}</span>`).join('')||'-'}</div>
           </div>
-          ${catBlock}`);
+          ${catBlock}${adobeCatBlock}`);
       });
       return blocks.join('');
     }
@@ -1861,6 +1914,12 @@
         lines.push('Keywords: '+(node.keywords||[]).join(', '));
         if(platform==='shutterstock'&&node.categories&&node.categories.length){
           lines.push('Categories: '+node.categories.join(', '));
+        }
+        if(platform==='adobe'){
+          const catRaw=node.category||r.category||'';
+          const cat=validateAdobeCategory(catRaw);
+          const finalCat=cat?String(cat):defaultAdobeCategory(item.assetType||currentAssetType);
+          lines.push('Category: '+getAdobeCategoryName(finalCat)+' ('+finalCat+')');
         }
         lines.push('');
       });
@@ -2030,7 +2089,7 @@
         general:'Shutterstock, Adobe Stock, Freepik, iStock.',
         freepik:'Freepik (title max 100 chars, max 50 keywords).',
         shutterstock:'Shutterstock (title max 200, 7-50 keywords).',
-        adobe:'Adobe Stock (title max 70, max 49 keywords).',
+        adobe:'Adobe Stock (title max 200 chars, max 49 keywords).',
         istock:'iStock/Getty (descriptive title).',
         vecteezy:'Vecteezy (title max 100).'
       };
@@ -2039,13 +2098,17 @@
       const themeHint=extraDesc?`\n7. Extra context: "${extraDesc}"`:'';
       const langInstr=lang==='both'?'5. Output language: BOTH Indonesian and English. Use "id" and "en" keys.':
         lang==='id'?'5. Output language: Indonesian.':'5. Output language: English.';
-      const wantCategories=platform==='shutterstock';
-      const categoryInstr=wantCategories
-        ?`\n8. CATEGORIES (Shutterstock only): Pick 1-2 categories from this list ONLY, comma-separated inside a "categories" array: ${SHUTTERSTOCK_CATEGORIES.join(', ')}.`
-        :'';
+      const wantSsCats=platform==='shutterstock';
+      const wantAdobeCat=platform==='adobe';
+      let categoryInstr='';
+      if(wantSsCats){
+        categoryInstr=`\n8. CATEGORIES (Shutterstock only): Pick 1-2 categories from this list ONLY, comma-separated inside a "categories" array: ${SHUTTERSTOCK_CATEGORIES.join(', ')}.`;
+      }else if(wantAdobeCat){
+        categoryInstr=`\n8. CATEGORY (Adobe Stock only): Pick ONE most suitable category NUMBER (1-21) from this list: 1=Animals, 2=Buildings and Architecture, 3=Business, 4=Drinks, 5=The Environment, 6=States of Mind, 7=Food, 8=Graphic Resources, 9=Hobbies and Leisure, 10=Industry, 11=Landscapes, 12=Lifestyle, 13=People, 14=Plants and Flowers, 15=Culture and Religion, 16=Science, 17=Social Issues, 18=Sports, 19=Technology, 20=Transport, 21=Travel. Return as a NUMBER string in a "category" field.`;
+      }
       const structExample=lang==='both'
-        ?`{\n  "id": { "title": "...", "description": "...", "keywords": ["...", "..."], "categories": ["..."] },\n  "en": { "title": "...", "description": "...", "keywords": ["...", "..."], "categories": ["..."] }\n}`
-        :`{\n  "${lang}": { "title": "...", "description": "...", "keywords": ["...", "..."], "categories": ["..."] }\n}`;
+        ?`{\n  "id": { "title": "...", "description": "...", "keywords": ["...", "..."], "categories": ["..."], "category": "12" },\n  "en": { "title": "...", "description": "...", "keywords": ["...", "..."], "categories": ["..."], "category": "12" }\n}`
+        :`{\n  "${lang}": { "title": "...", "description": "...", "keywords": ["...", "..."], "categories": ["..."], "category": "12" }\n}`;
       return `You are a professional microstock metadata expert. Create SEO-friendly metadata for platforms like ${platformHint}
 
 ASSET TYPE: ${assetHint.label}
@@ -2096,10 +2159,14 @@ CRITICAL OUTPUT RULES:
       const seen=new Set();
       keywords=keywords.filter(x=>{const key=x.toLowerCase();if(seen.has(key))return false;seen.add(key);return true;});
       let categories=[];
-      const c=node.categories||node.category||[];
+      const c=node.categories||[];
       if(Array.isArray(c))categories=c.map(x=>String(x).trim()).filter(Boolean);
       else if(typeof c==='string')categories=c.split(',').map(x=>x.trim()).filter(Boolean);
-      return{title:String(node.title||'').trim(),description:String(node.description||'').trim(),keywords,categories};
+      let category='';
+      if(node.category!==undefined&&node.category!==null){
+        category=String(node.category).trim();
+      }
+      return{title:String(node.title||'').trim(),description:String(node.description||'').trim(),keywords,categories,category};
     }
 
     $('btnGenerate').addEventListener('click',()=>generateAll(false));
@@ -2459,13 +2526,22 @@ CRITICAL OUTPUT RULES:
           ];
         });
       }else if(platform==='adobe'){
-        if(lang==='both'){
-          header=['filename','title_id','keywords_id','title_en','keywords_en','category','releases'];
-          rows=items.map(item=>{const i=item.result.id||{};const e=item.result.en||{};return[item.fileName,i.title||'',(i.keywords||[]).join(','),e.title||'',(e.keywords||[]).join(','),'',''];});
-        }else{
-          header=['filename','title','keywords','category','releases'];
-          rows=items.map(item=>{const n=item.result||{};return[item.fileName,n.title||'',(n.keywords||[]).join(','),'',''];});
-        }
+        header=['Filename','Title','Keywords','Category','Releases'];
+        rows=items.map(item=>{
+          const node=lang==='both'?(item.result.en||item.result.id||{}):(item.result||{});
+          const title=node.title||'';
+          const kws=(node.keywords||[]).slice(0,ADOBE_MAX_KEYWORDS).join(', ');
+          const catRaw=node.category||'';
+          const cat=validateAdobeCategory(catRaw);
+          const finalCat=cat?String(cat):defaultAdobeCategory(item.assetType||currentAssetType);
+          return [
+            item.fileName,
+            title,
+            kws,
+            finalCat,
+            ''
+          ];
+        });
       }else if(platform==='istock'){
         if(lang==='both'){
           header=['filename','title_id','description_id','keywords_id','title_en','description_en','keywords_en'];
