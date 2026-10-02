@@ -1454,7 +1454,7 @@
           showProgress(i,valid.length,file.name+' (compress...)');
           const compressed=await compressImage(file);
 
-          showProgress(i,valid.length,file.name+' (upload cloud...)');
+          showProgress(i,valid.length,file.name+' (upload...)');
           const cloudUrl=await uploadToCloudinary(compressed.dataUrl);
 
           const newItem={
@@ -1494,7 +1494,7 @@
       }
 
       hideProgress();
-      if(added>0)showToast(added+' file tersimpan di cloud. Klik Generate untuk proses metadata.','success');
+      if(added>0)showToast(added+' file siap. Klik Generate untuk proses metadata.','success');
       if(failed>0)showToast(failed+' file gagal diupload.','warning');
     }
 
@@ -1630,7 +1630,7 @@
         const statusText={pending:'Menunggu',processing:'AI memproses...',done:'Selesai · Klik untuk lihat detail',error:'Gagal'}[item.status]||item.status;
         const retryBadge=item.retryCount>0?`<span class="queue-item-retry-badge"><i class="fas fa-rotate"></i> ${item.retryCount}x</span>`:'';
         const providerBadge=item.providerUsed?`<span class="queue-item-provider">${escHtml(item.providerUsed)}</span>`:'';
-        const savedBadge=item.firestoreId?`<span class="queue-item-saved" title="Tersimpan di cloud"><i class="fas fa-cloud"></i></span>`:'';
+        const savedBadge=item.firestoreId?`<span class="queue-item-saved" title="Tersimpan"><i class="fas fa-cloud"></i></span>`:'';
         let bodyHtml='';
         if(item.status==='error'){
           bodyHtml=`<div class="queue-item-error-msg"><i class="fas fa-exclamation-circle"></i> ${escHtml(item.error||'Error tidak diketahui.')}</div>`;
@@ -1689,7 +1689,7 @@
           const id=el.dataset.remove;
           const item=currentItems.find(x=>x.id===id);
           if(!item)return;
-          if(!confirm('Hapus "'+item.fileName+'" dari antrian?\n\nCatatan: file di Cloudinary tidak ikut terhapus — bersihkan manual dari dashboard Cloudinary.'))return;
+          if(!confirm('Hapus "'+item.fileName+'" dari antrian?'))return;
           if(item.firestoreId)await deleteItemFromFirestore(item.firestoreId);
           currentItems=currentItems.filter(x=>x.id!==id);
           renderQueue();updateStats();
@@ -2429,22 +2429,19 @@ CRITICAL OUTPUT RULES:
     $('btnClearQueue').addEventListener('click',async()=>{
       if(isProcessing){showToast('Tidak bisa clear saat proses berjalan.','warning');return;}
       if(!currentItems.length){showToast('Antrian kosong.','info');return;}
-      const cloudCount=currentItems.filter(i=>i.firestoreId).length;
-      const msg='⚠️ Hapus '+currentItems.length+' file dari antrian'+
-        (cloudCount?' ('+cloudCount+' record di Firestore)':'')+
-        '?\n\nFile di Cloudinary TIDAK ikut terhapus. Bersihkan manual kalau perlu.';
+      const msg='⚠️ Hapus '+currentItems.length+' file dari antrian?\n\nTindakan ini tidak bisa dibatalkan.';
       if(!confirm(msg))return;
 
       const toDelete=currentItems.filter(i=>i.firestoreId);
       currentItems=[];
       renderQueue();updateStats();
-      showProgress(0,toDelete.length,'Menghapus dari cloud...');
+      showProgress(0,toDelete.length,'Menghapus...');
       for(let i=0;i<toDelete.length;i++){
         showProgress(i,toDelete.length,toDelete[i].fileName);
         await deleteItemFromFirestore(toDelete[i].firestoreId);
       }
       hideProgress();
-      showToast(toDelete.length+' record dihapus.','success');
+      showToast(toDelete.length+' file dihapus.','success');
     });
 
     async function copyText(text){
