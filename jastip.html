@@ -20,7 +20,7 @@
   <meta name="twitter:description" content="Titip jual barangmu di Akino Store. Cuma Rp 3.000 + 5%.">
   <meta name="twitter:image" content="https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_thumbnail2_dkwek2.png">
 
-  <link rel="manifest" href="/manifest.json?v=4.3" />
+  <link rel="manifest" href="/manifest.json?v=4.2" />
   <link rel="stylesheet" href="jastip-cta.css">
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -37,9 +37,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="icon" href="https://res.cloudinary.com/d39mdjct/image/upload/v1783478697/icon_tnzy32.ico" />
-  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox-plus-jquery.min.js"></script>
 
   <style>
     :root {
@@ -242,7 +239,6 @@
       font-weight:500;
     }
 
-    /* ===== PRICING BANNER ===== */
     .pricing-banner {
       max-width:720px;
       margin:0 auto 1rem;
@@ -279,7 +275,6 @@
       .pricing-banner .price-item { flex:1 1 100%; justify-content:center; }
     }
 
-    /* ===== HOW IT WORKS SECTION ===== */
     .how-it-works {
       max-width:1100px;
       margin:1.5rem auto 2rem;
@@ -352,7 +347,6 @@
       line-height:1.6;
     }
 
-    /* ===== FEE TABLE ===== */
     .fee-table {
       background:var(--bg-card);
       border:1px solid var(--border);
@@ -375,9 +369,7 @@
       border-collapse:collapse;
       font-size:0.82rem;
     }
-    .fee-table thead {
-      background:var(--accent-dim);
-    }
+    .fee-table thead { background:var(--accent-dim); }
     .fee-table th {
       padding:0.7rem 0.5rem;
       text-align:left;
@@ -394,9 +386,7 @@
       color:var(--fg);
     }
     .fee-table tr:last-child td { border-bottom:none; }
-    .fee-table tbody tr:hover {
-      background:var(--bg-card-hover);
-    }
+    .fee-table tbody tr:hover { background:var(--bg-card-hover); }
     .fee-table td strong {
       color:var(--accent);
       font-family:var(--font-display);
@@ -413,7 +403,6 @@
       line-height:1.5;
     }
 
-    /* ===== FAQ SECTION ===== */
     .faq-section {
       max-width:1100px;
       margin:2rem auto;
@@ -466,7 +455,6 @@
       user-select:none;
     }
     .faq-item summary::-webkit-details-marker { display:none; }
-    /* ⭐ Chevron pakai <i> — lebih reliable */
     .faq-chevron {
       color:var(--accent);
       font-size:0.75rem;
@@ -474,9 +462,7 @@
       flex-shrink:0;
       margin-left:auto;
     }
-    .faq-item[open] .faq-chevron {
-      transform:rotate(180deg);
-    }
+    .faq-item[open] .faq-chevron { transform:rotate(180deg); }
     .faq-item summary:hover { color:var(--accent); }
     .faq-item .faq-answer {
       padding:0 1.1rem 1rem;
@@ -488,7 +474,6 @@
       margin-top:0;
     }
 
-    /* ===== JASTIP GRID ===== */
     .jastip-grid {
       display:grid;
       grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
@@ -505,6 +490,7 @@
       transition:all var(--transition);
       position:relative;
       animation:fadeUp 0.5s ease both;
+      cursor:pointer;
     }
     @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
     .jastip-card:hover {
@@ -1034,6 +1020,377 @@
       box-shadow:none;
     }
 
+    /* ============================================================
+       ⭐ MODAL DETAIL BARANG (SEPERTI INSTAGRAM)
+       ============================================================ */
+    .item-detail-overlay {
+      display:none;
+      position:fixed;
+      inset:0;
+      z-index:400;
+      background:rgba(0,0,0,0.85);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      align-items:center;
+      justify-content:center;
+      padding:1rem;
+      overflow-y:auto;
+    }
+    .item-detail-overlay.active {
+      display:flex;
+      animation:detailFadeIn 0.25s ease;
+    }
+    @keyframes detailFadeIn { from{opacity:0} to{opacity:1} }
+    @keyframes detailScaleIn { from{transform:scale(0.94);opacity:0} to{transform:scale(1);opacity:1} }
+
+    .item-detail-card {
+      background:var(--bg-secondary);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      width:100%;
+      max-width:960px;
+      max-height:94vh;
+      display:grid;
+      grid-template-columns:1.1fr 1fr;
+      overflow:hidden;
+      animation:detailScaleIn 0.35s cubic-bezier(0.32,0.72,0,1);
+      position:relative;
+      box-shadow:0 32px 96px rgba(0,0,0,0.6);
+    }
+    .item-detail-close {
+      position:absolute;
+      top:12px;
+      right:12px;
+      z-index:10;
+      width:38px;
+      height:38px;
+      border-radius:50%;
+      background:rgba(0,0,0,0.6);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      border:1px solid rgba(255,255,255,0.15);
+      color:#fff;
+      font-size:1rem;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition:all 0.2s;
+    }
+    .item-detail-close:hover {
+      background:rgba(0,0,0,0.85);
+      transform:scale(1.08);
+    }
+
+    .item-detail-media {
+      position:relative;
+      background:#0a0a12;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      min-height:400px;
+    }
+    .item-detail-media .detail-slider {
+      position:relative;
+      width:100%;
+      height:100%;
+      display:flex;
+      flex-direction:column;
+    }
+    .item-detail-media .detail-slides-wrap {
+      position:relative;
+      flex:1;
+      overflow:hidden;
+    }
+    .item-detail-media .detail-slides {
+      display:flex;
+      transition:transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+      height:100%;
+    }
+    .item-detail-media .detail-slide {
+      min-width:100%;
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#0a0a12;
+      cursor:pointer;
+      position:relative;
+    }
+    .item-detail-media .detail-slide img,
+    .item-detail-media .detail-slide video {
+      max-width:100%;
+      max-height:100%;
+      object-fit:contain;
+    }
+    .item-detail-media .detail-slide .detail-badge {
+      position:absolute;
+      bottom:12px;
+      right:12px;
+      font-size:0.6rem;
+      font-weight:600;
+      padding:0.2rem 0.6rem;
+      border-radius:4px;
+      background:rgba(0,0,0,0.65);
+      backdrop-filter:blur(6px);
+      -webkit-backdrop-filter:blur(6px);
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.1);
+      display:flex; align-items:center; gap:0.3rem;
+    }
+    .item-detail-media .detail-nav-arrow {
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      z-index:5;
+      width:40px;
+      height:40px;
+      border-radius:50%;
+      background:rgba(0,0,0,0.55);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      border:1px solid rgba(255,255,255,0.12);
+      color:#fff;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:0.85rem;
+      transition:all 0.2s;
+    }
+    .item-detail-media .detail-nav-arrow:hover {
+      background:rgba(0,0,0,0.85);
+      transform:translateY(-50%) scale(1.08);
+    }
+    .item-detail-media .detail-nav-arrow.prev { left:12px; }
+    .item-detail-media .detail-nav-arrow.next { right:12px; }
+    .item-detail-media .detail-dots {
+      position:absolute;
+      bottom:12px;
+      left:50%;
+      transform:translateX(-50%);
+      display:flex;
+      gap:6px;
+      z-index:5;
+    }
+    .item-detail-media .detail-dots span {
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.35);
+      cursor:pointer;
+      transition:all 0.3s;
+    }
+    .item-detail-media .detail-dots span.active {
+      background:var(--accent);
+      width:22px;
+      border-radius:4px;
+    }
+
+    .item-detail-info {
+      padding:2rem 1.8rem;
+      overflow-y:auto;
+      display:flex;
+      flex-direction:column;
+      gap:0.85rem;
+      max-height:94vh;
+    }
+    .item-detail-info::-webkit-scrollbar { width:3px; }
+    .item-detail-info::-webkit-scrollbar-thumb { background:var(--border); border-radius:10px; }
+
+    .item-detail-info .di-top {
+      display:flex;
+      flex-direction:column;
+      gap:0.4rem;
+      padding-right:2.5rem;
+    }
+    .item-detail-info .di-name {
+      font-family:var(--font-display);
+      font-size:1.5rem;
+      font-weight:700;
+      line-height:1.25;
+      letter-spacing:-0.3px;
+    }
+    .item-detail-info .di-price {
+      font-family:var(--font-display);
+      font-size:1.7rem;
+      font-weight:700;
+      color:var(--accent);
+      letter-spacing:-0.5px;
+    }
+    .item-detail-info .di-price .sold-badge-lg {
+      font-size:0.7rem;
+      background:#f87171;
+      color:#fff;
+      padding:0.2rem 0.6rem;
+      border-radius:5px;
+      margin-left:0.5rem;
+      vertical-align:middle;
+      font-family:var(--font-body);
+      font-weight:600;
+      letter-spacing:0;
+    }
+    .item-detail-info .di-meta {
+      display:flex;
+      flex-wrap:wrap;
+      gap:0.5rem 0.9rem;
+      font-size:0.82rem;
+      color:var(--muted);
+      padding:0.5rem 0;
+      border-top:1px dashed var(--border);
+      border-bottom:1px dashed var(--border);
+    }
+    .item-detail-info .di-meta span {
+      display:flex;
+      align-items:center;
+      gap:0.35rem;
+    }
+    .item-detail-info .di-meta i {
+      color:var(--accent);
+      font-size:0.75rem;
+    }
+    .item-detail-info .di-desc-label {
+      font-size:0.72rem;
+      color:var(--muted-dim);
+      text-transform:uppercase;
+      letter-spacing:1px;
+      font-weight:600;
+      margin-top:0.2rem;
+    }
+    .item-detail-info .di-desc {
+      font-size:0.88rem;
+      color:var(--fg);
+      line-height:1.7;
+      white-space:pre-wrap;
+      overflow-wrap:anywhere;
+    }
+    .item-detail-info .di-fee-box {
+      display:flex;
+      align-items:center;
+      gap:0.5rem;
+      padding:0.7rem 0.9rem;
+      background:var(--accent-dim);
+      border:1px dashed rgba(255,221,87,0.35);
+      border-radius:var(--radius-sm);
+      font-size:0.78rem;
+      color:var(--muted);
+      line-height:1.5;
+    }
+    .item-detail-info .di-fee-box i {
+      color:var(--accent);
+      font-size:0.85rem;
+      flex-shrink:0;
+    }
+    .item-detail-info .di-fee-box strong {
+      color:var(--accent);
+      font-weight:700;
+    }
+    .item-detail-info .di-actions {
+      margin-top:auto;
+      padding-top:0.5rem;
+      display:flex;
+      flex-direction:column;
+      gap:0.5rem;
+    }
+    .item-detail-info .di-actions .di-btn-row {
+      display:flex;
+      gap:0.5rem;
+    }
+    .item-detail-info .di-actions button {
+      flex:1;
+      padding:0.75rem 1rem;
+      border-radius:var(--radius-sm);
+      font-family:var(--font-body);
+      font-size:0.85rem;
+      font-weight:600;
+      cursor:pointer;
+      transition:all var(--transition);
+      border:1px solid transparent;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:0.4rem;
+      min-height:46px;
+    }
+    .item-detail-info .di-actions button:disabled {
+      opacity:0.5;
+      cursor:not-allowed;
+    }
+    .item-detail-info .di-btn-pesan {
+      background:var(--accent-dim);
+      color:var(--accent);
+      border-color:rgba(255,221,87,0.25);
+    }
+    .item-detail-info .di-btn-pesan:hover:not(:disabled) {
+      background:var(--accent);
+      color:#0a0a0f;
+      border-color:var(--accent);
+      box-shadow:0 6px 24px rgba(255,221,87,0.35);
+    }
+    .item-detail-info .di-btn-tawar {
+      background:rgba(96,165,250,0.1);
+      color:#60a5fa;
+      border-color:rgba(96,165,250,0.25);
+    }
+    .item-detail-info .di-btn-tawar:hover:not(:disabled) {
+      background:#60a5fa;
+      color:#0a0a0f;
+      border-color:#60a5fa;
+      box-shadow:0 6px 24px rgba(96,165,250,0.35);
+    }
+    .item-detail-info .di-btn-share {
+      width:100%;
+      background:rgba(74,222,128,0.1);
+      color:#4ade80;
+      border-color:rgba(74,222,128,0.25);
+    }
+    .item-detail-info .di-btn-share:hover {
+      background:#4ade80;
+      color:#0a0a0f;
+      border-color:#4ade80;
+      box-shadow:0 6px 24px rgba(74,222,128,0.35);
+    }
+
+    /* ⭐ Mobile — stack vertical, media di atas */
+    @media (max-width: 800px) {
+      .item-detail-overlay { padding:0; align-items:flex-start; }
+      .item-detail-card {
+        grid-template-columns:1fr;
+        border-radius:0;
+        max-height:100vh;
+        min-height:100vh;
+        max-width:100%;
+      }
+      .item-detail-media {
+        min-height:auto;
+        aspect-ratio:1/1;
+        max-height:60vh;
+      }
+      .item-detail-info {
+        padding:1.5rem 1.2rem;
+        max-height:none;
+      }
+      .item-detail-info .di-name { font-size:1.25rem; }
+      .item-detail-info .di-price { font-size:1.4rem; }
+      .item-detail-close {
+        top:8px;
+        right:8px;
+        width:34px;
+        height:34px;
+      }
+      .item-detail-media .detail-nav-arrow {
+        width:34px;
+        height:34px;
+        font-size:0.75rem;
+      }
+      .item-detail-media .detail-nav-arrow.prev { left:8px; }
+      .item-detail-media .detail-nav-arrow.next { right:8px; }
+    }
+    @media (max-width: 400px) {
+      .item-detail-info .di-actions .di-btn-row { flex-direction:column; }
+    }
+
     .jastip-comments {
       max-width:900px;
       margin:2rem auto 0;
@@ -1058,14 +1415,6 @@
     .jastip-comment p { margin:.2rem 0; color:var(--fg); font-size:.8rem; white-space:pre-wrap; overflow-wrap:anywhere; }
     .jastip-comment small { color:var(--muted); font-size:.65rem; }
     .jastip-comment-empty { padding:1rem; color:var(--muted); font-size:.78rem; text-align:center; }
-
-    .lb-caption {
-      background:rgba(0,0,0,0.7) !important;
-      color:#fff !important;
-      padding:0.8rem 1rem !important;
-      font-size:0.85rem !important;
-    }
-    .lb-data .lb-close { display:none !important; }
 
     .social-row {
       display:flex; justify-content:center; gap:0.6rem; padding:1rem;
@@ -1260,7 +1609,6 @@
     <div class="sub-badge">📸 Foto &amp; 🎬 Video Support</div>
   </header>
 
-  <!-- ===== PRICING BANNER ===== -->
   <div class="pricing-banner" role="note" aria-label="Info biaya jastip">
     <div class="price-item">
       <i class="fas fa-receipt"></i>
@@ -1278,7 +1626,6 @@
     </div>
   </div>
 
-  <!-- ===== CARA KERJA & SIMULASI BIAYA ===== -->
   <section class="how-it-works" aria-label="Cara kerja dan biaya jastip">
     <h2><i class="fas fa-circle-info"></i> Cara Kerja &amp; Biaya Jastip</h2>
     <p class="section-sub">Cuma 4 langkah mudah, barangmu tayang sampai laku.</p>
@@ -1331,7 +1678,6 @@
     </div>
   </section>
 
-  <!-- ===== FAQ SECTION ===== -->
   <section class="faq-section" aria-label="Pertanyaan umum">
     <h2><i class="fas fa-circle-question"></i> Pertanyaan Umum</h2>
     <p class="section-sub">Hal-hal yang sering ditanyakan seller baru.</p>
@@ -1403,7 +1749,6 @@
     </div>
   </section>
 
-  <!-- ===== ACTION BUTTON ===== -->
   <div class="section-divider" aria-hidden="true">
     <i class="fas fa-store"></i>
   </div>
@@ -1568,6 +1913,43 @@
     </div>
   </div>
 
+  <!-- ===== ⭐ MODAL DETAIL BARANG (SEPERTI INSTAGRAM) ===== -->
+  <div class="item-detail-overlay" id="itemDetailOverlay">
+    <div class="item-detail-card">
+      <button class="item-detail-close" onclick="closeItemDetail()" aria-label="Tutup"><i class="fas fa-xmark"></i></button>
+      <div class="item-detail-media">
+        <div class="detail-slider" id="detailSlider">
+          <div class="detail-slides-wrap">
+            <div class="detail-slides" id="detailSlides" style="transform:translateX(0%)"></div>
+          </div>
+          <button class="detail-nav-arrow prev" id="detailPrev" onclick="detailSlide(-1)" aria-label="Sebelumnya"><i class="fas fa-chevron-left"></i></button>
+          <button class="detail-nav-arrow next" id="detailNext" onclick="detailSlide(1)" aria-label="Berikutnya"><i class="fas fa-chevron-right"></i></button>
+          <div class="detail-dots" id="detailDots"></div>
+        </div>
+      </div>
+      <div class="item-detail-info">
+        <div class="di-top">
+          <div class="di-name" id="detailName">-</div>
+          <div class="di-price" id="detailPrice">-</div>
+        </div>
+        <div class="di-meta" id="detailMeta"></div>
+        <div class="di-desc-label" id="detailDescLabel" style="display:none;">Deskripsi</div>
+        <div class="di-desc" id="detailDesc" style="display:none;"></div>
+        <div class="di-fee-box" id="detailFeeBox" style="display:none;">
+          <i class="fas fa-receipt"></i>
+          <span id="detailFeeText">Biaya Jastip: -</span>
+        </div>
+        <div class="di-actions">
+          <div class="di-btn-row">
+            <button class="di-btn-pesan" id="detailBtnPesan" onclick="detailPesan()"><i class="fas fa-comment"></i> Pesan</button>
+            <button class="di-btn-tawar" id="detailBtnTawar" onclick="detailTawar()"><i class="fas fa-gavel"></i> Tawar</button>
+          </div>
+          <button class="di-btn-share" id="detailBtnShare" onclick="detailBagikan()"><i class="fas fa-share-nodes"></i> Bagikan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     // ============================================================
     // KONFIGURASI
@@ -1592,7 +1974,6 @@
       return parseInt(String(str || '').replace(/[^0-9]/g, ''), 10) || 0;
     }
 
-    // ⭐ Deteksi video lebih robust (cek extension + path Cloudinary)
     function isVideoUrl(url) {
       if (!url) return false;
       var u = String(url).toLowerCase();
@@ -1602,16 +1983,13 @@
     }
 
     // ============================================================
-    // FUNGSI MODAL (GLOBAL)
+    // MODAL
     // ============================================================
     function openModal(id) {
       var modal = document.getElementById(id);
       if (modal) {
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
-        console.log('✅ Modal opened:', id);
-      } else {
-        console.error('❌ Modal not found:', id);
       }
     }
 
@@ -1620,7 +1998,6 @@
       if (modal) {
         modal.classList.remove('active');
         document.body.style.overflow = '';
-        console.log('✅ Modal closed:', id);
       }
     }
 
@@ -1633,10 +2010,172 @@
     }
 
     // ============================================================
+    // ⭐ ITEM DETAIL MODAL (SEPERTI INSTAGRAM)
+    // ============================================================
+    var currentDetailItem = null;
+    var detailCurrentSlide = 0;
+    var detailTotalSlides = 0;
+
+    window.openItemDetail = function(id) {
+      var item = jastipItems.find(function(it) { return it.id === id; });
+      if (!item) {
+        console.warn('Item tidak ditemukan:', id);
+        return;
+      }
+      currentDetailItem = item;
+      detailCurrentSlide = 0;
+
+      var data = item.data;
+      var media = data.media || [];
+      detailTotalSlides = media.length;
+
+      // Build slides
+      var slidesHtml = '';
+      media.forEach(function(url, idx) {
+        var isVideo = isVideoUrl(url);
+        if (isVideo) {
+          slidesHtml += '<div class="detail-slide" data-url="' + escapeHtml(url) + '" data-isvideo="true">' +
+            '<video src="' + escapeHtml(url) + '" controls playsinline preload="metadata"></video>' +
+            '<span class="detail-badge"><i class="fas fa-video"></i> VIDEO</span>' +
+            '</div>';
+        } else {
+          slidesHtml += '<div class="detail-slide" data-url="' + escapeHtml(url) + '" data-isvideo="false">' +
+            '<img src="' + escapeHtml(url) + '" alt="' + escapeHtml(data.namaBarang) + '" loading="lazy" />' +
+            '<span class="detail-badge"><i class="fas fa-image"></i> FOTO</span>' +
+            '</div>';
+        }
+      });
+      document.getElementById('detailSlides').innerHTML = slidesHtml;
+      document.getElementById('detailSlides').style.transform = 'translateX(0%)';
+
+      // Dots
+      var dotsEl = document.getElementById('detailDots');
+      if (media.length > 1) {
+        var dotsHtml = '';
+        for (var d = 0; d < media.length; d++) {
+          dotsHtml += '<span class="' + (d === 0 ? 'active' : '') + '" onclick="detailGoSlide(' + d + ')"></span>';
+        }
+        dotsEl.innerHTML = dotsHtml;
+        dotsEl.style.display = 'flex';
+      } else {
+        dotsEl.innerHTML = '';
+        dotsEl.style.display = 'none';
+      }
+
+      // Arrows
+      var showArrows = media.length > 1;
+      document.getElementById('detailPrev').style.display = showArrows ? 'flex' : 'none';
+      document.getElementById('detailNext').style.display = showArrows ? 'flex' : 'none';
+
+      // Info
+      var isSold = data.status === 'sold';
+      document.getElementById('detailName').textContent = data.namaBarang || '-';
+      document.getElementById('detailPrice').innerHTML = escapeHtml(data.harga || '-') + (isSold ? ' <span class="sold-badge-lg">TERJUAL</span>' : '');
+
+      // Meta
+      var metaHtml = '';
+      if (data.penjual) metaHtml += '<span><i class="fas fa-user"></i> ' + escapeHtml(data.penjual) + '</span>';
+      if (data.kategori) metaHtml += '<span><i class="fas fa-tag"></i> ' + escapeHtml(data.kategori) + '</span>';
+      if (media.length > 0) metaHtml += '<span><i class="fas fa-images"></i> ' + media.length + ' media</span>';
+      document.getElementById('detailMeta').innerHTML = metaHtml;
+
+      // Deskripsi
+      var descLabel = document.getElementById('detailDescLabel');
+      var descEl = document.getElementById('detailDesc');
+      if (data.deskripsi && data.deskripsi.trim()) {
+        descEl.textContent = data.deskripsi;
+        descEl.style.display = 'block';
+        descLabel.style.display = 'block';
+      } else {
+        descEl.textContent = '';
+        descEl.style.display = 'none';
+        descLabel.style.display = 'none';
+      }
+
+      // Fee
+      var feeBox = document.getElementById('detailFeeBox');
+      if (data.biayaTotal) {
+        document.getElementById('detailFeeText').innerHTML = 'Biaya Jastip: <strong>' + formatRupiah(data.biayaTotal) + '</strong>';
+        feeBox.style.display = 'flex';
+      } else {
+        feeBox.style.display = 'none';
+      }
+
+      // Buttons
+      document.getElementById('detailBtnPesan').disabled = isSold;
+      document.getElementById('detailBtnTawar').disabled = isSold;
+
+      // Show modal
+      document.getElementById('itemDetailOverlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    };
+
+    window.closeItemDetail = function() {
+      var overlay = document.getElementById('itemDetailOverlay');
+      if (overlay) overlay.classList.remove('active');
+      document.body.style.overflow = '';
+      currentDetailItem = null;
+      // Hapus query param ?item=xxx dari URL
+      if (window.history && window.history.replaceState) {
+        var cleanUrl = window.location.pathname;
+        window.history.replaceState({}, '', cleanUrl);
+      }
+    };
+
+    window.detailSlide = function(direction) {
+      if (detailTotalSlides <= 1) return;
+      detailCurrentSlide = (detailCurrentSlide + direction + detailTotalSlides) % detailTotalSlides;
+      applyDetailSlide();
+    };
+
+    window.detailGoSlide = function(index) {
+      if (index < 0 || index >= detailTotalSlides) return;
+      detailCurrentSlide = index;
+      applyDetailSlide();
+    };
+
+    function applyDetailSlide() {
+      document.getElementById('detailSlides').style.transform = 'translateX(-' + (detailCurrentSlide * 100) + '%)';
+      var dots = document.querySelectorAll('#detailDots span');
+      dots.forEach(function(dot, idx) {
+        dot.classList.toggle('active', idx === detailCurrentSlide);
+      });
+    }
+
+    window.detailPesan = function() {
+      if (!currentDetailItem) return;
+      var data = currentDetailItem.data;
+      var msg = 'Halo admin, saya tertarik dengan barang *' + data.namaBarang + '* dari *' + data.penjual + '*. Saya mau beli. Kode: ' + currentDetailItem.id;
+      window.location.href = 'https://wa.me/' + ADMIN_WA + '?text=' + encodeURIComponent(msg);
+    };
+
+    window.detailTawar = function() {
+      if (!currentDetailItem) return;
+      var data = currentDetailItem.data;
+      // Tutup modal detail dulu, baru buka modal tawar
+      closeItemDetail();
+      setTimeout(function() {
+        bukaTawar(currentDetailItem.id, data.namaBarang);
+      }, 250);
+    };
+
+    window.detailBagikan = function() {
+      if (!currentDetailItem) return;
+      var data = currentDetailItem.data;
+      bagikanItem(currentDetailItem.id, data.namaBarang, data.penjual, data.harga);
+    };
+
+    // ============================================================
     // DOMContentLoaded
     // ============================================================
+    var _pendingDeepLinkId = null;
+
     document.addEventListener('DOMContentLoaded', function() {
       console.log('🚀 Jastip page loaded');
+
+      // Cek deep link dari URL
+      var urlItemId = new URLSearchParams(window.location.search).get('item');
+      if (urlItemId) _pendingDeepLinkId = urlItemId;
 
       var btnTitip = document.getElementById('btnTitip');
       if (btnTitip) {
@@ -1652,6 +2191,28 @@
             document.body.style.overflow = '';
           }
         });
+      });
+
+      // Close detail modal on overlay click
+      var detailOverlay = document.getElementById('itemDetailOverlay');
+      if (detailOverlay) {
+        detailOverlay.addEventListener('click', function(e) {
+          if (e.target === this) closeItemDetail();
+        });
+      }
+
+      // ESC key close
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          if (document.getElementById('itemDetailOverlay').classList.contains('active')) {
+            closeItemDetail();
+          }
+        }
+        // Arrow keys untuk slider detail
+        if (document.getElementById('itemDetailOverlay').classList.contains('active')) {
+          if (e.key === 'ArrowLeft') detailSlide(-1);
+          if (e.key === 'ArrowRight') detailSlide(1);
+        }
       });
 
       setupFileUpload();
@@ -1678,9 +2239,6 @@
       setupThemeAndNavbar();
     });
 
-    // ============================================================
-    // SETUP PREVIEW BIAYA OTOMATIS
-    // ============================================================
     function setupFeePreview() {
       var hargaInput = document.getElementById('tHarga');
       var feeEmpty = document.getElementById('feeEmpty');
@@ -1709,9 +2267,6 @@
       hargaInput.addEventListener('change', updatePreview);
     }
 
-    // ============================================================
-    // FILE UPLOAD SETUP
-    // ============================================================
     var uploadedFiles = [];
 
     function setupFileUpload() {
@@ -1802,9 +2357,6 @@
       });
     }
 
-    // ============================================================
-    // CLOUDINARY UPLOAD
-    // ============================================================
     var CLOUD_NAME = 'dlwwy1f80';
     var UPLOAD_PRESET = 'wallpaper_upload';
 
@@ -1823,9 +2375,6 @@
       return data.secure_url;
     }
 
-    // ============================================================
-    // SUBMIT TITIP
-    // ============================================================
     async function submitTitip() {
       var nama = document.getElementById('tNama').value.trim();
       var barang = document.getElementById('tBarang').value.trim();
@@ -1918,7 +2467,6 @@
           'Kode: ' + docRef.id + '\n\n' +
           '✅ Segera konfirmasi pembayaran ' + formatRupiah(biaya.total) + ' untuk mengaktifkan.';
 
-        // ⭐ Pakai location.href supaya tidak kena popup blocker
         window.location.href = 'https://wa.me/' + ADMIN_WA + '?text=' + encodeURIComponent(waMsg);
 
         msgEl.className = 'form-msg ok show';
@@ -1941,9 +2489,6 @@
       }
     }
 
-    // ============================================================
-    // SUBMIT TAWAR
-    // ============================================================
     function submitTawar() {
       var id = document.getElementById('tawarItemId').value;
       var namaBarang = document.getElementById('tawarItemName').value;
@@ -1958,10 +2503,8 @@
         return;
       }
 
-      var detailUrl = 'https://akinoch.my.id/jastip.html?item=' + encodeURIComponent(id);
+      var detailUrl = SHARE_WORKER + '/?item=' + encodeURIComponent(id);
       var waMsg = '💬 *Tawaran Baru!*\n\nBarang: ' + namaBarang + '\nPembeli: ' + namaPembeli + '\nWA: ' + wa + '\nHarga Tawar: ' + hargaTawar + '\n\nLink postingan: ' + detailUrl;
-
-      // ⭐ Pakai location.href
       window.location.href = 'https://wa.me/' + ADMIN_WA + '?text=' + encodeURIComponent(waMsg);
 
       msgEl.className = 'form-msg ok show';
@@ -1969,12 +2512,8 @@
       setTimeout(function() { closeModal('modalTawar'); }, 1500);
     }
 
-    // ============================================================
-    // GLOBAL FUNCTIONS
-    // ============================================================
     window.pesanItem = function(id, namaBarang, penjual) {
       var msg = 'Halo admin, saya tertarik dengan barang *' + namaBarang + '* dari *' + penjual + '*. Saya mau beli. Kode: ' + id;
-      // ⭐ Pakai location.href
       window.location.href = 'https://wa.me/' + ADMIN_WA + '?text=' + encodeURIComponent(msg);
     };
 
@@ -1989,7 +2528,6 @@
       openModal('modalTawar');
     };
 
-    // ⭐ Share pakai WORKER URL biar preview thumbnail barang muncul
     window.bagikanItem = function(id, namaBarang, penjual, harga) {
       var shareUrl = SHARE_WORKER + '/?item=' + encodeURIComponent(id);
       if (navigator.share) {
@@ -2021,19 +2559,6 @@
       showToast('Link post berhasil disalin.');
     }
 
-    function focusSharedItem() {
-      var itemId = new URLSearchParams(window.location.search).get('item');
-      if (!itemId) return;
-      var card = document.getElementById('jastip-' + itemId);
-      if (!card) return;
-      card.classList.add('shared-item');
-      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      setTimeout(function() { card.classList.remove('shared-item'); }, 2500);
-    }
-
-    // ============================================================
-    // THEME & NAVBAR
-    // ============================================================
     function setupThemeAndNavbar() {
       window.addEventListener('scroll', function() {
         var navbar = document.getElementById('navbar');
@@ -2100,9 +2625,6 @@
       }
     }
 
-    // ============================================================
-    // JASTIP COMMENTS
-    // ============================================================
     function setupJastipComments() {
       var form = document.getElementById('jastipCommentForm');
       var list = document.getElementById('jastipCommentList');
@@ -2168,9 +2690,6 @@
       });
     }
 
-    // ============================================================
-    // RENDER JASTIP
-    // ============================================================
     var jastipItems = [];
     var jastipStatusFilter = 'all';
     var jastipCategoryFilter = 'all';
@@ -2239,7 +2758,6 @@
           sliderHtml = '<div class="media-slider" data-id="' + id + '">' +
             '<div class="slides-wrapper" style="transform:translateX(0%)">';
           media.forEach(function(url, idx) {
-            // ⭐ Pakai helper isVideoUrl() yang lebih robust
             var isVideo = isVideoUrl(url);
             var badgeHtml = isVideo ? '<span class="media-badge"><i class="fas fa-video"></i> VIDEO</span>' : '<span class="media-badge"><i class="fas fa-image"></i> FOTO</span>';
             var mediaHtml = isVideo ?
@@ -2252,11 +2770,11 @@
           });
           sliderHtml += '</div>';
           if (media.length > 1) {
-            sliderHtml += '<button class="nav-arrow prev" onclick="slideMedia(\'' + id + '\', -1)"><i class="fas fa-chevron-left"></i></button>' +
-              '<button class="nav-arrow next" onclick="slideMedia(\'' + id + '\', 1)"><i class="fas fa-chevron-right"></i></button>';
+            sliderHtml += '<button class="nav-arrow prev" onclick="event.stopPropagation();slideMedia(\'' + id + '\', -1)"><i class="fas fa-chevron-left"></i></button>' +
+              '<button class="nav-arrow next" onclick="event.stopPropagation();slideMedia(\'' + id + '\', 1)"><i class="fas fa-chevron-right"></i></button>';
             sliderHtml += '<div class="slider-dots">';
             for (var d = 0; d < media.length; d++) {
-              sliderHtml += '<span class="' + (d === 0 ? 'active' : '') + '" onclick="goToSlide(\'' + id + '\',' + d + ')"></span>';
+              sliderHtml += '<span class="' + (d === 0 ? 'active' : '') + '" onclick="event.stopPropagation();goToSlide(\'' + id + '\',' + d + ')"></span>';
             }
             sliderHtml += '</div>';
           }
@@ -2266,7 +2784,7 @@
         }
 
         html += `
-        <div class="jastip-card ${soldClass}" id="jastip-${id}">
+        <div class="jastip-card ${soldClass}" id="jastip-${id}" data-item-id="${id}">
           ${sliderHtml}
           <div class="card-body">
             <div class="item-name">${escapeHtml(data.namaBarang)}</div>
@@ -2277,37 +2795,36 @@
             <div class="price">${escapeHtml(data.harga)} ${soldBadge}</div>
             ${feeInfoHtml}
             <div class="btn-group">
-              <button class="btn-jastip primary" onclick="pesanItem('${id}','${escapeHtml(data.namaBarang)}','${escapeHtml(data.penjual)}')" ${isSold ? 'disabled' : ''}><i class="fas fa-comment"></i> Pesan</button>
-              <button class="btn-jastip secondary" onclick="bukaTawar('${id}','${escapeHtml(data.namaBarang)}')" ${isSold ? 'disabled' : ''}><i class="fas fa-gavel"></i> Tawar</button>
-              <button class="btn-jastip share" onclick="bagikanItem('${id}','${escapeHtml(data.namaBarang)}','${escapeHtml(data.penjual)}','${escapeHtml(data.harga)}')"><i class="fas fa-share-nodes"></i> Bagikan</button>
+              <button class="btn-jastip primary" onclick="event.stopPropagation();pesanItem('${id}','${escapeHtml(data.namaBarang)}','${escapeHtml(data.penjual)}')" ${isSold ? 'disabled' : ''}><i class="fas fa-comment"></i> Pesan</button>
+              <button class="btn-jastip secondary" onclick="event.stopPropagation();bukaTawar('${id}','${escapeHtml(data.namaBarang)}')" ${isSold ? 'disabled' : ''}><i class="fas fa-gavel"></i> Tawar</button>
+              <button class="btn-jastip share" onclick="event.stopPropagation();bagikanItem('${id}','${escapeHtml(data.namaBarang)}','${escapeHtml(data.penjual)}','${escapeHtml(data.harga)}')"><i class="fas fa-share-nodes"></i> Bagikan</button>
             </div>
           </div>
         </div>`;
       });
       grid.innerHTML = html;
 
-      document.querySelectorAll('.slide-item').forEach(function(el) {
-        el.addEventListener('click', function() {
-          var url = this.dataset.url;
-          var isVideo = this.dataset.isvideo === 'true';
-          if (url) {
-            if (isVideo) {
-              window.open(url, '_blank');
-            } else {
-              if (typeof lightbox !== 'undefined') {
-                lightbox.open({
-                  image: url,
-                  title: document.querySelector('.jastip-card .item-name')?.textContent || 'Foto'
-                });
-              } else {
-                window.open(url, '_blank');
-              }
-            }
-          }
+      // ⭐ Klik card → buka modal detail
+      document.querySelectorAll('.jastip-card').forEach(function(card) {
+        card.addEventListener('click', function(e) {
+          // Skip kalau klik tombol
+          if (e.target.closest('button') || e.target.closest('.btn-group')) return;
+          // Skip kalau klik nav arrow atau dot
+          if (e.target.closest('.nav-arrow') || e.target.closest('.slider-dots span')) return;
+
+          var id = this.getAttribute('data-item-id');
+          if (id) openItemDetail(id);
         });
       });
 
-      setTimeout(focusSharedItem, 50);
+      // Auto-open deep link
+      if (_pendingDeepLinkId) {
+        var targetId = _pendingDeepLinkId;
+        _pendingDeepLinkId = null;
+        setTimeout(function() {
+          openItemDetail(targetId);
+        }, 200);
+      }
     }
 
     window.slideMedia = function(id, direction) {
