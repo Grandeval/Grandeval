@@ -2,7 +2,7 @@
   "name": "Akino Store",
   "short_name": "Akino Store",
   "description": "Solusi Digital, Game & Baca Manga",
-  "start_url": "/?v=4.2",
+  "start_url": "/?v=4.3",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0f0f0f",
