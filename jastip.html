@@ -4,17 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   <title>Jastip - Titip Jualan | Akino Store</title>
-  <meta name="description" content="Titip jual barangmu di Akino Store mulai Rp5.000. Upload foto & video. Tampil sampai laku dengan bantuan rekber dan admin.">
+  <meta name="description" content="Titip jual barangmu di Akino Store. Cuma Rp 3.000 + 5%. Upload foto & video. Tampil sampai laku dengan bantuan rekber dan admin.">
   <link rel="canonical" href="https://akinoch.my.id/jastip.html">
 
   <meta property="og:title" content="Jastip - Titip Jualan | Akino Store">
-  <meta property="og:description" content="Titip jual barangmu di Akino Store mulai Rp5.000. Upload foto & video. Tampil sampai laku.">
+  <meta property="og:description" content="Titip jual barangmu di Akino Store. Cuma Rp 3.000 + 5%. Upload foto & video. Tampil sampai laku.">
   <meta property="og:image" content="https://res.cloudinary.com/d39mdjct/image/upload/v1783493763/apk_pgxcmo.png">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://akinoch.my.id/jastip.html">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Jastip - Titip Jualan | Akino Store">
-  <meta name="twitter:description" content="Titip jual barangmu di Akino Store mulai Rp5.000. Upload foto & video.">
+  <meta name="twitter:description" content="Titip jual barangmu di Akino Store. Cuma Rp 3.000 + 5%.">
   <meta name="twitter:image" content="https://res.cloudinary.com/d39mdjct/image/upload/v1783493763/apk_pgxcmo.png">
 
   <link rel="manifest" href="/manifest.json?v=4.2" />
@@ -35,12 +35,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="icon" href="https://res.cloudinary.com/d39mdjct/image/upload/v1783478697/icon_tnzy32.ico" />
   
-  <!-- ===== LIGHTBOX UNTUK FOTO/VIDEO ===== -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox-plus-jquery.min.js"></script>
 
   <style>
-    /* ===== SEMUA STYLE SAMA SEPERTI SEBELUMNYA ===== */
     :root {
       --bg: #07070d;
       --bg-card: rgba(255,255,255,0.04);
@@ -51,6 +49,7 @@
       --accent: #FFDD57;
       --accent-dim: rgba(255,221,87,0.15);
       --border: rgba(255,255,255,0.07);
+      --border-hover: rgba(255,255,255,0.15);
       --radius: 16px;
       --radius-sm: 10px;
       --font-display: 'Space Grotesk', sans-serif;
@@ -62,6 +61,9 @@
       --transition: 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
       --touch-size: 48px;
       --glow-opacity: 0.06;
+      --bg-secondary: #101018;
+      --success: #4ade80;
+      --info: #60a5fa;
     }
     body.light-theme {
       --bg: #f5f5fa;
@@ -71,11 +73,13 @@
       --muted: #5a5a70;
       --muted-dim: #3a3a4a;
       --border: rgba(0,0,0,0.08);
+      --border-hover: rgba(0,0,0,0.15);
       --shadow-card: 0 8px 32px rgba(0,0,0,0.08);
       --shadow-card-hover: 0 16px 48px rgba(0,0,0,0.12);
       --nav-bg: rgba(245,245,250,0.7);
       --nav-scrolled: rgba(245,245,250,0.95);
       --glow-opacity: 0.08;
+      --bg-secondary: #ffffff;
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     html { scroll-behavior:smooth; }
@@ -169,10 +173,9 @@
       padding:0.6rem 1rem;
       font-size:0.9rem; font-weight:500;
       transition:all 0.2s ease;
-      display:block;
-      min-height:var(--touch-size);
       display:flex;
       align-items:center;
+      min-height:var(--touch-size);
     }
     .nav-links a:hover, .nav-links a.active {
       color:var(--fg); background:var(--bg-card);
@@ -191,11 +194,10 @@
     body.light-theme .dropdown-menu { background:rgba(245,245,250,0.98); }
     .dropdown.active .dropdown-menu { display:block; }
     .dropdown-menu a {
-      display:block; padding:0.6rem 0.9rem; border-radius:8px;
+      display:flex; padding:0.6rem 0.9rem; border-radius:8px;
       font-size:0.85rem;
       color:var(--muted); transition:all 0.2s;
       min-height:var(--touch-size);
-      display:flex;
       align-items:center;
     }
     .dropdown-menu a:hover { background:var(--accent-dim); color:var(--accent); }
@@ -237,7 +239,254 @@
       font-weight:500;
     }
 
-    /* ===== MEDIA GRID ===== */
+    /* ===== PRICING BANNER ===== */
+    .pricing-banner {
+      max-width:720px;
+      margin:0 auto 1rem;
+      padding:0.8rem 1.2rem;
+      background:linear-gradient(145deg, rgba(255,221,87,0.08), rgba(255,167,38,0.05));
+      border:1px solid rgba(255,221,87,0.2);
+      border-radius:var(--radius-sm);
+      display:flex;
+      align-items:center;
+      gap:0.8rem;
+      flex-wrap:wrap;
+      justify-content:center;
+      font-size:0.82rem;
+      color:var(--fg);
+    }
+    .pricing-banner .price-item {
+      display:flex;
+      align-items:center;
+      gap:0.4rem;
+      font-weight:600;
+    }
+    .pricing-banner .price-item i { color:var(--accent); }
+    .pricing-banner .price-item strong {
+      color:var(--accent);
+      font-family:var(--font-display);
+    }
+    .pricing-banner .divider {
+      color:var(--muted-dim);
+      font-weight:300;
+    }
+    @media (max-width:480px) {
+      .pricing-banner { font-size:0.75rem; padding:0.7rem 0.9rem; gap:0.5rem; }
+      .pricing-banner .divider { display:none; }
+      .pricing-banner .price-item { flex:1 1 100%; justify-content:center; }
+    }
+
+    /* ===== HOW IT WORKS SECTION ===== */
+    .how-it-works {
+      max-width:1100px;
+      margin:1.5rem auto 2rem;
+      padding:0 1rem;
+    }
+    .how-it-works h2 {
+      font-family:var(--font-display);
+      font-size:clamp(1.2rem, 4vw, 1.6rem);
+      font-weight:700;
+      text-align:center;
+      margin-bottom:0.4rem;
+    }
+    .how-it-works h2 i {
+      color:var(--accent);
+      margin-right:0.4rem;
+    }
+    .how-it-works .section-sub {
+      text-align:center;
+      color:var(--muted);
+      font-size:0.85rem;
+      margin-bottom:1.5rem;
+    }
+
+    .steps-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      gap:1rem;
+      margin-bottom:2rem;
+    }
+    .step-card {
+      position:relative;
+      padding:1.4rem 1.2rem 1.2rem;
+      background:var(--bg-card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      transition:all var(--transition);
+    }
+    .step-card:hover {
+      transform:translateY(-4px);
+      border-color:rgba(255,221,87,0.25);
+      box-shadow:var(--shadow-card-hover);
+    }
+    .step-card .step-num {
+      position:absolute;
+      top:-12px;
+      left:1.2rem;
+      width:32px;
+      height:32px;
+      border-radius:50%;
+      background:linear-gradient(145deg, #FFDD57, #f5c842);
+      color:#0a0a0f;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family:var(--font-display);
+      font-weight:700;
+      font-size:0.9rem;
+      box-shadow:0 4px 12px rgba(255,221,87,0.35);
+    }
+    .step-card h3 {
+      font-family:var(--font-display);
+      font-size:0.95rem;
+      font-weight:600;
+      margin-bottom:0.4rem;
+      color:var(--fg);
+    }
+    .step-card p {
+      font-size:0.8rem;
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    /* ===== FEE TABLE ===== */
+    .fee-table {
+      background:var(--bg-card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:1.5rem 1.2rem;
+      overflow:hidden;
+    }
+    .fee-table h3 {
+      font-family:var(--font-display);
+      font-size:1rem;
+      font-weight:600;
+      margin-bottom:1rem;
+      display:flex;
+      align-items:center;
+      gap:0.4rem;
+    }
+    .fee-table h3 i { color:var(--accent); }
+    .fee-table table {
+      width:100%;
+      border-collapse:collapse;
+      font-size:0.82rem;
+    }
+    .fee-table thead {
+      background:var(--accent-dim);
+    }
+    .fee-table th {
+      padding:0.7rem 0.5rem;
+      text-align:left;
+      font-weight:600;
+      color:var(--accent);
+      font-size:0.75rem;
+      text-transform:uppercase;
+      letter-spacing:0.03em;
+      border-bottom:1px solid var(--border);
+    }
+    .fee-table td {
+      padding:0.7rem 0.5rem;
+      border-bottom:1px solid var(--border);
+      color:var(--fg);
+    }
+    .fee-table tr:last-child td { border-bottom:none; }
+    .fee-table tbody tr:hover {
+      background:var(--bg-card-hover);
+    }
+    .fee-table td strong {
+      color:var(--accent);
+      font-family:var(--font-display);
+      font-size:0.9rem;
+    }
+    .fee-note {
+      margin-top:1rem;
+      padding:0.75rem 1rem;
+      background:var(--accent-dim);
+      border-left:3px solid var(--accent);
+      border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+      font-size:0.78rem;
+      color:var(--fg);
+      line-height:1.5;
+    }
+
+    /* ===== FAQ SECTION ===== */
+    .faq-section {
+      max-width:1100px;
+      margin:2rem auto;
+      padding:0 1rem;
+    }
+    .faq-section h2 {
+      font-family:var(--font-display);
+      font-size:clamp(1.2rem, 4vw, 1.6rem);
+      font-weight:700;
+      text-align:center;
+      margin-bottom:0.4rem;
+    }
+    .faq-section h2 i { color:var(--accent); margin-right:0.4rem; }
+    .faq-section .section-sub {
+      text-align:center;
+      color:var(--muted);
+      font-size:0.85rem;
+      margin-bottom:1.5rem;
+    }
+    .faq-list {
+      display:flex;
+      flex-direction:column;
+      gap:0.6rem;
+      max-width:820px;
+      margin:0 auto;
+    }
+    .faq-item {
+      background:var(--bg-card);
+      border:1px solid var(--border);
+      border-radius:var(--radius-sm);
+      overflow:hidden;
+      transition:all var(--transition);
+    }
+    .faq-item[open] {
+      border-color:rgba(255,221,87,0.25);
+      box-shadow:0 4px 20px rgba(255,221,87,0.08);
+    }
+    .faq-item summary {
+      list-style:none;
+      cursor:pointer;
+      padding:0.9rem 1.1rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:0.8rem;
+      font-size:0.88rem;
+      font-weight:600;
+      color:var(--fg);
+      transition:color var(--transition);
+      user-select:none;
+    }
+    .faq-item summary::-webkit-details-marker { display:none; }
+    .faq-item summary::after {
+      content:'\f078';
+      font-family:'Font Awesome 6 Free';
+      font-weight:900;
+      font-size:0.7rem;
+      color:var(--accent);
+      transition:transform var(--transition);
+      flex-shrink:0;
+    }
+    .faq-item[open] summary::after {
+      transform:rotate(180deg);
+    }
+    .faq-item summary:hover { color:var(--accent); }
+    .faq-item .faq-answer {
+      padding:0 1.1rem 1rem;
+      font-size:0.82rem;
+      color:var(--muted);
+      line-height:1.7;
+      border-top:1px dashed var(--border);
+      padding-top:0.8rem;
+      margin-top:0;
+    }
+
+    /* ===== JASTIP GRID ===== */
     .jastip-grid {
       display:grid;
       grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
@@ -255,6 +504,7 @@
       position:relative;
       animation:fadeUp 0.5s ease both;
     }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
     .jastip-card:hover {
       transform:translateY(-6px);
       border-color:rgba(255,221,87,0.25);
@@ -274,7 +524,6 @@
       35% { transform:translateY(-4px); }
     }
 
-    /* ===== MEDIA SLIDER / GALLERY ===== */
     .jastip-card .media-slider {
       position:relative;
       width:100%;
@@ -295,12 +544,9 @@
       justify-content:center;
       background:#0a0a12;
       cursor:pointer;
+      position:relative;
     }
-    .jastip-card .media-slider .slide-item img {
-      width:100%;
-      height:100%;
-      object-fit:cover;
-    }
+    .jastip-card .media-slider .slide-item img,
     .jastip-card .media-slider .slide-item video {
       width:100%;
       height:100%;
@@ -308,26 +554,20 @@
     }
     .jastip-card .media-slider .slide-item .video-play-icon {
       position:absolute;
-      top:50%;
-      left:50%;
+      top:50%; left:50%;
       transform:translate(-50%,-50%);
-      width:56px;
-      height:56px;
+      width:56px; height:56px;
       border-radius:50%;
       background:rgba(0,0,0,0.6);
       backdrop-filter:blur(8px);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:#fff;
-      font-size:1.6rem;
+      display:flex; align-items:center; justify-content:center;
+      color:#fff; font-size:1.6rem;
       pointer-events:none;
       border:2px solid rgba(255,255,255,0.15);
     }
     .jastip-card .media-slider .slide-item .media-badge {
       position:absolute;
-      bottom:10px;
-      right:10px;
+      bottom:10px; right:10px;
       z-index:2;
       font-size:0.55rem;
       font-weight:600;
@@ -337,25 +577,18 @@
       backdrop-filter:blur(4px);
       color:#fff;
       border:1px solid rgba(255,255,255,0.08);
-      display:flex;
-      align-items:center;
-      gap:0.2rem;
+      display:flex; align-items:center; gap:0.2rem;
     }
-    .jastip-card .media-slider .slide-item .media-badge i {
-      font-size:0.5rem;
-    }
+    .jastip-card .media-slider .slide-item .media-badge i { font-size:0.5rem; }
     .jastip-card .media-slider .slider-dots {
       position:absolute;
-      bottom:12px;
-      left:50%;
+      bottom:12px; left:50%;
       transform:translateX(-50%);
-      display:flex;
-      gap:5px;
+      display:flex; gap:5px;
       z-index:3;
     }
     .jastip-card .media-slider .slider-dots span {
-      width:8px;
-      height:8px;
+      width:8px; height:8px;
       border-radius:50%;
       background:rgba(255,255,255,0.3);
       cursor:pointer;
@@ -371,37 +604,24 @@
       top:50%;
       transform:translateY(-50%);
       z-index:4;
-      width:30px;
-      height:30px;
+      width:30px; height:30px;
       border-radius:50%;
       background:rgba(0,0,0,0.5);
       backdrop-filter:blur(4px);
       border:1px solid rgba(255,255,255,0.08);
       color:#fff;
       cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      display:flex; align-items:center; justify-content:center;
       font-size:0.7rem;
       transition:all 0.3s;
       opacity:0;
     }
-    .jastip-card:hover .media-slider .nav-arrow {
-      opacity:1;
-    }
-    .jastip-card .media-slider .nav-arrow:hover {
-      background:rgba(255,255,255,0.15);
-    }
-    .jastip-card .media-slider .nav-arrow.prev {
-      left:6px;
-    }
-    .jastip-card .media-slider .nav-arrow.next {
-      right:6px;
-    }
+    .jastip-card:hover .media-slider .nav-arrow { opacity:1; }
+    .jastip-card .media-slider .nav-arrow:hover { background:rgba(255,255,255,0.15); }
+    .jastip-card .media-slider .nav-arrow.prev { left:6px; }
+    .jastip-card .media-slider .nav-arrow.next { right:6px; }
 
-    .jastip-card .card-body {
-      padding:1rem;
-    }
+    .jastip-card .card-body { padding:1rem; }
     .jastip-card .card-body .item-name {
       font-family:var(--font-display);
       font-size:1rem;
@@ -449,8 +669,27 @@
       color:var(--muted-dim);
       margin-bottom:0.3rem;
     }
-    .jastip-card .card-body .media-count i {
-      margin-right:0.2rem;
+    .jastip-card .card-body .media-count i { margin-right:0.2rem; }
+
+    .jastip-card .card-body .fee-info {
+      display:flex;
+      align-items:center;
+      gap:0.35rem;
+      font-size:0.68rem;
+      color:var(--muted);
+      padding:0.35rem 0.55rem;
+      margin-bottom:0.5rem;
+      background:var(--accent-dim);
+      border:1px dashed rgba(255,221,87,0.3);
+      border-radius:6px;
+    }
+    .jastip-card .card-body .fee-info i {
+      color:var(--accent);
+      font-size:0.65rem;
+    }
+    .jastip-card .card-body .fee-info strong {
+      color:var(--accent);
+      font-weight:700;
     }
 
     .btn-group {
@@ -516,11 +755,6 @@
       border-color:#4ade80;
       box-shadow:0 4px 20px rgba(74,222,128,0.25);
     }
-    .btn-jastip.sold-btn {
-      opacity:0.5;
-      cursor:default;
-      pointer-events:none;
-    }
     .btn-jastip:active { transform:scale(0.96); }
 
     .action-bar {
@@ -552,7 +786,6 @@
     }
     .action-bar .btn-titip:active { transform:scale(0.96); }
 
-    /* ===== MODAL ===== */
     .modal-overlay {
       display:none;
       position:fixed;
@@ -567,6 +800,7 @@
     }
     .modal-overlay.active { display:flex; animation:fadeIn 0.2s ease; }
     @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    @keyframes scaleIn { from{transform:scale(0.92);opacity:0} to{transform:scale(1);opacity:1} }
     .modal-card {
       background:var(--bg-secondary);
       border:1px solid var(--border);
@@ -608,10 +842,10 @@
       font-size:0.85rem;
       color:var(--muted);
       margin-bottom:1.25rem;
+      line-height:1.5;
     }
-    .form-group {
-      margin-bottom:1rem;
-    }
+    .modal-card p.sub strong { color:var(--accent); }
+    .form-group { margin-bottom:1rem; }
     .form-group label {
       display:block;
       font-size:0.78rem;
@@ -631,6 +865,9 @@
       outline:none;
       transition:border-color var(--transition);
     }
+    body.light-theme .form-group input,
+    body.light-theme .form-group textarea,
+    body.light-theme .form-group select { background:rgba(0,0,0,0.02); }
     .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
       border-color:var(--accent);
       box-shadow:0 0 0 2px var(--accent-dim);
@@ -642,7 +879,45 @@
       margin-top:0.2rem;
     }
 
-    /* ===== FILE UPLOAD ===== */
+    .fee-preview {
+      padding:0.85rem 1rem;
+      background:linear-gradient(145deg, rgba(255,221,87,0.08), rgba(255,167,38,0.04));
+      border:1px solid rgba(255,221,87,0.25);
+      border-radius:var(--radius-sm);
+      display:flex;
+      flex-direction:column;
+      gap:0.5rem;
+    }
+    .fee-preview .fee-row {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:0.8rem;
+      color:var(--muted);
+    }
+    .fee-preview .fee-row.total {
+      padding-top:0.5rem;
+      border-top:1px dashed rgba(255,221,87,0.25);
+      font-size:0.95rem;
+      font-weight:700;
+      color:var(--fg);
+    }
+    .fee-preview .fee-row.total .fee-value {
+      color:var(--accent);
+      font-family:var(--font-display);
+      font-size:1.1rem;
+    }
+    .fee-preview .fee-row .fee-value {
+      font-weight:600;
+      color:var(--fg);
+    }
+    .fee-preview .fee-empty {
+      font-size:0.78rem;
+      color:var(--muted-dim);
+      text-align:center;
+      font-style:italic;
+    }
+
     .file-upload-area {
       border:2px dashed var(--border);
       border-radius:var(--radius-sm);
@@ -671,15 +946,8 @@
       color:var(--muted);
       margin-bottom:0.3rem;
     }
-    .file-upload-area .upload-text {
-      font-size:0.85rem;
-      color:var(--muted);
-    }
-    .file-upload-area .upload-sub {
-      font-size:0.7rem;
-      color:var(--muted-dim);
-      margin-top:0.1rem;
-    }
+    .file-upload-area .upload-text { font-size:0.85rem; color:var(--muted); }
+    .file-upload-area .upload-sub { font-size:0.7rem; color:var(--muted-dim); margin-top:0.1rem; }
 
     .file-preview-grid {
       display:grid;
@@ -697,34 +965,25 @@
     }
     .file-preview-grid .preview-item img,
     .file-preview-grid .preview-item video {
-      width:100%;
-      height:100%;
-      object-fit:cover;
+      width:100%; height:100%; object-fit:cover;
     }
     .file-preview-grid .preview-item .remove-btn {
       position:absolute;
-      top:2px;
-      right:2px;
-      width:20px;
-      height:20px;
+      top:2px; right:2px;
+      width:20px; height:20px;
       border-radius:50%;
       background:rgba(239,68,68,0.85);
       color:#fff;
       border:none;
       cursor:pointer;
       font-size:0.55rem;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      display:flex; align-items:center; justify-content:center;
       transition:all 0.2s;
     }
-    .file-preview-grid .preview-item .remove-btn:hover {
-      transform:scale(1.1);
-    }
+    .file-preview-grid .preview-item .remove-btn:hover { transform:scale(1.1); }
     .file-preview-grid .preview-item .file-type-badge {
       position:absolute;
-      bottom:4px;
-      left:4px;
+      bottom:4px; left:4px;
       font-size:0.5rem;
       padding:0.1rem 0.3rem;
       border-radius:4px;
@@ -773,7 +1032,6 @@
       box-shadow:none;
     }
 
-    /* ===== JASTIP COMMENTS ===== */
     .jastip-comments {
       max-width:900px;
       margin:2rem auto 0;
@@ -786,26 +1044,26 @@
     .jastip-comments .comments-sub { color:var(--muted); font-size:.78rem; margin-bottom:1rem; }
     .jastip-comment-form { display:grid; gap:.6rem; margin-bottom:1rem; }
     .jastip-comment-form input, .jastip-comment-form textarea { width:100%; padding:.7rem .8rem; border:1px solid var(--border); border-radius:var(--radius-sm); background:rgba(255,255,255,.03); color:var(--fg); font:inherit; font-size:.82rem; outline:none; }
+    body.light-theme .jastip-comment-form input,
+    body.light-theme .jastip-comment-form textarea { background:rgba(0,0,0,0.02); }
     .jastip-comment-form input:focus, .jastip-comment-form textarea:focus { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-dim); }
     .jastip-comment-form button { justify-self:start; min-height:42px; padding:.6rem 1rem; border:0; border-radius:var(--radius-sm); background:var(--accent); color:#0a0a0f; font:600 .8rem var(--font-body); cursor:pointer; }
     .jastip-comment-form button:disabled { opacity:.6; cursor:wait; }
     .jastip-comment-list { display:grid; gap:.55rem; max-height:360px; overflow:auto; }
     .jastip-comment { padding:.7rem .8rem; border-left:3px solid var(--accent); background:rgba(255,255,255,.025); border-radius:0 var(--radius-sm) var(--radius-sm) 0; }
+    body.light-theme .jastip-comment { background:rgba(0,0,0,0.02); }
     .jastip-comment strong { font-size:.78rem; }
     .jastip-comment p { margin:.2rem 0; color:var(--fg); font-size:.8rem; white-space:pre-wrap; overflow-wrap:anywhere; }
     .jastip-comment small { color:var(--muted); font-size:.65rem; }
     .jastip-comment-empty { padding:1rem; color:var(--muted); font-size:.78rem; text-align:center; }
 
-    /* ===== LIGHTBOX OVERRIDE ===== */
     .lb-caption {
       background:rgba(0,0,0,0.7) !important;
       color:#fff !important;
       padding:0.8rem 1rem !important;
       font-size:0.85rem !important;
     }
-    .lb-data .lb-close {
-      display:none !important;
-    }
+    .lb-data .lb-close { display:none !important; }
 
     .social-row {
       display:flex; justify-content:center; gap:0.6rem; padding:1rem;
@@ -890,12 +1148,38 @@
     .back-to-top.show { opacity:1; transform:translateY(0); pointer-events:auto; }
     .back-to-top:active { transform:scale(0.92); }
 
-    .jastip-filter-bar { max-width:1120px; margin:0 auto 1rem; display:flex; justify-content:flex-end; gap:.5rem; }
+    .jastip-filter-bar { max-width:1120px; margin:0 auto 1rem; display:flex; justify-content:flex-end; gap:.5rem; padding:0 1rem; }
     .jastip-filter-bar select { min-height:40px; padding:.55rem .75rem; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg-card); color:var(--fg); font:500 .78rem var(--font-body); }
+    .empty-state { grid-column:1/-1; text-align:center; padding:3rem 1rem; color:var(--muted); }
+    .empty-state i { font-size:2.5rem; display:block; margin-bottom:0.8rem; opacity:0.4; }
+
+    .section-divider {
+      max-width:1100px;
+      margin:2.5rem auto 0;
+      padding:0 1rem;
+      display:flex;
+      align-items:center;
+      gap:0.8rem;
+      color:var(--muted-dim);
+    }
+    .section-divider::before, .section-divider::after {
+      content:'';
+      flex:1;
+      height:1px;
+      background:var(--border);
+    }
+    .section-divider i {
+      color:var(--accent);
+      font-size:0.9rem;
+    }
+
     @media (max-width:480px) { 
-      .jastip-filter-bar { justify-content:stretch; } 
-      .jastip-filter-bar select { flex:1; min-width:0; } 
+      .jastip-filter-bar { justify-content:stretch; flex-wrap:wrap; } 
+      .jastip-filter-bar select { flex:1; min-width:100px; } 
       .jastip-grid { grid-template-columns:1fr; }
+      .fee-table { padding:1.2rem 0.8rem; }
+      .fee-table th, .fee-table td { padding:0.55rem 0.35rem; font-size:0.72rem; }
+      .fee-table td strong { font-size:0.82rem; }
     }
 
     @media (min-width:768px) {
@@ -970,9 +1254,133 @@
 
   <header class="page-hero">
     <h1>🛒 Titip Jualan <span class="accent">(Jastip)</span></h1>
-    <p>Titipkan barang jualanmu di sini. Bisa upload <strong>foto &amp; video</strong> (multiple). Hanya 5rb, tampil sampai laku.</p>
+    <p>Titipkan barang jualanmu di sini. Bisa upload <strong>foto &amp; video</strong> (multiple). Tampil sampai laku!</p>
     <div class="sub-badge">📸 Foto &amp; 🎬 Video Support</div>
   </header>
+
+  <!-- ===== PRICING BANNER ===== -->
+  <div class="pricing-banner" role="note" aria-label="Info biaya jastip">
+    <div class="price-item">
+      <i class="fas fa-receipt"></i>
+      Biaya Listing: <strong>Rp 3.000</strong>
+    </div>
+    <span class="divider">+</span>
+    <div class="price-item">
+      <i class="fas fa-percent"></i>
+      Komisi: <strong>5%</strong>
+    </div>
+    <span class="divider">=</span>
+    <div class="price-item">
+      <i class="fas fa-calculator"></i>
+      Total otomatis dihitung saat titip
+    </div>
+  </div>
+
+  <!-- ===== CARA KERJA & SIMULASI BIAYA ===== -->
+  <section class="how-it-works" aria-label="Cara kerja dan biaya jastip">
+    <h2><i class="fas fa-circle-info"></i> Cara Kerja &amp; Biaya Jastip</h2>
+    <p class="section-sub">Cuma 4 langkah mudah, barangmu tayang sampai laku.</p>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h3><i class="fas fa-upload" style="color:var(--accent);margin-right:0.3rem;"></i> Upload Barang</h3>
+        <p>Isi form titipan, upload foto/video, tentukan harga jual. Bisa lebih dari 1 media.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3><i class="fas fa-wallet" style="color:var(--accent);margin-right:0.3rem;"></i> Bayar Biaya Jastip</h3>
+        <p>Rp 3.000 (listing) + 5% komisi dari harga jual. Konfirmasi via WA admin.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h3><i class="fas fa-bullhorn" style="color:var(--accent);margin-right:0.3rem;"></i> Tayang &amp; Promosi</h3>
+        <p>Barang tampil di website + sosmed Akino Store. Admin bantu promosi sampai laku.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <h3><i class="fas fa-shield-halved" style="color:var(--accent);margin-right:0.3rem;"></i> Rekber &amp; Cair</h3>
+        <p>Pembayaran aman via rekber. Dana cair ke seller setelah barang diterima pembeli.</p>
+      </div>
+    </div>
+
+    <div class="fee-table">
+      <h3><i class="fas fa-calculator"></i> Simulasi Biaya Jastip</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Harga Barang</th>
+            <th>Listing</th>
+            <th>Komisi 5%</th>
+            <th>Total Bayar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Rp 50.000</td><td>Rp 3.000</td><td>Rp 2.500</td><td><strong>Rp 5.500</strong></td></tr>
+          <tr><td>Rp 150.000</td><td>Rp 3.000</td><td>Rp 7.500</td><td><strong>Rp 10.500</strong></td></tr>
+          <tr><td>Rp 500.000</td><td>Rp 3.000</td><td>Rp 25.000</td><td><strong>Rp 28.000</strong></td></tr>
+          <tr><td>Rp 1.000.000</td><td>Rp 3.000</td><td>Rp 50.000</td><td><strong>Rp 53.000</strong></td></tr>
+          <tr><td>Rp 5.000.000</td><td>Rp 3.000</td><td>Rp 250.000</td><td><strong>Rp 253.000</strong></td></tr>
+        </tbody>
+      </table>
+      <p class="fee-note">
+        💡 <strong>Adil untuk semua:</strong> Barang murah tetap terjangkau (listing cuma Rp 3.000), barang mahal kamu untung lebih besar. Komisi hanya dihitung <em>setelah</em> barang terjual.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== FAQ SECTION ===== -->
+  <section class="faq-section" aria-label="Pertanyaan umum">
+    <h2><i class="fas fa-circle-question"></i> Pertanyaan Umum</h2>
+    <p class="section-sub">Hal-hal yang sering ditanyakan seller baru.</p>
+
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Kapan saya bayar biaya jastip?</summary>
+        <div class="faq-answer">Setelah barang disubmit dan dikonfirmasi admin via WhatsApp, kamu baru bayar biaya jastip (Rp 3.000 + 5%). Barang baru tayang setelah pembayaran diterima.</div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Kalau barang nggak laku, biaya kembali?</summary>
+        <div class="faq-answer">Biaya listing (Rp 3.000) <strong>tidak kembali</strong> karena sudah dipakai untuk slot tayang. Tapi <strong>komisi 5% hanya dibayar kalau barang terjual</strong> — jadi kalau nggak laku, kamu nggak bayar komisi.</div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Kenapa pakai sistem Rp 3.000 + 5%?</summary>
+        <div class="faq-answer">Supaya adil untuk semua seller. Seller barang murah tetap terjangkau (nggak kena fee besar), seller barang mahal untung lebih besar tanpa takut fee-nya nggak proporsional. Ini sistem hybrid standar jastip profesional.</div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Berapa lama barang tayang?</summary>
+        <div class="faq-answer">Minimal 30 hari. Bisa diperpanjang <strong>gratis</strong> kalau belum laku — tinggal chat admin. Barang yang sudah terjual akan ditandai "TERJUAL" dan tetap tampil sebagai portofolio.</div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Bisa upload berapa media per barang?</summary>
+        <div class="faq-answer">Bisa upload <strong>lebih dari 1</strong> foto dan video (maksimal 10 media, masing-masing maks 20MB). Foto & video akan tampil dalam bentuk slider otomatis di halaman jastip.</div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Apa itu rekber dan kenapa penting?</summary>
+        <div class="faq-answer">Rekber (rekening bersama) adalah sistem pembayaran aman: uang pembeli ditahan admin dulu, baru diteruskan ke seller setelah barang diterima dan dikonfirmasi. Ini melindungi <strong>pembeli dan penjual</strong> dari penipuan.</div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Barang apa saja yang boleh dititipkan?</summary>
+        <div class="faq-answer">Semua barang legal: gadget, sepatu, action figure, akun game (dengan syarat), koleksi, fashion, dll. Dilarang: barang ilegal, obat terlarang, senjata, barang hasil curian, atau konten dewasa.</div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Bagaimana cara mulai titip jualan?</summary>
+        <div class="faq-answer">Klik tombol <strong>"Titip Jualan Sekarang"</strong> di atas, isi form, upload foto/video barangmu, submit, lalu lanjut konfirmasi ke admin via WhatsApp. Gampang banget!</div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ===== ACTION BUTTON ===== -->
+  <div class="section-divider" aria-hidden="true">
+    <i class="fas fa-store"></i>
+  </div>
 
   <div class="action-bar">
     <button class="btn-titip" id="btnTitip"><i class="fas fa-plus-circle"></i> Titip Jualan Sekarang</button>
@@ -1041,7 +1449,7 @@
     <div class="modal-card">
       <button class="modal-close" onclick="closeModal('modalTitip')"><i class="fas fa-xmark"></i></button>
       <h3><i class="fas fa-plus-circle" style="color:var(--accent);"></i> Titip Jualan</h3>
-      <p class="sub">Isi data dengan benar. Biaya titip <strong>Rp 5.000</strong> (dibayar via WA admin). Upload foto atau video barangmu (bisa lebih dari 1).</p>
+      <p class="sub">Isi data dengan benar. Biaya titip: <strong>Rp 3.000</strong> (listing) + <strong>5%</strong> dari harga jual. Upload foto atau video barangmu (bisa lebih dari 1).</p>
       <form id="formTitip">
         <div class="form-group">
           <label>Nama Penjual <span style="color:#f87171;">*</span></label>
@@ -1057,14 +1465,36 @@
         </div>
         <div class="form-group">
           <label>Harga Jual <span style="color:#f87171;">*</span></label>
-          <input type="text" id="tHarga" placeholder="Rp 150.000" required>
+          <input type="text" id="tHarga" placeholder="Rp 150.000" required inputmode="numeric">
         </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-calculator" style="color:var(--accent);margin-right:0.25rem;"></i> Rincian Biaya Jastip</label>
+          <div class="fee-preview" id="feePreview">
+            <div class="fee-empty" id="feeEmpty">Masukkan harga jual untuk melihat rincian biaya</div>
+            <div id="feeDetails" style="display:none; flex-direction:column; gap:0.5rem;">
+              <div class="fee-row">
+                <span><i class="fas fa-receipt" style="font-size:0.7rem;margin-right:0.3rem;color:var(--accent);"></i> Biaya Listing</span>
+                <span class="fee-value" id="feeListing">Rp 3.000</span>
+              </div>
+              <div class="fee-row">
+                <span><i class="fas fa-percent" style="font-size:0.7rem;margin-right:0.3rem;color:var(--accent);"></i> Komisi 5%</span>
+                <span class="fee-value" id="feeKomisi">Rp 0</span>
+              </div>
+              <div class="fee-row total">
+                <span>Total Biaya Jastip</span>
+                <span class="fee-value" id="feeTotal">Rp 3.000</span>
+              </div>
+            </div>
+          </div>
+          <div class="hint">Dibayar via WA admin setelah titipan dikonfirmasi.</div>
+        </div>
+
         <div class="form-group">
           <label>Kategori / Nama Game</label>
           <input type="text" id="tKategori" placeholder="Contoh: Car Parking Multiplayer" maxlength="60">
         </div>
 
-        <!-- ===== UPLOAD AREA ===== -->
         <div class="form-group">
           <label>Upload Foto &amp; Video <span style="color:#f87171;">*</span> (bisa pilih banyak)</label>
           <div class="file-upload-area" id="uploadArea">
@@ -1114,6 +1544,27 @@
 
   <script>
     // ============================================================
+    // KONFIGURASI BIAYA JASTIP (HYBRID)
+    // ============================================================
+    var BIAYA_LISTING = 3000;
+    var KOMISI_PERSEN = 0.05;
+
+    function hitungBiayaJastip(hargaBarang) {
+      var harga = parseInt(hargaBarang, 10) || 0;
+      var komisi = Math.round(harga * KOMISI_PERSEN);
+      var total = BIAYA_LISTING + komisi;
+      return { listing: BIAYA_LISTING, komisi: komisi, total: total };
+    }
+
+    function formatRupiah(angka) {
+      return 'Rp ' + (parseInt(angka, 10) || 0).toLocaleString('id-ID');
+    }
+
+    function parseRupiah(str) {
+      return parseInt(String(str || '').replace(/[^0-9]/g, ''), 10) || 0;
+    }
+
+    // ============================================================
     // FUNGSI MODAL (GLOBAL)
     // ============================================================
     function openModal(id) {
@@ -1136,9 +1587,6 @@
       }
     }
 
-    // ============================================================
-    // TOAST
-    // ============================================================
     function showToast(msg) {
       var t = document.getElementById('toast');
       document.getElementById('toastMessage').textContent = msg;
@@ -1151,18 +1599,15 @@
     // DOMContentLoaded
     // ============================================================
     document.addEventListener('DOMContentLoaded', function() {
-      console.log('🚀 Jastip page loaded (multi media)');
+      console.log('🚀 Jastip page loaded');
 
-      // ===== BUTTON TITIP =====
       var btnTitip = document.getElementById('btnTitip');
       if (btnTitip) {
         btnTitip.addEventListener('click', function() {
-          console.log('🖱️ Tombol Titip diklik');
           openModal('modalTitip');
         });
       }
 
-      // ===== CLOSE MODAL VIA BACKDROP =====
       document.querySelectorAll('.modal-overlay').forEach(function(el) {
         el.addEventListener('click', function(e) {
           if (e.target === this) {
@@ -1172,10 +1617,9 @@
         });
       });
 
-      // ===== FILE UPLOAD HANDLING =====
       setupFileUpload();
+      setupFeePreview();
 
-      // ===== FORM TITIP =====
       var formTitip = document.getElementById('formTitip');
       if (formTitip) {
         formTitip.addEventListener('submit', function(e) {
@@ -1184,7 +1628,6 @@
         });
       }
 
-      // ===== FORM TAWAR =====
       var formTawar = document.getElementById('formTawar');
       if (formTawar) {
         formTawar.addEventListener('submit', function(e) {
@@ -1194,13 +1637,40 @@
       }
 
       setupJastipComments();
-
-      // ===== RENDER JASTIP =====
       renderJastip();
-
-      // ===== NAVBAR & THEME =====
       setupThemeAndNavbar();
     });
+
+    // ============================================================
+    // SETUP PREVIEW BIAYA OTOMATIS
+    // ============================================================
+    function setupFeePreview() {
+      var hargaInput = document.getElementById('tHarga');
+      var feeEmpty = document.getElementById('feeEmpty');
+      var feeDetails = document.getElementById('feeDetails');
+      var feeListing = document.getElementById('feeListing');
+      var feeKomisi = document.getElementById('feeKomisi');
+      var feeTotal = document.getElementById('feeTotal');
+      if (!hargaInput) return;
+
+      function updatePreview() {
+        var harga = parseRupiah(hargaInput.value);
+        if (harga <= 0) {
+          feeEmpty.style.display = 'block';
+          feeDetails.style.display = 'none';
+          return;
+        }
+        var biaya = hitungBiayaJastip(harga);
+        feeEmpty.style.display = 'none';
+        feeDetails.style.display = 'flex';
+        feeListing.textContent = formatRupiah(biaya.listing);
+        feeKomisi.textContent = formatRupiah(biaya.komisi);
+        feeTotal.textContent = formatRupiah(biaya.total);
+      }
+
+      hargaInput.addEventListener('input', updatePreview);
+      hargaInput.addEventListener('change', updatePreview);
+    }
 
     // ============================================================
     // FILE UPLOAD SETUP
@@ -1210,35 +1680,24 @@
     function setupFileUpload() {
       var uploadArea = document.getElementById('uploadArea');
       var fileInput = document.getElementById('tMedia');
-      var previewGrid = document.getElementById('filePreviewGrid');
-
       if (!uploadArea || !fileInput) return;
 
-      // Click to upload
       uploadArea.addEventListener('click', function(e) {
         if (e.target === this || e.target.closest('.upload-icon') || e.target.closest('.upload-text') || e.target.closest('.upload-sub')) {
           fileInput.click();
         }
       });
 
-      // File selection
-      fileInput.addEventListener('change', function(e) {
+      fileInput.addEventListener('change', function() {
         var files = Array.from(this.files);
         if (files.length === 0) return;
-
-        // Validate & add
         files.forEach(function(file) {
-          var isValid = validateFile(file);
-          if (isValid) {
-            uploadedFiles.push(file);
-          }
+          if (validateFile(file)) uploadedFiles.push(file);
         });
-
         renderPreviews();
-        this.value = ''; // reset agar bisa upload file yang sama lagi
+        this.value = '';
       });
 
-      // Drag & Drop
       uploadArea.addEventListener('dragover', function(e) {
         e.preventDefault();
         this.classList.add('dragover');
@@ -1252,20 +1711,15 @@
         this.classList.remove('dragover');
         var files = Array.from(e.dataTransfer.files);
         if (files.length === 0) return;
-
         files.forEach(function(file) {
-          var isValid = validateFile(file);
-          if (isValid) {
-            uploadedFiles.push(file);
-          }
+          if (validateFile(file)) uploadedFiles.push(file);
         });
-
         renderPreviews();
       });
     }
 
     function validateFile(file) {
-      var maxSize = 20 * 1024 * 1024; // 20MB
+      var maxSize = 20 * 1024 * 1024;
       var validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'video/mp4', 'video/quicktime', 'video/x-msvideo', 'video/webm'];
 
       if (!validTypes.includes(file.type)) {
@@ -1282,31 +1736,22 @@
     function renderPreviews() {
       var grid = document.getElementById('filePreviewGrid');
       grid.innerHTML = '';
-
-      if (uploadedFiles.length === 0) {
-        grid.innerHTML = '';
-        return;
-      }
+      if (uploadedFiles.length === 0) return;
 
       uploadedFiles.forEach(function(file, index) {
         var item = document.createElement('div');
         item.className = 'preview-item';
-
         var isVideo = file.type.startsWith('video/');
         var url = URL.createObjectURL(file);
 
         if (isVideo) {
-          item.innerHTML = `
-            <video src="${url}" muted playsinline></video>
-            <span class="file-type-badge"><i class="fas fa-video"></i> ${file.name.split('.').pop()}</span>
-            <button class="remove-btn" data-index="${index}"><i class="fas fa-times"></i></button>
-          `;
+          item.innerHTML = '<video src="' + url + '" muted playsinline></video>' +
+            '<span class="file-type-badge"><i class="fas fa-video"></i> ' + file.name.split('.').pop() + '</span>' +
+            '<button class="remove-btn" data-index="' + index + '"><i class="fas fa-times"></i></button>';
         } else {
-          item.innerHTML = `
-            <img src="${url}" alt="${file.name}" />
-            <span class="file-type-badge"><i class="fas fa-image"></i> ${file.name.split('.').pop()}</span>
-            <button class="remove-btn" data-index="${index}"><i class="fas fa-times"></i></button>
-          `;
+          item.innerHTML = '<img src="' + url + '" alt="' + file.name + '" />' +
+            '<span class="file-type-badge"><i class="fas fa-image"></i> ' + file.name.split('.').pop() + '</span>' +
+            '<button class="remove-btn" data-index="' + index + '"><i class="fas fa-times"></i></button>';
         }
 
         item.querySelector('.remove-btn').addEventListener('click', function(e) {
@@ -1314,13 +1759,6 @@
           var idx = parseInt(this.dataset.index);
           uploadedFiles.splice(idx, 1);
           renderPreviews();
-          // Update preview URLs
-          document.querySelectorAll('.preview-item').forEach(function(el, i) {
-            var urlObj = URL.createObjectURL(uploadedFiles[i]);
-            var mediaEl = el.querySelector('img') || el.querySelector('video');
-            if (mediaEl) mediaEl.src = urlObj;
-            el.querySelector('.remove-btn').dataset.index = i;
-          });
         });
 
         grid.appendChild(item);
@@ -1328,7 +1766,7 @@
     }
 
     // ============================================================
-    // CLOUDINARY UPLOAD (SUPPORT MULTI)
+    // CLOUDINARY UPLOAD
     // ============================================================
     var CLOUD_NAME = 'dlwwy1f80';
     var UPLOAD_PRESET = 'wallpaper_upload';
@@ -1339,10 +1777,7 @@
       formData.append('file', file);
       formData.append('upload_preset', UPLOAD_PRESET);
 
-      var response = await fetch(url, {
-        method: 'POST',
-        body: formData
-      });
+      var response = await fetch(url, { method: 'POST', body: formData });
       if (!response.ok) {
         var errorData = await response.json();
         throw new Error(errorData.error?.message || 'Upload gagal');
@@ -1352,7 +1787,7 @@
     }
 
     // ============================================================
-    // SUBMIT TITIP (DENGAN MULTI UPLOAD)
+    // SUBMIT TITIP
     // ============================================================
     async function submitTitip() {
       var nama = document.getElementById('tNama').value.trim();
@@ -1375,6 +1810,14 @@
         msgEl.textContent = '⚠️ Upload minimal 1 foto atau video!';
         return;
       }
+
+      var hargaAngka = parseRupiah(harga);
+      if (hargaAngka <= 0) {
+        msgEl.className = 'form-msg err show';
+        msgEl.textContent = '⚠️ Harga jual tidak valid!';
+        return;
+      }
+      var biaya = hitungBiayaJastip(hargaAngka);
 
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengupload...';
@@ -1408,27 +1851,45 @@
           throw new Error('Database tidak tersedia. Refresh halaman.');
         }
 
-        // Simpan ke Firestore dengan array media
         var docRef = await db.collection('jastip').add({
           penjual: nama,
           namaBarang: barang,
           deskripsi: deskripsi || '',
           harga: harga,
+          hargaAngka: hargaAngka,
           kategori: kategori,
-          media: uploadedUrls, // 🔥 ARRAY URL MEDIA
+          media: uploadedUrls,
+          biayaListing: biaya.listing,
+          biayaKomisi: biaya.komisi,
+          biayaTotal: biaya.total,
           status: 'pending',
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        var waMsg = '*🆕 Titipan Baru! (Multi Media)*\n\nNama Penjual: ' + nama + '\nBarang: ' + barang + '\nHarga: ' + harga + '\nDeskripsi: ' + (deskripsi || '-') + '\nJumlah Media: ' + uploadedUrls.length + '\n\nKode: ' + docRef.id + '\n\n✅ Segera konfirmasi pembayaran Rp 5.000 untuk mengaktifkan.';
+        var waMsg =
+          '*🆕 Titipan Baru! (Multi Media)*\n\n' +
+          'Nama Penjual: ' + nama + '\n' +
+          'Barang: ' + barang + '\n' +
+          'Harga Jual: ' + harga + '\n' +
+          'Kategori: ' + kategori + '\n' +
+          'Deskripsi: ' + (deskripsi || '-') + '\n' +
+          'Jumlah Media: ' + uploadedUrls.length + '\n\n' +
+          '*💰 RINCIAN BIAYA JASTIP:*\n' +
+          '• Biaya Listing: ' + formatRupiah(biaya.listing) + '\n' +
+          '• Komisi 5%: ' + formatRupiah(biaya.komisi) + '\n' +
+          '• *TOTAL: ' + formatRupiah(biaya.total) + '*\n\n' +
+          'Kode: ' + docRef.id + '\n\n' +
+          '✅ Segera konfirmasi pembayaran ' + formatRupiah(biaya.total) + ' untuk mengaktifkan.';
         window.open('https://wa.me/6289687163314?text=' + encodeURIComponent(waMsg), '_blank');
 
         msgEl.className = 'form-msg ok show';
-        msgEl.innerHTML = '✅ Titipan berhasil! ' + uploadedUrls.length + ' media terupload. Tunggu konfirmasi admin via WhatsApp.';
+        msgEl.innerHTML = '✅ Titipan berhasil! Total biaya: <strong>' + formatRupiah(biaya.total) + '</strong>. Tunggu konfirmasi admin.';
         document.getElementById('formTitip').reset();
         uploadedFiles = [];
         document.getElementById('filePreviewGrid').innerHTML = '';
-        setTimeout(function() { closeModal('modalTitip'); }, 2000);
+        document.getElementById('feeEmpty').style.display = 'block';
+        document.getElementById('feeDetails').style.display = 'none';
+        setTimeout(function() { closeModal('modalTitip'); }, 2200);
 
       } catch (err) {
         console.error(err);
@@ -1467,7 +1928,7 @@
     }
 
     // ============================================================
-    // FUNGSI PESAN & TAWAR (global)
+    // GLOBAL FUNCTIONS
     // ============================================================
     window.pesanItem = function(id, namaBarang, penjual) {
       var msg = 'Halo admin, saya tertarik dengan barang *' + namaBarang + '* dari *' + penjual + '*. Saya mau beli. Kode: ' + id;
@@ -1485,11 +1946,8 @@
       openModal('modalTawar');
     };
 
-    // ============================================================
-    // BAGIKAN ITEM
-    // ============================================================
     window.bagikanItem = function(id, namaBarang, penjual, harga) {
-      var shareUrl = 'https://jastip.akinostore.workers.dev/?item=' + encodeURIComponent(id);
+      var shareUrl = 'https://akinoch.my.id/jastip.html?item=' + encodeURIComponent(id);
       if (navigator.share) {
         navigator.share({
           title: namaBarang + ' - Jastip Akino Store',
@@ -1660,7 +2118,7 @@
     }
 
     // ============================================================
-    // RENDER JASTIP (DENGAN SLIDER MEDIA)
+    // RENDER JASTIP
     // ============================================================
     var jastipItems = [];
     var jastipStatusFilter = 'all';
@@ -1699,8 +2157,8 @@
       });
       items.sort(function(first, second) {
         if (jastipSortFilter === 'priceAsc' || jastipSortFilter === 'priceDesc') {
-          var firstPrice = parseInt(String(first.data.harga || '').replace(/[^0-9]/g, ''), 10) || 0;
-          var secondPrice = parseInt(String(second.data.harga || '').replace(/[^0-9]/g, ''), 10) || 0;
+          var firstPrice = first.data.hargaAngka || parseInt(String(first.data.harga || '').replace(/[^0-9]/g, ''), 10) || 0;
+          var secondPrice = second.data.hargaAngka || parseInt(String(second.data.harga || '').replace(/[^0-9]/g, ''), 10) || 0;
           return jastipSortFilter === 'priceAsc' ? firstPrice - secondPrice : secondPrice - firstPrice;
         }
         return (second.time || 0) - (first.time || 0);
@@ -1719,9 +2177,12 @@
 
         var media = data.media || [];
         var mediaCount = media.length;
-        var firstMedia = media.length > 0 ? media[0] : '';
 
-        // Build slider
+        var feeInfoHtml = '';
+        if (data.biayaTotal) {
+          feeInfoHtml = '<div class="fee-info"><i class="fas fa-receipt"></i> Biaya Jastip: <strong>' + formatRupiah(data.biayaTotal) + '</strong></div>';
+        }
+
         var sliderHtml = '';
         if (media.length > 0) {
           sliderHtml = '<div class="media-slider" data-id="' + id + '">' +
@@ -1733,8 +2194,7 @@
               '<video src="' + escapeHtml(url) + '" muted playsinline></video>' :
               '<img src="' + escapeHtml(url) + '" alt="' + escapeHtml(data.namaBarang) + '" loading="lazy" />';
             sliderHtml += '<div class="slide-item" data-index="' + idx + '" data-url="' + escapeHtml(url) + '" data-isvideo="' + (isVideo ? 'true' : 'false') + '">' +
-              mediaHtml +
-              badgeHtml +
+              mediaHtml + badgeHtml +
               (isVideo ? '<div class="video-play-icon"><i class="fas fa-play"></i></div>' : '') +
               '</div>';
           });
@@ -1763,6 +2223,7 @@
             ${data.deskripsi ? `<div class="desc">${escapeHtml(data.deskripsi)}</div>` : ''}
             <div class="media-count"><i class="fas fa-images"></i> ${mediaCount} media</div>
             <div class="price">${escapeHtml(data.harga)} ${soldBadge}</div>
+            ${feeInfoHtml}
             <div class="btn-group">
               <button class="btn-jastip primary" onclick="pesanItem('${id}','${escapeHtml(data.namaBarang)}','${escapeHtml(data.penjual)}')" ${isSold ? 'disabled' : ''}><i class="fas fa-comment"></i> Pesan</button>
               <button class="btn-jastip secondary" onclick="bukaTawar('${id}','${escapeHtml(data.namaBarang)}')" ${isSold ? 'disabled' : ''}><i class="fas fa-gavel"></i> Tawar</button>
@@ -1773,17 +2234,14 @@
       });
       grid.innerHTML = html;
 
-      // Setup click on media to open lightbox
       document.querySelectorAll('.slide-item').forEach(function(el) {
-        el.addEventListener('click', function(e) {
+        el.addEventListener('click', function() {
           var url = this.dataset.url;
           var isVideo = this.dataset.isvideo === 'true';
           if (url) {
             if (isVideo) {
-              // For video, open in new tab or use lightbox
               window.open(url, '_blank');
             } else {
-              // Use lightbox
               if (typeof lightbox !== 'undefined') {
                 lightbox.open({
                   image: url,
@@ -1800,7 +2258,6 @@
       setTimeout(focusSharedItem, 50);
     }
 
-    // ===== SLIDER FUNCTIONS =====
     window.slideMedia = function(id, direction) {
       var card = document.getElementById('jastip-' + id);
       if (!card) return;
@@ -1837,9 +2294,6 @@
       });
     };
 
-    // ============================================================
-    // RENDER JASTIP (LISTENER FIRESTORE)
-    // ============================================================
     function renderJastip() {
       var grid = document.getElementById('jastipGrid');
       if (typeof db === 'undefined') {
@@ -1863,9 +2317,6 @@
         });
     }
 
-    // ============================================================
-    // FILTER EVENT
-    // ============================================================
     document.getElementById('jastipStatusFilter').addEventListener('change', function() {
       jastipStatusFilter = this.value;
       renderJastipCards();
@@ -1879,9 +2330,6 @@
       renderJastipCards();
     });
 
-    // ============================================================
-    // SERVICE WORKER
-    // ============================================================
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
         navigator.serviceWorker.register('/sw.js')
