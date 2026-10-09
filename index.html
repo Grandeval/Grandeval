@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
 
   <title>Akino Store - Solusi Digital, Game & Baca Manga</title>
-  <meta name="description" content="Akino Store - Jasa digital terpercaya untuk game (Car Parking Multiplayer), sosial media, desain grafis, dan baca manga/novel. Harga bersahabat, proses cepat, aman. 1000+ pelanggan puas.">
-  <meta name="keywords" content="jasa digital, game, CPM, sosial media, design, Car Parking Multiplayer, baca manga, novel, Akino Store, akinocpm">
+  <meta name="description" content="Akino Store - Jasa digital terpercaya untuk game (Car Parking Multiplayer), sosial media, desain grafis, jastip titip jualan, dan baca manga/novel. Harga bersahabat, proses cepat, aman. 1000+ pelanggan puas.">
+  <meta name="keywords" content="jasa digital, game, CPM, sosial media, design, Car Parking Multiplayer, jastip, titip jual, baca manga, novel, Akino Store, akinocpm">
   <link rel="canonical" href="https://akinocpm.my.id/">
 
-  <link rel="manifest" href="/manifest.json?v=4.2"
+  <link rel="manifest" href="/manifest.json?v=4.2">
   <meta name="theme-color" content="#3B82F6">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -18,7 +18,7 @@
 
   <meta property="og:site_name" content="Akino Store">
   <meta property="og:title" content="Akino Store - Solusi Digital, Game & Baca Manga">
-  <meta property="og:description" content="Jasa digital, game, dan baca manga terpercaya: CPM, sosial media, design, dan ribuan manga/novel gratis.">
+  <meta property="og:description" content="Jasa digital, game, dan baca manga terpercaya: CPM, sosial media, design, jastip, dan ribuan manga/novel gratis.">
   <meta property="og:image" content="https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -27,7 +27,7 @@
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Akino Store - Solusi Digital, Game & Baca Manga">
-  <meta name="twitter:description" content="Jasa digital, game, dan baca manga terpercaya: CPM, sosial media, design, dan ribuan manga/novel gratis.">
+  <meta name="twitter:description" content="Jasa digital, game, dan baca manga terpercaya: CPM, sosial media, design, jastip, dan ribuan manga/novel gratis.">
   <meta name="twitter:image" content="https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png">
 
   <script type="application/ld+json">
@@ -36,7 +36,7 @@
       "@type": "LocalBusiness",
       "name": "Akino Store",
       "image": "https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png",
-      "description": "Jasa digital, game, dan baca manga terpercaya: CPM, sosial media, design, dan ribuan manga/novel gratis.",
+      "description": "Jasa digital, game, dan baca manga terpercaya: CPM, sosial media, design, jastip, dan ribuan manga/novel gratis.",
       "url": "https://akinocpm.my.id/",
       "telephone": "+6289687163314",
       "address": { "@type": "PostalAddress", "addressCountry": "ID" },
@@ -163,6 +163,17 @@
       color:var(--fg); background:var(--bg-card);
     }
     .nav-links a.active { color:var(--accent); background:var(--accent-dim); }
+    /* ⭐ Highlight menu Jastip di navbar */
+    .nav-links a.nav-jastip {
+      color:var(--accent);
+      background:var(--accent-dim);
+      border:1px solid rgba(255,221,87,0.2);
+    }
+    .nav-links a.nav-jastip:hover {
+      background:var(--accent);
+      color:#0a0a0f;
+      border-color:var(--accent);
+    }
     .dropdown { position:relative; }
     .dropdown-menu {
       display:none; position:absolute; top:calc(100% + 6px); left:50%;
@@ -267,6 +278,18 @@
       border-color:var(--accent); color:var(--accent);
       background:var(--accent-dim); transform:translateY(-2px);
     }
+    /* Tombol Jastip — versi highlight kuning */
+    .btn-jastip-outline {
+      background:var(--accent-dim); color:var(--accent);
+      border:1px solid rgba(255,221,87,0.3);
+      font-weight:600;
+    }
+    .btn-jastip-outline:hover {
+      background:var(--accent); color:#0a0a0f;
+      border-color:var(--accent);
+      transform:translateY(-3px);
+      box-shadow:0 8px 28px rgba(255,221,87,0.3);
+    }
     .btn-download {
       background:linear-gradient(135deg, #7C3AED, #6D28D9);
       color:#fff; box-shadow:0 4px 24px rgba(124,58,237,0.3);
@@ -277,12 +300,6 @@
       box-shadow:0 8px 40px rgba(124,58,237,0.5);
     }
     .btn-download i { color:#fff; }
-    .btn-download-pulse { animation:pulseGlow 2.5s infinite; }
-    @keyframes pulseGlow {
-      0% { box-shadow:0 0 0 0 rgba(124,58,237,0.3); }
-      70% { box-shadow:0 0 0 16px rgba(124,58,237,0); }
-      100% { box-shadow:0 0 0 0 rgba(124,58,237,0); }
-    }
     .btn-install {
       background:linear-gradient(135deg, #00C853, #009624);
       color:#fff; box-shadow:0 4px 24px rgba(0,200,83,0.3);
@@ -351,8 +368,10 @@
       font-weight:700; letter-spacing:-0.3px;
       margin-top:0.4rem;
     }
+    /* ⭐ Services grid responsive — auto-fit, biar tidak cramped di tablet */
     .services-grid {
-      display:grid; grid-template-columns:repeat(3,1fr);
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
       gap:1.5rem;
     }
     .service-card {
@@ -360,12 +379,23 @@
       border-radius:var(--radius); padding:1.8rem 1.5rem;
       text-align:center; transition:all var(--transition);
       text-decoration:none; color:var(--fg);
+      position:relative;
     }
     .service-card:hover {
       transform:translateY(-6px);
       border-color:var(--accent);
       background:var(--bg-card-hover);
       box-shadow:var(--shadow-hover);
+    }
+    .service-card.jastip-card .badge-new {
+      position:absolute; top:-8px; right:12px;
+      background:linear-gradient(135deg, #FFDD57, #FFA726);
+      color:#0a0a0f;
+      font-size:0.6rem; font-weight:700;
+      padding:0.15rem 0.55rem;
+      border-radius:50px;
+      letter-spacing:0.5px;
+      box-shadow:0 4px 12px rgba(255,221,87,0.35);
     }
     .service-icon {
       width:64px; height:64px; border-radius:16px;
@@ -380,6 +410,201 @@
       margin-bottom:0.3rem;
     }
     .service-card p { font-size:0.85rem; color:var(--muted-light); line-height:1.6; }
+
+    /* ============================================
+       SECTION JASTIP HIGHLIGHT
+       ============================================ */
+    .jastip-section {
+      position:relative; z-index:2;
+      max-width:1100px; margin:2rem auto 3rem;
+      padding:0 1.5rem;
+    }
+    .jastip-hero-card {
+      background:linear-gradient(145deg, rgba(255,221,87,0.06), rgba(255,167,38,0.02));
+      border:1px solid rgba(255,221,87,0.18);
+      border-radius:var(--radius-lg);
+      padding:2.5rem 2rem;
+      position:relative;
+      overflow:hidden;
+      box-shadow:0 8px 40px rgba(255,221,87,0.06);
+    }
+    .jastip-hero-card::before {
+      content:'';
+      position:absolute;
+      top:-50%; right:-10%;
+      width:400px; height:400px;
+      background:radial-gradient(circle, rgba(255,221,87,0.08) 0%, transparent 70%);
+      pointer-events:none;
+    }
+    .jastip-header {
+      text-align:center;
+      margin-bottom:2rem;
+      position:relative;
+      z-index:1;
+    }
+    .jastip-header .j-kicker {
+      display:inline-flex; align-items:center; gap:0.5rem;
+      padding:0.3rem 1rem;
+      background:var(--accent);
+      color:#0a0a0f;
+      border-radius:50px;
+      font-size:0.7rem;
+      font-weight:700;
+      letter-spacing:0.5px;
+      margin-bottom:0.8rem;
+      text-transform:uppercase;
+    }
+    .jastip-header h2 {
+      font-family:var(--font-display);
+      font-size:clamp(1.6rem, 4vw, 2.4rem);
+      font-weight:700;
+      letter-spacing:-0.5px;
+      margin-bottom:0.5rem;
+      line-height:1.2;
+    }
+    .jastip-header h2 .accent {
+      background:linear-gradient(135deg, #FFDD57, #FFA726);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+    .jastip-header p {
+      font-size:0.95rem;
+      color:var(--muted-light);
+      max-width:560px;
+      margin:0 auto;
+      line-height:1.7;
+    }
+
+    .jastip-benefits {
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:1rem;
+      margin-bottom:2rem;
+      position:relative;
+      z-index:1;
+    }
+    .j-benefit {
+      background:rgba(255,255,255,0.03);
+      border:1px solid var(--border);
+      border-radius:var(--radius-sm);
+      padding:1.1rem 1rem;
+      text-align:center;
+      transition:all var(--transition);
+    }
+    .j-benefit:hover {
+      border-color:rgba(255,221,87,0.3);
+      background:rgba(255,221,87,0.04);
+      transform:translateY(-3px);
+    }
+    .j-benefit .jb-icon {
+      width:44px; height:44px;
+      border-radius:12px;
+      background:var(--accent-dim);
+      color:var(--accent);
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.1rem;
+      margin:0 auto 0.6rem;
+    }
+    .j-benefit h4 {
+      font-family:var(--font-display);
+      font-size:0.82rem;
+      font-weight:600;
+      margin-bottom:0.25rem;
+    }
+    .j-benefit p {
+      font-size:0.72rem;
+      color:var(--muted);
+      line-height:1.5;
+    }
+
+    .jastip-pricing-row {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:1rem;
+      flex-wrap:wrap;
+      margin-bottom:1.5rem;
+      padding:1rem;
+      background:rgba(255,221,87,0.05);
+      border:1px dashed rgba(255,221,87,0.3);
+      border-radius:var(--radius-sm);
+      position:relative;
+      z-index:1;
+    }
+    .jastip-pricing-row .jp-item {
+      display:flex;
+      align-items:center;
+      gap:0.5rem;
+      font-size:0.85rem;
+      font-weight:600;
+    }
+    .jastip-pricing-row .jp-item i {
+      color:var(--accent);
+      font-size:0.9rem;
+    }
+    .jastip-pricing-row .jp-item strong {
+      color:var(--accent);
+      font-family:var(--font-display);
+      font-size:1.05rem;
+    }
+    .jastip-pricing-row .jp-divider {
+      color:var(--muted);
+      font-weight:300;
+      font-size:1.1rem;
+    }
+
+    .jastip-actions-row {
+      display:flex;
+      justify-content:center;
+      gap:0.8rem;
+      flex-wrap:wrap;
+      position:relative;
+      z-index:1;
+    }
+    .jastip-actions-row .btn-jastip-primary {
+      display:inline-flex;
+      align-items:center;
+      gap:0.5rem;
+      padding:0.85rem 2rem;
+      background:linear-gradient(145deg, #FFDD57, #f5c842);
+      color:#0a0a0f;
+      border-radius:var(--radius-sm);
+      font-family:var(--font-body);
+      font-size:0.9rem;
+      font-weight:700;
+      text-decoration:none;
+      transition:all var(--transition);
+      box-shadow:0 4px 20px rgba(255,221,87,0.25);
+      border:none;
+    }
+    .jastip-actions-row .btn-jastip-primary:hover {
+      transform:translateY(-3px);
+      box-shadow:0 8px 32px rgba(255,221,87,0.4);
+    }
+    .jastip-actions-row .btn-jastip-primary:active {
+      transform:scale(0.97);
+    }
+    .jastip-actions-row .btn-jastip-secondary {
+      display:inline-flex;
+      align-items:center;
+      gap:0.5rem;
+      padding:0.85rem 1.8rem;
+      background:transparent;
+      color:var(--fg);
+      border:1px solid var(--border);
+      border-radius:var(--radius-sm);
+      font-family:var(--font-body);
+      font-size:0.9rem;
+      font-weight:600;
+      text-decoration:none;
+      transition:all var(--transition);
+    }
+    .jastip-actions-row .btn-jastip-secondary:hover {
+      border-color:var(--accent);
+      color:var(--accent);
+      background:var(--accent-dim);
+      transform:translateY(-2px);
+    }
 
     .apk-section {
       max-width:1100px; margin:2rem auto 3rem;
@@ -651,6 +876,9 @@
     }
     .reveal.visible { opacity:1; transform:translateY(0); }
 
+    @media (max-width:900px) {
+      .jastip-benefits { grid-template-columns:repeat(2, 1fr); }
+    }
     @media (max-width:768px) {
       .navbar { padding:0.6rem 1rem; min-height:56px; }
       .menu-toggle { display:flex; }
@@ -679,7 +907,6 @@
       .stat-number { font-size:1.3rem; }
       .hero-buttons .btn { font-size:0.8rem; padding:0.6rem 1.2rem; }
       .btn-download, .btn-install { font-size:0.85rem; padding:0.6rem 1rem; }
-      .services-grid { grid-template-columns:1fr; max-width:400px; margin:0 auto; }
       .testimonial-grid { grid-template-columns:1fr; max-width:400px; margin:0 auto; }
       .promo-banner { margin-bottom:1.25rem; }
       .promo-banner a { font-size:0.85rem; padding:0.75rem 1.2rem; gap:0.6rem; }
@@ -695,6 +922,17 @@
       .apk-card { padding:2rem 1.25rem; }
       .apk-card h3 { font-size:1.2rem; }
       .apk-features { gap:1rem; }
+
+      .jastip-hero-card { padding:2rem 1.25rem; }
+      .jastip-benefits { grid-template-columns:repeat(2,1fr); gap:0.75rem; }
+      .j-benefit { padding:0.9rem 0.75rem; }
+      .j-benefit .jb-icon { width:38px; height:38px; font-size:0.95rem; }
+      .j-benefit h4 { font-size:0.75rem; }
+      .j-benefit p { font-size:0.65rem; }
+      .jastip-pricing-row { padding:0.8rem 0.6rem; gap:0.6rem; font-size:0.8rem; }
+      .jastip-actions-row { flex-direction:column; align-items:stretch; }
+      .jastip-actions-row .btn-jastip-primary,
+      .jastip-actions-row .btn-jastip-secondary { justify-content:center; width:100%; }
     }
     @media (max-width:480px) {
       .hero h1 { font-size:clamp(1.8rem, 5vw, 2.6rem); }
@@ -702,13 +940,15 @@
       .hero-buttons .btn { width:100%; max-width:280px; justify-content:center; }
       .btn-download, .btn-install { max-width:100%; width:100%; font-size:0.9rem; padding:0.8rem 1rem; }
       .stat-number { font-size:1.1rem; }
-      .services-grid, .testimonial-grid { max-width:100%; }
+      .testimonial-grid { max-width:100%; }
       .footer-grid { grid-template-columns:1fr; gap:1rem; }
       .apk-features { flex-direction:column; align-items:center; gap:0.4rem; }
+      .jastip-benefits { grid-template-columns:1fr; }
+      .jastip-pricing-row { flex-direction:column; }
+      .jastip-pricing-row .jp-divider { display:none; }
     }
     @media (min-width:769px) { .hero { padding:7rem 2rem 4rem; } }
   </style>
-  <link rel="stylesheet" href="jastip-cta.css">
 </head>
 <body>
 
@@ -728,10 +968,10 @@
           <li><a href="CarParkingMultiplayer.html">Car Parking Multiplayer</a></li>
           <li><a href="SosialMedia.html">Layanan Sosial Media</a></li>
           <li><a href="designedit.html">Design / Edit Foto</a></li>
-          <li><a href="manga.html">Manga</a></li>
           <li><a href="wallpaper.html">Wallpaper</a></li>
         </ul>
       </li>
+      <li><a href="jastip.html" class="nav-jastip"><i class="fas fa-box-open" style="font-size:0.7rem;margin-right:0.2rem;"></i> Jastip</a></li>
       <li><a href="https://wa.me/6289687163314" target="_blank">Contact</a></li>
     </ul>
   </nav>
@@ -740,6 +980,7 @@
     <canvas class="hero-canvas" id="heroCanvas"></canvas>
     <div class="hero-content">
       <div class="hero-badge"><i class="fas fa-bolt"></i> Trusted Digital Services</div>
+      <!-- ⭐ Hero h1 dikembalikan ke "Baca Manga" (SEO-friendly) -->
       <h1>Solusi Digital, Game & <br><span class="accent">Baca Manga</span></h1>
       <p>Dari CPM, sosial media, desain grafis, hingga baca manga & novel — semua tersedia dalam satu platform. Dipercaya 1000+ pelanggan.</p>
 
@@ -766,16 +1007,13 @@
         </a>
       </div>
 
-      <section class="jastip-cta" aria-label="Layanan Jastip"><div class="jastip-cta-inner"><div class="jastip-cta-copy"><span class="jastip-cta-kicker"><i class="fas fa-box-open"></i> Titip jualan di Akino Store</span><h2>Barangmu bisa jadi cuan berikutnya.</h2><p>Pasang barang di Jastip Akino Store, tampil sampai laku, dan transaksi lebih tenang dengan rekber.</p><div class="jastip-cta-points"><span><i class="fas fa-check-circle"></i> Mulai Rp5.000</span><span><i class="fas fa-shield-halved"></i> Dibantu admin</span></div></div><a class="jastip-cta-link" href="jastip.html">Titip Jualan <i class="fas fa-arrow-right"></i></a></div></section>
-
+      <!-- ⭐ Hero buttons diramping jadi 5 tombol -->
       <div class="hero-buttons">
         <a href="#services" class="btn btn-primary btn-large"><i class="fas fa-rocket"></i> Mulai Sekarang</a>
-        <a href="CarParkingMultiplayer.html" class="btn btn-outline"><i class="fas fa-gamepad"></i> Car Parking 1</a>
-        <a href="jastip.html" class="btn btn-outline"><i class="fas fa-box-open"></i> Stock Terbatas</a>
+        <a href="CarParkingMultiplayer.html" class="btn btn-outline"><i class="fas fa-gamepad"></i> Car Parking</a>
+        <a href="jastip.html" class="btn btn-jastip-outline"><i class="fas fa-box-open"></i> Jastip: Titip Jualan</a>
         <a href="SosialMedia.html" class="btn btn-outline"><i class="fas fa-share-nodes"></i> Sosmed</a>
-        <a href="designedit.html" class="btn btn-outline"><i class="fas fa-palette"></i> Design</a>
         <a href="manga.html" class="btn btn-outline"><i class="fas fa-book-open"></i> Baca Manga</a>
-        <a href="wallpaper.html" class="btn btn-outline"><i class="fas fa-image"></i> Wallpaper</a>
       </div>
 
       <div style="margin-top:1.2rem; width:100%; display:flex; flex-direction:column; align-items:center; gap:0.6rem;">
@@ -806,6 +1044,79 @@
         <h3>Design / Edit Foto</h3>
         <p>Desain grafis, edit foto, thumbnail, dan konten visual menarik untuk kebutuhan Anda.</p>
       </a>
+      <a href="jastip.html" class="service-card jastip-card">
+        <span class="badge-new">NEW</span>
+        <div class="service-icon"><i class="fas fa-box-open"></i></div>
+        <h3>Jastip — Titip Jualan</h3>
+        <p>Titipkan barangmu di Akino Store. Mulai Rp 3.000 + 5%, tampil sampai laku, dibantu promosi.</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================
+       SECTION JASTIP HIGHLIGHT
+       ============================================ -->
+  <section class="jastip-section" id="jastip" aria-label="Jastip - Titip Jualan">
+    <div class="section-label reveal">
+      <span>Jastip</span>
+      <h2>Titip Jualan di <span style="color:var(--accent)">Akino Store</span></h2>
+    </div>
+
+    <div class="jastip-hero-card reveal">
+      <div class="jastip-header">
+        <span class="j-kicker"><i class="fas fa-bolt"></i> Barang Nganggur? Jadi Cuan!</span>
+        <h2>Barangmu Tayang <span class="accent">Sampai Laku</span></h2>
+        <p>Cuma titip di Akino Store, barangmu dilihat ribuan calon pembeli. Foto & video support, dibantu admin, transaksi aman pakai rekber.</p>
+      </div>
+
+      <div class="jastip-benefits">
+        <div class="j-benefit">
+          <div class="jb-icon"><i class="fas fa-images"></i></div>
+          <h4>Multi Foto & Video</h4>
+          <p>Upload banyak media biar barangmu makin menarik</p>
+        </div>
+        <div class="j-benefit">
+          <div class="jb-icon"><i class="fas fa-eye"></i></div>
+          <h4>Tayang Sampai Laku</h4>
+          <p>Min 30 hari tayang, diperpanjang gratis kalau belum laku</p>
+        </div>
+        <div class="j-benefit">
+          <div class="jb-icon"><i class="fas fa-shield-halved"></i></div>
+          <h4>Rekber Aman</h4>
+          <p>Uang pembeli ditahan admin dulu, cair setelah barang diterima</p>
+        </div>
+        <div class="j-benefit">
+          <div class="jb-icon"><i class="fas fa-bullhorn"></i></div>
+          <h4>Dibantu Promosi</h4>
+          <p>Barangmu dipromosiin di sosmed Akino Store</p>
+        </div>
+      </div>
+
+      <div class="jastip-pricing-row">
+        <div class="jp-item">
+          <i class="fas fa-receipt"></i>
+          Biaya Listing: <strong>Rp 3.000</strong>
+        </div>
+        <span class="jp-divider">+</span>
+        <div class="jp-item">
+          <i class="fas fa-percent"></i>
+          Komisi: <strong>5%</strong>
+        </div>
+        <span class="jp-divider">=</span>
+        <div class="jp-item">
+          <i class="fas fa-calculator"></i>
+          Contoh barang Rp 150rb → <strong>Rp 10.500</strong>
+        </div>
+      </div>
+
+      <div class="jastip-actions-row">
+        <a href="jastip.html" class="btn-jastip-primary">
+          <i class="fas fa-plus-circle"></i> Titip Jualan Sekarang
+        </a>
+        <a href="jastip.html" class="btn-jastip-secondary">
+          <i class="fas fa-boxes-stacked"></i> Lihat Semua Titipan
+        </a>
+      </div>
     </div>
   </section>
 
@@ -897,13 +1208,19 @@
     <div class="footer-grid">
       <div>
         <h4 class="brand-footer">Akino Store</h4>
-        <p>Jasa digital, game, dan baca manga terpercaya sejak 2022. Solusi untuk kebutuhan game, sosial media, design, dan hiburan baca Anda.</p>
+        <p>Jasa digital, game, dan baca manga terpercaya sejak 2022. Solusi untuk kebutuhan game, sosial media, design, dan jual beli barang.</p>
       </div>
       <div>
         <h4>Layanan</h4>
         <a href="CarParkingMultiplayer.html">Car Parking</a>
         <a href="SosialMedia.html">Sosial Media</a>
         <a href="designedit.html">Design / Edit</a>
+      </div>
+      <div>
+        <h4>Jastip</h4>
+        <a href="jastip.html">Titip Jualan</a>
+        <a href="jastip.html">Lihat Stock</a>
+        <a href="jastip.html">Cara Kerja</a>
       </div>
       <div>
         <h4>Tentang</h4>
@@ -1162,7 +1479,6 @@
           newSW.addEventListener('statechange', () => {
             if (newSW.state === 'installed') {
               newSW.postMessage('skipWaiting');
-              // Refresh halaman setelah update
               setTimeout(() => {
                 window.location.reload();
               }, 800);
@@ -1173,6 +1489,5 @@
     });
   }
 </script>
-  <script src="jastip-cta.js?v=4.7"></script>
 </body>
 </html>
