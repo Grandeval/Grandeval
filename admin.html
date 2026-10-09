@@ -16,7 +16,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-    <!-- ===== FIREBASE ===== -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -508,7 +507,6 @@
         .batch-summary .invalid-count { color:#f87171; }
         .form-actions-row { display:flex; gap:.5rem; flex-wrap:wrap; align-items:center; }
 
-        /* ===== WALLPAPER STYLE ===== */
         .wp-thumb { width:60px; height:60px; object-fit:cover; border-radius:6px; background:var(--bg-secondary); flex-shrink:0; }
         .wp-list-item { display:flex; align-items:center; gap:0.8rem; padding:0.5rem 0; border-bottom:1px solid var(--border); }
         .wp-list-item:last-child { border-bottom:none; }
@@ -518,7 +516,6 @@
         .wp-list-item .btn-del { color:#ef4444; background:none; border:none; cursor:pointer; font-size:0.8rem; padding:0.3rem 0.5rem; border-radius:6px; transition:background 0.3s; flex-shrink:0; }
         .wp-list-item .btn-del:hover { background:rgba(239,68,68,0.1); }
 
-        /* ===== WATERMARK BADGE ===== */
         .watermark-badge {
             display:inline-block;
             background:rgba(255,221,87,0.12);
@@ -605,9 +602,14 @@
             .modal-box h3 { font-size:.95rem; }
             .wp-list-item .info h4 { font-size:0.7rem; }
         }
+
+        /* ===== JASTIP CARD STYLE ===== */
         .jastip-item { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--rs); padding:.8rem; margin-bottom:.6rem; display:flex; flex-wrap:wrap; align-items:center; gap:.8rem; transition:border-color var(--transition); }
         .jastip-item:hover { border-color:var(--border-hover); }
-        .jastip-thumb { width:60px; height:60px; border-radius:6px; object-fit:cover; background:var(--bg-card); border:1px solid var(--border); flex-shrink:0; }
+        .jastip-thumb { width:60px; height:60px; border-radius:6px; object-fit:cover; background:var(--bg-card); border:1px solid var(--border); flex-shrink:0; display:block; }
+        .jastip-thumb-wrap { position:relative; width:60px; height:60px; flex-shrink:0; }
+        .jastip-thumb-wrap .thumb-badge { position:absolute; bottom:2px; right:2px; font-size:.5rem; padding:.05rem .3rem; border-radius:3px; background:rgba(0,0,0,.7); color:#fff; font-weight:600; backdrop-filter:blur(4px); }
+        .jastip-thumb-wrap .media-count-badge { position:absolute; top:2px; right:2px; font-size:.5rem; padding:.05rem .35rem; border-radius:3px; background:rgba(255,221,87,.85); color:#0a0a0f; font-weight:700; }
         .jastip-info { flex:1; min-width:180px; }
         .jastip-name { font-weight:600; font-size:.85rem; }
         .jastip-meta { font-size:.7rem; color:var(--muted); }
@@ -625,9 +627,12 @@
         .jastip-actions .btn-sm.delete:hover { background:rgba(239,68,68,.1); }
         .jastip-empty { text-align:center; padding:2rem 1rem; color:var(--muted); font-size:.8rem; }
         .jastip-empty i { font-size:1.8rem; display:block; margin-bottom:.4rem; opacity:.3; }
+        .jastip-biaya { font-size:.68rem; color:var(--accent); font-weight:600; margin-top:.2rem; display:flex; align-items:center; gap:.3rem; flex-wrap:wrap; }
+        .jastip-biaya .detail { color:var(--muted); font-weight:400; font-size:.6rem; }
         @media(max-width:768px) {
             .jastip-item { flex-direction:column; align-items:stretch; }
-            .jastip-thumb { width:100%; height:150px; }
+            .jastip-thumb-wrap { width:100%; height:150px; }
+            .jastip-thumb { width:100%; height:100%; }
             .jastip-actions { justify-content:center; }
         }
     </style>
@@ -871,11 +876,9 @@
 
             <div class="sec-title"><i class="fas fa-images"></i> Daftar Wallpaper <span class="count" id="wpCnt">0</span></div>
             
-            <!-- WALLPAPER LIST WITH PAGINATION -->
             <div id="wpListContainer"><div class="empty"><i class="fas fa-spinner fa-spin"></i> Memuat...</div></div>
             <div id="wpPagination"></div>
 
-            <!-- ===== ANTRIAN PIN PINTEREST (DENGAN WATERMARK + LINK DESTINASI) ===== -->
             <div style="margin-top:1.5rem;">
                 <div class="sec-title">
                     <i class="fab fa-pinterest" style="color:#E60023;"></i> 
@@ -886,7 +889,6 @@
                 <div id="pinQueueList"></div>
             </div>
         </div>
-        <!-- END WALLPAPER -->
 
         <!-- ===== TAB JASTIP ===== -->
         <div class="tab-panel" id="tabJastip">
@@ -896,6 +898,20 @@
                 <div class="stat-card"><div class="sv green">0</div><div class="sl">Aktif</div></div>
                 <div class="stat-card"><div class="sv red">0</div><div class="sl">Terjual</div></div>
             </div>
+
+            <!-- ⭐ SEARCH & FILTER JASTIP -->
+            <div class="search-bar" style="margin-bottom:0.8rem;">
+                <label><i class="fas fa-search"></i> Cari:</label>
+                <input type="text" id="jastipSearchInput" placeholder="Nama / barang..." oninput="filterJastipList()" style="width:180px;" />
+                <select id="jastipStatusFilterAdmin" onchange="filterJastipList()" style="padding:.3rem .5rem;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:6px;color:var(--fg);font-size:.75rem;min-height:32px;font-family:var(--fb);">
+                    <option value="all">Semua Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="active">Aktif</option>
+                    <option value="sold">Terjual</option>
+                </select>
+                <span class="search-result" id="jastipSearchResult">Menampilkan <strong>0</strong> titipan</span>
+            </div>
+
             <div class="sec-title"><i class="fas fa-box"></i> Daftar Titipan <span class="count" id="jastipCount">0</span></div>
             <div id="jastipList"><div class="jastip-empty"><i class="fas fa-box-open"></i> Belum dimuat.</div></div>
         </div>
@@ -999,9 +1015,6 @@
 
     <div class="toast-wrap" id="toasts"></div>
 
-    <!-- ============================================================ -->
-    <!-- SCRIPT UTAMA                                                  -->
-    <!-- ============================================================ -->
     <script>
         // ============================================================
         // 1. ADMIN LOGIN + GLOBAL
@@ -1009,6 +1022,9 @@
         var sosmedFilter = 'all';
         var sosmedOrders = [];
         var jastipUnsubscribe = null;
+        var jastipAllItems = [];           // ⭐ NEW: cache untuk filter
+        var jastipSearchQuery = '';        // ⭐ NEW
+        var jastipStatusFilterAdmin = 'all'; // ⭐ NEW
 
         var DESC_TEMPLATES = {
             '1': '🔥 Gratis Request Spek Mesinnya (Tune Up, FFA, atau Glitch) ‼️',
@@ -1017,7 +1033,6 @@
             '4': '🔥 Gratis Request Spek Mesinnya (Tune Up, FFA, atau Glitch) ‼️\nGratis Request Alis+Kaliper On ‼️\nGratis Request Velg Bakar/Chrome ‼️\nGratis Request Nama (Optional)\nGratis Request Sirine / Police Sirine'
         };
 
-        // ===== WATERMARK CONFIG =====
         const WATERMARK_TEXT = 'Akino Design';
         const WATERMARK_CLOUD_NAME = 'dlwwy1f80';
         const WATERMARK_UPLOAD_PRESET = 'wallpaper_upload';
@@ -1069,61 +1084,56 @@
         }
 
         // ============================================================
-// 🔥 CEK STATUS LOGIN (HANYA ADMIN YANG BOLEH MASUK)
-// ============================================================
-const ADMIN_UID = "g2wfEDQ6niUfI3UEjRFh4GUtxvp1";
+        // 🔥 CEK STATUS LOGIN (HANYA ADMIN YANG BOLEH MASUK)
+        // ============================================================
+        const ADMIN_UID = "g2wfEDQ6niUfI3UEjRFh4GUtxvp1";
 
-firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-        // User login, cek apakah UID-nya admin
-        if (user.uid === ADMIN_UID) {
-            // Admin, tampilkan dashboard
-            showDashboard();
-        } else {
-            // Bukan admin, logout paksa dan tampilkan error
-            firebase.auth().signOut().then(() => {
-                document.getElementById('loginErr').textContent = '❌ Akses ditolak. Hanya admin yang bisa masuk.';
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                if (user.uid === ADMIN_UID) {
+                    showDashboard();
+                } else {
+                    firebase.auth().signOut().then(() => {
+                        document.getElementById('loginErr').textContent = '❌ Akses ditolak. Hanya admin yang bisa masuk.';
+                        document.getElementById('loginWrap').style.display = '';
+                        document.getElementById('dash').classList.remove('active');
+                    });
+                }
+            } else {
                 document.getElementById('loginWrap').style.display = '';
                 document.getElementById('dash').classList.remove('active');
-            });
+            }
+        });
+
+        async function doLogin() {
+          var loginButton = document.querySelector('.btn-login');
+          var loginError = document.getElementById('loginErr');
+          loginButton.disabled = true;
+          loginButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menghubungkan...';
+          loginError.textContent = '';
+
+          try {
+            var provider = new firebase.auth.GoogleAuthProvider();
+            var result = await auth.signInWithPopup(provider);
+            var user = result.user;
+
+            if (user.uid !== ADMIN_UID) {
+              await auth.signOut();
+              loginError.textContent = '❌ Akses ditolak. Hanya admin yang bisa masuk.';
+              loginButton.disabled = false;
+              loginButton.innerHTML = '<i class="fab fa-google"></i> Masuk dengan Google';
+              return;
+            }
+
+            showDashboard();
+
+          } catch (error) {
+            console.error('Google admin login error:', error);
+            loginError.textContent = 'Login gagal: ' + error.message;
+            loginButton.disabled = false;
+            loginButton.innerHTML = '<i class="fab fa-google"></i> Masuk dengan Google';
+          }
         }
-    } else {
-        // User belum login, tampilkan halaman login
-        document.getElementById('loginWrap').style.display = '';
-        document.getElementById('dash').classList.remove('active');
-    }
-});
-
-async function doLogin() {
-  var loginButton = document.querySelector('.btn-login');
-  var loginError = document.getElementById('loginErr');
-  loginButton.disabled = true;
-  loginButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menghubungkan...';
-  loginError.textContent = '';
-
-  try {
-    var provider = new firebase.auth.GoogleAuthProvider();
-    var result = await auth.signInWithPopup(provider);
-    var user = result.user;
-
-    // 🔥 CEK UID
-    if (user.uid !== ADMIN_UID) {
-      await auth.signOut();
-      loginError.textContent = '❌ Akses ditolak. Hanya admin yang bisa masuk.';
-      loginButton.disabled = false;
-      loginButton.innerHTML = '<i class="fab fa-google"></i> Masuk dengan Google';
-      return;
-    }
-
-    showDashboard();
-
-  } catch (error) {
-    console.error('Google admin login error:', error);
-    loginError.textContent = 'Login gagal: ' + error.message;
-    loginButton.disabled = false;
-    loginButton.innerHTML = '<i class="fab fa-google"></i> Masuk dengan Google';
-  }
-}
 
         function doLogout() {
             document.getElementById('dash').classList.remove('active');
@@ -1149,6 +1159,9 @@ async function doLogin() {
             if (tab === 'jastip') loadJastip();
         }
 
+        // ============================================================
+        // 2. JASTIP — helpers
+        // ============================================================
         function escJastip(value) {
             var element = document.createElement('div');
             element.textContent = value == null ? '' : String(value);
@@ -1161,33 +1174,135 @@ async function doLogin() {
             return isNaN(date.getTime()) ? '-' : date.toLocaleString('id-ID');
         }
 
+        // ⭐ NEW: Render kartu jastip (dipisah biar bisa dipanggil ulang saat filter)
+        function renderJastipCards(items) {
+            var list = document.getElementById('jastipList');
+            if (!items.length) {
+                list.innerHTML = '<div class="jastip-empty"><i class="fas fa-box-open"></i> Tidak ada titipan.</div>';
+                document.getElementById('jastipSearchResult').innerHTML = 'Menampilkan <strong>0</strong> titipan';
+                return;
+            }
+
+            document.getElementById('jastipSearchResult').innerHTML = 'Menampilkan <strong>' + items.length + '</strong> titipan';
+
+            list.innerHTML = items.map(function(item) {
+                var data = item.data;
+                var status = ['pending', 'active', 'sold'].indexOf(data.status) >= 0 ? data.status : 'pending';
+
+                // ⭐ FIX: support field "media" (array) + fallback ke "gambar" (legacy)
+                var mediaArr = data.media || (data.gambar ? [data.gambar] : []);
+                var mediaCount = mediaArr.length;
+                var firstMedia = mediaCount > 0 ? mediaArr[0] : '';
+                var isVideo = firstMedia && /\.(mp4|mov|avi|webm)$/i.test(firstMedia);
+
+                var thumbInner;
+                if (firstMedia) {
+                    if (isVideo) {
+                        thumbInner = '<video src="' + escJastip(firstMedia) + '" class="jastip-thumb" muted playsinline onerror="this.style.display=\'none\'"></video>';
+                    } else {
+                        thumbInner = '<img src="' + escJastip(firstMedia) + '" alt="" class="jastip-thumb" loading="lazy" onerror="this.style.display=\'none\'">';
+                    }
+                } else {
+                    thumbInner = '<div class="jastip-thumb" style="display:flex;align-items:center;justify-content:center;color:var(--muted);"><i class="fas fa-image"></i></div>';
+                }
+
+                // Badge video & count kalau lebih dari 1
+                var badges = '';
+                if (firstMedia) {
+                    if (isVideo) {
+                        badges += '<span class="thumb-badge"><i class="fas fa-video"></i> VIDEO</span>';
+                    }
+                    if (mediaCount > 1) {
+                        badges += '<span class="media-count-badge">+' + (mediaCount - 1) + '</span>';
+                    }
+                }
+
+                var thumbWrap = '<div class="jastip-thumb-wrap">' + thumbInner + badges + '</div>';
+
+                // ⭐ Info biaya hybrid (Rp 3.000 + 5%)
+                var biayaHtml = '';
+                if (data.biayaTotal) {
+                    biayaHtml = '<div class="jastip-biaya">' +
+                        '<i class="fas fa-receipt"></i> Total Biaya: Rp ' + Number(data.biayaTotal).toLocaleString('id-ID') +
+                        (data.biayaListing && data.biayaKomisi
+                            ? '<span class="detail">(Listing Rp ' + Number(data.biayaListing).toLocaleString('id-ID') + ' + Komisi Rp ' + Number(data.biayaKomisi).toLocaleString('id-ID') + ')</span>'
+                            : '') +
+                        '</div>';
+                }
+
+                // Actions
+                var actions = '';
+                if (status === 'pending') {
+                    actions = '<button class="btn-sm activate" onclick="activateJastip(\'' + item.id + '\')"><i class="fas fa-check"></i> Aktifkan</button>';
+                } else if (status === 'active') {
+                    actions = '<button class="btn-sm sold-btn" onclick="markSoldJastip(\'' + item.id + '\')"><i class="fas fa-tag"></i> Terjual</button>';
+                } else {
+                    actions = '<button class="btn-sm" onclick="activateJastip(\'' + item.id + '\')" style="color:#60a5fa;border-color:rgba(96,165,250,.2)"><i class="fas fa-undo"></i> Batalkan</button>';
+                }
+                actions += '<button class="btn-sm delete" onclick="deleteJastip(\'' + item.id + '\')"><i class="fas fa-trash"></i> Hapus</button>';
+
+                return '<div class="jastip-item">' + thumbWrap +
+                    '<div class="jastip-info">' +
+                        '<div class="jastip-name">' + escJastip(data.namaBarang) + '</div>' +
+                        '<div class="jastip-meta">' +
+                            '<span><i class="fas fa-user"></i> ' + escJastip(data.penjual) + '</span>' +
+                            '<span><i class="fas fa-money-bill"></i> ' + escJastip(data.harga) + '</span>' +
+                            '<span><i class="fas fa-images"></i> ' + mediaCount + ' media</span>' +
+                            '<span><i class="fas fa-clock"></i> ' + jastipDate(data.createdAt) + '</span>' +
+                        '</div>' +
+                        biayaHtml +
+                        (data.deskripsi ? '<div class="jastip-meta" style="margin-top:.15rem">' + escJastip(data.deskripsi) + '</div>' : '') +
+                    '</div>' +
+                    '<span class="jastip-status ' + status + '">' + status + '</span>' +
+                    '<div class="jastip-actions">' + actions + '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        // ⭐ NEW: Filter function
+        window.filterJastipList = function() {
+            var q = (document.getElementById('jastipSearchInput').value || '').toLowerCase().trim();
+            var status = document.getElementById('jastipStatusFilterAdmin').value;
+            jastipSearchQuery = q;
+            jastipStatusFilterAdmin = status;
+
+            var filtered = jastipAllItems.filter(function(item) {
+                var d = item.data;
+                var matchQ = !q ||
+                    String(d.penjual || '').toLowerCase().indexOf(q) >= 0 ||
+                    String(d.namaBarang || '').toLowerCase().indexOf(q) >= 0 ||
+                    String(d.kategori || '').toLowerCase().indexOf(q) >= 0;
+                var matchS = status === 'all' || d.status === status;
+                return matchQ && matchS;
+            });
+            renderJastipCards(filtered);
+        };
+
+        // ============================================================
+        // 3. JASTIP — LOAD + LISTENER
+        // ============================================================
         function loadJastip() {
             var list = document.getElementById('jastipList');
             if (!list || typeof db === 'undefined') return;
             if (jastipUnsubscribe) jastipUnsubscribe();
             list.innerHTML = '<div class="jastip-empty"><i class="fas fa-spinner fa-spin"></i> Memuat...</div>';
+
             jastipUnsubscribe = db.collection('jastip').orderBy('createdAt', 'desc').onSnapshot(function(snapshot) {
                 var items = [];
                 snapshot.forEach(function(doc) { items.push({ id: doc.id, data: doc.data() }); });
+                jastipAllItems = items;
+
                 var counts = { pending: 0, active: 0, sold: 0 };
                 items.forEach(function(item) { if (counts[item.data.status] !== undefined) counts[item.data.status]++; });
+
                 document.querySelector('#jastipStats .stat-card:nth-child(1) .sv').textContent = items.length;
                 document.querySelector('#jastipStats .stat-card:nth-child(2) .sv').textContent = counts.pending;
                 document.querySelector('#jastipStats .stat-card:nth-child(3) .sv').textContent = counts.active;
                 document.querySelector('#jastipStats .stat-card:nth-child(4) .sv').textContent = counts.sold;
                 document.getElementById('jastipCount').textContent = items.length;
-                if (!items.length) {
-                    list.innerHTML = '<div class="jastip-empty"><i class="fas fa-box-open"></i> Belum ada titipan.</div>';
-                    return;
-                }
-                list.innerHTML = items.map(function(item) {
-                    var data = item.data;
-                    var status = ['pending', 'active', 'sold'].indexOf(data.status) >= 0 ? data.status : 'pending';
-                    var image = data.gambar ? '<img src="' + escJastip(data.gambar) + '" alt="" class="jastip-thumb" loading="lazy" onerror="this.style.display=\'none\'">' : '<div class="jastip-thumb" style="display:flex;align-items:center;justify-content:center;color:var(--muted);"><i class="fas fa-image"></i></div>';
-                    var actions = status === 'pending' ? '<button class="btn-sm activate" onclick="activateJastip(\'' + item.id + '\')"><i class="fas fa-check"></i> Aktifkan</button>' : status === 'active' ? '<button class="btn-sm sold-btn" onclick="markSoldJastip(\'' + item.id + '\')"><i class="fas fa-tag"></i> Terjual</button>' : '<button class="btn-sm" onclick="activateJastip(\'' + item.id + '\')" style="color:#60a5fa;border-color:rgba(96,165,250,.2)"><i class="fas fa-undo"></i> Batalkan</button>';
-                    actions += '<button class="btn-sm delete" onclick="deleteJastip(\'' + item.id + '\')"><i class="fas fa-trash"></i> Hapus</button>';
-                    return '<div class="jastip-item">' + image + '<div class="jastip-info"><div class="jastip-name">' + escJastip(data.namaBarang) + '</div><div class="jastip-meta"><span><i class="fas fa-user"></i> ' + escJastip(data.penjual) + '</span><span><i class="fas fa-money-bill"></i> ' + escJastip(data.harga) + '</span><span><i class="fas fa-clock"></i> ' + jastipDate(data.createdAt) + '</span></div>' + (data.deskripsi ? '<div class="jastip-meta">' + escJastip(data.deskripsi) + '</div>' : '') + '</div><span class="jastip-status ' + status + '">' + status + '</span><div class="jastip-actions">' + actions + '</div></div>';
-                }).join('');
+
+                // Terapkan filter yang sedang aktif
+                window.filterJastipList();
             }, function(error) {
                 console.error('Jastip listener error:', error);
                 list.innerHTML = '<div class="jastip-empty"><i class="fas fa-exclamation-triangle"></i> Gagal memuat data.</div>';
@@ -1209,6 +1324,9 @@ async function doLogin() {
             db.collection('jastip').doc(id).delete().then(function() { toast('Titipan dihapus', 'ok'); }).catch(function(error) { toast('Gagal: ' + error.message, 'err'); });
         };
 
+        // ============================================================
+        // TOPBAR SCROLL + HELPERS
+        // ============================================================
         window.addEventListener('scroll', function() {
             var topbar = document.getElementById('topbar');
             if (topbar) topbar.classList.toggle('scrolled', window.scrollY > 20);
@@ -1342,7 +1460,7 @@ async function doLogin() {
         window.onOrderUpdateError = function(err) { toast('Gagal update: ' + err, 'err') };
 
         // ============================================================
-        // 2. STOCK (dari asli)
+        // 4. STOCK
         // ============================================================
         (function() {
             if (typeof db === 'undefined') {
@@ -2785,8 +2903,7 @@ async function doLogin() {
         })();
 
         // ============================================================
-        // 3. WALLPAPER + PIN QUEUE + CLOUDINARY + OPENROUTER + HASHTAG
-        //    DENGAN PAGINATION + WATERMARK
+        // 5. WALLPAPER + PIN QUEUE + CLOUDINARY + OPENROUTER + HASHTAG
         // ============================================================
         (function() {
             if (typeof db === 'undefined') {
@@ -2798,7 +2915,6 @@ async function doLogin() {
             const CLOUD_NAME = 'dlwwy1f80';
             const UPLOAD_PRESET = 'wallpaper_upload';
 
-            // State untuk pagination
             let wpCurrentPage = 1;
             let wpPerPage = 10;
             let wpAllData = [];
@@ -2808,12 +2924,8 @@ async function doLogin() {
                 return window.innerWidth <= 768 ? 5 : 10;
             }
 
-            // ===== WATERMARK FUNCTION =====
             function addWatermarkToImage(imageUrl) {
-                // Gunakan Cloudinary URL transformation untuk menambahkan watermark teks di tengah
                 const encodedText = encodeURIComponent(WATERMARK_TEXT);
-                // l_text: Arial_80:teks, co_rgb:FFFFFF, g_center, b_black, bo_2px_solid_white
-                // Tambahkan background hitam transparan dan border putih
                 const watermarkUrl = imageUrl.replace(
                     '/upload/',
                     `/upload/l_text:Arial_80:${encodedText},co_rgb:FFFFFF,g_center,b_black,bo_2px_solid_white/`
@@ -2893,7 +3005,6 @@ async function doLogin() {
                 }
             });
 
-            // ===== AUTO DETECT =====
             document.getElementById('wpDetectBtn').addEventListener('click', async function() {
                 const url = document.getElementById('wpImage').value.trim();
                 if (!url) { toast('Masukkan URL gambar terlebih dahulu!', 'err'); return; }
@@ -2934,7 +3045,6 @@ async function doLogin() {
                 }
             });
 
-            // ===== GENERATE MANUAL =====
             document.getElementById('wpGenerateBtn').addEventListener('click', function() {
                 document.getElementById('aiModal').classList.add('active');
                 document.getElementById('aiTheme').value = '';
@@ -2978,7 +3088,6 @@ async function doLogin() {
                 }
             });
 
-            // ===== RENDER WALLPAPER DENGAN PAGINATION =====
             function renderWallpapersPage() {
                 const container = document.getElementById('wpListContainer');
                 const pagContainer = document.getElementById('wpPagination');
@@ -3060,7 +3169,6 @@ async function doLogin() {
                 renderWallpapersPage();
             };
 
-            // ===== LOAD WALLPAPER =====
             window.loadWallpapers = function() {
                 const container = document.getElementById('wpListContainer');
                 const cntEl = document.getElementById('wpCnt');
@@ -3103,7 +3211,6 @@ async function doLogin() {
                     });
             };
 
-            // ===== PIN QUEUE DENGAN WATERMARK =====
             window.renderPinQueue = function() {
                 const container = document.getElementById('pinQueueList');
                 const countEl = document.getElementById('pinQueueCount');
@@ -3133,7 +3240,6 @@ async function doLogin() {
                                 }
                                 const detailUrl = origin + '/wallpaper-detail.html?id=' + doc.id;
 
-                                // Buat link dengan watermark menggunakan Cloudinary transform
                                 const watermarkedUrl = addWatermarkToImage(imageUrl);
                                 const pinUrl =
                                     `https://www.pinterest.com/pin/create/button/?media=${encodeURIComponent(watermarkedUrl)}&description=${encodeURIComponent(desc)}&url=${encodeURIComponent(detailUrl)}`;
@@ -3188,7 +3294,6 @@ async function doLogin() {
                 }
             };
 
-            // ===== UPLOAD KE FIRESTORE =====
             document.getElementById('wpUploadBtn').addEventListener('click', async function() {
                 const title = document.getElementById('wpTitle').value.trim();
                 const category = document.getElementById('wpCategory').value;
@@ -3248,7 +3353,6 @@ async function doLogin() {
                 });
             });
 
-            // ===== RESIZE HANDLER =====
             let wpResizeTimer;
             window.addEventListener('resize', function() {
                 clearTimeout(wpResizeTimer);
@@ -3259,7 +3363,6 @@ async function doLogin() {
                 }, 300);
             });
 
-            // ===== LOAD AWAL =====
             if (document.getElementById('dash').classList.contains('active')) {
                 setTimeout(window.loadWallpapers, 500);
                 setTimeout(window.renderPinQueue, 600);
