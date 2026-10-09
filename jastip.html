@@ -9,13 +9,16 @@
 
   <meta property="og:title" content="Jastip - Titip Jualan | Akino Store">
   <meta property="og:description" content="Titip jual barangmu di Akino Store. Cuma Rp 3.000 + 5%. Upload foto & video. Tampil sampai laku.">
-  <meta property="og:image" content="https://res.cloudinary.com/d39mdjct/image/upload/v1783493763/apk_pgxcmo.png">
+  <meta property="og:image" content="https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_thumbnail2_dkwek2.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://akinoch.my.id/jastip.html">
+  <meta property="og:site_name" content="Akino Store">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Jastip - Titip Jualan | Akino Store">
   <meta name="twitter:description" content="Titip jual barangmu di Akino Store. Cuma Rp 3.000 + 5%.">
-  <meta name="twitter:image" content="https://res.cloudinary.com/d39mdjct/image/upload/v1783493763/apk_pgxcmo.png">
+  <meta name="twitter:image" content="https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_thumbnail2_dkwek2.png">
 
   <link rel="manifest" href="/manifest.json?v=4.2" />
   <link rel="stylesheet" href="jastip-cta.css">
@@ -463,16 +466,15 @@
       user-select:none;
     }
     .faq-item summary::-webkit-details-marker { display:none; }
-    .faq-item summary::after {
-      content:'\f078';
-      font-family:'Font Awesome 6 Free';
-      font-weight:900;
-      font-size:0.7rem;
+    /* ⭐ Chevron pakai <i> — lebih reliable */
+    .faq-chevron {
       color:var(--accent);
+      font-size:0.75rem;
       transition:transform var(--transition);
       flex-shrink:0;
+      margin-left:auto;
     }
-    .faq-item[open] summary::after {
+    .faq-item[open] .faq-chevron {
       transform:rotate(180deg);
     }
     .faq-item summary:hover { color:var(--accent); }
@@ -1336,42 +1338,66 @@
 
     <div class="faq-list">
       <details class="faq-item">
-        <summary>Kapan saya bayar biaya jastip?</summary>
+        <summary>
+          Kapan saya bayar biaya jastip?
+          <i class="fas fa-chevron-down faq-chevron"></i>
+        </summary>
         <div class="faq-answer">Setelah barang disubmit dan dikonfirmasi admin via WhatsApp, kamu baru bayar biaya jastip (Rp 3.000 + 5%). Barang baru tayang setelah pembayaran diterima.</div>
       </details>
 
       <details class="faq-item">
-        <summary>Kalau barang nggak laku, biaya kembali?</summary>
+        <summary>
+          Kalau barang nggak laku, biaya kembali?
+          <i class="fas fa-chevron-down faq-chevron"></i>
+        </summary>
         <div class="faq-answer">Biaya listing (Rp 3.000) <strong>tidak kembali</strong> karena sudah dipakai untuk slot tayang. Tapi <strong>komisi 5% hanya dibayar kalau barang terjual</strong> — jadi kalau nggak laku, kamu nggak bayar komisi.</div>
       </details>
 
       <details class="faq-item">
-        <summary>Kenapa pakai sistem Rp 3.000 + 5%?</summary>
+        <summary>
+          Kenapa pakai sistem Rp 3.000 + 5%?
+          <i class="fas fa-chevron-down faq-chevron"></i>
+        </summary>
         <div class="faq-answer">Supaya adil untuk semua seller. Seller barang murah tetap terjangkau (nggak kena fee besar), seller barang mahal untung lebih besar tanpa takut fee-nya nggak proporsional. Ini sistem hybrid standar jastip profesional.</div>
       </details>
 
       <details class="faq-item">
-        <summary>Berapa lama barang tayang?</summary>
+        <summary>
+          Berapa lama barang tayang?
+          <i class="fas fa-chevron-down faq-chevron"></i>
+        </summary>
         <div class="faq-answer">Minimal 30 hari. Bisa diperpanjang <strong>gratis</strong> kalau belum laku — tinggal chat admin. Barang yang sudah terjual akan ditandai "TERJUAL" dan tetap tampil sebagai portofolio.</div>
       </details>
 
       <details class="faq-item">
-        <summary>Bisa upload berapa media per barang?</summary>
+        <summary>
+          Bisa upload berapa media per barang?
+          <i class="fas fa-chevron-down faq-chevron"></i>
+        </summary>
         <div class="faq-answer">Bisa upload <strong>lebih dari 1</strong> foto dan video (maksimal 10 media, masing-masing maks 20MB). Foto & video akan tampil dalam bentuk slider otomatis di halaman jastip.</div>
       </details>
 
       <details class="faq-item">
-        <summary>Apa itu rekber dan kenapa penting?</summary>
+        <summary>
+          Apa itu rekber dan kenapa penting?
+          <i class="fas fa-chevron-down faq-chevron"></i>
+        </summary>
         <div class="faq-answer">Rekber (rekening bersama) adalah sistem pembayaran aman: uang pembeli ditahan admin dulu, baru diteruskan ke seller setelah barang diterima dan dikonfirmasi. Ini melindungi <strong>pembeli dan penjual</strong> dari penipuan.</div>
       </details>
 
       <details class="faq-item">
-        <summary>Barang apa saja yang boleh dititipkan?</summary>
+        <summary>
+          Barang apa saja yang boleh dititipkan?
+          <i class="fas fa-chevron-down faq-chevron"></i>
+        </summary>
         <div class="faq-answer">Semua barang legal: gadget, sepatu, action figure, akun game (dengan syarat), koleksi, fashion, dll. Dilarang: barang ilegal, obat terlarang, senjata, barang hasil curian, atau konten dewasa.</div>
       </details>
 
       <details class="faq-item">
-        <summary>Bagaimana cara mulai titip jualan?</summary>
+        <summary>
+          Bagaimana cara mulai titip jualan?
+          <i class="fas fa-chevron-down faq-chevron"></i>
+        </summary>
         <div class="faq-answer">Klik tombol <strong>"Titip Jualan Sekarang"</strong> di atas, isi form, upload foto/video barangmu, submit, lalu lanjut konfirmasi ke admin via WhatsApp. Gampang banget!</div>
       </details>
     </div>
@@ -1544,10 +1570,12 @@
 
   <script>
     // ============================================================
-    // KONFIGURASI BIAYA JASTIP (HYBRID)
+    // KONFIGURASI
     // ============================================================
     var BIAYA_LISTING = 3000;
     var KOMISI_PERSEN = 0.05;
+    var ADMIN_WA = '6289687163314';
+    var SHARE_WORKER = 'https://jastip.akinostore.workers.dev';
 
     function hitungBiayaJastip(hargaBarang) {
       var harga = parseInt(hargaBarang, 10) || 0;
@@ -1562,6 +1590,15 @@
 
     function parseRupiah(str) {
       return parseInt(String(str || '').replace(/[^0-9]/g, ''), 10) || 0;
+    }
+
+    // ⭐ Deteksi video lebih robust (cek extension + path Cloudinary)
+    function isVideoUrl(url) {
+      if (!url) return false;
+      var u = String(url).toLowerCase();
+      if (/\.(mp4|mov|avi|webm|mkv|m4v|3gp)(\?|$|#)/i.test(u)) return true;
+      if (u.indexOf('/video/upload/') >= 0) return true;
+      return false;
     }
 
     // ============================================================
@@ -1847,11 +1884,11 @@
           return;
         }
 
-        if (typeof db === 'undefined') {
+        if (typeof window.db === 'undefined') {
           throw new Error('Database tidak tersedia. Refresh halaman.');
         }
 
-        var docRef = await db.collection('jastip').add({
+        var docRef = await window.db.collection('jastip').add({
           penjual: nama,
           namaBarang: barang,
           deskripsi: deskripsi || '',
@@ -1880,7 +1917,9 @@
           '• *TOTAL: ' + formatRupiah(biaya.total) + '*\n\n' +
           'Kode: ' + docRef.id + '\n\n' +
           '✅ Segera konfirmasi pembayaran ' + formatRupiah(biaya.total) + ' untuk mengaktifkan.';
-        window.open('https://wa.me/6289687163314?text=' + encodeURIComponent(waMsg), '_blank');
+
+        // ⭐ Pakai location.href supaya tidak kena popup blocker
+        window.location.href = 'https://wa.me/' + ADMIN_WA + '?text=' + encodeURIComponent(waMsg);
 
         msgEl.className = 'form-msg ok show';
         msgEl.innerHTML = '✅ Titipan berhasil! Total biaya: <strong>' + formatRupiah(biaya.total) + '</strong>. Tunggu konfirmasi admin.';
@@ -1921,7 +1960,10 @@
 
       var detailUrl = 'https://akinoch.my.id/jastip.html?item=' + encodeURIComponent(id);
       var waMsg = '💬 *Tawaran Baru!*\n\nBarang: ' + namaBarang + '\nPembeli: ' + namaPembeli + '\nWA: ' + wa + '\nHarga Tawar: ' + hargaTawar + '\n\nLink postingan: ' + detailUrl;
-      window.open('https://wa.me/6289687163314?text=' + encodeURIComponent(waMsg), '_blank');
+
+      // ⭐ Pakai location.href
+      window.location.href = 'https://wa.me/' + ADMIN_WA + '?text=' + encodeURIComponent(waMsg);
+
       msgEl.className = 'form-msg ok show';
       msgEl.textContent = '✅ Tawaran terkirim! Admin akan menghubungkan dengan penjual.';
       setTimeout(function() { closeModal('modalTawar'); }, 1500);
@@ -1932,7 +1974,8 @@
     // ============================================================
     window.pesanItem = function(id, namaBarang, penjual) {
       var msg = 'Halo admin, saya tertarik dengan barang *' + namaBarang + '* dari *' + penjual + '*. Saya mau beli. Kode: ' + id;
-      window.open('https://wa.me/6289687163314?text=' + encodeURIComponent(msg), '_blank');
+      // ⭐ Pakai location.href
+      window.location.href = 'https://wa.me/' + ADMIN_WA + '?text=' + encodeURIComponent(msg);
     };
 
     window.bukaTawar = function(id, namaBarang) {
@@ -1946,8 +1989,9 @@
       openModal('modalTawar');
     };
 
+    // ⭐ Share pakai WORKER URL biar preview thumbnail barang muncul
     window.bagikanItem = function(id, namaBarang, penjual, harga) {
-      var shareUrl = 'https://akinoch.my.id/jastip.html?item=' + encodeURIComponent(id);
+      var shareUrl = SHARE_WORKER + '/?item=' + encodeURIComponent(id);
       if (navigator.share) {
         navigator.share({
           title: namaBarang + ' - Jastip Akino Store',
@@ -2063,7 +2107,7 @@
       var form = document.getElementById('jastipCommentForm');
       var list = document.getElementById('jastipCommentList');
       var submit = document.getElementById('jastipCommentSubmit');
-      if (!form || !list || typeof db === 'undefined') return;
+      if (!form || !list || typeof window.db === 'undefined') return;
       var escapeComment = function(value) {
         var element = document.createElement('div');
         element.textContent = value == null ? '' : String(value);
@@ -2082,21 +2126,24 @@
           return '<article class="jastip-comment"><strong>' + escapeComment(item.name || 'Anonim') + '</strong><p>' + escapeComment(item.message || '') + '</p><small>' + escapeComment(item.date || '') + '</small></article>';
         }).join('');
       };
-      var listen = function(collectionName, prefix) {
-        db.collection(collectionName).orderBy('timestamp', 'desc').limit(10).onSnapshot(function(snapshot) {
-          snapshot.forEach(function(doc) {
-            var data = doc.data();
-            var timestamp = data.timestamp && data.timestamp.seconds ? data.timestamp.seconds * 1000 : 0;
-            comments[prefix + doc.id] = { name: data.name, message: data.message, time: timestamp, date: timestamp ? new Date(timestamp).toLocaleString('id-ID') : '' };
-          });
-          renderComments();
-        }, function(error) {
-          console.warn('Komentar ' + collectionName + ' tidak tersedia:', error.message);
-          renderComments();
-        });
-      };
 
-      listen('messages', 'messages:');
+      window.db.collection('messages').orderBy('timestamp', 'desc').limit(10).onSnapshot(function(snapshot) {
+        snapshot.forEach(function(doc) {
+          var data = doc.data();
+          var timestamp = data.timestamp && data.timestamp.seconds ? data.timestamp.seconds * 1000 : 0;
+          comments['messages:' + doc.id] = {
+            name: data.name,
+            message: data.message,
+            time: timestamp,
+            date: timestamp ? new Date(timestamp).toLocaleString('id-ID') : ''
+          };
+        });
+        renderComments();
+      }, function(error) {
+        console.warn('Komentar tidak tersedia:', error.message);
+        renderComments();
+      });
+
       form.addEventListener('submit', function(event) {
         event.preventDefault();
         var name = document.getElementById('jastipCommentName').value.trim();
@@ -2104,11 +2151,15 @@
         if (!name || !message || submit.disabled) return;
         submit.disabled = true;
         submit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
-        db.collection('messages').add({ name: name, message: message, timestamp: firebase.firestore.FieldValue.serverTimestamp() }).then(function() {
+        window.db.collection('messages').add({
+          name: name,
+          message: message,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        }).then(function() {
           form.reset();
           showToast('Komentar berhasil dikirim.');
         }).catch(function(error) {
-          console.error('Gagal mengirim komentar Jastip:', error);
+          console.error('Gagal mengirim komentar:', error);
           showToast('Komentar gagal dikirim.');
         }).then(function() {
           submit.disabled = false;
@@ -2157,8 +2208,8 @@
       });
       items.sort(function(first, second) {
         if (jastipSortFilter === 'priceAsc' || jastipSortFilter === 'priceDesc') {
-          var firstPrice = first.data.hargaAngka || parseInt(String(first.data.harga || '').replace(/[^0-9]/g, ''), 10) || 0;
-          var secondPrice = second.data.hargaAngka || parseInt(String(second.data.harga || '').replace(/[^0-9]/g, ''), 10) || 0;
+          var firstPrice = first.data.hargaAngka || parseRupiah(first.data.harga) || 0;
+          var secondPrice = second.data.hargaAngka || parseRupiah(second.data.harga) || 0;
           return jastipSortFilter === 'priceAsc' ? firstPrice - secondPrice : secondPrice - firstPrice;
         }
         return (second.time || 0) - (first.time || 0);
@@ -2188,7 +2239,8 @@
           sliderHtml = '<div class="media-slider" data-id="' + id + '">' +
             '<div class="slides-wrapper" style="transform:translateX(0%)">';
           media.forEach(function(url, idx) {
-            var isVideo = url.match(/\.(mp4|mov|avi|webm)$/i);
+            // ⭐ Pakai helper isVideoUrl() yang lebih robust
+            var isVideo = isVideoUrl(url);
             var badgeHtml = isVideo ? '<span class="media-badge"><i class="fas fa-video"></i> VIDEO</span>' : '<span class="media-badge"><i class="fas fa-image"></i> FOTO</span>';
             var mediaHtml = isVideo ?
               '<video src="' + escapeHtml(url) + '" muted playsinline></video>' :
@@ -2296,12 +2348,12 @@
 
     function renderJastip() {
       var grid = document.getElementById('jastipGrid');
-      if (typeof db === 'undefined') {
+      if (typeof window.db === 'undefined') {
         grid.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i> Database tidak tersedia.</div>';
         return;
       }
 
-      db.collection('jastip')
+      window.db.collection('jastip')
         .where('status', 'in', ['active', 'sold'])
         .onSnapshot(function(snap) {
           var docs = [];
