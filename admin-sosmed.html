@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <link rel="manifest" href="/manifest.json?v=4.4" />
+    <meta name="theme-color" content="#3B82F6" />
+    <title>Admin Sosmed - Akino Store</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyD4sgRYUhk08Y4oZPR4GXJbSuX1fHjXBtg",
+            authDomain: "akinowedding-73271.firebaseapp.com",
+            projectId: "akinowedding-73271",
+            storageBucket: "akinowedding-73271.appspot.com",
+            messagingSenderId: "307666594440",
+            appId: "1:307666594440:web:e7d3496744464f4c6d0d3d"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        window.db = db;
+        window.auth = auth;
+    </script>
+
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box }
+        :root {
+            --bg: #07070d; --bg-card: rgba(255, 255, 255, 0.04); --bg-el: #0e0e1a;
+            --fg: #f0f0f5; --fg-dim: #c0c0d0; --muted: #7a7a95; --accent: #FFDD57;
+            --accent-dim: rgba(255, 221, 87, 0.12); --border: rgba(255, 255, 255, 0.06);
+            --border-hover: rgba(255, 255, 255, 0.12); --r: 16px; --rs: 10px;
+            --fd: 'Space Grotesk', sans-serif; --fb: 'DM Sans', sans-serif;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4); --transition: 0.3s ease;
+        }
+        body { font-family: var(--fb); background: var(--bg); color: var(--fg); min-height: 100vh; line-height: 1.6; }
+        
+        /* Login */
+        .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
+        .login-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--r); padding: 2.5rem 2rem; width: 100%; max-width: 380px; text-align: center; }
+        .login-card h1 { font-family: var(--fd); font-size: 1.4rem; margin-bottom: 0.5rem; }
+        .login-card p { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.5rem; }
+        .btn-login { width: 100%; padding: .75rem; border-radius: var(--rs); background: var(--accent); color: #000; font-weight: 600; cursor: pointer; border: none; display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: var(--transition); }
+        .btn-login:hover { background: #f5c842; transform: translateY(-2px); }
+        
+        /* Dashboard */
+        .dash { display: none; }
+        .dash.active { display: block; }
+        .topbar { background: rgba(7,7,13,.85); border-bottom: 1px solid var(--border); padding: .6rem 1.2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+        .topbar-brand { font-family: var(--fd); font-weight: 700; color: var(--accent); font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .topbar-actions { display: flex; gap: 0.5rem; }
+        .tb-btn { padding: .4rem .8rem; border-radius: 8px; background: var(--bg-card); border: 1px solid var(--border); color: var(--fg); cursor: pointer; font-size: 0.8rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem; transition: var(--transition); }
+        .tb-btn:hover { border-color: var(--border-hover); background: rgba(255,255,255,0.05); }
+        
+        /* Tabs */
+        .tabs { display: flex; gap: 0.5rem; padding: 1rem 1.2rem; border-bottom: 1px solid var(--border); overflow-x: auto; max-width: 1100px; margin: 0 auto; }
+        .tab-btn { padding: .6rem 1.2rem; background: transparent; border: 1px solid transparent; color: var(--muted); cursor: pointer; font-weight: 600; border-radius: 8px; font-size: 0.85rem; white-space: nowrap; transition: var(--transition); display: flex; align-items: center; gap: 0.5rem; }
+        .tab-btn.active { background: var(--accent-dim); color: var(--accent); border-color: rgba(255,221,87,0.2); }
+        
+        /* Panels */
+        .tab-panel { display: none; padding: 1.5rem 1.2rem; max-width: 1100px; margin: 0 auto; }
+        .tab-panel.active { display: block; animation: fadeUp 0.3s ease; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Cards */
+        .form-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--rs); padding: 1.25rem; margin-bottom: 1.5rem; }
+        .form-card h4 { font-family: var(--fd); font-size: 1rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .btn-primary { padding: .7rem 1.4rem; border-radius: 8px; background: var(--accent); color: #000; border: none; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; transition: var(--transition); }
+        .btn-primary:hover { background: #f5c842; transform: translateY(-2px); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        
+        /* Order Items */
+        .order-item { background: var(--bg-card); border: 1px solid var(--border); padding: 1.2rem; border-radius: var(--rs); margin-bottom: 1rem; display: flex; flex-direction: column; gap: 0.8rem; transition: var(--transition); }
+        .order-item:hover { border-color: var(--border-hover); }
+        .oi-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; }
+        .oi-info { flex: 1; min-width: 250px; }
+        .oi-id { font-size: 0.75rem; color: var(--muted); font-family: monospace; display: flex; gap: 0.5rem; align-items: center; }
+        .oi-name { font-size: 0.95rem; font-weight: 700; margin: 0.3rem 0; color: var(--fg); }
+        .oi-detail { font-size: 0.8rem; color: var(--fg-dim); display: flex; flex-direction: column; gap: 0.3rem; }
+        .oi-detail a { color: var(--accent); text-decoration: none; word-break: break-all; }
+        .oi-detail a:hover { text-decoration: underline; }
+        .oi-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; border-top: 1px solid var(--border); padding-top: 1rem; }
+        
+        /* Badges & Selects */
+        .badge { padding: 0.3rem 0.7rem; border-radius: 50px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+        .badge.pending { background: rgba(255,221,87,.12); color: #FFDD57; }
+        .badge.paid { background: rgba(96,165,250,.12); color: #60a5fa; }
+        .badge.processing { background: rgba(251,146,60,.12); color: #fb923c; }
+        .badge.completed { background: rgba(74,222,128,.12); color: #4ade80; }
+        .badge.cancelled { background: rgba(248,113,113,.12); color: #f87171; }
+        
+        select.status-select { padding: 0.4rem 0.8rem; border-radius: 6px; background: var(--bg-el); color: var(--fg); border: 1px solid var(--border); font-size: 0.8rem; outline: none; cursor: pointer; font-family: var(--fb); }
+        select.status-select:focus { border-color: var(--accent); }
+        
+        .sync-status-msg { margin-top: 1rem; font-size: 0.85rem; padding: 0.75rem 1rem; border-radius: 8px; display: none; align-items: center; gap: 0.5rem; }
+        .sync-status-msg.ok { display: flex; background: rgba(74,222,128,0.1); color: #4ade80; border: 1px solid rgba(74,222,128,0.2); }
+        .sync-status-msg.err { display: flex; background: rgba(248,113,113,0.1); color: #f87171; border: 1px solid rgba(248,113,113,0.2); }
+        .sync-status-msg.loading { display: flex; background: rgba(255,221,87,0.1); color: var(--accent); border: 1px solid rgba(255,221,87,0.2); }
+        
+        .api-info-box { font-size: 0.75rem; color: #60a5fa; margin-top: 0.5rem; background: rgba(96,165,250,0.08); padding: 0.5rem 0.8rem; border-radius: 6px; display: inline-block; border: 1px solid rgba(96,165,250,0.15); }
+
+        @media(max-width: 768px) {
+            .oi-top { flex-direction: column; }
+            .oi-actions { justify-content: space-between; }
+            .tab-panel { padding: 1rem 0.8rem; }
+            .topbar { padding: 0.5rem 0.8rem; }
+            .topbar-brand { font-size: 0.95rem; }
+            .tb-btn { font-size: 0.7rem; padding: 0.3rem 0.6rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- LOGIN -->
+    <div class="login-wrap" id="loginWrap">
+        <div class="login-card">
+            <h1><i class="fas fa-shield-halved" style="color:var(--accent);"></i> Admin Sosmed</h1>
+            <p>Masuk khusus untuk Administrator</p>
+            <button class="btn-login" onclick="doLogin()"><i class="fab fa-google"></i> Masuk dengan Google</button>
+            <p id="loginErr" style="color: #f87171; margin-top: 1rem; font-size: 0.8rem;"></p>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="dash" id="dash">
+        <div class="topbar">
+            <div class="topbar-brand"><i class="fas fa-share-nodes"></i> Akino SMM Admin</div>
+            <div class="topbar-actions">
+                <a href="SosialMedia.html" target="_blank" class="tb-btn"><i class="fas fa-external-link-alt"></i> Web</a>
+                <button class="tb-btn" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('sosmed')"><i class="fas fa-shopping-cart"></i> Daftar Pesanan</button>
+            <button class="tab-btn" onclick="switchTab('sync')"><i class="fas fa-sync"></i> Sync API SMM</button>
+        </div>
+
+        <!-- TAB PESANAN -->
+        <div class="tab-panel active" id="tabSosmed">
+            <div class="form-card">
+                <h4><i class="fas fa-info-circle" style="color:var(--accent)"></i> Panduan Proses</h4>
+                <p style="font-size: 0.82rem; color: var(--muted); margin-top: 0.5rem; line-height: 1.7;">
+                    1. Cek mutasi rekening, pastikan pembeli sudah transfer.<br>
+                    2. Ubah status dari <b>PENDING</b> ke <b>PAID</b>, lalu klik tombol <b>Update Status</b>.<br>
+                    3. Klik tombol <b>Proses API</b> (warna oranye) untuk menembak pesanan ke SMM Panel.<br>
+                    4. Klik <b>Cek Status API</b> (warna biru) secara berkala untuk memperbarui sisa pengerjaan dari SMM Panel.
+                </p>
+            </div>
+            <div id="sosmedList">
+                <p style="text-align:center; color:var(--muted); padding:3rem;"><i class="fas fa-spinner fa-spin fa-2x" style="margin-bottom:1rem;"></i><br>Memuat pesanan...</p>
+            </div>
+        </div>
+
+        <!-- TAB SYNC API -->
+        <div class="tab-panel" id="tabSync">
+            <div class="form-card">
+                <h4><i class="fas fa-sync-alt" style="color:var(--accent)"></i> Sinkronisasi Layanan SMM Panel</h4>
+                <p style="font-size: 0.82rem; color: var(--muted); margin-bottom: 1.5rem; margin-top: 0.5rem; line-height: 1.7;">
+                    Tarik semua layanan dari API SMM Panel Indonesia. Harga jual di web otomatis akan ditambahkan <b>30% (Markup)</b> dari harga asli. <br>
+                    <span style="color:#f87171; font-weight:600;"><i class="fas fa-exclamation-triangle"></i> Peringatan: Proses ini akan menghapus data layanan lama di Firestore dan menggantinya dengan yang baru.</span>
+                </p>
+                <button class="btn-primary" id="btnSync" onclick="syncServices()"><i class="fas fa-cloud-download-alt"></i> Tarik Layanan API</button>
+                <div id="syncStatus" class="sync-status-msg"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_UID = "g2wfEDQ6niUfI3UEjRFh4GUtxvp1";
+        const SMM_API_URL = 'https://smmpanelindonesia.co.id/api/v2';
+        const SMM_API_KEY = '27d5fd2d06873697d112e9685d094817';
+        const MARKUP = 1.30; // 30% Markup
+
+        // ==========================================
+        // AUTHENTICATION
+        // ==========================================
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user && user.uid === ADMIN_UID) {
+                document.getElementById('loginWrap').style.display = 'none';
+                document.getElementById('dash').classList.add('active');
+                loadOrders();
+            } else {
+                if(user) firebase.auth().signOut(); // Logout if not admin
+                document.getElementById('loginWrap').style.display = 'flex';
+                document.getElementById('dash').classList.remove('active');
+            }
+        });
+
+        async function doLogin() {
+            try {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                await auth.signInWithPopup(provider);
+            } catch (e) { 
+                document.getElementById('loginErr').textContent = e.message; 
+            }
+        }
+        
+        function doLogout() { auth.signOut(); }
+        
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            if(tab === 'sosmed') {
+                document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
+                document.getElementById('tabSosmed').classList.add('active');
+            } else {
+                document.querySelector('.tab-btn:nth-child(2)').classList.add('active');
+                document.getElementById('tabSync').classList.add('active');
+            }
+        }
+
+        // ==========================================
+        // SYNC LAYANAN DARI API
+        // ==========================================
+        async function syncServices() {
+            const btn = document.getElementById('btnSync');
+            const statusEl = document.getElementById('syncStatus');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menarik data...';
+            statusEl.className = 'sync-status-msg loading';
+            statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menghubungi API SMM Panel...';
+
+            try {
+                const response = await fetch(SMM_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({ key: SMM_API_KEY, action: 'services' })
+                });
+                const data = await response.json();
+
+                if (!Array.isArray(data)) throw new Error(data.error || 'Gagal mengambil data dari API');
+
+                statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Ditemukan ${data.length} layanan. Memproses Markup 30%...`;
+
+                const batch = db.batch();
+                const colRef = db.collection('smm_services');
+                
+                // 1. Hapus data lama di Firestore (Biar bersih dan update)
+                const oldData = await colRef.get();
+                oldData.forEach(doc => batch.delete(doc.ref));
+
+                // 2. Filter layanan Active & Proses Markup
+                let count = 0;
+                data.filter(s => s.status === 'Active').forEach(srv => {
+                    let platform = 'Lainnya';
+                    let nameLower = srv.name.toLowerCase();
+                    let catLower = srv.category.toLowerCase();
+                    
+                    // Deteksi Platform otomatis
+                    if(nameLower.includes('instagram') || catLower.includes('instagram')) platform = 'Instagram';
+                    else if(nameLower.includes('tiktok') || catLower.includes('tiktok')) platform = 'TikTok';
+                    else if(nameLower.includes('youtube') || catLower.includes('youtube')) platform = 'YouTube';
+                    else if(nameLower.includes('facebook') || catLower.includes('facebook')) platform = 'Facebook';
+                    else if(nameLower.includes('twitter') || nameLower.includes('x/twitter')) platform = 'Twitter';
+                    else if(nameLower.includes('telegram')) platform = 'Telegram';
+                    else if(nameLower.includes('shopee')) platform = 'Shopee';
+                    else if(nameLower.includes('spotify')) platform = 'Spotify';
+                    else if(nameLower.includes('threads')) platform = 'Threads';
+
+                    // Hitung Markup & Bulatkan
+                    const originalRate = parseFloat(srv.rate) || 0;
+                    const newRate = Math.ceil(originalRate * MARKUP);
+
+                    const newDoc = colRef.doc();
+                    batch.set(newDoc, {
+                        api_service_id: srv.service,
+                        platform: platform,
+                        category_raw: srv.category,
+                        name: srv.name,
+                        min: parseInt(srv.min),
+                        max: parseInt(srv.max),
+                        rate: newRate // Harga sudah di-markup
+                    });
+                    count++;
+                });
+
+                await batch.commit();
+                statusEl.className = 'sync-status-msg ok';
+                statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Berhasil sinkronisasi ${count} layanan ke Firestore!`;
+                
+            } catch (error) {
+                statusEl.className = 'sync-status-msg err';
+                statusEl.innerHTML = `<i class="fas fa-exclamation-circle"></i> Gagal: ${error.message}`;
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-cloud-download-alt"></i> Tarik Layanan API';
+            }
+        }
+
+        // ==========================================
+        // LOAD & RENDER PESANAN
+        // ==========================================
+        function loadOrders() {
+            db.collection('orders').orderBy('createdAt', 'desc').onSnapshot(snapshot => {
+                let html = '';
+                if(snapshot.empty) {
+                    html = '<p style="text-align:center;color:var(--muted);padding:3rem;"><i class="fas fa-inbox fa-2x" style="margin-bottom:1rem;opacity:0.5;"></i><br>Belum ada pesanan masuk.</p>';
+                } else {
+                    snapshot.forEach(doc => {
+                        const o = doc.data();
+                        const timeStr = o.createdAt ? new Date(o.createdAt.seconds * 1000).toLocaleString('id-ID') : '-';
+                        
+                        // Tombol Aksi API
+                        let actionButtons = '';
+                        if(o.status === 'paid' && !o.smm_order_id) {
+                            actionButtons = `<button class="btn-primary" style="background:#fb923c;color:#000" onclick="sendToAPI('${doc.id}', '${o.api_service_id}', '${o.link}', ${o.quantity})"><i class="fas fa-paper-plane"></i> Proses API</button>`;
+                        } else if (o.smm_order_id) {
+                            actionButtons = `<button class="btn-primary" style="background:#60a5fa;color:#000" onclick="checkAPIStatus('${doc.id}', '${o.smm_order_id}')"><i class="fas fa-search"></i> Cek Status API</button>`;
+                        }
+
+                        // Info Tambahan dari API
+                        let apiInfo = '';
+                        if(o.smm_order_id) {
+                            apiInfo = `<div class="api-info-box">
+                                <i class="fas fa-server"></i> SMM ID: <b>${o.smm_order_id}</b> <br> 
+                                Status: <b>${o.smm_status || 'Processing'}</b> | Sisa: <b>${o.remains || '-'}</b>
+                            </div>`;
+                        }
+
+                        html += `
+                            <div class="order-item">
+                                <div class="oi-top">
+                                    <div class="oi-info">
+                                        <div class="oi-id"><i class="fas fa-hashtag"></i> ${o.orderId} <span style="color:var(--muted);margin-left:0.5rem;">${timeStr}</span></div>
+                                        <div class="oi-name">${o.serviceName}</div>
+                                        <div class="oi-detail">
+                                            <span>👤 <b>${o.customerName}</b> | 📱 ${o.customerWA}</span>
+                                            <span>🔢 Qty: ${o.quantity.toLocaleString('id-ID')} | 💰 Total: <b style="color:var(--accent)">Rp ${o.total.toLocaleString('id-ID')}</b></span>
+                                            <span>🔗 <a href="${o.link}" target="_blank">${o.link}</a></span>
+                                        </div>
+                                        ${apiInfo}
+                                    </div>
+                                    <div>
+                                        <div class="badge ${o.status}">${o.status}</div>
+                                    </div>
+                                </div>
+                                <div class="oi-actions">
+                                    <select class="status-select" id="sel_${doc.id}">
+                                        <option value="pending" ${o.status==='pending'?'selected':''}>Pending (Belum Bayar)</option>
+                                        <option value="paid" ${o.status==='paid'?'selected':''}>Paid (Sudah Transfer)</option>
+                                        <option value="processing" ${o.status==='processing'?'selected':''}>Processing</option>
+                                        <option value="completed" ${o.status==='completed'?'selected':''}>Completed</option>
+                                        <option value="cancelled" ${o.status==='cancelled'?'selected':''}>Cancelled</option>
+                                    </select>
+                                    <button class="btn-primary" onclick="updateStatus('${doc.id}')" style="padding:0.4rem 0.8rem;font-size:0.75rem;background:var(--fg-dim);color:var(--bg);"><i class="fas fa-save"></i> Update Status</button>
+                                    ${actionButtons}
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                document.getElementById('sosmedList').innerHTML = html;
+            });
+        }
+
+        function updateStatus(id) {
+            const status = document.getElementById('sel_' + id).value;
+            db.collection('orders').doc(id).update({ status: status }).then(() => {
+                // Toast alert kecil
+                const toast = document.createElement('div');
+                toast.style = "position:fixed;top:20px;right:20px;background:#4ade80;color:#000;padding:10px 20px;border-radius:8px;font-weight:bold;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.3);";
+                toast.textContent = 'Status berhasil diupdate!';
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 2000);
+            });
+        }
+
+        // ==========================================
+        // KIRIM PESANAN KE API SMM PANEL
+        // ==========================================
+        async function sendToAPI(docId, apiServiceId, link, qty) {
+            if(!confirm('Kirim pesanan ini ke SMM Panel?\nPastikan saldo SMM Panel kamu mencukupi!')) return;
+            
+            // Ubah tombol jadi loading
+            const btns = document.querySelectorAll('.btn-primary');
+            btns.forEach(b => b.disabled = true);
+
+            try {
+                const res = await fetch(SMM_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({
+                        key: SMM_API_KEY,
+                        action: 'add',
+                        service: apiServiceId,
+                        link: link,
+                        quantity: qty
+                    })
+                });
+                const data = await res.json();
+                
+                if(data.order) {
+                    await db.collection('orders').doc(docId).update({
+                        status: 'processing',
+                        smm_order_id: data.order,
+                        smm_status: 'Processing',
+                        processed_at: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    alert('✅ Sukses dikirim ke SMM Panel!\nSMM Order ID: ' + data.order);
+                } else {
+                    alert('❌ Gagal memproses: ' + (data.error || 'Pastikan saldo cukup / layanan tidak error.'));
+                }
+            } catch(e) {
+                alert('❌ Error Jaringan: ' + e.message);
+            } finally {
+                btns.forEach(b => b.disabled = false);
+            }
+        }
+
+        // ==========================================
+        // CEK STATUS KE API
+        // ==========================================
+        async function checkAPIStatus(docId, smmOrderId) {
+            const btns = document.querySelectorAll('.btn-primary');
+            btns.forEach(b => b.disabled = true);
+
+            try {
+                const res = await fetch(SMM_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({
+                        key: SMM_API_KEY,
+                        action: 'status',
+                        order: smmOrderId
+                    })
+                });
+                const data = await res.json();
+                
+                if(data.error) {
+                    alert('❌ Gagal cek status: ' + data.error);
+                    return;
+                }
+
+                let newStatus = 'processing';
+                if(data.status === 'Completed') newStatus = 'completed';
+                if(data.status === 'Canceled') newStatus = 'cancelled';
+
+                await db.collection('orders').doc(docId).update({
+                    status: newStatus,
+                    smm_status: data.status,
+                    start_count: data.start_count,
+                    remains: data.remains
+                });
+                alert('✅ Status diperbarui!\n\nSMM Status: ' + data.status + '\nSisa (Remains): ' + data.remains);
+            } catch(e) {
+                alert('❌ Error: ' + e.message);
+            } finally {
+                btns.forEach(b => b.disabled = false);
+            }
+        }
+    </script>
+</body>
+</html>
