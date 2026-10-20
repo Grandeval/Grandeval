@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <link rel="manifest" href="/manifest.json?v=4.3" />
+  <link rel="manifest" href="/manifest.json?v=4.4" />
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="firebase-init.js?v=4.3"></script>
+<script src="firebase-init.js?v=4.4"></script>
   <meta name="theme-color" content="#3B82F6" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -22,7 +22,7 @@
   <link rel="icon" href="https://res.cloudinary.com/d39mdjct/image/upload/v1783478697/icon_tnzy32.ico" />
   <meta property="og:title" content="Layanan Sosial Media - Akino Store">
   <meta property="og:description" content="Jasa sosial media terpercaya: followers, likes, views Instagram, TikTok, YouTube, dan lainnya. Harga bersaing, proses cepat.">
-  <meta property="og:image" content="https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_tumbnail2_dkwek2.png">
+  <meta property="og:image" content="https://res.cloudinary.com/d39mdjct/image/upload/v1783480029/web_thumbnail2_dkwek2.png">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://akinocpm.my.id/SosialMedia.html">
   <script type="application/ld+json">
@@ -30,13 +30,13 @@
       "@context": "https://schema.org",
       "@type": "Product",
       "name": "Layanan Sosial Media Akino Store",
-      "description": "Jasa followers, likes, views, dan engagement untuk Instagram, TikTok, YouTube, Facebook, Twitter, Telegram, Shopee.",
+      "description": "Jasa followers, likes, views, dan engagement untuk Instagram, TikTok, YouTube, Facebook, Twitter, Telegram, Shopee, dan platform lainnya.",
       "brand": { "@type": "Brand", "name": "Akino Store" },
       "offers": {
         "@type": "AggregateOffer",
         "priceCurrency": "IDR",
-        "lowPrice": "2000",
-        "highPrice": "511840",
+        "lowPrice": "21",
+        "highPrice": "41828800",
         "availability": "https://schema.org/InStock"
       },
       "aggregateRating": {
@@ -228,7 +228,7 @@
       line-height: 1.2;
     }
     .stat-label { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.5px; }
-    .sec { padding: 2.5rem 0; max-width: 1100px; margin: 0 auto; padding-left: 1rem; padding-right: 1rem; }
+    .sec { padding: 2.5rem 0; max-width: 1100px; margin: 0 auto; padding-left: 1rem; padding-right: 1rem; min-height: 50vh; }
     .sec-label {
       display: inline-flex; align-items: center; gap: 0.5rem;
       font-size: 0.7rem; font-weight: 600; color: var(--accent);
@@ -245,7 +245,9 @@
     .sec-header { text-align: center; margin-bottom: 2rem; }
     .sec-divider { max-width: 1100px; margin: 0 auto; padding: 0 1rem; }
     .sec-divider hr { border: none; height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); }
-    .search-wrap { max-width: 480px; margin: 0 auto 1.5rem; position: relative; }
+    
+    /* Search Bar */
+    .search-wrap { max-width: 480px; margin: 0 auto 2rem; position: relative; }
     .search-wrap i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.9rem; }
     .search-wrap input {
       width: 100%; padding: 0.7rem 1rem 0.7rem 2.6rem;
@@ -256,27 +258,65 @@
     }
     .search-wrap input:focus { border-color: var(--accent); }
     .search-wrap input::placeholder { color: var(--muted); }
-    .cat-tabs {
-      display: flex; gap: 0.4rem; flex-wrap: wrap;
-      justify-content: center; margin-bottom: 0.75rem;
+
+    /* === VIEW 1: PLATFORM GRID === */
+    .platform-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
     }
-    .cat-btn {
-      padding: 0.35rem 0.9rem; border-radius: 50px;
+    .platform-card {
       background: var(--bg-card); border: 1px solid var(--border);
-      color: var(--muted); font-family: var(--font-body);
-      font-size: 0.72rem; font-weight: 500;
+      border-radius: var(--radius); padding: 1.25rem;
+      display: flex; align-items: center; gap: 1rem;
       cursor: pointer; transition: all var(--transition);
-      display: inline-flex; align-items: center; gap: 0.3rem;
-      white-space: nowrap;
     }
-    .cat-btn:hover { color: var(--fg); border-color: var(--border-hover); }
-    .cat-btn.active {
-      background: var(--accent); color: #0a0a0f;
-      border-color: var(--accent);
-      box-shadow: 0 2px 16px rgba(255,221,87,0.2);
+    .platform-card:hover {
+      border-color: var(--accent); background: var(--bg-card-hover);
+      transform: translateY(-2px); box-shadow: var(--shadow-card);
     }
-    .cat-btn img { width: 18px; height: 18px; border-radius: 4px; vertical-align: middle; }
-    .srv-count { text-align: center; font-size: 0.78rem; color: var(--muted); margin-bottom: 1.5rem; }
+    .platform-icon {
+      width: 46px; height: 46px; border-radius: 12px;
+      background: var(--accent-dim);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .platform-icon img { width: 24px; height: 24px; object-fit: contain; }
+    .platform-info { flex: 1; }
+    .platform-info h4 { font-family: var(--font-display); font-size: 1rem; font-weight: 600; text-transform: capitalize; }
+    .platform-info p { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+    .platform-card i.fa-chevron-right { color: var(--muted); font-size: 0.8rem; }
+
+    /* === VIEW 2: CATEGORY LIST === */
+    .btn-back-nav {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--bg-card); border: 1px solid var(--border);
+      padding: 0.5rem 1rem; border-radius: var(--radius-sm);
+      font-size: 0.82rem; font-weight: 600; color: var(--fg-dim);
+      margin-bottom: 1.5rem; transition: all var(--transition);
+    }
+    .btn-back-nav:hover { background: var(--bg-card-hover); border-color: var(--border-hover); color: var(--fg); }
+    .category-list {
+      display: flex; flex-direction: column; gap: 0.75rem;
+      max-width: 800px; margin: 0 auto;
+    }
+    .category-item {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1rem 1.25rem;
+      display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer; transition: all var(--transition);
+    }
+    .category-item:hover {
+      border-color: var(--accent); background: var(--bg-card-hover);
+      transform: translateX(4px);
+    }
+    .category-info { display: flex; align-items: center; gap: 1rem; }
+    .category-info i { font-size: 1.2rem; color: var(--accent); width: 24px; text-align: center; }
+    .category-info h4 { font-family: var(--font-display); font-size: 0.95rem; font-weight: 600; }
+    .category-info p { font-size: 0.72rem; color: var(--muted); }
+    .category-item i.fa-chevron-right { color: var(--muted); font-size: 0.8rem; }
+
+    /* === VIEW 3: SERVICE GRID === */
     .srv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
     .srv-card {
       background: var(--bg-card); border: 1px solid var(--border);
@@ -301,7 +341,7 @@
     .srv-card-top h3 {
       font-family: var(--font-display); font-size: 0.88rem; font-weight: 600;
       line-height: 1.35; flex: 1;
-      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
       overflow: hidden;
     }
     .srv-meta { display: flex; gap: 0.5rem; margin-bottom: 0.6rem; flex-wrap: wrap; }
@@ -336,6 +376,8 @@
     }
     .btn-order:active { transform: scale(0.97); }
     .btn-order:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+    
+    /* Modal Styles (Tetap Sama) */
     .modal-overlay {
       display: none; position: fixed; inset: 0; z-index: 300;
       background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
@@ -369,22 +411,18 @@
     .modal-close:hover { background: rgba(255,255,255,0.1); }
     .modal-card h3 {
       font-family: var(--font-display); font-size: 1.1rem; font-weight: 600;
-      margin-bottom: 0.25rem; padding-right: 2.5rem;
+      margin-bottom: 0.25rem; padding-right: 2.5rem; line-height: 1.3;
     }
     .modal-cat {
       font-size: 0.75rem; color: var(--accent);
       margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.4rem;
     }
-    .step-indicator {
-      display: flex; align-items: center; justify-content: center;
-      gap: 0.5rem; margin-bottom: 1.25rem;
-    }
+    .step-indicator { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-bottom: 1.25rem; }
     .step-dot {
       width: 28px; height: 28px; border-radius: 50%;
       background: rgba(255,255,255,0.06); border: 1px solid var(--border);
       display: flex; align-items: center; justify-content: center;
-      font-size: 0.7rem; font-weight: 600; color: var(--muted);
-      transition: all 0.3s;
+      font-size: 0.7rem; font-weight: 600; color: var(--muted); transition: all 0.3s;
     }
     .step-dot.active { background: var(--accent); color: #0a0a0f; border-color: var(--accent); }
     .step-dot.done { background: rgba(34,197,94,0.15); color: #4ade80; border-color: rgba(34,197,94,0.3); }
@@ -404,28 +442,19 @@
     .form-group .hint { font-size: 0.7rem; color: var(--muted); margin-top: 0.25rem; }
     .price-calc {
       background: rgba(255,255,255,0.02); border: 1px solid var(--border);
-      border-radius: var(--radius-sm); padding: 0.85rem 1rem;
-      margin-bottom: 1rem;
+      border-radius: var(--radius-sm); padding: 0.85rem 1rem; margin-bottom: 1rem;
     }
-    .pc-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 0.3rem 0; font-size: 0.82rem;
-    }
+    .pc-row { display: flex; justify-content: space-between; align-items: center; padding: 0.3rem 0; font-size: 0.82rem; }
     .pc-label { color: var(--muted); }
     .pc-val { font-weight: 600; color: var(--fg-dim); }
     .pc-total { color: var(--accent); font-size: 1rem; font-family: var(--font-display); }
-    .order-result {
-      font-size: 0.82rem; padding: 0.65rem 0.85rem;
-      border-radius: var(--radius-sm); margin-bottom: 1rem;
-      animation: fadeInUp 0.3s ease;
-    }
+    .order-result { font-size: 0.82rem; padding: 0.65rem 0.85rem; border-radius: var(--radius-sm); margin-bottom: 1rem; animation: fadeInUp 0.3s ease; }
     .order-result.error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); color: #f87171; }
     .order-result.success { background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2); color: #4ade80; }
     .btn-submit {
       width: 100%; padding: 0.75rem; border-radius: var(--radius-sm);
-      background: var(--accent); color: #0a0a0f;
-      border: none; font-family: var(--font-body);
-      font-size: 0.88rem; font-weight: 600;
+      background: var(--accent); color: #0a0a0f; border: none;
+      font-family: var(--font-body); font-size: 0.88rem; font-weight: 600;
       cursor: pointer; transition: all var(--transition);
       display: flex; align-items: center; justify-content: center; gap: 0.5rem;
     }
@@ -433,50 +462,29 @@
     .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; transform: none; }
     .pay-methods { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.25rem; }
     .pay-method-card {
-      display: flex; align-items: center; gap: 0.85rem;
-      padding: 0.85rem 1rem;
-      background: rgba(255,255,255,0.02);
-      border: 2px solid var(--border);
-      border-radius: var(--radius-sm);
-      cursor: pointer; transition: all var(--transition);
+      display: flex; align-items: center; gap: 0.85rem; padding: 0.85rem 1rem;
+      background: rgba(255,255,255,0.02); border: 2px solid var(--border);
+      border-radius: var(--radius-sm); cursor: pointer; transition: all var(--transition);
     }
     .pay-method-card:hover { border-color: var(--border-hover); background: rgba(255,255,255,0.04); }
     .pay-method-card.selected { border-color: var(--accent); background: var(--accent-dim); }
-    .pmc-icon {
-      width: 40px; height: 40px; border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem; flex-shrink: 0;
-    }
+    .pmc-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
     .pmc-icon.dana { background: rgba(16,142,233,0.15); color: #108ee9; }
     .pmc-icon.qris { background: rgba(233,30,99,0.15); color: #e91e63; }
     .pmc-icon.bca { background: rgba(0,61,121,0.15); color: #4a90d9; }
     .pmc-info { flex: 1; }
     .pmc-info .pmc-name { font-size: 0.88rem; font-weight: 600; }
     .pmc-info .pmc-desc { font-size: 0.7rem; color: var(--muted); margin-top: 0.1rem; }
-    .pmc-check {
-      width: 22px; height: 22px; border-radius: 50%;
-      border: 2px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.65rem; color: transparent;
-      transition: all var(--transition); flex-shrink: 0;
-    }
+    .pmc-check { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.65rem; color: transparent; transition: all var(--transition); flex-shrink: 0; }
     .pay-method-card.selected .pmc-check { border-color: var(--accent); background: var(--accent); color: #0a0a0f; }
     .pay-detail { text-align: center; padding: 0.5rem 0; }
-    .pay-detail-icon {
-      width: 56px; height: 56px; border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.4rem; margin: 0 auto 0.85rem;
-    }
+    .pay-detail-icon { width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin: 0 auto 0.85rem; }
     .pay-detail-icon.dana { background: rgba(16,142,233,0.15); color: #108ee9; }
     .pay-detail-icon.qris { background: rgba(233,30,99,0.15); color: #e91e63; }
     .pay-detail-icon.bca { background: rgba(0,61,121,0.15); color: #4a90d9; }
     .pay-detail h4 { font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem; }
     .pay-detail .pd-subtitle { font-size: 0.78rem; color: var(--muted); margin-bottom: 1rem; }
-    .pd-account-box {
-      background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-      border-radius: var(--radius-sm); padding: 1rem;
-      margin-bottom: 1rem; cursor: pointer; transition: all var(--transition);
-    }
+    .pd-account-box { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1rem; cursor: pointer; transition: all var(--transition); }
     .pd-account-box:hover { border-color: var(--border-hover); }
     .pd-account-box:active { transform: scale(0.98); }
     .pd-account-label { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.35rem; }
@@ -486,139 +494,42 @@
     .pd-qr-box { margin-bottom: 1rem; }
     .pd-qr-box img { width: 200px; height: 200px; border-radius: var(--radius-sm); border: 1px solid var(--border); display: block; margin: 0 auto; object-fit: contain; background: white; }
     .pd-qr-hint { font-size: 0.72rem; color: var(--muted); margin-top: 0.5rem; }
-    .pd-total-box {
-      background: var(--accent-dim); border: 1px solid rgba(255,221,87,0.2);
-      border-radius: var(--radius-sm); padding: 0.75rem 1rem;
-      margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;
-    }
+    .pd-total-box { background: var(--accent-dim); border: 1px solid rgba(255,221,87,0.2); border-radius: var(--radius-sm); padding: 0.75rem 1rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; }
     .pd-total-label { font-size: 0.82rem; color: var(--muted); }
     .pd-total-val { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--accent); }
-    .btn-back {
-      width: 100%; padding: 0.6rem; border-radius: var(--radius-sm);
-      background: rgba(255,255,255,0.05); color: var(--fg-dim);
-      border: 1px solid var(--border); font-family: var(--font-body);
-      font-size: 0.82rem; font-weight: 500; cursor: pointer;
-      transition: all var(--transition); margin-bottom: 0.5rem;
-      display: flex; align-items: center; justify-content: center; gap: 0.4rem;
-    }
+    .btn-back { width: 100%; padding: 0.6rem; border-radius: var(--radius-sm); background: rgba(255,255,255,0.05); color: var(--fg-dim); border: 1px solid var(--border); font-family: var(--font-body); font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: all var(--transition); margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center; gap: 0.4rem; }
     .btn-back:hover { background: rgba(255,255,255,0.1); color: var(--fg); }
-    .btn-paid {
-      width: 100%; padding: 0.75rem; border-radius: var(--radius-sm);
-      background: linear-gradient(135deg, #22c55e, #16a34a);
-      color: #fff; border: none;
-      font-family: var(--font-body); font-size: 0.88rem; font-weight: 600;
-      cursor: pointer; transition: all var(--transition);
-      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-    }
+    .btn-paid { width: 100%; padding: 0.75rem; border-radius: var(--radius-sm); background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; border: none; font-family: var(--font-body); font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all var(--transition); display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
     .btn-paid:hover:not(:disabled) { box-shadow: 0 4px 20px rgba(34,197,94,0.35); transform: translateY(-1px); }
     .btn-paid:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; transform: none; }
-    .pd-warning { font-size: 0.7rem; color: var(--muted); text-align: center; margin-top: 0.75rem; line-height: 1.5; padding: 0.5rem; background: rgba(255,255,255,0.02); border-radius: 6px; }
     .order-success { text-align: center; padding: 1.5rem 0; animation: fadeInUp 0.4s ease; }
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-    .success-icon {
-      width: 64px; height: 64px; border-radius: 50%;
-      background: rgba(34,197,94,0.15); border: 2px solid rgba(34,197,94,0.3);
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 1rem; font-size: 1.6rem; color: #4ade80;
-    }
+    .success-icon { width: 64px; height: 64px; border-radius: 50%; background: rgba(34,197,94,0.15); border: 2px solid rgba(34,197,94,0.3); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.6rem; color: #4ade80; }
     .order-success h3 { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
     .order-success .os-label { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.25rem; }
-    .order-success .os-id {
-      font-family: 'Space Grotesk', monospace; font-size: 1.3rem; font-weight: 700;
-      color: var(--accent); background: var(--accent-dim);
-      display: inline-block; padding: 0.4rem 1rem; border-radius: var(--radius-sm);
-      margin-bottom: 1rem; cursor: pointer; transition: all var(--transition);
-      border: 1px solid rgba(255,221,87,0.2); letter-spacing: 1px;
-    }
+    .order-success .os-id { font-family: 'Space Grotesk', monospace; font-size: 1.3rem; font-weight: 700; color: var(--accent); background: var(--accent-dim); display: inline-block; padding: 0.4rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1rem; cursor: pointer; transition: all var(--transition); border: 1px solid rgba(255,221,87,0.2); letter-spacing: 1px; }
     .order-success .os-id:hover { background: rgba(255,221,87,0.25); }
     .order-success .os-total { font-size: 0.92rem; color: var(--fg-dim); margin-bottom: 0.25rem; }
     .order-success .os-total strong { color: var(--accent); font-family: var(--font-display); }
     .order-success .os-pay-method { font-size: 0.78rem; color: var(--fg-dim); margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: center; gap: 0.4rem; }
-    .order-success .os-note {
-      font-size: 0.78rem; color: var(--muted);
-      background: rgba(255,255,255,0.02); border: 1px solid var(--border);
-      border-radius: var(--radius-sm); padding: 0.6rem 0.85rem;
-      margin-bottom: 1rem; line-height: 1.5; text-align: left;
-    }
+    .order-success .os-note { font-size: 0.78rem; color: var(--muted); background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.6rem 0.85rem; margin-bottom: 1rem; line-height: 1.5; text-align: left; }
     .os-actions { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem; }
-    .btn-wa-proof {
-      width: 100%; padding: 0.65rem; border-radius: var(--radius-sm);
-      background: #25D366; color: #fff; border: none;
-      font-family: var(--font-body); font-size: 0.84rem; font-weight: 600;
-      cursor: pointer; transition: all var(--transition);
-      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-      text-decoration: none;
-    }
+    .btn-wa-proof { width: 100%; padding: 0.65rem; border-radius: var(--radius-sm); background: #25D366; color: #fff; border: none; font-family: var(--font-body); font-size: 0.84rem; font-weight: 600; cursor: pointer; transition: all var(--transition); display: flex; align-items: center; justify-content: center; gap: 0.5rem; text-decoration: none; }
     .btn-wa-proof:hover { background: #1ebe57; box-shadow: 0 4px 16px rgba(37,211,102,0.3); }
-    .btn-close-modal {
-      width: 100%; padding: 0.6rem; border-radius: var(--radius-sm);
-      background: rgba(255,255,255,0.05); color: var(--fg-dim);
-      border: 1px solid var(--border); font-family: var(--font-body);
-      font-size: 0.82rem; font-weight: 500; cursor: pointer;
-      transition: all var(--transition);
-    }
+    .btn-close-modal { width: 100%; padding: 0.6rem; border-radius: var(--radius-sm); background: rgba(255,255,255,0.05); color: var(--fg-dim); border: 1px solid var(--border); font-family: var(--font-body); font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: all var(--transition); }
     .btn-close-modal:hover { background: rgba(255,255,255,0.1); color: var(--fg); }
+
+    /* Sections Bawah */
     .orders-wrapper { max-width: 1100px; margin: 0 auto; }
-    .orders-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 0.75rem;
-    }
-    .order-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 0.65rem 0.75rem;
-      display: flex; flex-direction: column;
-      gap: 0.2rem;
-      transition: all var(--transition);
-      animation: fadeInUp 0.4s ease both;
-    }
+    .orders-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; }
+    .order-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.65rem 0.75rem; display: flex; flex-direction: column; gap: 0.2rem; transition: all var(--transition); animation: fadeInUp 0.4s ease both; }
     .order-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
-    .order-card .oc-id {
-      font-size: 0.6rem;
-      color: var(--muted);
-      font-family: 'Space Grotesk', monospace;
-      letter-spacing: 0.3px;
-    }
-    .order-card .oc-name {
-      font-size: 0.7rem;
-      font-weight: 600;
-      line-height: 1.3;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-    .order-card .oc-qty {
-      font-size: 0.65rem;
-      color: var(--fg-dim);
-    }
-    .order-card .oc-total {
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: var(--accent);
-      font-family: var(--font-display);
-    }
-    .order-card .oc-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      font-size: 0.6rem;
-      font-weight: 600;
-      padding: 0.1rem 0.4rem;
-      border-radius: 50px;
-      width: fit-content;
-      margin-top: 0.1rem;
-    }
-    .order-card .oc-status::before {
-      content: '';
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: currentColor;
-      flex-shrink: 0;
-    }
+    .order-card .oc-id { font-size: 0.6rem; color: var(--muted); font-family: 'Space Grotesk', monospace; letter-spacing: 0.3px; }
+    .order-card .oc-name { font-size: 0.7rem; font-weight: 600; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .order-card .oc-qty { font-size: 0.65rem; color: var(--fg-dim); }
+    .order-card .oc-total { font-size: 0.78rem; font-weight: 700; color: var(--accent); font-family: var(--font-display); }
+    .order-card .oc-status { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.6rem; font-weight: 600; padding: 0.1rem 0.4rem; border-radius: 50px; width: fit-content; margin-top: 0.1rem; }
+    .order-card .oc-status::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
     .order-card .oc-status.pending { background: rgba(255,221,87,0.12); color: #FFDD57; }
     .order-card .oc-status.pending::before { animation: pulse 2s infinite; }
     .order-card .oc-status.paid { background: rgba(96,165,250,0.12); color: #60a5fa; }
@@ -626,213 +537,84 @@
     .order-card .oc-status.processing::before { animation: pulse 1.5s infinite; }
     .order-card .oc-status.completed { background: rgba(74,222,128,0.12); color: #4ade80; }
     .order-card .oc-status.cancelled { background: rgba(248,113,113,0.12); color: #f87171; }
-    .order-card .oc-time {
-      font-size: 0.55rem;
-      color: rgba(255,255,255,0.18);
-      margin-top: auto;
-      padding-top: 0.15rem;
-    }
-    .orders-empty {
-      text-align: center;
-      padding: 2rem 1rem;
-      color: var(--muted);
-      font-size: 0.85rem;
-      grid-column: 1/-1;
-    }
-    .orders-empty i {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-      display: block;
-      opacity: 0.4;
-    }
-    .orders-pagination {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-top: 1rem;
-    }
-    .orders-pagination .btn-order {
-      padding: 0.3rem 0.9rem;
-      font-size: 0.75rem;
-    }
-    .orders-pagination .btn-order:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-      transform: none !important;
-    }
-    .orders-pagination .page-info {
-      font-size: 0.8rem;
-      color: var(--muted);
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
+    .order-card .oc-time { font-size: 0.55rem; color: rgba(255,255,255,0.18); margin-top: auto; padding-top: 0.15rem; }
+    .orders-empty { text-align: center; padding: 2rem 1rem; color: var(--muted); font-size: 0.85rem; grid-column: 1/-1; }
+    .orders-empty i { font-size: 2rem; margin-bottom: 0.5rem; display: block; opacity: 0.4; }
+    .orders-pagination { display: flex; justify-content: center; align-items: center; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; }
+    .orders-pagination .btn-order { padding: 0.3rem 0.9rem; font-size: 0.75rem; }
+    .orders-pagination .btn-order:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+    .orders-pagination .page-info { font-size: 0.8rem; color: var(--muted); }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+    
     .status-wrap { max-width: 500px; margin: 0 auto; }
     .status-form { display: flex; gap: 0.75rem; margin-bottom: 1rem; }
-    .status-form input {
-      flex: 1; padding: 0.65rem 1rem;
-      background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-      border-radius: var(--radius-sm); color: var(--fg);
-      font-family: var(--font-body); font-size: 0.88rem;
-      outline: none; transition: border-color var(--transition);
-    }
+    .status-form input { flex: 1; padding: 0.65rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--fg); font-family: var(--font-body); font-size: 0.88rem; outline: none; transition: border-color var(--transition); }
     .status-form input:focus { border-color: var(--accent); }
-    .status-result {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 1.5rem;
-      display: none;
-    }
+    .status-result { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; display: none; }
     .status-result.show { display: block; animation: fadeInUp 0.4s ease; }
     .sr-row { display: flex; justify-content: space-between; padding: 0.45rem 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; align-items: center; }
     .sr-row:last-child { border-bottom: none; }
     .sr-label { color: var(--muted); }
     .sr-val { font-weight: 600; }
     .sr-val.error { color: #ef4444; }
+    
     .gb-wrap { max-width: 700px; margin: 0 auto; }
-    .gb {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 1.75rem 1.5rem;
-      backdrop-filter: blur(8px);
-    }
+    .gb { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem 1.5rem; backdrop-filter: blur(8px); }
     .gb-hdr { text-align: center; margin-bottom: 1.25rem; }
     .gb-hdr h2 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; margin-bottom: 0.15rem; }
     .gb-hdr p { font-size: 0.78rem; color: var(--muted); }
     .gb label { display: block; font-size: 0.75rem; font-weight: 500; color: var(--muted); margin-bottom: 0.2rem; }
-    .gb input, .gb textarea {
-      width: 100%; padding: 0.6rem 0.9rem;
-      background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-      border-radius: var(--radius-sm); color: var(--fg);
-      font-family: var(--font-body); font-size: 0.85rem;
-      outline: none; transition: border-color var(--transition);
-      margin-bottom: 0.8rem;
-    }
+    .gb input, .gb textarea { width: 100%; padding: 0.6rem 0.9rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--fg); font-family: var(--font-body); font-size: 0.85rem; outline: none; transition: border-color var(--transition); margin-bottom: 0.8rem; }
     .gb input:focus, .gb textarea:focus { border-color: var(--accent); }
     .gb textarea { resize: vertical; min-height: 70px; }
-    .gb-submit {
-      padding: 0.6rem 1.4rem; background: var(--accent); color: #0a0a0f;
-      border: none; border-radius: var(--radius-sm); font-weight: 600;
-      font-family: var(--font-body); font-size: 0.82rem;
-      cursor: pointer; transition: all var(--transition);
-      display: inline-flex; align-items: center; gap: 0.4rem;
-    }
+    .gb-submit { padding: 0.6rem 1.4rem; background: var(--accent); color: #0a0a0f; border: none; border-radius: var(--radius-sm); font-weight: 600; font-family: var(--font-body); font-size: 0.82rem; cursor: pointer; transition: all var(--transition); display: inline-flex; align-items: center; gap: 0.4rem; }
     .gb-submit:hover { box-shadow: 0 4px 20px rgba(255,221,87,0.3); transform: translateY(-1px); }
     .gb-submit:active { transform: scale(0.97); }
     .gb-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
     .gb-msgs { margin-top: 1.25rem; max-height: 380px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
     .gb-msgs::-webkit-scrollbar { width: 3px; }
     .gb-msgs::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-    .gb-msg {
-      padding: 0.75rem 0.9rem; background: rgba(255,255,255,0.015);
-      border: 1px solid var(--border); border-radius: var(--radius-sm);
-      margin-bottom: 0.6rem; transition: border-color var(--transition);
-    }
+    .gb-msg { padding: 0.75rem 0.9rem; background: rgba(255,255,255,0.015); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 0.6rem; transition: border-color var(--transition); }
     .gb-msg:hover { border-color: var(--border-hover); }
     .gb-msg strong { display: block; font-size: 0.82rem; margin-bottom: 0.1rem; color: var(--fg); }
     .gb-msg p { font-size: 0.8rem; color: var(--fg-dim); line-height: 1.5; }
     .gb-msg small { font-size: 0.65rem; color: rgba(255,255,255,0.2); margin-top: 0.2rem; display: block; }
-    .social-row {
-      display: flex; justify-content: center; gap: 0.8rem; padding: 1.5rem 1rem;
-    }
-    .social-row a {
-      width: 42px; height: 42px; border-radius: var(--radius-sm);
-      background: var(--bg-card); border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--muted); font-size: 0.95rem;
-      transition: all var(--transition);
-    }
-    .social-row a:hover {
-      color: var(--accent); border-color: var(--accent);
-      background: var(--accent-dim); transform: translateY(-3px);
-    }
-    .footer {
-      padding: 3rem 1.5rem 1.5rem;
-      border-top: 1px solid var(--border);
-      margin-top: 1rem;
-    }
-    .footer-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 2rem; max-width: 1000px; margin: 0 auto 2rem;
-      text-align: left;
-    }
-    .footer-grid h4 {
-      font-family: var(--font-display);
-      font-size: 0.85rem; color: var(--fg); margin-bottom: 0.8rem;
-      letter-spacing: -0.2px;
-    }
-    .footer-grid p, .footer-grid a {
-      font-size: 0.8rem; color: var(--muted); line-height: 1.8;
-    }
+    
+    .social-row { display: flex; justify-content: center; gap: 0.8rem; padding: 1.5rem 1rem; }
+    .social-row a { width: 42px; height: 42px; border-radius: var(--radius-sm); background: var(--bg-card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 0.95rem; transition: all var(--transition); }
+    .social-row a:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); transform: translateY(-3px); }
+    .footer { padding: 3rem 1.5rem 1.5rem; border-top: 1px solid var(--border); margin-top: 1rem; }
+    .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 2rem; max-width: 1000px; margin: 0 auto 2rem; text-align: left; }
+    .footer-grid h4 { font-family: var(--font-display); font-size: 0.85rem; color: var(--fg); margin-bottom: 0.8rem; letter-spacing: -0.2px; }
+    .footer-grid p, .footer-grid a { font-size: 0.8rem; color: var(--muted); line-height: 1.8; }
     .footer-grid a { display: block; text-decoration: none; transition: color 0.2s; }
     .footer-grid a:hover { color: var(--accent); }
     .footer-grid .brand-footer { font-weight: 600; color: var(--accent); }
-    .footer-bottom {
-      max-width: 1000px; margin: 0 auto;
-      border-top: 1px solid var(--border); padding-top: 1.5rem;
-      text-align: center; font-size: 0.7rem; color: var(--muted);
-    }
-    .chat-float {
-      position: fixed; bottom: 1.25rem; right: 1.25rem; z-index: 99;
-      display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem;
-    }
-    .chat-float-label {
-      background: rgba(12,12,24,0.92); backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid var(--border); border-radius: var(--radius-sm);
-      padding: 0.4rem 0.9rem; font-size: 0.72rem; color: var(--muted);
-      white-space: nowrap; opacity: 0; transform: translateY(6px) scale(0.95);
-      transition: all 0.3s ease; pointer-events: none;
-    }
+    .footer-bottom { max-width: 1000px; margin: 0 auto; border-top: 1px solid var(--border); padding-top: 1.5rem; text-align: center; font-size: 0.7rem; color: var(--muted); }
+    
+    .chat-float { position: fixed; bottom: 1.25rem; right: 1.25rem; z-index: 99; display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem; }
+    .chat-float-label { background: rgba(12,12,24,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.4rem 0.9rem; font-size: 0.72rem; color: var(--muted); white-space: nowrap; opacity: 0; transform: translateY(6px) scale(0.95); transition: all 0.3s ease; pointer-events: none; }
     body.light-theme .chat-float-label { background: rgba(245,245,250,0.95); }
     .chat-float-label span { color: var(--accent); font-weight: 600; }
     .chat-float:hover .chat-float-label { opacity: 1; transform: translateY(0) scale(1); }
-    .chat-float-btn {
-      width: 54px; height: 54px; border-radius: 16px;
-      background: #25D366; border: none; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      color: #fff; font-size: 1.6rem;
-      box-shadow: 0 4px 24px rgba(37,211,102,0.35);
-      transition: all var(--transition); text-decoration: none;
-    }
+    .chat-float-btn { width: 54px; height: 54px; border-radius: 16px; background: #25D366; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.6rem; box-shadow: 0 4px 24px rgba(37,211,102,0.35); transition: all var(--transition); text-decoration: none; }
     .chat-float-btn:hover { transform: scale(1.08); box-shadow: 0 8px 36px rgba(37,211,102,0.45); }
     .chat-float-btn:active { transform: scale(0.94); }
-    .back-to-top {
-      position: fixed; bottom: 1.25rem; left: 1.25rem; z-index: 99;
-      width: 44px; height: 44px; border-radius: var(--radius-sm);
-      background: var(--bg-card); border: 1px solid var(--border);
-      color: var(--muted); font-size: 0.9rem; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; transform: translateY(10px); pointer-events: none;
-      transition: all 0.3s ease; backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
+    .back-to-top { position: fixed; bottom: 1.25rem; left: 1.25rem; z-index: 99; width: 44px; height: 44px; border-radius: var(--radius-sm); background: var(--bg-card); border: 1px solid var(--border); color: var(--muted); font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transform: translateY(10px); pointer-events: none; transition: all 0.3s ease; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
     .back-to-top.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
     .back-to-top:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); transform: translateY(-2px); }
     .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
+    
     @media (max-width: 768px) {
       .navbar { padding: 0.6rem 0.8rem; min-height: 54px; }
       .nav-brand { font-size: 1.05rem; }
       .menu-toggle { display: flex; }
-      .nav-links {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        flex-direction: column; background: rgba(7,7,13,0.97);
-        backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-        border-bottom: 1px solid var(--border);
-        padding: 0.6rem 0.8rem 0.8rem; gap: 0.1rem;
-        align-items: stretch; max-height: 80vh; overflow-y: auto;
-      }
+      .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; background: rgba(7,7,13,0.97); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid var(--border); padding: 0.6rem 0.8rem 0.8rem; gap: 0.1rem; align-items: stretch; max-height: 80vh; overflow-y: auto; }
       body.light-theme .nav-links { background: rgba(245,245,250,0.98); }
       .nav-links.active { display: flex; }
       .nav-links a { padding: 0.5rem 0.8rem; font-size: 0.9rem; border-radius: var(--radius-sm); width: 100%; }
-      .dropdown-menu {
-        position: static; transform: none; box-shadow: none;
-        background: rgba(255,255,255,0.03); border: none;
-        border-radius: var(--radius-sm); min-width: auto;
-        padding: 0.2rem 0 0.2rem 1rem; animation: none;
-      }
+      .dropdown-menu { position: static; transform: none; box-shadow: none; background: rgba(255,255,255,0.03); border: none; border-radius: var(--radius-sm); min-width: auto; padding: 0.2rem 0 0.2rem 1rem; animation: none; }
       .dropdown:hover .dropdown-menu { display: none; }
       .dropdown.active .dropdown-menu { display: block !important; }
       .dropdown-menu a { padding: 0.4rem 0.8rem; font-size: 0.82rem; white-space: normal; }
@@ -845,6 +627,14 @@
       .sec { padding: 1.5rem 0; padding-left: 0.8rem; padding-right: 0.8rem; }
       .sec-title { font-size: clamp(1.2rem, 4vw, 1.6rem); }
       .sec-desc { font-size: 0.82rem; }
+      
+      .platform-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+      .platform-card { padding: 0.8rem; flex-direction: column; text-align: center; gap: 0.5rem; }
+      .platform-icon { width: 36px; height: 36px; }
+      .platform-info h4 { font-size: 0.85rem; }
+      .platform-info p { font-size: 0.65rem; }
+      .platform-card i.fa-chevron-right { display: none; }
+      
       .srv-grid { grid-template-columns: 1fr; }
       .srv-card { min-height: 180px; }
       .orders-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
@@ -855,6 +645,7 @@
       .order-card .oc-total { font-size: 0.72rem; }
       .order-card .oc-status { font-size: 0.55rem; }
       .order-card .oc-time { font-size: 0.5rem; }
+      
       .modal-card { padding: 1.5rem; max-height: 94vh; border-radius: 18px 18px 0 0; margin-top: auto; animation: slideUp 0.32s cubic-bezier(0.32, 0.72, 0, 1); }
       @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
       .modal-overlay { padding: 0; align-items: flex-end; }
@@ -872,9 +663,7 @@
       .gb-msgs { max-height: 280px; }
     }
     @media (max-width: 480px) {
-      .srv-grid { grid-template-columns: 1fr; }
       .orders-grid { grid-template-columns: 1fr; gap: 0.4rem; }
-      .cat-btn { font-size: 0.65rem; padding: 0.25rem 0.65rem; }
       .footer-grid { grid-template-columns: 1fr; gap: 1rem; }
       .orders-pagination { gap: 0.5rem; }
       .orders-pagination .btn-order { font-size: 0.7rem; padding: 0.2rem 0.7rem; }
@@ -912,20 +701,22 @@
       <li><a href="https://wa.me/6289687163314" target="_blank">Contact</a></li>
     </ul>
   </nav>
+  
   <nav class="breadcrumb" aria-label="Breadcrumb">
     <a href="index.html">Home</a> <i class="fas fa-chevron-right" style="font-size:0.5rem;margin:0 0.4rem;color:var(--muted);"></i>
     <span>Layanan Sosial Media</span>
   </nav>
+  
   <header class="page-hero">
     <h1>Layanan <span class="highlight">Sosial Media</span></h1>
     <p>Boost engagement akun sosial media kamu. Followers, likes, views, dan lainnya. Proses cepat, harga bersaing.</p>
     <div class="hero-stats">
       <div class="stat-item">
-        <span class="stat-number">41+</span>
+        <span class="stat-number">400+</span>
         <span class="stat-label">Layanan Tersedia</span>
       </div>
       <div class="stat-item">
-        <span class="stat-number">7</span>
+        <span class="stat-number">14</span>
         <span class="stat-label">Platform Didukung</span>
       </div>
       <div class="stat-item">
@@ -934,13 +725,45 @@
       </div>
     </div>
   </header>
+  
   <section class="sec" aria-label="Daftar layanan sosial media">
-    <div class="search-wrap reveal"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Cari layanan... (contoh: instagram followers)"></div>
-    <div class="cat-tabs reveal" id="catTabs"></div>
-    <div class="srv-count reveal" id="srvCount"></div>
-    <div class="srv-grid" id="srvGrid"></div>
+    <!-- Search Bar (Global) -->
+    <div class="search-wrap reveal">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="Cari layanan... (contoh: instagram followers)">
+    </div>
+
+    <!-- VIEW 1: PLATFORM GRID -->
+    <div id="platformView" class="view-section">
+      <div class="sec-header reveal">
+        <div class="sec-label">Pilih Platform</div>
+      </div>
+      <div class="platform-grid reveal" id="platformGrid"></div>
+    </div>
+
+    <!-- VIEW 2: CATEGORY LIST -->
+    <div id="categoryView" class="view-section" style="display:none;">
+      <button class="btn-back-nav" onclick="showPlatforms()"><i class="fas fa-arrow-left"></i> Kembali ke Platform</button>
+      <div class="sec-header reveal" style="margin-bottom:1rem;">
+        <h2 class="sec-title" id="catTitle">Pilih Kategori</h2>
+      </div>
+      <div class="category-list reveal" id="categoryList"></div>
+    </div>
+
+    <!-- VIEW 3: SERVICE LIST -->
+    <div id="serviceView" class="view-section" style="display:none;">
+      <button class="btn-back-nav" onclick="backToCategories()" id="btnBackToCat"><i class="fas fa-arrow-left"></i> Kembali ke Kategori</button>
+      <div class="sec-header reveal" style="margin-bottom:1rem;">
+        <h2 class="sec-title" id="srvTitle">Daftar Layanan</h2>
+        <p class="sec-desc" id="srvCount"></p>
+      </div>
+      <div class="srv-grid reveal" id="srvGrid"></div>
+    </div>
   </section>
+  
   <div class="sec-divider"><hr></div>
+  
+  <!-- Pesanan Terbaru -->
   <section class="sec" aria-label="Pesanan terbaru">
     <div class="sec-header reveal">
       <div class="sec-label">Tracking</div>
@@ -957,7 +780,10 @@
       </div>
     </div>
   </section>
+  
   <div class="sec-divider"><hr></div>
+  
+  <!-- Cek Status -->
   <section class="sec" aria-label="Cek status pesanan">
     <div class="sec-header reveal">
       <div class="sec-label">Info</div>
@@ -972,7 +798,10 @@
       <div class="status-result" id="statusResult"></div>
     </div>
   </section>
+  
   <div class="sec-divider"><hr></div>
+  
+  <!-- Testimoni -->
   <section class="sec" aria-label="Komentar klien">
     <div class="gb-wrap reveal">
       <div class="gb">
@@ -992,6 +821,7 @@
       </div>
     </div>
   </section>
+  
   <section class="jastip-cta" aria-label="Layanan Jastip"><div class="jastip-cta-inner"><div class="jastip-cta-copy"><span class="jastip-cta-kicker"><i class="fas fa-box-open"></i> Layanan baru Akino Store</span><h2>Punya barang yang ingin cepat ditemukan?</h2><p>Pasang di Jastip dan biarkan pembeli melihatnya di satu tempat yang praktis.</p><div class="jastip-cta-points"><span><i class="fas fa-check-circle"></i> Tampil sampai laku</span><span><i class="fas fa-headset"></i> Dibantu admin</span></div></div><a class="jastip-cta-link" href="jastip.html">Pasang Barang <i class="fas fa-arrow-right"></i></a></div></section>
 
   <div class="social-row">
@@ -1000,6 +830,7 @@
     <a href="https://youtube.com/@akinolaset?si=e4NLLQrgN0R3BPi4" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
     <a href="https://wa.me/6289687163314" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
   </div>
+  
   <footer class="footer" aria-label="Footer">
     <div class="footer-grid">
       <div>
@@ -1032,20 +863,25 @@
     </div>
     <div class="footer-bottom">&copy; 2022 Akino Store. All Rights Reserved.</div>
   </footer>
+  
   <div class="chat-float">
     <div class="chat-float-label">Chat Admin: <span>089687163314</span></div>
     <a href="https://wa.me/6289687163314" target="_blank" rel="noopener" class="chat-float-btn" aria-label="Chat Admin WhatsApp"><i class="fab fa-whatsapp"></i></a>
   </div>
+  
   <button class="back-to-top" id="backToTop" aria-label="Kembali ke atas">
     <i class="fas fa-arrow-up"></i>
   </button>
+  
   <div class="modal-overlay" id="orderModal">
     <div class="modal-card">
       <button class="modal-close" onclick="closeModal()"><i class="fas fa-xmark"></i></button>
       <div id="modalContent"></div>
     </div>
   </div>
+
   <script>
+    // Navbar & Theme Logic
     window.addEventListener('scroll', function() {
       document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
     });
@@ -1103,9 +939,12 @@
     document.querySelectorAll('.reveal').forEach(function(el) {
       revObs.observe(el);
     });
+    
+    // Helpers
     function fRp(n){ return 'Rp '+Math.ceil(n).toLocaleString('id-ID'); }
     function esc(t){ var d=document.createElement('div'); d.textContent=t; return d.innerHTML; }
     function generateOrderId(){ var now=Date.now(), ts=String(now).slice(-4), rand=''; for(var i=0;i<4;i++) rand+=Math.floor(Math.random()*10); return 'AKINO-'+ts+rand; }
+    
     var STATUS_MAP = {
       pending:'Menunggu Verifikasi',
       paid:'Pembayaran Dikonfirmasi',
@@ -1113,54 +952,486 @@
       completed:'Selesai',
       cancelled:'Dibatalkan'
     };
+    
     var PAYMENT_METHODS = [
       { id:'dana', name:'Dana', icon:'fa-wallet', iconClass:'dana', desc:'Transfer via Dana', type:'account', number:'+6289621711769', holder:'Tesalonika Bagaskara' },
       { id:'qris', name:'QRIS', icon:'fa-qrcode', iconClass:'qris', desc:'Scan QRIS (All Payment)', type:'qris', qrisImage:'qris.png' },
       { id:'bca', name:'BCA', icon:'fa-building-columns', iconClass:'bca', desc:'Transfer via BCA', type:'account', number:'0601345985', holder:'Tesalonik Bagaskara' }
     ];
+
+    // === DATA SERVICES ===
     var SERVICES = [
-      {id:1,category:'instagram',name:'Instagram Followers [30 Day Refill] No Drop',min:100,max:4000000,rate:38600},
-      {id:2,category:'instagram',name:'Instagram Followers [Max 1M] Real People With Post Non Drop | Refill 60 Days',min:100,max:1000000,rate:22320},
-      {id:3,category:'instagram',name:'Instagram Followers Indonesia Drop Rate 5%-10% 15 Day Refill',min:100,max:200000,rate:55000},
-      {id:4,category:'instagram',name:'Instagram Followers Indonesia Less Drop/Awet Refill 1 Tahun',min:500,max:1000,rate:70000},
-      {id:5,category:'instagram',name:'Instagram Likes [Refill: No Drop]',min:100,max:500000,rate:7949},
-      {id:6,category:'instagram',name:'Instagram Likes [Refill: No] [Speed: 50K/Day] [Start Time: 0-1 Hour]',min:50,max:200000,rate:9530},
-      {id:7,category:'instagram',name:'Instagram Likes Indonesia Refill 30 Hari',min:20,max:20000,rate:48209},
-      {id:8,category:'instagram',name:'Instagram Video Views [All Link Work] Super Fast [Non Drop]',min:500,max:1000000,rate:5074},
-      {id:9,category:'instagram',name:'Instagram Story Impressions',min:200,max:1000000,rate:8037},
-      {id:10,category:'instagram',name:'Instagram Story View',min:100,max:1000000,rate:5100},
-      {id:11,category:'instagram',name:'Instagram Saves / Bookmark Instagram Post',min:10,max:100000,rate:5062},
-      {id:12,category:'instagram',name:'Instagram Repost [HQ Accounts Non Drop No Refill]',min:1,max:100000,rate:16304},
-      {id:13,category:'tiktok',name:'TikTok Followers No Drop Refill 30 Day',min:10,max:500000,rate:57190},
-      {id:14,category:'tiktok',name:'TikTok Followers Real Account Low Drop Refill 7 Day',min:10,max:100000,rate:37849},
-      {id:15,category:'tiktok',name:'TikTok Followers HQ+REAL Refill 30 Day Non Drop',min:10,max:1000000,rate:52133},
-      {id:16,category:'tiktok',name:'TikTok Likes HQ & Real Profiles Non Drop No Refill',min:10,max:50000000,rate:6364},
-      {id:17,category:'tiktok',name:'TikTok Likes Bot Accounts NO REFILL',min:10,max:5000000,rate:5394},
-      {id:18,category:'tiktok',name:'TikTok Views Unlimited [instant] 10m',min:100,max:10000000,rate:5430},
-      {id:19,category:'tiktok',name:'TikTok Views [Refill: 30D Start Time: 0-2 Hours]',min:100,max:2147483647,rate:6579},
-      {id:20,category:'tiktok',name:'TikTok Saves [Refill: 30 Days Start Time: 10 Min]',min:10,max:100000,rate:5370},
-      {id:21,category:'tiktok',name:'TikTok Saves [HQ No Drop]',min:100,max:2147483647,rate:5118},
-      {id:22,category:'tiktok',name:'TikTok Share [No Drop Start 0-15m Refill 30 Day]',min:100,max:20000000,rate:9290},
-      {id:23,category:'tiktok',name:'TikTok Saves [Refill: 30D Start Time: 0-1 Hr]',min:10,max:100000000,rate:5317},
-      {id:24,category:'tiktok',name:'TikTok Shares [Refill: No Start Time: Instant]',min:10,max:100000000,rate:5378},
-      {id:25,category:'youtube',name:'Youtube Subscribers [Non Drop 1 Month Tested 30 Days Refill]',min:50,max:10000,rate:511840},
-      {id:26,category:'youtube',name:'YouTube Sub [Real People Click NO REFILL Instant]',min:10,max:10000,rate:297242},
-      {id:27,category:'youtube',name:'YouTube Views [Non Drop Lifetime Instant Start]',min:50,max:175000,rate:24655},
-      {id:28,category:'youtube',name:'Youtube View [Refill 365 Days]',min:100,max:1000000,rate:18283},
-      {id:29,category:'youtube',name:'YouTube Likes [Refill 30 Days INSTANT]',min:10,max:30000,rate:11793},
-      {id:30,category:'facebook',name:'Facebook Follower [All Type Page/Profile] [Non Drop & Best]',min:100,max:30000,rate:12213},
-      {id:31,category:'facebook',name:'Facebook Profile/Page Followers [Max: 1M] [HQ Profile] [No Drop]',min:100,max:50000,rate:10902},
-      {id:32,category:'facebook',name:'Facebook Views [video/reels]',min:500,max:500000,rate:5605},
-      {id:33,category:'facebook',name:'Facebook Post Likes [Non Drop No Refill Instant]',min:10,max:500000,rate:9227},
-      {id:34,category:'twitter',name:'Twitter / X Followers [Refill: No Start Time: 0-3 Hrs]',min:10,max:1000000,rate:22650},
-      {id:35,category:'twitter',name:'Twitter / X Likes [Refill: No Start Time: 0-2 Hrs]',min:50,max:10000,rate:7847},
-      {id:36,category:'twitter',name:'Twitter / X Likes [Refill: 7D Start Time: 0-2 Hours]',min:10,max:2500,rate:11958},
-      {id:37,category:'telegram',name:'Telegram Members (Channel/Group) [Super instant No Refill]',min:1,max:100000,rate:5319},
-      {id:38,category:'telegram',name:'Telegram Post Views [Non Drop Start 0-1 Hour]',min:100,max:100000,rate:2000},
-      {id:39,category:'telegram',name:'Telegram Premium Reactions [ + Views]',min:50,max:10000,rate:9412},
-      {id:40,category:'shopee',name:'Shopee Followers Indonesia [Non Drop No Refill]',min:100,max:10000,rate:20000},
-      {id:41,category:'shopee',name:'Shopee Followers [Indonesia HQ Profiles Non Drop No Refill]',min:50,max:5000,rate:117894}
+      // INSTAGRAM
+      {id:1,category:'instagram',name:'Instagram Likes Indonesia [Max 20K] [Garansi Refill 30 Hari] [Drop 18.9%]',min:20,max:20000,rate:33183},
+      {id:2,category:'instagram',name:'Instagram Likes Indonesia [REAL] [No Refill] [Drop 38.98%]',min:20,max:500,rate:23985},
+      {id:3,category:'instagram',name:'Instagram Likes Indonesia [Pria] [Max 20K] [Garansi Refill 30 Hari] [Drop 27.7%]',min:20,max:20000,rate:33183},
+      {id:4,category:'instagram',name:'Instagram Likes Indonesia [Wanita] [Max 20K] [Garansi Refill 30 Hari] [Drop 21.12%]',min:20,max:20000,rate:33183},
+      {id:5,category:'instagram',name:'Instagram Likes Indonesia + Impression + Reach [Max 5K] [REAL] [Garansi 30 Hari] [Drop 10.98%]',min:50,max:8000,rate:42795},
+      {id:6,category:'instagram',name:'Instagram Followers Indonesia [HQ] Matikan The Flag For Review [Drop 23.49%]',min:10,max:100,rate:36680},
+      {id:7,category:'instagram',name:'Instagram Followers Indonesia [REAL] [Max 5K] [Garansi 30 Hari] Matikan The Flag For Review [Drop 18.21%]',min:50,max:8000,rate:97772},
+      {id:8,category:'instagram',name:'Instagram Followers Indonesia [HQ] [Max 20K] [Garansi Refill 30 Hari] [Drop 25.6%]',min:20,max:20000,rate:165059},
+      {id:9,category:'instagram',name:'Instagram Followers Indonesia [HQ] [Pria] [Max 20K] [Garansi 30 Hari] [Drop 26.7%]',min:20,max:20000,rate:165059},
+      {id:10,category:'instagram',name:'Instagram Followers Indonesia [HQ] [Wanita] [Max 20K] [Garansi Refill 30 Hari] [Drop 25.71%]',min:20,max:20000,rate:165059},
+      {id:11,category:'instagram',name:'Instagram Followers [HQ] [Max. 100K] [Tidak Bergaransi] [Matikan Flag For Review] [Drop 34.11%]',min:10,max:100000,rate:78003},
+      {id:12,category:'instagram',name:'Instagram Followers [HQ] [Max. 100K] [Garansi Refill 25 Hari] [Matikan Flag For Review]',min:10,max:100000,rate:119838},
+      {id:13,category:'instagram',name:'Instagram Followers [HQ] [Max 25K] [Tidak Bergaransi] [Matikan Flag For Review] [Drop 87.65%]',min:10,max:200000,rate:48641},
+      {id:14,category:'instagram',name:'Instagram Followers [HQ] [Max 50K] [Garansi Refill 30 Hari] [Matikan Flag For Review] [Drop 82.03%]',min:50,max:200000,rate:113405},
+      {id:15,category:'instagram',name:'Instagram Followers Arabic [HQ] [Garansi Refill 30 Hari]',min:20,max:100000,rate:221923},
+      {id:16,category:'instagram',name:'Instagram Followers Nigeria [Max 50K] [Garansi 30 Hari]',min:20,max:20000,rate:220150},
+      {id:17,category:'instagram',name:'Instagram Followers Prancis [Max 20K] [Garansi 30 Hari]',min:20,max:20000,rate:443623},
+      {id:18,category:'instagram',name:'Instagram Followers Spanyol [Max 100K] [Garansi 30 Hari]',min:20,max:100000,rate:444561},
+      {id:19,category:'instagram',name:'Instagram Followers Latin [Max 100K] [Garansi 30 Hari]',min:20,max:100000,rate:444561},
+      {id:20,category:'instagram',name:'Instagram Followers USA [Max 100K] [Garansi 30 Hari] [Drop 2.54%]',min:20,max:100000,rate:445322},
+      {id:21,category:'instagram',name:'Instagram Followers Italia [Max 25K] [Garansi 30 Hari]',min:20,max:25000,rate:445874},
+      {id:22,category:'instagram',name:'Instagram Followers Arab [Max 50K] [Garansi 30 Hari]',min:20,max:100000,rate:440268},
+      {id:23,category:'instagram',name:'Instagram Followers Brazil [Max 75K] [Garansi 30 Hari]',min:20,max:100000,rate:443845},
+      {id:24,category:'instagram',name:'Instagram Likes [HQ] [Max 500] [Tidak Ada Garansi] [Drop 0.83%]',min:50,max:500,rate:2877},
+      {id:25,category:'instagram',name:'Instagram Likes [LQ] [Tidak Bergaransi] [Drop 12.53%]',min:100,max:10000,rate:3270},
+      {id:26,category:'instagram',name:'Instagram Likes [LQ] [Garansi Refill 25 Hari] [Drop 6.89%]',min:50,max:100000,rate:8100},
+      {id:27,category:'instagram',name:'Instagram Likes [LQ] [Garansi Refill 30 Hari] [Drop 6.87%]',min:100,max:10000,rate:4817},
+      {id:28,category:'instagram',name:'Instagram Likes [HQ] [Tidak Bergaransi] [Drop 21.49%]',min:50,max:100000,rate:7338},
+      {id:29,category:'instagram',name:'Instagram Likes [HQ] [Garansi Refill 30 Hari] [Drop 10.38%]',min:10,max:100000,rate:7495},
+      {id:30,category:'instagram',name:'Instagram Likes [LQ] [Max 1M] [Tidak Bergaransi]',min:100,max:1000000,rate:9484},
+      {id:31,category:'instagram',name:'Instagram Likes [LQ] [Max 1M] [Garansi Refill 30 Hari] [Drop 34.87%]',min:50,max:1000000,rate:13535},
+      {id:32,category:'instagram',name:'Instagram Likes [HQ] [Max 1M] [Tidak Bergaransi] [Drop 20.78%]',min:100,max:1000000,rate:2951},
+      {id:33,category:'instagram',name:'Instagram Likes [LQ] [Max 100K] [No Refill] [Drop 22.85%]',min:10,max:100000,rate:20280},
+      {id:34,category:'instagram',name:'Instagram Likes [LQ] [Max 100K] [Garansi 30 Hari] [Drop 27.86%]',min:10,max:100000,rate:2586},
+      {id:35,category:'instagram',name:'Instagram Likes [HQ] [Max 100K] [Tidak Bergaransi] [Drop 22.45%]',min:100,max:100000,rate:1950},
+      {id:36,category:'instagram',name:'Instagram Likes [LQ] [Max 200K] [Tidak Bergaransi] [Drop 31.74%]',min:10,max:200000,rate:1428},
+      {id:37,category:'instagram',name:'Instagram Likes [HQ] [Max 100K] [Garansi Refill 30 Hari] [Drop 4.23%]',min:10,max:100000,rate:2031},
+      {id:38,category:'instagram',name:'Instagram Likes [HQ] [Max 100K] [Tidak Ada Garansi]',min:10,max:100000,rate:8265},
+      {id:39,category:'instagram',name:'Instagram Likes [LQ] [Max 200K] [Garansi 30 Hari] [Drop 28.9%]',min:50,max:200000,rate:3709},
+      {id:40,category:'instagram',name:'Instagram Likes On Komentar [LQ] [Max 1K] [Tidak Bergaransi] [Drop 1.4%]',min:20,max:1000,rate:27313},
+      {id:41,category:'instagram',name:'Instagram Likes On Komentar [LQ] [Max 5K] [Tidak Bergaransi] [Drop 37.5%]',min:20,max:5000,rate:30240},
+      {id:42,category:'instagram',name:'Instagram Likes On Komentar [LQ] [Max 50K] [Tidak Bergaransi] [Drop 19.1%]',min:20,max:50000,rate:32516},
+      {id:43,category:'instagram',name:'Instagram Likes Spanyol [Max 100K] [Garansi 30 Hari]',min:20,max:100000,rate:44385},
+      {id:44,category:'instagram',name:'Instagram Likes Nigeria [Max 100K] [Garansi 30 Hari]',min:20,max:100000,rate:43946},
+      {id:45,category:'instagram',name:'Instagram Likes Prancis [Max 20K] [Garansi 30 Hari]',min:20,max:20000,rate:44484},
+      {id:46,category:'instagram',name:'Instagram Likes Latin [Max 100K] [Garansi 30 Hari]',min:20,max:100000,rate:43405},
+      {id:47,category:'instagram',name:'Instagram Likes USA [Max 100K] [Garansi 30 Hari]',min:20,max:100000,rate:44484},
+      {id:48,category:'instagram',name:'Instagram Likes Italia [Max 10K] [Garansi 30 Hari]',min:20,max:10000,rate:44588},
+      {id:49,category:'instagram',name:'Instagram Likes Arab [Max 50K] [Garansi 30 Hari]',min:20,max:100000,rate:43946},
+      {id:50,category:'instagram',name:'Instagram Likes Brazil [Max 75K] [Garansi 30 Hari]',min:20,max:75000,rate:43405},
+      {id:51,category:'instagram',name:'Instagram Repost [HQ] [Tidak Bergaransi] [Drop 0%]',min:10,max:100000,rate:14775},
+      {id:52,category:'instagram',name:'Instagram Repost [HQ] [Maks 10K] [Tidak Bergaransi] [Drop 0%]',min:10,max:10000,rate:14300},
+      {id:53,category:'instagram',name:'Instagram Repost [Max 10M] [Tidak Bergaransi] [Drop 0%]',min:10,max:10000000,rate:9925},
+      {id:54,category:'instagram',name:'Instagram Video Views [All Link] [Cancel Button] [FAST] [Drop 0%]',min:100,max:2147483628,rate:58},
+      {id:55,category:'instagram',name:'Instagram Video Views [Max: Unlimited] [Drop 0%]',min:50,max:217545811,rate:68},
+      {id:56,category:'instagram',name:'Instagram Video Views [Max Unlimited] [All Link Type] [Drop 0%]',min:100,max:2147483647,rate:43},
+      {id:57,category:'instagram',name:'Instagram Video Views [Max: Unlimited] [All Type Link] [Drop 5.33%]',min:100,max:2147483647,rate:201},
+      {id:58,category:'instagram',name:'Instagram Video Reels Views + Reach + Impressions [Max 250K] [Tidak Bergaransi] [Drop 0%]',min:100,max:300000,rate:2030},
+      {id:59,category:'instagram',name:'Instagram Video Views [Max Unlimited] [Tidak Bergaransi] [Drop 3.6%]',min:100,max:2147483647,rate:24},
+      {id:60,category:'instagram',name:'Instagram Reach + Impressions',min:10,max:1000000,rate:1615},
+      {id:61,category:'instagram',name:'Instagram Reel Impressions + Profile Visits + Reach [Max: 100M]',min:100,max:5000000,rate:4645},
+      {id:62,category:'instagram',name:'Instagram Share [Max Unlimited] [Tidak Bergaransi]',min:10,max:217545811,rate:34},
+      {id:63,category:'instagram',name:'Instagram Share [Max 100K] [Tidak Bergaransi]',min:100,max:100000,rate:289},
+      {id:64,category:'instagram',name:'Instagram Saves [Max 200K] [Tidak Bergaransi]',min:10,max:100000000,rate:3698},
+      {id:65,category:'instagram',name:'Instagram Saves [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:1394},
+      {id:66,category:'instagram',name:'Instagram Shares [Max Unlimited] [Tidak Bergaransi]',min:100,max:100000,rate:21},
+      {id:67,category:'instagram',name:'Instagram Custom Komentar [HQ] [Max 10K] [Tidak Bergaransi]',min:10,max:20000,rate:18579},
+      {id:68,category:'instagram',name:'Instagram Random Komentar [HQ] [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:12533},
+      {id:69,category:'instagram',name:'Instagram Custom Komentar [Max 20K] [Tidak Bergaransi]',min:10,max:20000,rate:12535},
+      {id:70,category:'instagram',name:'Instagram Random Komentar [Max 20K] [Tidak Bergaransi]',min:10,max:20000,rate:12535},
+      {id:71,category:'instagram',name:'Instagram Likes On Komentar [HQ] [Max 1K] [Tidak Bergaransi]',min:20,max:1000,rate:27665},
+      {id:72,category:'instagram',name:'Instagram Likes On Komentar [HQ] [Max 100K] [Tidak Bergaransi]',min:20,max:100000,rate:32688},
+      {id:73,category:'instagram',name:'Instagram Story Views [HQ] [Max 200K] [Tidak Bergaransi]',min:10,max:20000,rate:23952},
+
+      // TIKTOK
+      {id:74,category:'tiktok',name:'TikTok Likes [HQ] [Max 1M] [Tidak Bergaransi] [Drop 18.9%]',min:10,max:1000000,rate:7976},
+      {id:75,category:'tiktok',name:'TikTok Likes [HQ] [Max 100K] [Garansi Refill 30 Hari] [Drop 57.06%]',min:10,max:100000,rate:19541},
+      {id:76,category:'tiktok',name:'TikTok Likes [HQ] [Max 100K] [Garansi Refill 30 Hari] (V2) [Drop 0%]',min:10,max:100000,rate:23088},
+      {id:77,category:'tiktok',name:'TikTok Likes [HQ] [Max 100K] [Tidak Bergaransi] [Drop 0%]',min:10,max:100000,rate:15555},
+      {id:78,category:'tiktok',name:'TikTok Likes [HQ] [Max 5M] [Tidak Bergaransi] [Drop 1.5%]',min:10,max:5000000,rate:55353},
+      {id:79,category:'tiktok',name:'TikTok Likes [HQ] [Max 5M] [Garansi Refill 25 Hari] [Drop 0.27%]',min:10,max:5000000,rate:88837},
+      {id:80,category:'tiktok',name:'TikTok Likes Indonesia [Max 10K] [Garansi Refill 30 Hari] [Drop 11.7%]',min:50,max:10000,rate:50193},
+      {id:81,category:'tiktok',name:'TikTok Followers Indonesia Real [Max 20K] [Drop 12.19%]',min:20,max:20000,rate:88675},
+      {id:82,category:'tiktok',name:'TikTok Followers Indonesia Real [Max 20K] [Garansi Refill 30 Hari] [Drop 2.01%]',min:20,max:20000,rate:125483},
+      {id:83,category:'tiktok',name:'TikTok Views Indonesia [Max 100K] [Garansi Refill 30 Hari] [Drop 0.76%]',min:100,max:100000,rate:2008},
+      {id:84,category:'tiktok',name:'TikTok Views Indonesia [Tidak Bergaransi] [Drop 0%]',min:100,max:10000,rate:1757},
+      {id:85,category:'tiktok',name:'TikTok Views Indonesia [Max 100K] [Tidak Bergaransi] [Drop 0%]',min:100,max:100000,rate:2259},
+      {id:86,category:'tiktok',name:'TikTok Views Indonesia [Max 100K] [Garansi Refill 30 Hari] (V2) [Drop 0%]',min:100,max:100000,rate:2509},
+      {id:87,category:'tiktok',name:'TikTok Followers [LQ] [Max 1M] [Tidak Bergaransi] [Drop 2.05%]',min:10,max:1000000,rate:26025},
+      {id:88,category:'tiktok',name:'TikTok Followers [LQ] [Max 1M] [Garansi Refill 25 Hari] [Drop 0.93%]',min:10,max:1000000,rate:34796},
+      {id:89,category:'tiktok',name:'TikTok Followers [HQ] [Tidak Bergaransi] [Drop 7.39%]',min:10,max:12000,rate:170547},
+      {id:90,category:'tiktok',name:'TikTok Followers [HQ] [Max 1,5K] [Tidak Bergaransi] [Drop 2.48%]',min:10,max:2000,rate:142046},
+      {id:91,category:'tiktok',name:'TikTok Followers [HQ] [Max 1,5K] [Garansi Refill 25 Hari]',min:10,max:2000,rate:193769},
+      {id:92,category:'tiktok',name:'TikTok Followers [HQ] [Max 20K] [Tidak Bergaransi]',min:10,max:20000,rate:191960},
+      {id:93,category:'tiktok',name:'TikTok Followers [HQ] [Max 20K] [Garansi Refill 30 Hari]',min:10,max:20000,rate:266195},
+      {id:94,category:'tiktok',name:'TikTok Followers [HQ] [Max 2K] [Tidak Bergaransi]',min:10,max:2000,rate:172098},
+      {id:95,category:'tiktok',name:'TikTok Followers [HQ] [Max 10K] [Garansi Refill 30 Hari] [Drop 7.03%]',min:10,max:10000,rate:227500},
+      {id:96,category:'tiktok',name:'TikTok PK Battle Points [Max: 100M]',min:100,max:1000000,rate:6986},
+      {id:97,category:'tiktok',name:'TikTok PK Battle Points [Max: Unlimited]',min:100,max:1000000,rate:7147},
+      {id:98,category:'tiktok',name:'TikTok Save [Max: 100M] [R30] Instant Start',min:10,max:100000000,rate:1813},
+      {id:99,category:'tiktok',name:'TikTok Saves [HQ] [Max 10M] [Tidak Bergaransi]',min:50,max:10000000,rate:155},
+      {id:100,category:'tiktok',name:'TikTok Save [HQ] [Max 10M] [Garansi Refill 25 Hari]',min:50,max:10000000,rate:173},
+      {id:101,category:'tiktok',name:'TikTok Shares [Max 1M] [Tidak Bergaransi]',min:10,max:1000000,rate:3098},
+      {id:102,category:'tiktok',name:'TikTok Shares [Max 200K] [Garansi Refill 25 Hari]',min:10,max:200000,rate:4730},
+      {id:103,category:'tiktok',name:'TikTok Watchtime Views [30 Sec Video] [Drop 0%]',min:500,max:1000000,rate:9331},
+      {id:104,category:'tiktok',name:'TikTok Watchtime Views [90 Sec Video] [Drop 0%]',min:1000,max:100000,rate:75572},
+      {id:105,category:'tiktok',name:'TikTok Watchtime Views [60 Sec Video] [Drop 0%]',min:500,max:100000,rate:9331},
+      {id:106,category:'tiktok',name:'TikTok Watchtime Views [150 Sec Video] [Drop 0%]',min:1000,max:100000,rate:100765},
+      {id:107,category:'tiktok',name:'TikTok Watchtime Views [180 Sec Video] [Drop 0%]',min:1000,max:100000,rate:113360},
+      {id:108,category:'tiktok',name:'TikTok Live Stream Views [15 Menit]',min:50,max:10000,rate:44414},
+      {id:109,category:'tiktok',name:'TikTok Live Stream Views [30 Menit]',min:50,max:100000,rate:88790},
+      {id:110,category:'tiktok',name:'TikTok Live Stream Views [45 Menit]',min:50,max:100000,rate:133202},
+      {id:111,category:'tiktok',name:'TikTok Live Stream Views [60 Menit]',min:50,max:100000,rate:177603},
+      {id:112,category:'tiktok',name:'TikTok Live Stream Views [120 Menit]',min:50,max:100000,rate:355205},
+      {id:113,category:'tiktok',name:'TikTok Live Likes [Max Unlimited] [Tidak Bergaransi]',min:50,max:217545811,rate:294},
+      {id:114,category:'tiktok',name:'TikTok Live Likes [Max Unlimited] [Tidak Bergaransi] (V2)',min:10,max:217545811,rate:325},
+
+      // YOUTUBE
+      {id:115,category:'youtube',name:'YouTube Komentar Indonesia [Custom] [Max 50] [Tidak Bergaransi]',min:5,max:50,rate:200773},
+      {id:116,category:'youtube',name:'YouTube Komentar Indonesia [Custom] [Pria] [Max 50] [Tidak Bergaransi]',min:5,max:50,rate:200773},
+      {id:117,category:'youtube',name:'YouTube Komentar Indonesia [Custom] [Wanita] [Max 50] [Tidak Bergaransi]',min:5,max:50,rate:200773},
+      {id:118,category:'youtube',name:'YouTube Subscriber [Garansi Refill 30 Hari] [Drop 77.38%]',min:50,max:10000,rate:513485},
+      {id:119,category:'youtube',name:'YouTube Subscribers [Max 5K] [Garansi Refill 30 Hari] [Drop 80.54%]',min:50,max:5000,rate:589387},
+      {id:120,category:'youtube',name:'YouTube Subscribers [Max 100K] [Garansi Refill 30 Hari]',min:20,max:100000,rate:1080645},
+      {id:121,category:'youtube',name:'YouTube Likes [Max 20K] [Garansi Refill 30 Hari] [Drop 2%]',min:10,max:100000,rate:23471},
+      {id:122,category:'youtube',name:'YouTube Likes [Max 10K] [Garansi Refill 30 Hari] [Drop 0%]',min:10,max:20000,rate:31109},
+      {id:123,category:'youtube',name:'YouTube Likes [Max 50K] [Garansi Refill 30 Hari] [Drop 1.52%]',min:10,max:50000,rate:25362},
+      {id:124,category:'youtube',name:'YouTube Likes [Max 10K] [Tidak Bergaransi]',min:10,max:100000,rate:45875},
+      {id:125,category:'youtube',name:'YouTube Likes [Max 10K] [Garansi Refill 30 Hari] (V2)',min:10,max:100000,rate:47509},
+      {id:126,category:'youtube',name:'YouTube Likes [Max 50K] [Garansi Refill 30 Hari] (V2)',min:20,max:50000,rate:20901},
+      {id:127,category:'youtube',name:'YouTube Community Post Likes [R30]',min:10,max:100000,rate:247747},
+      {id:128,category:'youtube',name:'YouTube Community Post Likes [R45]',min:10,max:100000,rate:260481},
+      {id:129,category:'youtube',name:'YouTube Community Post Likes [R60]',min:10,max:100000,rate:272794},
+      {id:130,category:'youtube',name:'YouTube Custom Komentar Live Stream [1-5 Chats per Menit]',min:5,max:100000,rate:76511},
+      {id:131,category:'youtube',name:'YouTube Custom Komentar Live Stream [5-10 Chats per Menit]',min:5,max:100000,rate:76511},
+      {id:132,category:'youtube',name:'YouTube Custom Komentar Live Stream [10-20 Chats per Menit]',min:5,max:100000,rate:76511},
+      {id:133,category:'youtube',name:'YouTube Custom Komentar Live Stream [20-30 Chats per Menit]',min:5,max:100000,rate:76511},
+      {id:134,category:'youtube',name:'YouTube Custom Komentar Live Stream [30-40 Chats per Menit]',min:5,max:100000,rate:76526},
+      {id:135,category:'youtube',name:'YouTube Custom Komentar Live Stream [40-50 Chats per Menit]',min:5,max:100000,rate:76526},
+      {id:136,category:'youtube',name:'YouTube Native Ads Views [500K Minimum] [R30]',min:500000,max:100000000,rate:18250},
+      {id:137,category:'youtube',name:'YouTube Native Ads Views [200K Minimum] [R30]',min:200000,max:100000000,rate:19264},
+      {id:138,category:'youtube',name:'YouTube Native Ads Views [40K Minimum] [R30]',min:40000,max:100000000,rate:20256},
+      {id:139,category:'youtube',name:'YouTube Native Ads Views [10K Minimum] [R30]',min:10000,max:100000000,rate:21818},
+      {id:140,category:'youtube',name:'YouTube Native Ads Views [5K Minimum] [R30]',min:5000,max:100000000,rate:23515},
+      {id:141,category:'youtube',name:'YouTube Native Ads Views [3K Minimum] [R30]',min:3000,max:100000000,rate:32134},
+      {id:142,category:'youtube',name:'YouTube Native Ads Views [1K Minimum] [R30]',min:1000,max:1000000,rate:27350},
+      {id:143,category:'youtube',name:'YouTube Native Ads Views [Min 200K] [R90] [S2]',min:200000,max:100000000,rate:17372},
+      {id:144,category:'youtube',name:'YouTube Native Ads Views [Min 1M] [R90] [S2]',min:1000000,max:100000000,rate:16289},
+      {id:145,category:'youtube',name:'YouTube Native Ads Views [Min 500K] [R90] [S2]',min:500000,max:100000000,rate:16646},
+      {id:146,category:'youtube',name:'YouTube Native Ads Views [Min 100K] [R90] [S2]',min:100000,max:100000000,rate:17739},
+      {id:147,category:'youtube',name:'YouTube Native Ads Views [Min 30K] [R90] [S2]',min:30000,max:100000000,rate:18458},
+      {id:148,category:'youtube',name:'YouTube Native Ads Views [Min 20K] [R90] [S2]',min:20000,max:100000000,rate:18818},
+      {id:149,category:'youtube',name:'YouTube Native Ads Views [Min 5K] [R90] [S2]',min:5000,max:100000000,rate:19907},
+      {id:150,category:'youtube',name:'YouTube Native Ads Views [Min 3K] [R90] [S2]',min:3000,max:100000000,rate:20993},
+      {id:151,category:'youtube',name:'YouTube Native Ads Views [Min 1K] [R90] [S2]',min:1000,max:1000000,rate:21712},
+      {id:152,category:'youtube',name:'YouTube Native Ads Views [Min 500] [R90] [S2]',min:500,max:1000000,rate:22801},
+      {id:153,category:'youtube',name:'YouTube Native Views [Start 0-12 Jam] [Garansi Refill 30 Hari] [Drop 0.49%]',min:50,max:1000000,rate:27094},
+      {id:154,category:'youtube',name:'YouTube Native Views [Start 30-45 Menit] [Garansi Refill 30 Hari] [Drop 0%]',min:2000,max:10000000,rate:28808},
+      {id:155,category:'youtube',name:'YouTube Native Views [Start 30-45 Menit] [Garansi Refill 30 Hari] (V2) [Drop 1.85%]',min:100,max:500000000,rate:35418},
+      {id:156,category:'youtube',name:'YouTube Views Native Ads [USA] [Min 5K] [R30]',min:5000,max:10000000,rate:216716},
+      {id:157,category:'youtube',name:'YouTube Views [Google Adwords] [Discovery Ads] [Video Under 5 Minutes] [Min 20K] [R60]',min:20000,max:100000000,rate:75042},
+      {id:158,category:'youtube',name:'YouTube Views [Google Adwords] [Discovery Ads] [Video Under 10 Minutes] [Min 20K] [R60]',min:20000,max:100000000,rate:75042},
+      {id:159,category:'youtube',name:'YouTube Views [Google Adwords] [Discovery Ads] [Video Unlimited Length] [Min 20K] [R60]',min:20000,max:100000000,rate:94338},
+      {id:160,category:'youtube',name:'YouTube Views [Google Adwords] [Display Ads Global] [Video Under 5 Minutes] [Min 10K] [R60]',min:10000,max:10000000,rate:95327},
+      {id:161,category:'youtube',name:'YouTube Views [Google Adwords] [Display Ads Global] [Video Under 10 Minutes] [Min 10K] [R60]',min:10000,max:10000000,rate:104832},
+      {id:162,category:'youtube',name:'YouTube Views [Google Adwords] [Display Ads Global] [Unlimited Length] [Min 10K] [R60]',min:10000,max:10000000,rate:142792},
+      {id:163,category:'youtube',name:'YouTube Adwords Views [WorldWide Skip Ads] [Minimum 1M] [R45]',min:1000000,max:10000000,rate:9329},
+      {id:164,category:'youtube',name:'YouTube Adwords Views [WorldWide Skip Ads] [Minimum 500K] [R45]',min:500000,max:10000000,rate:9329},
+      {id:165,category:'youtube',name:'YouTube Adwords Views [WorldWide Skip Ads] [Minimum 200K] [R45]',min:200000,max:10000000,rate:9828},
+      {id:166,category:'youtube',name:'YouTube Adwords Views [WorldWide Skip Ads] [Minimum 100K] [R45]',min:100000,max:1000000,rate:18412},
+      {id:167,category:'youtube',name:'YouTube Adwords Views [WorldWide Skip Ads] [Minimum 50K] [R45]',min:50000,max:10000000,rate:17184},
+      {id:168,category:'youtube',name:'YouTube Live Stream [Maks 1K] [15 Menit]',min:50,max:1000,rate:1820},
+      {id:169,category:'youtube',name:'YouTube Live Stream [Maks 1K] [30 Menit]',min:50,max:1000,rate:3665},
+      {id:170,category:'youtube',name:'YouTube Live Stream [Maks 1K] [60 Menit]',min:50,max:1000,rate:7325},
+      {id:171,category:'youtube',name:'YouTube Live Stream [Maks 1K] [90 Menit]',min:50,max:1000,rate:10992},
+      {id:172,category:'youtube',name:'YouTube Live Stream [Maks 1K] [2 Jam]',min:50,max:1000,rate:14679},
+      {id:173,category:'youtube',name:'YouTube Live Stream [Maks 1K] [3 Jam]',min:50,max:1000,rate:21981},
+      {id:174,category:'youtube',name:'YouTube Live Stream [Maks 1K] [6 Jam]',min:50,max:1000,rate:44770},
+      {id:175,category:'youtube',name:'YouTube Live Stream [Maks 1K] [12 Jam]',min:50,max:1000,rate:89542},
+      {id:176,category:'youtube',name:'YouTube Live Stream [Maks 1K] [24 Jam]',min:50,max:1000,rate:179069},
+      {id:177,category:'youtube',name:'YouTube Views [30-60 Sec Retention] [Source: YouTube Search+Browse Features+Suggested] [R30] [Drop 0%]',min:100,max:10000000,rate:37794},
+      {id:178,category:'youtube',name:'YouTube Views [3-5 Min Retention] [Source: YouTube Search+Browse Features+Suggested] [R30] [Drop 0%]',min:1000,max:1000000,rate:70850},
+      {id:179,category:'youtube',name:'YouTube Views [2-3 Min Retention] [Source: YouTube Search+Browse Features+Suggested] [R30] [Drop 0%]',min:1000,max:1000000,rate:71565},
+      {id:180,category:'youtube',name:'YouTube Views [3-5 Min Retention] [Source: YouTube Search+Browse Features+Suggested] [R30] (V2) [Drop 0%]',min:1000,max:1000000,rate:75144},
+      {id:181,category:'youtube',name:'YouTube Views [3-5 Min Retention] [Source: YouTube Search+Browse Features+Suggested] [R30] (V3)',min:1000,max:1000000,rate:76828},
+      {id:182,category:'youtube',name:'YouTube Adwords Views [Min 1M] [R90]',min:1000000,max:100000000,rate:6175},
+      {id:183,category:'youtube',name:'YouTube Adwords Views [Minimum 500K] [Start Time 24-48H]',min:500000,max:10000000,rate:10712},
+      {id:184,category:'youtube',name:'YouTube Adwords Views [Minimum 500K] [Seed: 1M/D] [Start Time 1-2H]',min:500000,max:10000000,rate:12869},
+      {id:185,category:'youtube',name:'YouTube Adwords Views [Min 1M] [R90] (V2)',min:1000000,max:100000000,rate:21354},
+      {id:186,category:'youtube',name:'YouTube Views [Niche-Related] [Music] [R30] [Topic Related]',min:100,max:1000000,rate:90614},
+      {id:187,category:'youtube',name:'YouTube Views [Niche-Related] [Entertainment] [R30] [Topic Related]',min:40,max:1000000,rate:135934},
+      {id:188,category:'youtube',name:'YouTube Views [Niche-Related] [Gaming] [R30] [Topic Related]',min:40,max:1000000,rate:135934},
+      {id:189,category:'youtube',name:'YouTube Views [Niche-Related] [News] [R30] [Topic Related]',min:40,max:1000000,rate:135934},
+      {id:190,category:'youtube',name:'YouTube Views [Niche-Related] [Cooking] [R30] [Topic Related]',min:40,max:1000000,rate:135934},
+      {id:191,category:'youtube',name:'YouTube Views [Niche-Related] [Fashion] [R30] [Topic Related]',min:40,max:1000000,rate:135934},
+      {id:192,category:'youtube',name:'YouTube Views [Niche-Related] [Tech] [R30] [Topic Related]',min:40,max:1000000,rate:135934},
+      {id:193,category:'youtube',name:'Youtube Adwords Views [Minimum 100K] [Start and Complete: 24hr-30/H]',min:100000,max:1000000,rate:17717},
+      {id:194,category:'youtube',name:'YouTube Native Views [Social Ads] [Min 100K] [R30]',min:100000,max:100000000,rate:17996},
+      {id:195,category:'youtube',name:'YouTube Native Views [Social Ads] [Min 20K] [R30]',min:20000,max:100000000,rate:19095},
+      {id:196,category:'youtube',name:'YouTube Native Views [Social Ads] [Min 10K] [R30]',min:10000,max:100000000,rate:19464},
+      {id:197,category:'youtube',name:'YouTube Native Views [Social Ads] [Min 3K] [R30]',min:3000,max:100000000,rate:21298},
+      {id:198,category:'youtube',name:'YouTube Views [Social Ads] [Min 5K] [R90]',min:2000,max:1000000,rate:28427},
+      {id:199,category:'youtube',name:'YouTube Native Views [Social Ads] [Min 1K] [R30]',min:1000,max:1000000,rate:22033},
+      {id:200,category:'youtube',name:'YouTube Native Views [Social Ads] [Min 500] [R30]',min:500,max:1000000,rate:22801},
+      {id:201,category:'youtube',name:'YouTube Watchtime [Untuk Video 60+ Menit] [Garansi Refill 90 Hari]',min:4000,max:4000,rate:825844},
+      {id:202,category:'youtube',name:'YouTube Watchtime [Untuk 30-60 Menit Video] [Garansi Refill 30 Hari]',min:50,max:4000,rate:719420},
+      {id:203,category:'youtube',name:'YouTube Watchtime [Untuk Video 45 Menit] [Order 1000 - 1000 Jam]',min:1000,max:4000,rate:863731},
+      {id:204,category:'youtube',name:'YouTube Watchtime [Untuk Video 30-120 Menit] [1000 Order = 1000 Hours]',min:100,max:4000,rate:615683},
+      {id:205,category:'youtube',name:'YouTube Views [Garansi 30 Hari] [Drop 0.26%]',min:100,max:100000000,rate:26747},
+      {id:206,category:'youtube',name:'YouTube Views [Max 2M] [Garansi 60 Hari] [Drop 23.19%]',min:100,max:400000,rate:29449},
+      {id:207,category:'youtube',name:'YouTube Views [Garansi 30 Hari] (V2) [Drop 7.79%]',min:100,max:1000000,rate:29599},
+      {id:208,category:'youtube',name:'YouTube Views [Max 1M] [Garansi Refill 30 Hari]',min:1000,max:1000000,rate:33100},
+      {id:209,category:'youtube',name:'YouTube Views [Max 100K] [Garansi Refill 30 Hari] [Drop 0%]',min:100,max:100000,rate:19867},
+      {id:210,category:'youtube',name:'YouTube Views [Max 100K] [Garansi Refill 45 Hari]',min:100,max:100000,rate:22626},
+      {id:211,category:'youtube',name:'YouTube Shorts Views [R90] [Max: 2M]',min:100,max:2000000,rate:40350},
+
+      // FACEBOOK
+      {id:212,category:'facebook',name:'Facebook Followers [LQ] [Tidak Bergaransi]',min:50,max:100000,rate:7993},
+      {id:213,category:'facebook',name:'Facebook Page/Profile Followers [Max 500K] [LQ] [Garansi 90 Hari]',min:10,max:1000000,rate:14311},
+      {id:214,category:'facebook',name:'Facebook Page/Profile Followers [No Refill] [Cancel Enable]',min:50,max:200000,rate:5863},
+      {id:215,category:'facebook',name:'Facebook Page/Profile Followers [HQ] [Max 100K] [Garansi 30 Hari]',min:10,max:100000,rate:10559},
+      {id:216,category:'facebook',name:'Facebook Page/Profile Followers [HQ] [Garansi 30 Hari] [Cancel Enable]',min:10,max:100000,rate:10660},
+      {id:217,category:'facebook',name:'Facebook Page/Profile Followers [LQ] [Max 50K] [Tidak Bergaransi]',min:100,max:1000000,rate:6099},
+      {id:218,category:'facebook',name:'Facebook Page/Profile Followers [LQ] [Max 50K] [Garansi Refill 30 Hari]',min:100,max:1000000,rate:5980},
+      {id:219,category:'facebook',name:'Facebook Page/Profile Followers [LQ] [Max 10M] [Tidak Bergaransi]',min:100,max:10000000,rate:5653},
+      {id:220,category:'facebook',name:'Facebook Page/Profile Followers [LQ] [Max 10M] [Garansi Refill 30 Hari]',min:100,max:10000000,rate:6565},
+      {id:221,category:'facebook',name:'Facebook Post/Photo Share [Max 1M] [Garansi Refill 30 Hari]',min:100,max:1000000,rate:3531},
+      {id:222,category:'facebook',name:'Facebook Post/Photo/Video Share [Max Unlimited] [Garansi Refill 30 Hari]',min:100,max:217545811,rate:6602},
+      {id:223,category:'facebook',name:'Facebook Post/Photo/Video/LiveStream Share [Max Unlimited]',min:100,max:217545811,rate:9867},
+      {id:224,category:'facebook',name:'Facebook Group Members [HQ] [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:14560},
+      {id:225,category:'facebook',name:'Facebook Group Members [HQ] [Max 100K] [Garansi Refill 30 Hari]',min:10,max:100000,rate:15251},
+      {id:226,category:'facebook',name:'Facebook Live Stream Viewers [15 minutes]',min:20,max:50000,rate:17378},
+      {id:227,category:'facebook',name:'Facebook Live Stream Viewers [30 minutes]',min:20,max:50000,rate:34895},
+      {id:228,category:'facebook',name:'Facebook Live Stream Viewers [45 minutes]',min:20,max:50000,rate:52411},
+      {id:229,category:'facebook',name:'Facebook Live Stream Viewers [60 minutes]',min:20,max:50000,rate:69892},
+      {id:230,category:'facebook',name:'Facebook Live Stream Viewers [90 minutes]',min:20,max:50000,rate:104926},
+      {id:231,category:'facebook',name:'Facebook Live Stream Viewers [120 minutes]',min:20,max:50000,rate:139923},
+      {id:232,category:'facebook',name:'Facebook Live Stream Viewers [150 minutes]',min:20,max:50000,rate:175003},
+      {id:233,category:'facebook',name:'Facebook Live Stream Viewers [180 minutes]',min:20,max:50000,rate:210123},
+      {id:234,category:'facebook',name:'Facebook Live Stream Viewers [210 minutes]',min:20,max:50000,rate:245164},
+      {id:235,category:'facebook',name:'Facebook Live Stream Viewers [240 minutes]',min:20,max:50000,rate:280256},
+      {id:236,category:'facebook',name:'Facebook Live Stream Viewers [270 minutes]',min:20,max:50000,rate:315364},
+      {id:237,category:'facebook',name:'Facebook Live Stream Viewers [300 minutes]',min:20,max:50000,rate:350471},
+      {id:238,category:'facebook',name:'Facebook Live Stream Viewers [360 minutes]',min:20,max:50000,rate:420687},
+      {id:239,category:'facebook',name:'Facebook Live Stream Viewers [15 minutes] [Max 30K]',min:10,max:30000,rate:31532},
+      {id:240,category:'facebook',name:'Facebook Live Stream Viewers [30 minutes] [Max 30K]',min:10,max:30000,rate:62615},
+      {id:241,category:'facebook',name:'Facebook Live Stream Viewers [60 minutes] [Max 30K]',min:10,max:30000,rate:124841},
+      {id:242,category:'facebook',name:'Facebook Live Stream Viewers [90 minutes] [Max 30K]',min:10,max:30000,rate:187493},
+      {id:243,category:'facebook',name:'Facebook Live Stream Viewers [2 Hours] [Max 30K]',min:10,max:30000,rate:249652},
+      {id:244,category:'facebook',name:'Facebook Live Stream Viewers [4 Hours] [Max 30K]',min:10,max:30000,rate:504465},
+      {id:245,category:'facebook',name:'Facebook Live Stream Viewers [6 Hours] [Max 50K]',min:10,max:30000,rate:755407},
+      {id:246,category:'facebook',name:'Facebook Live Stream Viewers [8 Hours] [Max 30K]',min:10,max:50000,rate:944038},
+      {id:247,category:'facebook',name:'Facebook Live Stream Viewers [12 Hours] [Max 50K]',min:10,max:50000,rate:1888104},
+      {id:248,category:'facebook',name:'Facebook Live Stream Viewers [24 Hours] [Max 50K]',min:10,max:50000,rate:3776207},
+      {id:249,category:'facebook',name:'Facebook Video Views [Garansi Refill 30 Hari] [Drop 0.76%]',min:100,max:1000000,rate:831},
+      {id:250,category:'facebook',name:'Facebook Video Views [Garansi Refill 45 Hari] [Drop 0%]',min:100,max:1000000,rate:870},
+      {id:251,category:'facebook',name:'Facebook Video Views [No Refill]',min:100,max:100000000,rate:1420},
+      {id:252,category:'facebook',name:'Facebook Video/Reels Views [Max Unlimited] [All Link] [R365] [Cancel Enable] [Drop 0%]',min:500,max:217545811,rate:2204},
+      {id:253,category:'facebook',name:'Facebook Page Likes + Followers [No Refill] [Max: 200K]',min:10,max:50000,rate:14924},
+      {id:254,category:'facebook',name:'Facebook Post Reaction [👍] [No Refill]',min:10,max:100000,rate:4495},
+      {id:255,category:'facebook',name:'Facebook Post Reaction [❤️] [No Refill]',min:10,max:100000,rate:4495},
+      {id:256,category:'facebook',name:'Facebook Post Reaction [😆] [No Refill]',min:10,max:100000,rate:4495},
+      {id:257,category:'facebook',name:'Facebook Post Reaction [😮] [No Refill]',min:10,max:100000,rate:4495},
+      {id:258,category:'facebook',name:'Facebook Post Reaction [😢] [No Refill]',min:10,max:100000,rate:4495},
+      {id:259,category:'facebook',name:'Facebook Post Reaction [😡] [No Refill]',min:10,max:100000,rate:4495},
+      {id:260,category:'facebook',name:'Facebook Post Reaction [🤬] [No Refill]',min:10,max:100000,rate:4495},
+      {id:261,category:'facebook',name:'Facebook Likes On Komentar Reaction [👍] [HQ] [Max 50K] [Tidak Bergaransi]',min:50,max:50000,rate:4895},
+      {id:262,category:'facebook',name:'Facebook Likes On Komentar Reaction [❤️] [HQ] [Max 50K] [Tidak Bergaransi]',min:50,max:50000,rate:4895},
+      {id:263,category:'facebook',name:'Facebook Likes On Komentar Reaction [😆] [HQ] [Max 1M] [Tidak Bergaransi]',min:50,max:1000000,rate:7546},
+      {id:264,category:'facebook',name:'Facebook Likes On Komentar Reaction [😮] [HQ] [Max 1M] [Tidak Bergaransi]',min:50,max:1000000,rate:7546},
+      {id:265,category:'facebook',name:'Facebook Likes On Komentar Reaction [😢] [HQ] [Max 1M] [Tidak Bergaransi]',min:50,max:1000000,rate:7546},
+      {id:266,category:'facebook',name:'Facebook Likes On Komentar Reaction [😡] [HQ] [Max 1M] [Tidak Bergaransi]',min:50,max:1000000,rate:7546},
+      {id:267,category:'facebook',name:'Facebook Likes On Komentar Reaction [🤬] [HQ] [Max 1M] [Tidak Bergaransi]',min:50,max:1000000,rate:7546},
+      {id:268,category:'facebook',name:'Facebook Likes On Komentar Reaction [😍] [HQ] [Max 1M] [Tidak Bergaransi]',min:50,max:1000000,rate:7546},
+      {id:269,category:'facebook',name:'Facebook Komentar [HQ] [Custom] [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:63806},
+      {id:270,category:'facebook',name:'Facebook Komentar [Random] [LQ] [Max 1M] [Tidak Bergaransi]',min:10,max:1000000,rate:22100},
+      {id:271,category:'facebook',name:'Facebook Komentar [Custom] [LQ] [Max 1M] [Tidak Bergaransi]',min:10,max:1000000,rate:22100},
+      {id:272,category:'facebook',name:'Facebook Post Reaction [👍] [Max 10M] [Tidak Bergaransi]',min:10,max:10000000,rate:3185},
+      {id:273,category:'facebook',name:'Facebook Post Reaction [❤️] [Max 10M] [Tidak Bergaransi]',min:10,max:10000000,rate:3185},
+      {id:274,category:'facebook',name:'Facebook Post Reaction [😆] [Max 10M] [Tidak Bergaransi]',min:10,max:10000000,rate:3185},
+      {id:275,category:'facebook',name:'Facebook Post Reaction [😮] [Max 10M] [Tidak Bergaransi]',min:10,max:10000000,rate:3185},
+      {id:276,category:'facebook',name:'Facebook Post Reaction [😢] [Max 10M] [Tidak Bergaransi]',min:10,max:10000000,rate:3185},
+      {id:277,category:'facebook',name:'Facebook Post Reaction [😡] [Max 10M] [Tidak Bergaransi]',min:10,max:10000000,rate:3185},
+      {id:278,category:'facebook',name:'Facebook Post Reaction [🤬] [Max 10M] [Tidak Bergaransi]',min:10,max:10000000,rate:3185},
+
+      // LINKEDIN
+      {id:279,category:'linkedin',name:'LinkedIn Post Likes [Max 1K] [Tidak Ada Garansi]',min:20,max:10000,rate:100490},
+      {id:280,category:'linkedin',name:'LinkedIn Post Likes [Max 20K] [Tidak Ada Garansi]',min:50,max:20000,rate:286004},
+      {id:281,category:'linkedin',name:'LinkedIn Post Likes [HQ] [Max 5K] [Tidak Bergaransi]',min:10,max:5000,rate:198974},
+      {id:282,category:'linkedin',name:'LinkedIn Post Likes [HQ] [Max 5K] [Garansi Refill 25 Hari]',min:10,max:5000,rate:364811},
+      {id:283,category:'linkedin',name:'LinkedIn Followers [Profile/Company] [Max 10K] [Speed: 200/Hari] [Tidak Ada Garansi]',min:100,max:10000,rate:567273},
+      {id:284,category:'linkedin',name:'LinkedIn Followers [Profile/Company] [Max 10K] [Tidak Ada Garansi]',min:1,max:20000,rate:1811316},
+      {id:285,category:'linkedin',name:'LinkedIn Profile/Company Followers [Max 5K] [Garansi Refill 30 Hari]',min:100,max:5000,rate:226808},
+      {id:286,category:'linkedin',name:'LinkedIn Profile/Company Followers [Max 10K] [Garansi Refill 30 Hari]',min:10,max:20000,rate:362894},
+
+      // CLIPPER
+      {id:287,category:'clipper',name:'Clipper Video [Paid Per Views]',min:100000,max:1000000,rate:8366},
+      {id:288,category:'clipper',name:'Clipper Video [Paid Per Video]',min:100,max:10000000,rate:41828800},
+
+      // ROBLOX
+      {id:289,category:'roblox',name:'Roblox Followers Indonesia [HQ] [LOWDROP]',min:50,max:1000,rate:125483},
+      {id:290,category:'roblox',name:'Roblox Followers Indonesia [LQ] [Max 5K] [No Refill]',min:100,max:5000,rate:130504},
+      {id:291,category:'roblox',name:'Roblox Followers Indonesia [HQ] [Max 2K] [No Refill]',min:100,max:2000,rate:163127},
+      {id:292,category:'roblox',name:'Roblox Favorites Map Indonesia [Max 10K] [Tidak Bergaransi]',min:100,max:10000,rate:67761},
+      {id:293,category:'roblox',name:'Roblox Favorites Map Indonesia [Max 10K] [Garansi Refill 30 Hari]',min:100,max:10000,rate:112934},
+
+      // SHOPEE
+      {id:294,category:'shopee',name:'Shopee Followers Indonesia [Max 500K] [No Refill] [Cheap]',min:100,max:500000,rate:11712},
+      {id:295,category:'shopee',name:'Lazada Followers Indonesia [Max 3K] [No Refill]',min:100,max:1000,rate:58559},
+      {id:296,category:'shopee',name:'Shopee LiveStream Views [15 Minutes] [S2]',min:10,max:100000,rate:102937},
+      {id:297,category:'shopee',name:'Shopee LiveStream Views [30 Minutes] [S2]',min:10,max:100000,rate:205871},
+      {id:298,category:'shopee',name:'Shopee LiveStream Views [60 Minutes] [S2]',min:10,max:100000,rate:411741},
+      {id:299,category:'shopee',name:'Shopee LiveStream Views [90 Minutes] [S2]',min:10,max:100000,rate:617630},
+      {id:300,category:'shopee',name:'Shopee LiveStream Views [120 Minutes] [S2]',min:10,max:100000,rate:823520},
+      {id:301,category:'shopee',name:'Shopee LiveStream Views [180 Minutes] [S2]',min:10,max:100000,rate:1235260},
+      {id:302,category:'shopee',name:'Shopee LiveStream Views [240 Minutes] [S2]',min:10,max:100000,rate:1647012},
+      {id:303,category:'shopee',name:'Shopee LiveStream Views [360 Minutes] [S2]',min:10,max:100000,rate:2470484},
+      {id:304,category:'shopee',name:'Shopee LiveStream Views [720 Minutes] [S2]',min:10,max:100000,rate:4941065},
+      {id:305,category:'shopee',name:'Shopee LiveStream Views [1440 Minutes] [S2]',min:10,max:100000,rate:9882077},
+      {id:306,category:'shopee',name:'Shopee Followers Singapore [Max 500K] [Tidak Bergaransi]',min:100,max:500000,rate:57221},
+      {id:307,category:'shopee',name:'Shopee Followers Malaysia [Max 500K] [Tidak Bergaransi]',min:100,max:500000,rate:57221},
+      {id:308,category:'shopee',name:'Shopee Followers Thailand [Max 500K] [Tidak Bergaransi]',min:100,max:500000,rate:57221},
+      {id:309,category:'shopee',name:'Shopee Followers Vietnam [Max 500K] [Tidak Bergaransi]',min:100,max:500000,rate:57221},
+
+      // SNACK VIDEO
+      {id:310,category:'snackvideo',name:'Snack Video Likes + Free Views [Low Drop] [Start 0-30min] [Garansi 60 Hari]',min:10,max:30000,rate:24752},
+      {id:311,category:'snackvideo',name:'Snack Likes + Views [Max: 50K] [FAST] [Garansi 60 Hari]',min:10,max:50000,rate:22175},
+      {id:312,category:'snackvideo',name:'Snack Video Custom Komentar [Real Profiles]',min:10,max:1000000,rate:129489},
+      {id:313,category:'snackvideo',name:'Snack Video Random Komentar [Real Profiles]',min:10,max:1000000,rate:123965},
+      {id:314,category:'snackvideo',name:'Snack Video Shares [Start 0-1H] [Lifetime]',min:10,max:30000,rate:27799},
+
+      // SPOTIFY
+      {id:315,category:'spotify',name:'Spotify Followers [Indonesia] [Artist - Playlist] [Max 100M]',min:100,max:100000000,rate:10417},
+      {id:316,category:'spotify',name:'Spotify Plays [INDONESIA] [Lifetime Guaranteed] [Max: 5M]',min:500,max:5000000,rate:17615},
+      {id:317,category:'spotify',name:'Spotify Radio Source Streams [Indonesia] [Lifetime Guaranteed] [Max: 5M]',min:500,max:20000000,rate:28378},
+      {id:318,category:'spotify',name:'Spotify Playlist Plays [INDONESIA] [Max: 1M] [Lifetime Guaranteed]',min:500,max:20000000,rate:17615},
+      {id:319,category:'spotify',name:'[ELITE] Spotify Release Radar Streams [Indonesia] [Lifetime Guaranteed] [Max: 5M]',min:500,max:20000000,rate:28378},
+      {id:320,category:'spotify',name:'[ELITE] Spotify Discover Weekly Streams [Indonesia] [Lifetime Guaranteed] [Max: 5M]',min:500,max:20000000,rate:28378},
+      {id:321,category:'spotify',name:'Spotify Followers [Global] [Artist - Playlist - User] [R365] [Max 100M]',min:100,max:100000000,rate:6825},
+      {id:322,category:'spotify',name:'Spotify Plays [USA] [Max: 5M] [R365] [Cheapest]',min:500,max:20000000,rate:6094},
+      {id:323,category:'spotify',name:'Spotify Europe Plays [Max: 5M] [R365] [Cheapest]',min:500,max:20000000,rate:6094},
+      {id:324,category:'spotify',name:'Spotify Plays [Asia] [R365] [Max 5M]',min:500,max:20000000,rate:6094},
+      {id:325,category:'spotify',name:'Spotify Plays [Global] [Max: 5M] [R365]',min:500,max:20000000,rate:6094},
+      {id:326,category:'spotify',name:'Spotify Slow Plays [Global] [Max: 10K] [R30] [Cheapest]',min:1000,max:10000,rate:8601},
+      {id:327,category:'spotify',name:'Spotify Plays [ICELAND] [R365] [Max: 5M]',min:500,max:20000000,rate:17615},
+      {id:328,category:'spotify',name:'Spotify Playlist Plays [ICELAND] [Max: 1M] [R365]',min:500,max:20000000,rate:17615},
+      {id:329,category:'spotify',name:'Spotify Playlist Plays [USA] [Max: 1M] [R365]',min:500,max:20000000,rate:19062},
+      {id:330,category:'spotify',name:'Spotify Exclusive Power Plays [Global] [Max: 500K] [R30]',min:1000,max:500000,rate:24773},
+      {id:331,category:'spotify',name:'Spotify Algorithmic Effect Plays [USA] [Max: 500K] [R30]',min:1000,max:500000,rate:26926},
+      {id:332,category:'spotify',name:'Spotify Fast Plays [Global] [Min: 20K] [R365]',min:20000,max:20000000,rate:17615},
+      {id:333,category:'spotify',name:'Spotify Qualified Plays [Global] [Max: 5M] [R365]',min:500,max:20000000,rate:5747},
+      {id:334,category:'spotify',name:'[ELITE] Spotify Web 2.0 Exclusive Streams [USA] [R365] [Max: 5M]',min:500,max:20000000,rate:89443},
+      {id:335,category:'spotify',name:'Spotify Editorial Playlist Plays [Global] [Max: 2M]',min:1000,max:2000000,rate:39414},
+      {id:336,category:'spotify',name:'[ELITE] Spotify Release Radar Streams [Iceland] [R365] [Max: 5M]',min:500,max:20000000,rate:28378},
+      {id:337,category:'spotify',name:'Spotify Radio Source Streams [Iceland] [R365] [Max: 5M]',min:500,max:5000000,rate:28378},
+      {id:338,category:'spotify',name:'[ELITE] Spotify Power Radio Plays [Iceland] [Max: 500K] [R30]',min:500,max:500000,rate:44366},
+      {id:339,category:'spotify',name:'[ELITE] Spotify Discover Weekly Streams [Iceland] [R365] [Max: 5M]',min:500,max:5000000,rate:28378},
+      {id:340,category:'spotify',name:'Spotify Saves [Track/Album] [Max: 1M] [R30]',min:100,max:1000000,rate:7903},
+      {id:341,category:'spotify',name:'Spotify Chart Plays [Targeted] [Max: 100K] [Guaranteed Daily Charts]',min:2000,max:10000,rate:86211},
+      {id:342,category:'spotify',name:'[ELITE] Spotify Weekly Chart Plays [Targeted] [Max: 700K] [Guaranteed Weekly Charts]',min:14000,max:70000,rate:98391},
+      {id:343,category:'spotify',name:'Spotify Mobile Slow Plays [GLOBAL] [Max: 25K] [100% Premium Accounts] [Lifetime Guaranteed]',min:1000,max:25000,rate:17604},
+      {id:344,category:'spotify',name:'Spotify Mobile Slow Plays [USA] [Max: 25K] [100% Premium Accounts] [Lifetime Guaranteed]',min:1000,max:25000,rate:21196},
+      {id:345,category:'spotify',name:'Spotify Mobile Plays [GLOBAL] [Max: 200K] [100% Premium Accounts] [Lifetime Guaranteed]',min:500,max:200000,rate:28378},
+      {id:346,category:'spotify',name:'Spotify Mobile Plays [USA] [Max: 200K] [100% Premium Accounts] [Lifetime Guaranteed]',min:500,max:200000,rate:31974},
+      {id:347,category:'spotify',name:'Spotify Mobile Plays [BRAZIL] [Max: 200K] [100% Premium Accounts] [Lifetime Guaranteed]',min:500,max:200000,rate:33787},
+      {id:348,category:'spotify',name:'Spotify Mobile Plays [GERMANY] [Max: 200K] [100% Premium Accounts] [Lifetime Guaranteed]',min:500,max:200000,rate:33787},
+      {id:349,category:'spotify',name:'Spotify Mobile Plays [UK] [Max: 200K] [100% Premium Accounts] [Lifetime Guaranteed]',min:500,max:200000,rate:33787},
+      {id:350,category:'spotify',name:'Spotify Mobile Plays [INDIA] [Max: 200K] [100% Premium Accounts] [Lifetime Guaranteed]',min:500,max:200000,rate:33787},
+      {id:351,category:'spotify',name:'Spotify Mobile Plays [FRANCE] [Max: 200K] [100% Premium Accounts] [Lifetime Guaranteed]',min:500,max:200000,rate:33787},
+      {id:352,category:'spotify',name:'Spotify Mobile Plays [TURKEY] [Max: 200K] [100% Premium Accounts] [Lifetime Guaranteed]',min:500,max:200000,rate:33784},
+
+      // THREADS
+      {id:353,category:'threads',name:'Threads Followers [Max 100K] [Tidak Bergaransi]',min:10,max:65000000,rate:131789},
+      {id:354,category:'threads',name:'Threads Followers [Max 100K] [Garansi Refill 30 Hari]',min:10,max:100000,rate:428688},
+      {id:355,category:'threads',name:'Threads Likes [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:86237},
+      {id:356,category:'threads',name:'Threads Likes [Max 100K] [Garansi Refill 30 Hari]',min:10,max:100000,rate:170463},
+      {id:357,category:'threads',name:'Threads Repost [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:86237},
+      {id:358,category:'threads',name:'Threads Repost [Max 100K] [Garansi Refill 30 Hari]',min:10,max:100000,rate:170463},
+      {id:359,category:'threads',name:'Threads Quote [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:86237},
+      {id:360,category:'threads',name:'Threads Quote [Max 100K] [Garansi Refill 30 Hari]',min:10,max:100000,rate:170463},
+      {id:361,category:'threads',name:'Threads Share [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:215417},
+      {id:362,category:'threads',name:'Threads Share [Max 100K] [Garansi Refill 30 Hari]',min:10,max:100000,rate:428688},
+      {id:363,category:'threads',name:'Threads Komentar Likes [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:215417},
+      {id:364,category:'threads',name:'Threads Komentar Reposts [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:216699},
+      {id:365,category:'threads',name:'Threads Komentar Quotes [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:216703},
+      {id:366,category:'threads',name:'Threads Komentar Shares [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:215417},
+      {id:367,category:'threads',name:'Threads Custom Komentar [Max 100K] [Tidak Bergaransi]',min:1,max:100000,rate:4298911},
+      {id:368,category:'threads',name:'Threads Custom Komentar [Max 100K] [Garansi Refill 20 Hari]',min:1,max:100000,rate:8479521},
+      {id:369,category:'threads',name:'Threads Komentar Replies [Max 100K] [Tidak Bergaransi]',min:1,max:100000,rate:6441346},
+
+      // WHATSAPP
+      {id:370,category:'whatsapp',name:'WhatsApp Channel Members Global [Max 20K] [Tidak Bergaransi] [Drop 0%]',min:10,max:20000,rate:6503},
+      {id:371,category:'whatsapp',name:'WhatsApp Global Channel Members [Max 20K] [Garansi Refill 30 Hari] [Drop 0%]',min:10,max:100000,rate:8045},
+      {id:372,category:'whatsapp',name:'WhatsApp Channel Members [Max 10K] [Tidak Bergaransi] [Drop 1.15%]',min:10,max:10000,rate:16482},
+      {id:373,category:'whatsapp',name:'WhatsApp Channel Post Reactions [👍] [Tidak Bergaransi] [Drop 0%]',min:10,max:100000,rate:653},
+      {id:374,category:'whatsapp',name:'WhatsApp Channel Post Emoji Reactions [Random] [👍❤️😂😮😢🙏] [Max 50K]',min:10,max:50000,rate:31510},
+      {id:375,category:'whatsapp',name:'WhatsApp Channel Post Reactions [❤️] [Tidak Bergaransi]',min:10,max:100000,rate:653},
+      {id:376,category:'whatsapp',name:'WhatsApp Channel Post Reactions [😂] [Tidak Bergaransi]',min:10,max:100000,rate:653},
+      {id:377,category:'whatsapp',name:'WhatsApp Channel Post Reactions [😮] [Tidak Bergaransi]',min:10,max:100000,rate:653},
+      {id:378,category:'whatsapp',name:'WhatsApp Channel Post Reactions [😢] [Tidak Bergaransi]',min:10,max:100000,rate:653},
+      {id:379,category:'whatsapp',name:'WhatsApp Channel Post Reactions [🙏] [Tidak Bergaransi]',min:10,max:100000,rate:653},
+      {id:380,category:'whatsapp',name:'WhatsApp Poll Votes [A] [Max 100K] [Tidak Bergaransi] [Drop 0%]',min:10,max:100000,rate:26715},
+      {id:381,category:'whatsapp',name:'WhatsApp Poll Votes [B] [Max 100K] [Tidak Bergaransi] [Drop 0%]',min:10,max:100000,rate:26715},
+      {id:382,category:'whatsapp',name:'WhatsApp Poll Votes [C] [Max 100K] [Tidak Bergaransi] [Drop 0%]',min:10,max:100000,rate:26715},
+      {id:383,category:'whatsapp',name:'WhatsApp Poll Votes [D] [Max 100K] [Tidak Bergaransi] [Drop 0%]',min:10,max:100000,rate:26715},
+      {id:384,category:'whatsapp',name:'WhatsApp Poll Votes [E] [Max 100K] [Tidak Bergaransi] [Drop 0%]',min:10,max:100000,rate:26715},
+
+      // TWITTER / X
+      {id:385,category:'twitter',name:'X/Twitter Followers [LQ] [Max 50K] [No Refill] [Drop 33.21%]',min:10,max:50000,rate:47963},
+      {id:386,category:'twitter',name:'X/Twitter Followers [LQ] [Max 100K] [R14] [Drop 67.02%]',min:100,max:30000,rate:158091},
+      {id:387,category:'twitter',name:'X/Twitter Followers [LQ] [Max 100K] [R30] [Drop 84.54%]',min:100,max:30000,rate:215304},
+      {id:388,category:'twitter',name:'X/Twitter Followers [Start 1H] [Max 500K] [R30] [Drop 2.4%]',min:100,max:500000,rate:318035},
+      {id:389,category:'twitter',name:'Twitter Likes [Max 5K] [No Refill] [Drop 34.8%]',min:10,max:5000,rate:36013},
+      {id:390,category:'twitter',name:'Twitter Likes [Max 10K] [No Refill] [Drop 43.63%]',min:10,max:10000,rate:39472},
+      {id:391,category:'twitter',name:'Twitter Likes [Max 40K] [Garansi 14 Hari] [Drop 7.51%]',min:10,max:40000,rate:55633},
+      {id:392,category:'twitter',name:'Twitter Likes [Max 40K] [Garansi 30 Hari] [Drop 4.7%]',min:10,max:40000,rate:63023},
+      {id:393,category:'twitter',name:'X/Twitter Video Views Insight [Max Unlimited] [No Refill]',min:100,max:217545811,rate:133},
+      {id:394,category:'twitter',name:'X/Twitter Video Views Insight [Max Unlimited] [R30]',min:100,max:217545811,rate:136},
+      {id:395,category:'twitter',name:'X/Twitter Video Views Insight [Max Unlimited] [R45]',min:100,max:217545811,rate:140},
+
+      // TELEGRAM
+      {id:396,category:'telegram',name:'Telegram Members [HQ] [Max 1M] [Tidak Bergaransi] [Drop 0%]',min:10,max:1000000,rate:3731},
+      {id:397,category:'telegram',name:'Telegram Members [No Refill] [Drop 5%]',min:10,max:1000000,rate:21281},
+      {id:398,category:'telegram',name:'Telegram Members [Garansi 30 Hari] [Drop 2.1%]',min:10,max:1000000,rate:22747},
+      {id:399,category:'telegram',name:'Telegram Members [HQ] [Max1M] [Garansi Refill 30 Hari] [Drop 2.05%]',min:10,max:1000000,rate:8660},
+      {id:400,category:'telegram',name:'Telegram Members [HQ] [Max 1M] [Garansi Refill 45 Hari] [Drop 0.93%]',min:10,max:1000000,rate:12311},
+      {id:401,category:'telegram',name:'Telegram Positive Reactions Channel [👍❤️🔥🎉😁🤩🤮🤣] + Views',min:50,max:1000000,rate:762},
+      {id:402,category:'telegram',name:'Telegram Reaction [👍] + Views [Tidak Bergaransi] [Drop 0.27%]',min:10,max:1000000,rate:427},
+      {id:403,category:'telegram',name:'Telegram Reaction [❤️] + Views [Tidak Bergaransi] [Drop 7.39%]',min:10,max:1000000,rate:427},
+      {id:404,category:'telegram',name:'Telegram Reaction [🔥] + Views [Tidak Bergaransi] [Drop 0%]',min:10,max:1000000,rate:427},
+      {id:405,category:'telegram',name:'Telegram Reaction [😁] + Views [Tidak Bergaransi] [Drop 0%]',min:10,max:1000000,rate:427},
+      {id:406,category:'telegram',name:'Telegram Reaction [🤩] + Views [Tidak Bergaransi] [Drop 0%]',min:10,max:1000000,rate:427},
+      {id:407,category:'telegram',name:'Telegram Reaction [🎉] + Views [Tidak Bergaransi] [Drop 0%]',min:10,max:1000000,rate:427},
+      {id:408,category:'telegram',name:'Telegram Reaction [🤮] + Views [Tidak Bergaransi] [Drop 0%]',min:10,max:1000000,rate:427},
+      {id:409,category:'telegram',name:'Telegram Reaction [🤣] + Views [Tidak Bergaransi] [Drop 0%]',min:10,max:1000000,rate:427},
+      {id:410,category:'telegram',name:'Telegram Reaction [💩] + Views [Tidak Bergaransi] [Drop 0%]',min:10,max:1000000,rate:427},
+      {id:411,category:'telegram',name:'Telegram Reaction [🤯] + Views [Tidak Bergaransi] [Drop 0%]',min:10,max:1000000,rate:427},
+      {id:412,category:'telegram',name:'Telegram Negative Reactions Channel [😢😐😡🤬💩🤮] + Views',min:10,max:1000000,rate:474},
+      {id:413,category:'telegram',name:'Telegram Reaction [😢] + Views [Tidak Bergaransi]',min:50,max:500000,rate:325},
+      {id:414,category:'telegram',name:'Telegram Reaction [😐] + Views [Tidak Bergaransi]',min:50,max:500000,rate:325},
+      {id:415,category:'telegram',name:'Telegram Reaction [😡] + Views [Tidak Bergaransi]',min:50,max:500000,rate:325},
+      {id:416,category:'telegram',name:'Telegram Reaction [🤬] + Views [Tidak Bergaransi]',min:50,max:500000,rate:325},
+      {id:417,category:'telegram',name:'Telegram Reaction [💩] + Views [Tidak Bergaransi]',min:50,max:500000,rate:325},
+      {id:418,category:'telegram',name:'Telegram Reaction [🤮] + Views [Tidak Bergaransi]',min:50,max:500000,rate:325},
+      {id:419,category:'telegram',name:'Telegram Story Reactions Positive [❤️😁😢🎉👍😡] [Tidak Bergaransi]',min:50,max:500000,rate:260},
+      {id:420,category:'telegram',name:'Telegram Story Reactions Negative [😐😡🤬💩🤮] [Tidak Bergaransi]',min:50,max:500000,rate:260},
+      {id:421,category:'telegram',name:'Telegram Story Reactions [❤️] [Tidak Bergaransi]',min:50,max:500000,rate:260},
+      {id:422,category:'telegram',name:'Telegram Story Reactions [😁] [Tidak Bergaransi]',min:50,max:500000,rate:260},
+      {id:423,category:'telegram',name:'Telegram Story Reactions [😢] [Tidak Bergaransi]',min:50,max:500000,rate:260},
+      {id:424,category:'telegram',name:'Telegram Story Reactions [🎉] [Tidak Bergaransi]',min:50,max:500000,rate:260},
+      {id:425,category:'telegram',name:'Telegram Story Reactions [👍] [Tidak Bergaransi]',min:50,max:500000,rate:260},
+      {id:426,category:'telegram',name:'Telegram Story Reactions [😡] [Tidak Bergaransi]',min:50,max:500000,rate:260},
+      {id:427,category:'telegram',name:'Telegram Story Reactions [😐] [Tidak Bergaransi]',min:50,max:500000,rate:260},
+      {id:428,category:'telegram',name:'Telegram Story Reactions [🤬] [Tidak Bergaransi]',min:50,max:500000,rate:260},
+      {id:429,category:'telegram',name:'Telegram Story Reactions [💩] [Tidak Bergaransi]',min:50,max:500000,rate:260},
+      {id:430,category:'telegram',name:'Telegram Story Reactions [🤮] [Tidak Bergaransi]',min:50,max:500000,rate:260},
+      {id:431,category:'telegram',name:'Telegram Post Views [Max 100K] [Untuk 1 Postingan] [Tidak Bergaransi]',min:10,max:100000,rate:30},
+      {id:432,category:'telegram',name:'Telegram Post Views [Max 100K] [Untuk 1 Postingan] [Tidak Bergaransi] (V2)',min:10,max:100000,rate:34},
+      {id:433,category:'telegram',name:'Telegram Mix Post Views [Max 10M] [Masuk Statistik] [Untuk 1 Postingan]',min:100,max:10000000,rate:396},
+      {id:434,category:'telegram',name:'Telegram Poll Vote [Max 500K] [Tidak Bergaransi]',min:10,max:500000,rate:2676}
     ];
+
+    // Sortir berdasarkan kategori dulu, lalu berdasarkan abjad nama layanan
+    SERVICES.sort(function(a, b) {
+      if (a.category === b.category) {
+        return a.name.localeCompare(b.name);
+      }
+      return a.category.localeCompare(b.category);
+    });
+
     var LOGOS = {
       'instagram':'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><rect x="12" y="12" width="76" height="76" rx="20"/><circle cx="50" cy="50" r="16"/><circle cx="72" cy="28" r="4" fill="white" stroke="none"/></svg>'),
       'tiktok':'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="white"><path d="M65 15v48a20 20 0 01-20 20 20 20 0 01-20-20 20 20 0 0120-20c2 0 4 .3 6 .8V55a30 30 0 00-6-.6 30 30 0 00-30 30 30 30 0 0030 30 30 30 0 0030-30V40a38 38 0 0020 6V25a28 28 0 01-20-10z"/></svg>'),
@@ -1168,47 +1439,154 @@
       'facebook':'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="white"><path d="M56 90V55h12l2-14H56v-9c0-4 1-7 7-7h8V12s-7-1-13-1c-14 0-23 8-23 23v10H23v14h12v35z"/></svg>'),
       'twitter':'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="white"><path d="M50 10L15 85h18l17-30 17 30h18z"/></svg>'),
       'telegram':'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="white"><circle cx="50" cy="50" r="38"/><path d="M30 52l10 4 4 14 8-8 12 10-18-34z" fill="#07070d"/></svg>'),
-      'shopee':'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="white"><path d="M20 35h60l8 30H12z"/><rect x="15" y="65" width="70" height="8" rx="4"/><circle cx="32" cy="78" r="6" fill="none" stroke="white" stroke-width="4"/><circle cx="68" cy="78" r="6" fill="none" stroke="white" stroke-width="4"/></svg>')
+      'shopee':'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="white"><path d="M20 35h60l8 30H12z"/><rect x="15" y="65" width="70" height="8" rx="4"/><circle cx="32" cy="78" r="6" fill="none" stroke="white" stroke-width="4"/><circle cx="68" cy="78" r="6" fill="none" stroke="white" stroke-width="4"/></svg>'),
+      'linkedin':'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="white"><rect x="10" y="10" width="80" height="80" rx="10"/><path d="M25 40h10v35H25zM30 25a5 5 0 110 10 5 5 0 010-10zM45 40h10v5c2-4 7-6 12-6 10 0 15 6 15 17v19H72V58c0-5-2-8-7-8s-8 3-8 8v17H45z" fill="#07070d"/></svg>'),
+      'clipper':'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="white"><rect x="15" y="15" width="70" height="70" rx="15"/><path d="M40 35v30l25-15z" fill="#07070d"/></svg>'),
+      'roblox':'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="white"><path d="M25 15l60 15-15 60-60-15z"/><rect x="35" y="35" width="20" height="20" fill="#07070d" transform="rotate(-15 45 45)"/></svg>'),
+      'snackvideo':'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="white"><circle cx="50" cy="50" r="40"/><path d="M40 35v30l25-15z" fill="#07070d"/></svg>'),
+      'spotify':'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="white"><circle cx="50" cy="50" r="40"/><path d="M30 45c15-5 30-3 40 2M35 55c10-4 20-2 30 2M40 65c8-3 15-1 20 2" stroke="#07070d" stroke-width="6" stroke-linecap="round" fill="none"/></svg>'),
+      'threads':'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="white"><path d="M50 20C30 20 20 35 20 50s10 30 30 30c15 0 25-10 25-20 0-15-15-20-25-20s-20 5-20 15 10 15 20 15c10 0 15-5 15-10"/></svg>'),
+      'whatsapp':'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="white"><path d="M20 80l5-20C20 50 20 30 40 20s40 0 40 20-10 30-30 30c-10 0-15-5-15-5L20 80z"/><path d="M40 40c5-5 10 0 10 5s-5 10-10 5c-5 5 5 15 10 15" stroke="#07070d" stroke-width="4" fill="none"/></svg>')
     };
-    var categories = [], activeCat = 'all', currentSrv = null, currentStep = 1, selectedPayMethod = null, orderFormData = {};
-    document.getElementById('searchInput').addEventListener('input', function() { renderFiltered(); });
-    function renderCategories() {
-      categories = [];
-      SERVICES.forEach(function(s) { if (categories.indexOf(s.category) === -1) categories.push(s.category); });
-      categories.sort();
-      var w = document.getElementById('catTabs'), h = '<button class="cat-btn active" data-cat="all">Semua <span style="font-size:.65rem;opacity:.7;margin-left:.2rem">'+SERVICES.length+'</span></button>';
-      categories.forEach(function(c) {
-        var cnt = SERVICES.filter(function(s) { return s.category === c; }).length;
-        h += '<button class="cat-btn" data-cat="'+c+'"><img src="'+LOGOS[c]+'" alt="'+c+'"> '+c.charAt(0).toUpperCase()+c.slice(1)+' <span style="font-size:.65rem;opacity:.7;margin-left:.2rem">'+cnt+'</span></button>';
-      });
-      w.innerHTML = h;
-      w.querySelectorAll('.cat-btn').forEach(function(b) {
-        b.addEventListener('click', function() {
-          w.querySelectorAll('.cat-btn').forEach(function(x) { x.classList.remove('active'); });
-          b.classList.add('active');
-          activeCat = b.dataset.cat;
-          renderFiltered();
-        });
-      });
+
+    // Data Processing Helpers
+    var PLATFORMS = [];
+    var groupedServices = {};
+    
+    SERVICES.forEach(function(s) {
+      if (PLATFORMS.indexOf(s.category) === -1) {
+        PLATFORMS.push(s.category);
+        groupedServices[s.category] = [];
+      }
+      groupedServices[s.category].push(s);
+    });
+    PLATFORMS.sort();
+
+    function getSubCategory(name, platform) {
+      let lower = name.toLowerCase();
+      if (platform === 'spotify') {
+          if (lower.includes('play')) return 'Plays';
+          if (lower.includes('stream')) return 'Streams';
+          if (lower.includes('follower')) return 'Followers';
+          if (lower.includes('chart')) return 'Charts';
+          if (lower.includes('save')) return 'Saves';
+      }
+      if (platform === 'telegram') {
+          if (lower.includes('member')) return 'Members';
+          if (lower.includes('reaction')) return 'Reactions';
+          if (lower.includes('view')) return 'Views';
+          if (lower.includes('vote')) return 'Votes';
+      }
+      if (lower.includes('follower')) return 'Followers';
+      if (lower.includes('like') || lower.includes('reaction')) return 'Likes & Reactions';
+      if (lower.includes('view') || lower.includes('watchtime') || lower.includes('insight')) return 'Views & Watchtime';
+      if (lower.includes('comment') || lower.includes('komentar')) return 'Comments';
+      if (lower.includes('share')) return 'Shares';
+      if (lower.includes('save')) return 'Saves';
+      if (lower.includes('subscriber')) return 'Subscribers';
+      if (lower.includes('live')) return 'Live Stream';
+      if (lower.includes('member')) return 'Members';
+      if (lower.includes('play') || lower.includes('stream')) return 'Plays / Streams';
+      if (lower.includes('vote') || lower.includes('poll')) return 'Votes / Polls';
+      if (lower.includes('repost') || lower.includes('quote')) return 'Repost / Quote';
+      if (lower.includes('story')) return 'Stories';
+      if (lower.includes('chart')) return 'Charts';
+      if (lower.includes('ads')) return 'Ads';
+      return 'Lainnya';
     }
-    function renderFiltered() {
-      var s = document.getElementById('searchInput').value.toLowerCase().trim();
-      var f = SERVICES.filter(function(sv) {
-        return (activeCat === 'all' || sv.category === activeCat) &&
-          (!s || sv.name.toLowerCase().indexOf(s) !== -1 || sv.category.toLowerCase().indexOf(s) !== -1);
+
+    function formatName(name) {
+      return name.replace(/\[Drop[^\]]*\]/g, '<span style="color:#f87171">$&</span>')
+                 .replace(/\[Garansi[^\]]*\]/g, '<span style="color:#4ade80">$&</span>');
+    }
+
+    // === STATE & NAVIGATION ===
+    var currentPlatform = '';
+    
+    function showPlatforms() {
+      document.getElementById('platformView').style.display = 'block';
+      document.getElementById('categoryView').style.display = 'none';
+      document.getElementById('serviceView').style.display = 'none';
+      document.getElementById('searchInput').value = '';
+      renderPlatforms();
+    }
+
+    function showCategories(platform) {
+      currentPlatform = platform;
+      document.getElementById('platformView').style.display = 'none';
+      document.getElementById('categoryView').style.display = 'block';
+      document.getElementById('serviceView').style.display = 'none';
+      document.getElementById('searchInput').value = '';
+      
+      document.getElementById('catTitle').textContent = platform.toUpperCase();
+      var cats = {};
+      groupedServices[platform].forEach(function(s) {
+        var subcat = getSubCategory(s.name, platform);
+        if (!cats[subcat]) cats[subcat] = 0;
+        cats[subcat]++;
       });
-      document.getElementById('srvCount').textContent = 'Menampilkan '+f.length+' layanan';
+      
+      var sortedCats = Object.keys(cats).sort();
+      var html = '';
+      sortedCats.forEach(function(c) {
+        var icon = 'fa-layer-group';
+        if (c === 'Followers') icon = 'fa-users';
+        else if (c === 'Likes & Reactions') icon = 'fa-heart';
+        else if (c === 'Views & Watchtime') icon = 'fa-eye';
+        else if (c === 'Comments') icon = 'fa-comments';
+        else if (c === 'Shares') icon = 'fa-share-nodes';
+        else if (c === 'Saves') icon = 'fa-bookmark';
+        else if (c === 'Subscribers') icon = 'fa-bell';
+        else if (c === 'Live Stream') icon = 'fa-video';
+        
+        html += '<div class="category-item" onclick="showServices(\''+platform+'\', \''+c+'\')">' +
+          '<div class="category-info">' +
+          '<i class="fas '+icon+'"></i>' +
+          '<div><h4>'+c+'</h4><p>'+cats[c]+' layanan tersedia</p></div>' +
+          '</div>' +
+          '<i class="fas fa-chevron-right"></i>' +
+          '</div>';
+      });
+      document.getElementById('categoryList').innerHTML = html;
+    }
+
+    function showServices(platform, category, searchQuery = '') {
+      currentPlatform = platform;
+      document.getElementById('platformView').style.display = 'none';
+      document.getElementById('categoryView').style.display = 'none';
+      document.getElementById('serviceView').style.display = 'block';
+      
+      var title = searchQuery ? 'Hasil Pencarian' : category;
+      document.getElementById('srvTitle').textContent = title;
+      
+      var filtered = [];
+      if (searchQuery) {
+        document.getElementById('btnBackToCat').style.display = 'none';
+        var q = searchQuery.toLowerCase();
+        filtered = SERVICES.filter(function(s) {
+          return s.name.toLowerCase().includes(q) || s.category.toLowerCase().includes(q);
+        });
+      } else {
+        document.getElementById('btnBackToCat').style.display = 'inline-flex';
+        filtered = groupedServices[platform].filter(function(s) {
+          return getSubCategory(s.name, platform) === category;
+        });
+      }
+
+      document.getElementById('srvCount').textContent = 'Menampilkan ' + filtered.length + ' layanan';
       var g = document.getElementById('srvGrid');
-      if (!f.length) {
+      
+      if (!filtered.length) {
         g.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted)"><i class="fas fa-search" style="font-size:2rem;margin-bottom:.75rem;display:block"></i>Tidak ada layanan yang cocok.</div>';
         return;
       }
+
       var h = '';
-      f.forEach(function(sv, i) {
+      filtered.forEach(function(sv, i) {
         h += '<div class="srv-card" style="animation:fadeInUp .4s ease '+(i*0.03)+'s both">' +
           '<div class="srv-card-top">' +
           '<div class="srv-cat-icon"><img src="'+LOGOS[sv.category]+'" alt="'+sv.category+'"></div>' +
-          '<h3>'+sv.name+'</h3>' +
+          '<h3>'+formatName(sv.name)+'</h3>' +
           '</div>' +
           '<div class="srv-meta"><span class="srv-tag">Min: '+sv.min.toLocaleString('id-ID')+'</span><span class="srv-tag">Max: '+sv.max.toLocaleString('id-ID')+'</span></div>' +
           '<div class="srv-price">' +
@@ -1218,6 +1596,45 @@
       });
       g.innerHTML = h;
     }
+
+    function backToCategories() {
+      if (currentPlatform) showCategories(currentPlatform);
+      else showPlatforms();
+    }
+
+    function renderPlatforms() {
+      var grid = document.getElementById('platformGrid');
+      var html = '';
+      PLATFORMS.forEach(function(p) {
+        var count = groupedServices[p].length;
+        html += '<div class="platform-card" onclick="showCategories(\''+p+'\')">' +
+          '<div class="platform-icon"><img src="'+LOGOS[p]+'" alt="'+p+'"></div>' +
+          '<div class="platform-info">' +
+          '<h4>'+p+'</h4>' +
+          '<p>'+count+' Layanan</p>' +
+          '</div>' +
+          '<i class="fas fa-chevron-right"></i>' +
+          '</div>';
+      });
+      grid.innerHTML = html;
+    }
+
+    // Search Handler
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+      var val = e.target.value.trim();
+      if (val.length > 0) {
+        showServices('', '', val);
+      } else {
+        // Jika search kosong, balik ke tampilan awal (platform)
+        if (document.getElementById('serviceView').style.display === 'block' && document.getElementById('btnBackToCat').style.display === 'none') {
+           showPlatforms();
+        }
+      }
+    });
+
+    // === MODAL & ORDER LOGIC (SAMA SEPERTI SEBELUMNYA) ===
+    var currentSrv = null, currentStep = 1, selectedPayMethod = null, orderFormData = {};
+    
     function openModal(sid) {
       currentSrv = SERVICES.find(function(s) { return s.id === sid; });
       if (!currentSrv) return;
@@ -1272,8 +1689,7 @@
       var qty = parseInt(document.getElementById('mQty').value) || 0;
       var link = document.getElementById('mLink').value.trim();
       var res = document.getElementById('mResult');
-      res.className = '';
-      res.innerHTML = '';
+      res.className = ''; res.innerHTML = '';
       if (!name || !wa) {
         res.className = 'order-result error';
         res.innerHTML = '<i class="fas fa-exclamation-circle"></i> Nama dan WhatsApp wajib diisi.';
@@ -1423,8 +1839,10 @@
         '<div class="sr-row"><span class="sr-label">Status</span><span class="sr-val">'+(STATUS_MAP[found.status]||found.status)+'</span></div>' +
         '<div class="sr-row"><span class="sr-label">Waktu</span><span class="sr-val" style="font-size:.78rem;color:var(--muted)">'+timeStr+'</span></div>';
     }
-    renderCategories();
-    renderFiltered();
+
+    // Init
+    showPlatforms();
+    
     document.getElementById('statusInput').addEventListener('keydown', function(e) {
       if (e.key === 'Enter') checkStatus();
     });
@@ -1593,9 +2011,8 @@
       });
     }
   </script>
-
   <script>
-  // 🔥 Force update service worker
+  // Force update service worker
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.getRegistration().then(reg => {
       if (reg) {
@@ -1605,7 +2022,6 @@
           newSW.addEventListener('statechange', () => {
             if (newSW.state === 'installed') {
               newSW.postMessage('skipWaiting');
-              // Refresh halaman setelah update
               setTimeout(() => {
                 window.location.reload();
               }, 800);
@@ -1615,7 +2031,7 @@
       }
     });
   }
-</script>
+  </script>
   <script src="jastip-cta.js?v=4.7"></script>
 </body>
 </html>
