@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <link rel="manifest" href="/manifest.json?v=4.3" />
+  <link rel="manifest" href="/manifest.json?v=4.5" />
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="firebase-init.js?v=4.3"></script>
+<script src="firebase-init.js?v=4.5"></script>
   <meta name="theme-color" content="#3B82F6" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -245,8 +245,6 @@
     .sec-header { text-align: center; margin-bottom: 2rem; }
     .sec-divider { max-width: 1100px; margin: 0 auto; padding: 0 1rem; }
     .sec-divider hr { border: none; height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); }
-    
-    /* Panduan Cara Pesan */
     .how-to-order {
       display: flex; justify-content: center; align-items: center; gap: 0.8rem;
       flex-wrap: wrap; margin: 0 auto 1.5rem; padding: 0.6rem 1rem;
@@ -256,8 +254,6 @@
     }
     .how-to-order span { display: inline-flex; align-items: center; gap: 0.3rem; }
     .how-to-order i.fa-chevron-right { font-size: 0.6rem; color: var(--muted); }
-
-    /* Search Bar & Tabs */
     .search-wrap { max-width: 480px; margin: 0 auto 1.5rem; position: relative; }
     .search-wrap i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.9rem; }
     .search-wrap input {
@@ -269,8 +265,6 @@
     }
     .search-wrap input:focus { border-color: var(--accent); }
     .search-wrap input::placeholder { color: var(--muted); }
-    
-    /* Tabs Container - Wrap Layout */
     .cat-tabs {
       display: flex; gap: 0.4rem; flex-wrap: wrap;
       justify-content: center; margin-bottom: 0.75rem;
@@ -298,10 +292,7 @@
       box-shadow: 0 2px 16px rgba(255,221,87,0.2);
     }
     .cat-btn img { width: 16px; height: 16px; border-radius: 4px; vertical-align: middle; }
-    
     .srv-count { text-align: center; font-size: 0.78rem; color: var(--muted); margin-bottom: 1.5rem; }
-    
-    /* Service Grid */
     .srv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
     .srv-card {
       background: var(--bg-card); border: 1px solid var(--border);
@@ -329,7 +320,6 @@
       display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
       overflow: hidden;
     }
-    /* Badges / Tags */
     .srv-badges { display: flex; gap: 0.3rem; flex-wrap: wrap; margin-bottom: 0.6rem; padding-left: 3.1rem; }
     .badge { font-size: 0.6rem; font-weight: 700; padding: 0.15rem 0.4rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.3px; border: 1px solid transparent; }
     .badge.termurah { background: rgba(34,197,94,0.15); color: #4ade80; border-color: rgba(34,197,94,0.3); }
@@ -339,7 +329,10 @@
     .badge.lq { background: rgba(245,158,11,0.15); color: #fbbf24; border-color: rgba(245,158,11,0.3); }
     .badge.baru { background: rgba(6,182,212,0.15); color: #22d3ee; border-color: rgba(6,182,212,0.3); }
     .badge.real { background: rgba(16,185,129,0.15); color: #34d399; border-color: rgba(16,185,129,0.3); }
-
+    .badge.garansi { background: rgba(74,222,128,0.15); color: #4ade80; border-color: rgba(74,222,128,0.3); }
+    .badge.fast { background: rgba(251,146,60,0.15); color: #fb923c; border-color: rgba(251,146,60,0.3); }
+    .badge.promo { background: rgba(236,72,153,0.15); color: #f472b6; border-color: rgba(236,72,153,0.3); }
+    .badge.drop { background: rgba(239,68,68,0.15); color: #f87171; border-color: rgba(239,68,68,0.3); }
     .srv-meta { display: flex; gap: 0.5rem; margin-bottom: 0.6rem; flex-wrap: wrap; }
     .srv-tag {
       font-size: 0.68rem; padding: 0.2rem 0.55rem; border-radius: 50px;
@@ -372,11 +365,7 @@
     }
     .btn-order:active { transform: scale(0.97); }
     .btn-order:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
-    
-    /* Highlight Text */
     .highlight-text { background: rgba(255,221,87,0.3); color: #fff; border-radius: 3px; padding: 0 2px; font-weight: 700; }
-
-    /* Toast */
     .toast {
       position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(20px);
       background: #22c55e; color: white; padding: 0.6rem 1.2rem;
@@ -385,8 +374,6 @@
       box-shadow: 0 4px 12px rgba(34,197,94,0.3);
     }
     .toast.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
-
-    /* Modal Styles */
     .modal-overlay {
       display: none; position: fixed; inset: 0; z-index: 300;
       background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
@@ -527,8 +514,6 @@
     .btn-wa-proof:hover { background: #1ebe57; box-shadow: 0 4px 16px rgba(37,211,102,0.3); }
     .btn-close-modal { width: 100%; padding: 0.6rem; border-radius: var(--radius-sm); background: rgba(255,255,255,0.05); color: var(--fg-dim); border: 1px solid var(--border); font-family: var(--font-body); font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: all var(--transition); }
     .btn-close-modal:hover { background: rgba(255,255,255,0.1); color: var(--fg); }
-
-    /* Sections Bawah */
     .orders-wrapper { max-width: 1100px; margin: 0 auto; }
     .orders-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; }
     .order-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.65rem 0.75rem; display: flex; flex-direction: column; gap: 0.2rem; transition: all var(--transition); animation: fadeInUp 0.4s ease both; }
@@ -554,7 +539,6 @@
     .orders-pagination .btn-order:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
     .orders-pagination .page-info { font-size: 0.8rem; color: var(--muted); }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-    
     .status-wrap { max-width: 500px; margin: 0 auto; }
     .status-form { display: flex; gap: 0.75rem; margin-bottom: 1rem; }
     .status-form input { flex: 1; padding: 0.65rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--fg); font-family: var(--font-body); font-size: 0.88rem; outline: none; transition: border-color var(--transition); }
@@ -566,7 +550,6 @@
     .sr-label { color: var(--muted); }
     .sr-val { font-weight: 600; }
     .sr-val.error { color: #ef4444; }
-    
     .gb-wrap { max-width: 700px; margin: 0 auto; }
     .gb { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem 1.5rem; backdrop-filter: blur(8px); }
     .gb-hdr { text-align: center; margin-bottom: 1.25rem; }
@@ -588,7 +571,6 @@
     .gb-msg strong { display: block; font-size: 0.82rem; margin-bottom: 0.1rem; color: var(--fg); }
     .gb-msg p { font-size: 0.8rem; color: var(--fg-dim); line-height: 1.5; }
     .gb-msg small { font-size: 0.65rem; color: rgba(255,255,255,0.2); margin-top: 0.2rem; display: block; }
-    
     .social-row { display: flex; justify-content: center; gap: 0.8rem; padding: 1.5rem 1rem; }
     .social-row a { width: 42px; height: 42px; border-radius: var(--radius-sm); background: var(--bg-card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 0.95rem; transition: all var(--transition); }
     .social-row a:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); transform: translateY(-3px); }
@@ -600,7 +582,6 @@
     .footer-grid a:hover { color: var(--accent); }
     .footer-grid .brand-footer { font-weight: 600; color: var(--accent); }
     .footer-bottom { max-width: 1000px; margin: 0 auto; border-top: 1px solid var(--border); padding-top: 1.5rem; text-align: center; font-size: 0.7rem; color: var(--muted); }
-    
     .chat-float { position: fixed; bottom: 1.25rem; right: 1.25rem; z-index: 99; display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem; }
     .chat-float-label { background: rgba(12,12,24,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.4rem 0.9rem; font-size: 0.72rem; color: var(--muted); white-space: nowrap; opacity: 0; transform: translateY(6px) scale(0.95); transition: all 0.3s ease; pointer-events: none; }
     body.light-theme .chat-float-label { background: rgba(245,245,250,0.95); }
@@ -614,7 +595,29 @@
     .back-to-top:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); transform: translateY(-2px); }
     .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
-    
+    .btn-load-more {
+      display: none;
+      margin: 1.5rem auto 0;
+      padding: 0.75rem 2rem;
+      background: var(--accent-dim);
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 50px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all var(--transition);
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: max-content;
+    }
+    .btn-load-more:hover {
+      background: var(--accent);
+      color: #000;
+      transform: translateY(-2px);
+    }
     @media (max-width: 768px) {
       .navbar { padding: 0.6rem 0.8rem; min-height: 54px; }
       .nav-brand { font-size: 1.05rem; }
@@ -636,12 +639,13 @@
       .sec { padding: 1.5rem 0; padding-left: 0.8rem; padding-right: 0.8rem; }
       .sec-title { font-size: clamp(1.2rem, 4vw, 1.6rem); }
       .sec-desc { font-size: 0.82rem; }
-      
       .how-to-order { gap: 0.4rem; font-size: 0.65rem; padding: 0.5rem; }
       .how-to-order i.fa-chevron-right { display: none; }
-
       .srv-grid { grid-template-columns: 1fr; }
-      .srv-card { min-height: 180px; }
+      .srv-card { min-height: 140px; padding: 1rem; }
+      .srv-card-top h3 { font-size: 0.82rem; }
+      .srv-price .price-val { font-size: 0.95rem; }
+      .srv-tag { font-size: 0.6rem; padding: 0.15rem 0.4rem; }
       .srv-badges { padding-left: 0; margin-top: 0.2rem; }
       .orders-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
       .order-card { padding: 0.5rem 0.6rem; }
@@ -651,7 +655,6 @@
       .order-card .oc-total { font-size: 0.72rem; }
       .order-card .oc-status { font-size: 0.55rem; }
       .order-card .oc-time { font-size: 0.5rem; }
-      
       .modal-card { padding: 1.5rem; max-height: 94vh; border-radius: 18px 18px 0 0; margin-top: auto; animation: slideUp 0.32s cubic-bezier(0.32, 0.72, 0, 1); }
       @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
       .modal-overlay { padding: 0; align-items: flex-end; }
@@ -718,7 +721,7 @@
     <p>Boost engagement akun sosial media kamu. Followers, likes, views, dan lainnya. Proses cepat, harga bersaing.</p>
     <div class="hero-stats">
       <div class="stat-item">
-        <span class="stat-number">400+</span>
+        <span class="stat-number" id="totalServices">0</span>
         <span class="stat-label">Layanan Tersedia</span>
       </div>
       <div class="stat-item">
@@ -733,38 +736,37 @@
   </header>
   
   <section class="sec" aria-label="Daftar layanan sosial media">
-    
-    <!-- Panduan Cara Pesan -->
     <div class="how-to-order reveal">
       <span><i class="fas fa-search" style="color: var(--accent);"></i> Pilih Layanan</span>
       <i class="fas fa-chevron-right"></i>
-      <span><i class="fas fa-edit" style="color: var(--accent);"></i> Isi Data</span>
+      <span><i class="fas fa-edit" style="color: var(--accent);"></i> Baca Detail</span>
       <i class="fas fa-chevron-right"></i>
       <span><i class="fas fa-wallet" style="color: var(--accent);"></i> Bayar</span>
       <i class="fas fa-chevron-right"></i>
       <span><i class="fab fa-whatsapp" style="color: #4ade80;"></i> Kirim Bukti</span>
     </div>
 
-    <!-- Search Bar -->
     <div class="search-wrap reveal">
       <i class="fas fa-search"></i>
       <input type="text" id="searchInput" placeholder="Cari layanan... (contoh: instagram followers)">
     </div>
 
-    <!-- Filter Platform (Baris 1) -->
     <div class="cat-tabs reveal" id="catTabs"></div>
 
-    <!-- Filter Sub-Kategori (Baris 2) -->
     <div class="subcat-tabs reveal" id="subcatTabs" style="display:none;"></div>
 
-    <!-- Service List -->
     <div class="srv-count reveal" id="srvCount"></div>
     <div class="srv-grid" id="srvGrid"></div>
+    
+    <div style="text-align: center; width: 100%;">
+      <button class="btn-load-more" id="loadMoreBtn" onclick="loadMoreServices()">
+        <i class="fas fa-chevron-down"></i> Tampilkan Lebih Banyak
+      </button>
+    </div>
   </section>
   
   <div class="sec-divider"><hr></div>
   
-  <!-- Pesanan Terbaru -->
   <section class="sec" aria-label="Pesanan terbaru">
     <div class="sec-header reveal">
       <div class="sec-label">Tracking</div>
@@ -784,7 +786,6 @@
   
   <div class="sec-divider"><hr></div>
   
-  <!-- Cek Status -->
   <section class="sec" aria-label="Cek status pesanan">
     <div class="sec-header reveal">
       <div class="sec-label">Info</div>
@@ -802,7 +803,6 @@
   
   <div class="sec-divider"><hr></div>
   
-  <!-- Testimoni -->
   <section class="sec" aria-label="Komentar klien">
     <div class="gb-wrap reveal">
       <div class="gb">
@@ -874,6 +874,13 @@
     <i class="fas fa-arrow-up"></i>
   </button>
   
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeDetailModal()"><i class="fas fa-xmark"></i></button>
+      <div id="detailContent"></div>
+    </div>
+  </div>
+
   <div class="modal-overlay" id="orderModal">
     <div class="modal-card">
       <button class="modal-close" onclick="closeModal()"><i class="fas fa-xmark"></i></button>
@@ -881,11 +888,9 @@
     </div>
   </div>
 
-  <!-- Toast Notification -->
   <div id="toast" class="toast">Berhasil disalin!</div>
 
   <script>
-    // Navbar & Theme Logic
     window.addEventListener('scroll', function() {
       document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
     });
@@ -944,12 +949,10 @@
       revObs.observe(el);
     });
     
-    // Helpers
     function fRp(n){ return 'Rp '+Math.ceil(n).toLocaleString('id-ID'); }
     function esc(t){ var d=document.createElement('div'); d.textContent=t; return d.innerHTML; }
     function generateOrderId(){ var now=Date.now(), ts=String(now).slice(-4), rand=''; for(var i=0;i<4;i++) rand+=Math.floor(Math.random()*10); return 'AKINO-'+ts+rand; }
     
-    // Toast Logic
     function showToast(msg) {
       var t = document.getElementById('toast');
       t.textContent = msg;
@@ -971,492 +974,101 @@
       { id:'bca', name:'BCA', icon:'fa-building-columns', iconClass:'bca', desc:'Transfer via BCA', type:'account', number:'0601345985', holder:'Tesalonik Bagaskara' }
     ];
 
-    // === DATA SERVICES ===
-    var SERVICES = [
-      // INSTAGRAM
-      {id:1,category:'instagram',name:'Instagram Likes Indonesia [Max 20K] [Garansi Refill 30 Hari] [Drop 18.9%]',min:20,max:20000,rate:33183,tags:['TERLARIS','POPULER']},
-      {id:2,category:'instagram',name:'Instagram Likes Indonesia [REAL] [No Refill] [Drop 38.98%]',min:20,max:500,rate:23985,tags:['TERLARIS','TERMURAH']},
-      {id:3,category:'instagram',name:'Instagram Likes Indonesia [Pria] [Max 20K] [Garansi Refill 30 Hari] [Drop 27.7%]',min:20,max:20000,rate:33183,tags:['BARU']},
-      {id:4,category:'instagram',name:'Instagram Likes Indonesia [Wanita] [Max 20K] [Garansi Refill 30 Hari] [Drop 21.12%]',min:20,max:20000,rate:33183,tags:['BARU']},
-      {id:5,category:'instagram',name:'Instagram Likes Indonesia + Impression + Reach [Max 5K] [REAL] [Garansi 30 Hari] [Drop 10.98%]',min:50,max:8000,rate:42795,tags:['BARU']},
-      {id:6,category:'instagram',name:'Instagram Followers Indonesia [HQ] Matikan The Flag For Review [Drop 23.49%]',min:10,max:100,rate:36680,tags:['TERLARIS','POPULER','HQ']},
-      {id:7,category:'instagram',name:'Instagram Followers Indonesia [REAL] [Max 5K] [Garansi 30 Hari] Matikan The Flag For Review [Drop 18.21%]',min:50,max:8000,rate:97772,tags:['BARU']},
-      {id:8,category:'instagram',name:'Instagram Followers Indonesia [HQ] [Max 20K] [Garansi Refill 30 Hari] [Drop 25.6%]',min:20,max:20000,rate:165059,tags:['BARU','HQ']},
-      {id:9,category:'instagram',name:'Instagram Followers Indonesia [HQ] [Pria] [Max 20K] [Garansi 30 Hari] [Drop 26.7%]',min:20,max:20000,rate:165059,tags:['BARU','HQ']},
-      {id:10,category:'instagram',name:'Instagram Followers Indonesia [HQ] [Wanita] [Max 20K] [Garansi Refill 30 Hari] [Drop 25.71%]',min:20,max:20000,rate:165059,tags:['BARU','HQ']},
-      {id:11,category:'instagram',name:'Instagram Followers [HQ] [Max. 100K] [Tidak Bergaransi] [Matikan Flag For Review] [Drop 34.11%]',min:10,max:100000,rate:78003,tags:['BARU','HQ']},
-      {id:12,category:'instagram',name:'Instagram Followers [HQ] [Max. 100K] [Garansi Refill 25 Hari] [Matikan Flag For Review]',min:10,max:100000,rate:119838,tags:['BARU','HQ']},
-      {id:13,category:'instagram',name:'Instagram Followers [HQ] [Max 25K] [Tidak Bergaransi] [Matikan Flag For Review] [Drop 87.65%]',min:10,max:200000,rate:48641,tags:['POPULER','HQ']},
-      {id:14,category:'instagram',name:'Instagram Followers [HQ] [Max 50K] [Garansi Refill 30 Hari] [Matikan Flag For Review] [Drop 82.03%]',min:50,max:200000,rate:113405,tags:['BARU','HQ']},
-      {id:15,category:'instagram',name:'Instagram Followers Arabic [HQ] [Garansi Refill 30 Hari]',min:20,max:100000,rate:221923,tags:['BARU','HQ']},
-      {id:16,category:'instagram',name:'Instagram Followers Nigeria [Max 50K] [Garansi 30 Hari]',min:20,max:20000,rate:220150,tags:['TERMURAH']},
-      {id:17,category:'instagram',name:'Instagram Followers Prancis [Max 20K] [Garansi 30 Hari]',min:20,max:20000,rate:443623,tags:['BARU']},
-      {id:18,category:'instagram',name:'Instagram Followers Spanyol [Max 100K] [Garansi 30 Hari]',min:20,max:100000,rate:444561,tags:['BARU']},
-      {id:19,category:'instagram',name:'Instagram Followers Latin [Max 100K] [Garansi 30 Hari]',min:20,max:100000,rate:444561,tags:['BARU']},
-      {id:20,category:'instagram',name:'Instagram Followers USA [Max 100K] [Garansi 30 Hari] [Drop 2.54%]',min:20,max:100000,rate:445322,tags:['BARU']},
-      {id:21,category:'instagram',name:'Instagram Followers Italia [Max 25K] [Garansi 30 Hari]',min:20,max:25000,rate:445874,tags:['BARU']},
-      {id:22,category:'instagram',name:'Instagram Followers Arab [Max 50K] [Garansi 30 Hari]',min:20,max:100000,rate:440268,tags:['BARU']},
-      {id:23,category:'instagram',name:'Instagram Followers Brazil [Max 75K] [Garansi 30 Hari]',min:20,max:100000,rate:443845,tags:['BARU']},
-      {id:24,category:'instagram',name:'Instagram Likes [HQ] [Max 500] [Tidak Ada Garansi] [Drop 0.83%]',min:50,max:500,rate:2950,tags:['TERMURAH']},
-      {id:25,category:'instagram',name:'Instagram Likes [LQ] [Tidak Bergaransi] [Drop 12.53%]',min:100,max:10000,rate:3270,tags:['TERMURAH']},
-      {id:26,category:'instagram',name:'Instagram Likes [LQ] [Garansi Refill 25 Hari] [Drop 6.89%]',min:50,max:100000,rate:8100,tags:['TERMURAH']},
-      {id:27,category:'instagram',name:'Instagram Likes [LQ] [Garansi Refill 30 Hari] [Drop 6.87%]',min:100,max:10000,rate:4850,tags:['TERMURAH']},
-      {id:28,category:'instagram',name:'Instagram Likes [HQ] [Tidak Bergaransi] [Drop 21.49%]',min:50,max:100000,rate:7350,tags:['TERMURAH']},
-      {id:29,category:'instagram',name:'Instagram Likes [HQ] [Garansi Refill 30 Hari] [Drop 10.38%]',min:10,max:100000,rate:7500,tags:['TERMURAH']},
-      {id:30,category:'instagram',name:'Instagram Likes [LQ] [Max 1M] [Tidak Bergaransi]',min:100,max:1000000,rate:9500,tags:['TERMURAH']},
-      {id:31,category:'instagram',name:'Instagram Likes [LQ] [Max 1M] [Garansi Refill 30 Hari] [Drop 34.87%]',min:50,max:1000000,rate:13550,tags:['TERMURAH']},
-      {id:32,category:'instagram',name:'Instagram Likes [HQ] [Max 1M] [Tidak Bergaransi] [Drop 20.78%]',min:100,max:1000000,rate:2950,tags:['TERMURAH']},
-      {id:33,category:'instagram',name:'Instagram Likes [LQ] [Max 100K] [No Refill] [Drop 22.85%]',min:10,max:100000,rate:20300,tags:['TERMURAH']},
-      {id:34,category:'instagram',name:'Instagram Likes [LQ] [Max 100K] [Garansi 30 Hari] [Drop 27.86%]',min:10,max:100000,rate:2600,tags:['TERMURAH']},
-      {id:35,category:'instagram',name:'Instagram Likes [HQ] [Max 100K] [Tidak Bergaransi] [Drop 22.45%]',min:100,max:100000,rate:1950,tags:['TERMURAH']},
-      {id:36,category:'instagram',name:'Instagram Likes [LQ] [Max 200K] [Tidak Bergaransi] [Drop 31.74%]',min:10,max:200000,rate:1450,tags:['TERMURAH']},
-      {id:37,category:'instagram',name:'Instagram Likes [HQ] [Max 100K] [Garansi Refill 30 Hari] [Drop 4.23%]',min:10,max:100000,rate:2050,tags:['TERMURAH']},
-      {id:38,category:'instagram',name:'Instagram Likes [HQ] [Max 100K] [Tidak Ada Garansi]',min:10,max:100000,rate:8300,tags:['TERMURAH']},
-      {id:39,category:'instagram',name:'Instagram Likes [LQ] [Max 200K] [Garansi 30 Hari] [Drop 28.9%]',min:50,max:200000,rate:3750,tags:['TERMURAH']},
-      {id:40,category:'instagram',name:'Instagram Likes On Komentar [LQ] [Max 1K] [Tidak Bergaransi] [Drop 1.4%]',min:20,max:1000,rate:27350,tags:['TERMURAH']},
-      {id:41,category:'instagram',name:'Instagram Likes On Komentar [LQ] [Max 5K] [Tidak Bergaransi] [Drop 37.5%]',min:20,max:5000,rate:30250,tags:['TERMURAH']},
-      {id:42,category:'instagram',name:'Instagram Likes On Komentar [LQ] [Max 50K] [Tidak Bergaransi] [Drop 19.1%]',min:20,max:50000,rate:32550,tags:['TERMURAH']},
-      {id:43,category:'instagram',name:'Instagram Likes Spanyol [Max 100K] [Garansi 30 Hari]',min:20,max:100000,rate:44385,tags:['TERMURAH']},
-      {id:44,category:'instagram',name:'Instagram Likes Nigeria [Max 100K] [Garansi 30 Hari]',min:20,max:100000,rate:43946,tags:['TERMURAH']},
-      {id:45,category:'instagram',name:'Instagram Likes Prancis [Max 20K] [Garansi 30 Hari]',min:20,max:20000,rate:44484,tags:['TERMURAH']},
-      {id:46,category:'instagram',name:'Instagram Likes Latin [Max 100K] [Garansi 30 Hari]',min:20,max:100000,rate:43405,tags:['TERMURAH']},
-      {id:47,category:'instagram',name:'Instagram Likes USA [Max 100K] [Garansi 30 Hari]',min:20,max:100000,rate:44484,tags:['TERMURAH']},
-      {id:48,category:'instagram',name:'Instagram Likes Italia [Max 10K] [Garansi 30 Hari]',min:20,max:10000,rate:44588,tags:['TERMURAH']},
-      {id:49,category:'instagram',name:'Instagram Likes Arab [Max 50K] [Garansi 30 Hari]',min:20,max:100000,rate:43946,tags:['TERMURAH']},
-      {id:50,category:'instagram',name:'Instagram Likes Brazil [Max 75K] [Garansi 30 Hari]',min:20,max:75000,rate:43405,tags:['TERMURAH']},
-      {id:51,category:'instagram',name:'Instagram Repost [HQ] [Tidak Bergaransi] [Drop 0%]',min:10,max:100000,rate:14775,tags:['TERMURAH']},
-      {id:52,category:'instagram',name:'Instagram Repost [HQ] [Maks 10K] [Tidak Bergaransi] [Drop 0%]',min:10,max:10000,rate:14300,tags:['TERMURAH']},
-      {id:53,category:'instagram',name:'Instagram Repost [Max 10M] [Tidak Bergaransi] [Drop 0%]',min:10,max:10000000,rate:9925,tags:['TERMURAH']},
-      {id:54,category:'instagram',name:'Instagram Video Views [All Link] [Cancel Button] [FAST] [Drop 0%]',min:100,max:2147483628,rate:58,tags:['TERMURAH']},
-      {id:55,category:'instagram',name:'Instagram Video Views [Max: Unlimited] [Drop 0%]',min:50,max:217545811,rate:68,tags:['TERMURAH']},
-      {id:56,category:'instagram',name:'Instagram Video Views [Max Unlimited] [All Link Type] [Drop 0%]',min:100,max:2147483647,rate:43,tags:['TERMURAH']},
-      {id:57,category:'instagram',name:'Instagram Video Views [Max: Unlimited] [All Type Link] [Drop 5.33%]',min:100,max:2147483647,rate:201,tags:['TERMURAH']},
-      {id:58,category:'instagram',name:'Instagram Video Reels Views + Reach + Impressions [Max 250K] [Tidak Bergaransi] [Drop 0%]',min:100,max:300000,rate:2030,tags:['TERMURAH']},
-      {id:59,category:'instagram',name:'Instagram Video Views [Max Unlimited] [Tidak Bergaransi] [Drop 3.6%]',min:100,max:2147483647,rate:24,tags:['TERMURAH']},
-      {id:60,category:'instagram',name:'Instagram Reach + Impressions',min:10,max:1000000,rate:1615,tags:['TERMURAH']},
-      {id:61,category:'instagram',name:'Instagram Reel Impressions + Profile Visits + Reach [Max: 100M]',min:100,max:5000000,rate:4645,tags:['TERMURAH']},
-      {id:62,category:'instagram',name:'Instagram Share [Max Unlimited] [Tidak Bergaransi]',min:10,max:217545811,rate:34,tags:['TERMURAH']},
-      {id:63,category:'instagram',name:'Instagram Share [Max 100K] [Tidak Bergaransi]',min:100,max:100000,rate:289,tags:['TERMURAH']},
-      {id:64,category:'instagram',name:'Instagram Saves [Max 200K] [Tidak Bergaransi]',min:10,max:100000000,rate:3698,tags:['TERMURAH']},
-      {id:65,category:'instagram',name:'Instagram Saves [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:1394,tags:['TERMURAH']},
-      {id:66,category:'instagram',name:'Instagram Shares [Max Unlimited] [Tidak Bergaransi]',min:100,max:100000,rate:21,tags:['TERMURAH']},
-      {id:67,category:'instagram',name:'Instagram Custom Komentar [HQ] [Max 10K] [Tidak Bergaransi]',min:10,max:20000,rate:18579,tags:['TERMURAH']},
-      {id:68,category:'instagram',name:'Instagram Random Komentar [HQ] [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:12533,tags:['TERMURAH']},
-      {id:69,category:'instagram',name:'Instagram Custom Komentar [Max 20K] [Tidak Bergaransi]',min:10,max:20000,rate:12535,tags:['TERMURAH']},
-      {id:70,category:'instagram',name:'Instagram Random Komentar [Max 20K] [Tidak Bergaransi]',min:10,max:20000,rate:12535,tags:['TERMURAH']},
-      {id:71,category:'instagram',name:'Instagram Likes On Komentar [HQ] [Max 1K] [Tidak Bergaransi]',min:20,max:1000,rate:27665,tags:['TERMURAH']},
-      {id:72,category:'instagram',name:'Instagram Likes On Komentar [HQ] [Max 100K] [Tidak Bergaransi]',min:20,max:100000,rate:32688,tags:['TERMURAH']},
-      {id:73,category:'instagram',name:'Instagram Story Views [HQ] [Max 200K] [Tidak Bergaransi]',min:10,max:20000,rate:23952,tags:['TERMURAH']},
+    var SERVICES = [];
 
-      // TIKTOK
-      {id:74,category:'tiktok',name:'TikTok Likes [Max 10K] [Hide Akun] [Tidak Bergaransi]',min:20,max:10000,rate:4400,tags:['TERMURAH']},
-      {id:75,category:'tiktok',name:'TikTok Likes [HQ] [Max 1M] [Tidak Bergaransi] [Drop 18.9%]',min:10,max:1000000,rate:8000,tags:['TERLARIS','POPULER','HQ']},
-      {id:76,category:'tiktok',name:'TikTok Likes [Max 1M] [Hide Akun] [Garansi Refill 30 Hari]',min:10,max:1000000,rate:4750,tags:['BARU']},
-      {id:77,category:'tiktok',name:'TikTok Likes [HQ] [Max 100K] [Garansi Refill 30 Hari] [Drop 57.06%]',min:10,max:100000,rate:19550,tags:['BARU','HQ']},
-      {id:78,category:'tiktok',name:'TikTok Likes [HQ] [Max 100K] [Garansi Refill 30 Hari] [Drop 0%]',min:10,max:100000,rate:23100,tags:['BARU','HQ']},
-      {id:79,category:'tiktok',name:'TikTok Likes [HQ] [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:15600,tags:['BARU','HQ']},
-      {id:80,category:'tiktok',name:'TikTok Likes [HQ] [Max 5M] [Tidak Bergaransi] [Drop 1.5%]',min:10,max:5000000,rate:55400,tags:['BARU','HQ']},
-      {id:81,category:'tiktok',name:'TikTok Likes [HQ] [Max 5M] [Garansi Refill 25 Hari] [Drop 0.27%]',min:10,max:5000000,rate:88900,tags:['BARU','HQ']},
-      {id:82,category:'tiktok',name:'TikTok Likes Indonesia [Max 10K] [Garansi Refill 30 Hari] [Drop 11.7%]',min:50,max:10000,rate:50193,tags:['TERMURAH']},
-      {id:83,category:'tiktok',name:'TikTok Followers Indonesia Real [Max 20K] [Drop 12.19%]',min:20,max:20000,rate:88675,tags:['TERMURAH']},
-      {id:84,category:'tiktok',name:'TikTok Followers Indonesia Real [Max 20K] [Garansi Refill 30 Hari] [Drop 2.01%]',min:20,max:20000,rate:125483,tags:['TERMURAH']},
-      {id:85,category:'tiktok',name:'TikTok Views Indonesia [Max 100K] [Garansi Refill 30 Hari] [Drop 0.76%]',min:100,max:100000,rate:2008,tags:['TERMURAH']},
-      {id:86,category:'tiktok',name:'TikTok Views Indonesia [Tidak Bergaransi] [Drop 0%]',min:100,max:10000,rate:1757,tags:['TERMURAH']},
-      {id:87,category:'tiktok',name:'TikTok Views Indonesia [Max 100K] [Tidak Bergaransi] [Drop 0%]',min:100,max:100000,rate:2259,tags:['TERMURAH']},
-      {id:88,category:'tiktok',name:'TikTok Views Indonesia [Max 100K] [Garansi Refill 30 Hari] (V2) [Drop 0%]',min:100,max:100000,rate:2509,tags:['TERMURAH']},
-      {id:89,category:'tiktok',name:'TikTok Followers [LQ] [Max 1M] [Tidak Bergaransi] [Drop 2.05%]',min:10,max:1000000,rate:26025,tags:['TERMURAH','LQ']},
-      {id:90,category:'tiktok',name:'TikTok Followers [LQ] [Max 1M] [Garansi Refill 25 Hari] [Drop 0.93%]',min:10,max:1000000,rate:34796,tags:['TERMURAH','LQ']},
-      {id:91,category:'tiktok',name:'TikTok Followers [HQ] [Tidak Bergaransi] [Drop 7.39%]',min:10,max:12000,rate:170547,tags:['TERMURAH','HQ']},
-      {id:92,category:'tiktok',name:'TikTok Followers [HQ] [Max 1,5K] [Tidak Bergaransi] [Drop 2.48%]',min:10,max:2000,rate:142046,tags:['TERMURAH','HQ']},
-      {id:93,category:'tiktok',name:'TikTok Followers [HQ] [Max 1,5K] [Garansi Refill 25 Hari]',min:10,max:2000,rate:193769,tags:['TERMURAH','HQ']},
-      {id:94,category:'tiktok',name:'TikTok Followers [HQ] [Max 20K] [Tidak Bergaransi]',min:10,max:20000,rate:191960,tags:['TERMURAH','HQ']},
-      {id:95,category:'tiktok',name:'TikTok Followers [HQ] [Max 20K] [Garansi Refill 30 Hari]',min:10,max:20000,rate:266195,tags:['TERMURAH','HQ']},
-      {id:96,category:'tiktok',name:'TikTok Followers [HQ] [Max 2K] [Tidak Bergaransi]',min:10,max:2000,rate:172098,tags:['TERMURAH','HQ']},
-      {id:97,category:'tiktok',name:'TikTok Followers [HQ] [Max 10K] [Garansi Refill 30 Hari] [Drop 7.03%]',min:10,max:10000,rate:227500,tags:['TERMURAH','HQ']},
-      {id:98,category:'tiktok',name:'TikTok PK Battle Points [Max: 100M]',min:100,max:1000000,rate:6986,tags:['TERMURAH']},
-      {id:99,category:'tiktok',name:'TikTok PK Battle Points [Max: Unlimited]',min:100,max:1000000,rate:7147,tags:['BARU']},
-      {id:100,category:'tiktok',name:'TikTok Save [Max: 100M] [R30] Instant Start',min:10,max:100000000,rate:1813,tags:['TERLARIS','TERMURAH','POPULER']},
-      {id:101,category:'tiktok',name:'TikTok Saves [HQ] [Max 10M] [Tidak Bergaransi]',min:50,max:10000000,rate:155,tags:['TERMURAH','HQ']},
-      {id:102,category:'tiktok',name:'TikTok Save [HQ] [Max 10M] [Garansi Refill 25 Hari]',min:50,max:10000000,rate:173,tags:['BARU','HQ']},
-      {id:103,category:'tiktok',name:'TikTok Shares [Max 1M] [Tidak Bergaransi]',min:10,max:1000000,rate:3098,tags:['TERMURAH']},
-      {id:104,category:'tiktok',name:'TikTok Shares [Max 200K] [Garansi Refill 25 Hari]',min:10,max:200000,rate:4730,tags:['POPULER']},
-      {id:105,category:'tiktok',name:'TikTok Watchtime Views [30 Sec Video] [Drop 0%]',min:500,max:1000000,rate:9331,tags:['POPULER']},
-      {id:106,category:'tiktok',name:'TikTok Watchtime Views [90 Sec Video] [Drop 0%]',min:1000,max:100000,rate:75572,tags:['BARU']},
-      {id:107,category:'tiktok',name:'TikTok Watchtime Views [60 Sec Video] [Drop 0%]',min:500,max:100000,rate:9331,tags:['BARU']},
-      {id:108,category:'tiktok',name:'TikTok Watchtime Views [150 Sec Video] [Drop 0%]',min:1000,max:100000,rate:100765,tags:['BARU']},
-      {id:109,category:'tiktok',name:'TikTok Watchtime Views [180 Sec Video] [Drop 0%]',min:1000,max:100000,rate:113360,tags:['BARU']},
-      {id:110,category:'tiktok',name:'TikTok Live Stream Views [15 Menit]',min:50,max:10000,rate:44414,tags:['POPULER']},
-      {id:111,category:'tiktok',name:'TikTok Live Stream Views [30 Menit]',min:50,max:100000,rate:88790,tags:['BARU']},
-      {id:112,category:'tiktok',name:'TikTok Live Stream Views [45 Menit]',min:50,max:100000,rate:133202,tags:['BARU']},
-      {id:113,category:'tiktok',name:'TikTok Live Stream Views [60 Menit]',min:50,max:100000,rate:177603,tags:['BARU']},
-      {id:114,category:'tiktok',name:'TikTok Live Stream Views [120 Menit]',min:50,max:100000,rate:355205,tags:['BARU']},
-      {id:115,category:'tiktok',name:'TikTok Live Likes [Max Unlimited] [Tidak Bergaransi]',min:50,max:217545811,rate:294,tags:['POPULER']},
-      {id:116,category:'tiktok',name:'TikTok Live Likes [Max Unlimited] [Tidak Bergaransi] (V2)',min:10,max:217545811,rate:325,tags:['BARU']},
+    async function fetchServices() {
+      try {
+        const response = await fetch('https://sosmed.tsalonikabagas.workers.dev/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'services' })
+        });
+        const rawServices = await response.json();
+        
+        SERVICES = rawServices.map(srv => {
+          const originalRate = parseFloat(srv.rate);
+          const markedUpRate = Math.ceil(originalRate * 1.3);
 
-      // YOUTUBE
-      {id:117,category:'youtube',name:'YouTube Komentar Indonesia [Custom] [Max 50] [Tidak Bergaransi]',min:5,max:50,rate:200773,tags:['POPULER']},
-      {id:118,category:'youtube',name:'YouTube Komentar Indonesia [Custom] [Pria] [Max 50] [Tidak Bergaransi]',min:5,max:50,rate:200773,tags:['BARU']},
-      {id:119,category:'youtube',name:'YouTube Komentar Indonesia [Custom] [Wanita] [Max 50] [Tidak Bergaransi]',min:5,max:50,rate:200773,tags:['BARU']},
-      {id:120,category:'youtube',name:'YouTube Subscriber [Garansi Refill 30 Hari] [Drop 77.38%]',min:50,max:10000,rate:513485,tags:['POPULER']},
-      {id:121,category:'youtube',name:'YouTube Subscribers [Max 5K] [Garansi Refill 30 Hari] [Drop 80.54%]',min:50,max:5000,rate:589387,tags:['BARU']},
-      {id:122,category:'youtube',name:'YouTube Subscribers [Max 100K] [Garansi Refill 30 Hari]',min:20,max:100000,rate:1080645,tags:['BARU']},
-      {id:123,category:'youtube',name:'YouTube Likes [Max 20K] [Garansi Refill 30 Hari] [Drop 2%]',min:10,max:100000,rate:23471,tags:['BARU']},
-      {id:124,category:'youtube',name:'YouTube Likes [Max 10K] [Garansi Refill 30 Hari] [Drop 0%]',min:10,max:20000,rate:31109,tags:['POPULER']},
-      {id:125,category:'youtube',name:'YouTube Likes [Max 50K] [Garansi Refill 30 Hari] [Drop 1.52%]',min:10,max:50000,rate:25362,tags:['BARU']},
-      {id:126,category:'youtube',name:'YouTube Likes [Max 10K] [Tidak Bergaransi]',min:10,max:100000,rate:45875,tags:['BARU']},
-      {id:127,category:'youtube',name:'YouTube Likes [Max 10K] [Garansi Refill 30 Hari] (V2)',min:10,max:100000,rate:47509,tags:['BARU']},
-      {id:128,category:'youtube',name:'YouTube Likes [Max 50K] [Garansi Refill 30 Hari] (V2)',min:20,max:50000,rate:20901,tags:['TERMURAH']},
-      {id:129,category:'youtube',name:'YouTube Community Post Likes [R30]',min:10,max:100000,rate:247747,tags:['TERMURAH']},
-      {id:130,category:'youtube',name:'YouTube Community Post Likes [R45]',min:10,max:100000,rate:260481,tags:['BARU']},
-      {id:131,category:'youtube',name:'YouTube Community Post Likes [R60]',min:10,max:100000,rate:272794,tags:['BARU']},
-      {id:132,category:'youtube',name:'YouTube Custom Komentar Live Stream [1-5 Chats per Menit]',min:5,max:100000,rate:76511,tags:['TERMURAH']},
-      {id:133,category:'youtube',name:'YouTube Custom Komentar Live Stream [5-10 Chats per Menit]',min:5,max:100000,rate:76511,tags:['BARU']},
-      {id:134,category:'youtube',name:'YouTube Custom Komentar Live Stream [10-20 Chats per Menit]',min:5,max:100000,rate:76511,tags:['BARU']},
-      {id:135,category:'youtube',name:'YouTube Custom Komentar Live Stream [20-30 Chats per Menit]',min:5,max:100000,rate:76511,tags:['BARU']},
-      {id:136,category:'youtube',name:'YouTube Custom Komentar Live Stream [30-40 Chats per Menit]',min:5,max:100000,rate:76526,tags:['BARU']},
-      {id:137,category:'youtube',name:'YouTube Custom Komentar Live Stream [40-50 Chats per Menit]',min:5,max:100000,rate:76526,tags:['BARU']},
-      {id:138,category:'youtube',name:'YouTube Native Ads Views [500K Minimum] [R30]',min:500000,max:100000000,rate:18250,tags:['TERMURAH']},
-      {id:139,category:'youtube',name:'YouTube Native Ads Views [200K Minimum] [R30]',min:200000,max:100000000,rate:19264,tags:['BARU']},
-      {id:140,category:'youtube',name:'YouTube Native Ads Views [40K Minimum] [R30]',min:40000,max:100000000,rate:20256,tags:['BARU']},
-      {id:141,category:'youtube',name:'YouTube Native Ads Views [10K Minimum] [R30]',min:10000,max:100000000,rate:21818,tags:['BARU']},
-      {id:142,category:'youtube',name:'YouTube Native Ads Views [5K Minimum] [R30]',min:5000,max:100000000,rate:23515,tags:['BARU']},
-      {id:143,category:'youtube',name:'YouTube Native Ads Views [3K Minimum] [R30]',min:3000,max:100000000,rate:32134,tags:['BARU']},
-      {id:144,category:'youtube',name:'YouTube Native Ads Views [1K Minimum] [R30]',min:1000,max:1000000,rate:27350,tags:['POPULER']},
-      {id:145,category:'youtube',name:'YouTube Native Ads Views [Min 200K] [R90] [S2]',min:200000,max:100000000,rate:17372,tags:['BARU']},
-      {id:146,category:'youtube',name:'YouTube Native Ads Views [Min 1M] [R90] [S2]',min:1000000,max:100000000,rate:16289,tags:['TERMURAH']},
-      {id:147,category:'youtube',name:'YouTube Native Ads Views [Min 500K] [R90] [S2]',min:500000,max:100000000,rate:16646,tags:['BARU']},
-      {id:148,category:'youtube',name:'YouTube Native Ads Views [Min 100K] [R90] [S2]',min:100000,max:100000000,rate:17739,tags:['BARU']},
-      {id:149,category:'youtube',name:'YouTube Native Ads Views [Min 30K] [R90] [S2]',min:30000,max:100000000,rate:18458,tags:['BARU']},
-      {id:150,category:'youtube',name:'YouTube Native Ads Views [Min 20K] [R90] [S2]',min:20000,max:100000000,rate:18818,tags:['BARU']},
-      {id:151,category:'youtube',name:'YouTube Native Ads Views [Min 5K] [R90] [S2]',min:5000,max:100000000,rate:19907,tags:['BARU']},
-      {id:152,category:'youtube',name:'YouTube Native Ads Views [Min 3K] [R90] [S2]',min:3000,max:100000000,rate:20993,tags:['BARU']},
-      {id:153,category:'youtube',name:'YouTube Native Ads Views [Min 1K] [R90] [S2]',min:1000,max:1000000,rate:21712,tags:['BARU']},
-      {id:154,category:'youtube',name:'YouTube Native Ads Views [Min 500] [R90] [S2]',min:500,max:1000000,rate:22801,tags:['BARU']},
-      {id:155,category:'youtube',name:'YouTube Native Views [Start 0-12 Jam] [Garansi Refill 30 Hari] [Drop 0.49%]',min:50,max:1000000,rate:27094,tags:['TERMURAH']},
-      {id:156,category:'youtube',name:'YouTube Native Views [Start 30-45 Menit] [Garansi Refill 30 Hari] [Drop 0%]',min:2000,max:10000000,rate:28808,tags:['BARU']},
-      {id:157,category:'youtube',name:'YouTube Native Views [Start 30-45 Menit] [Garansi Refill 30 Hari] (V2) [Drop 1.85%]',min:100,max:500000000,rate:35418,tags:['POPULER']},
-      {id:158,category:'youtube',name:'YouTube Views Native Ads [USA] [Min 5K] [R30]',min:5000,max:10000000,rate:216716,tags:['TERMURAH']},
-      {id:159,category:'youtube',name:'YouTube Views [Google Adwords] [Discovery Ads] [Video Under 5 Minutes] [Min 20K] [R60]',min:20000,max:100000000,rate:75042,tags:['TERMURAH']},
-      {id:160,category:'youtube',name:'YouTube Views [Google Adwords] [Discovery Ads] [Video Under 10 Minutes] [Min 20K] [R60]',min:20000,max:100000000,rate:75042,tags:['BARU']},
-      {id:161,category:'youtube',name:'YouTube Views [Google Adwords] [Discovery Ads] [Video Unlimited Length] [Min 20K] [R60]',min:20000,max:100000000,rate:94338,tags:['BARU']},
-      {id:162,category:'youtube',name:'YouTube Views [Google Adwords] [Display Ads Global] [Video Under 5 Minutes] [Min 10K] [R60]',min:10000,max:10000000,rate:95327,tags:['TERMURAH']},
-      {id:163,category:'youtube',name:'YouTube Views [Google Adwords] [Display Ads Global] [Video Under 10 Minutes] [Min 10K] [R60]',min:10000,max:10000000,rate:104832,tags:['BARU']},
-      {id:164,category:'youtube',name:'YouTube Views [Google Adwords] [Display Ads Global] [Unlimited Length] [Min 10K] [R60]',min:10000,max:10000000,rate:142792,tags:['BARU']},
-      {id:165,category:'youtube',name:'YouTube Adwords Views [WorldWide Skip Ads] [Minimum 1M] [R45]',min:1000000,max:10000000,rate:9329,tags:['TERMURAH']},
-      {id:166,category:'youtube',name:'YouTube Adwords Views [WorldWide Skip Ads] [Minimum 500K] [R45]',min:500000,max:10000000,rate:9329,tags:['BARU']},
-      {id:167,category:'youtube',name:'YouTube Adwords Views [WorldWide Skip Ads] [Minimum 200K] [R45]',min:200000,max:10000000,rate:9828,tags:['BARU']},
-      {id:168,category:'youtube',name:'YouTube Adwords Views [WorldWide Skip Ads] [Minimum 100K] [R45]',min:100000,max:1000000,rate:18412,tags:['BARU']},
-      {id:169,category:'youtube',name:'YouTube Adwords Views [WorldWide Skip Ads] [Minimum 50K] [R45]',min:50000,max:10000000,rate:17184,tags:['BARU']},
-      {id:170,category:'youtube',name:'YouTube Live Stream [Maks 1K] [15 Menit]',min:50,max:1000,rate:1820,tags:['POPULER']},
-      {id:171,category:'youtube',name:'YouTube Live Stream [Maks 1K] [30 Menit]',min:50,max:1000,rate:3665,tags:['BARU']},
-      {id:172,category:'youtube',name:'YouTube Live Stream [Maks 1K] [60 Menit]',min:50,max:1000,rate:7325,tags:['BARU']},
-      {id:173,category:'youtube',name:'YouTube Live Stream [Maks 1K] [90 Menit]',min:50,max:1000,rate:10992,tags:['BARU']},
-      {id:174,category:'youtube',name:'YouTube Live Stream [Maks 1K] [2 Jam]',min:50,max:1000,rate:14679,tags:['BARU']},
-      {id:175,category:'youtube',name:'YouTube Live Stream [Maks 1K] [3 Jam]',min:50,max:1000,rate:21981,tags:['BARU']},
-      {id:176,category:'youtube',name:'YouTube Live Stream [Maks 1K] [6 Jam]',min:50,max:1000,rate:44770,tags:['BARU']},
-      {id:177,category:'youtube',name:'YouTube Live Stream [Maks 1K] [12 Jam]',min:50,max:1000,rate:89542,tags:['BARU']},
-      {id:178,category:'youtube',name:'YouTube Live Stream [Maks 1K] [24 Jam]',min:50,max:1000,rate:179069,tags:['BARU']},
-      {id:179,category:'youtube',name:'YouTube Views [30-60 Sec Retention] [Source: YouTube Search+Browse Features+Suggested] [R30] [Drop 0%]',min:100,max:10000000,rate:37794,tags:['POPULER']},
-      {id:180,category:'youtube',name:'YouTube Views [3-5 Min Retention] [Source: YouTube Search+Browse Features+Suggested] [R30] [Drop 0%]',min:1000,max:1000000,rate:70850,tags:['BARU']},
-      {id:181,category:'youtube',name:'YouTube Views [2-3 Min Retention] [Source: YouTube Search+Browse Features+Suggested] [R30] [Drop 0%]',min:1000,max:1000000,rate:71565,tags:['BARU']},
-      {id:182,category:'youtube',name:'YouTube Views [3-5 Min Retention] [Source: YouTube Search+Browse Features+Suggested] [R30] (V2) [Drop 0%]',min:1000,max:1000000,rate:75144,tags:['BARU']},
-      {id:183,category:'youtube',name:'YouTube Views [3-5 Min Retention] [Source: YouTube Search+Browse Features+Suggested] [R30] (V3)',min:1000,max:1000000,rate:76828,tags:['BARU']},
-      {id:184,category:'youtube',name:'YouTube Adwords Views [Min 1M] [R90]',min:1000000,max:100000000,rate:6175,tags:['TERMURAH']},
-      {id:185,category:'youtube',name:'YouTube Adwords Views [Minimum 500K] [Start Time 24-48H]',min:500000,max:10000000,rate:10712,tags:['BARU']},
-      {id:186,category:'youtube',name:'YouTube Adwords Views [Minimum 500K] [Seed: 1M/D] [Start Time 1-2H]',min:500000,max:10000000,rate:12869,tags:['BARU']},
-      {id:187,category:'youtube',name:'YouTube Adwords Views [Min 1M] [R90] (V2)',min:1000000,max:100000000,rate:21354,tags:['BARU']},
-      {id:188,category:'youtube',name:'YouTube Views [Niche-Related] [Music] [R30] [Topic Related]',min:100,max:1000000,rate:90614,tags:['TERMURAH']},
-      {id:189,category:'youtube',name:'YouTube Views [Niche-Related] [Entertainment] [R30] [Topic Related]',min:40,max:1000000,rate:135934,tags:['BARU']},
-      {id:190,category:'youtube',name:'YouTube Views [Niche-Related] [Gaming] [R30] [Topic Related]',min:40,max:1000000,rate:135934,tags:['BARU']},
-      {id:191,category:'youtube',name:'YouTube Views [Niche-Related] [News] [R30] [Topic Related]',min:40,max:1000000,rate:135934,tags:['BARU']},
-      {id:192,category:'youtube',name:'YouTube Views [Niche-Related] [Cooking] [R30] [Topic Related]',min:40,max:1000000,rate:135934,tags:['BARU']},
-      {id:193,category:'youtube',name:'YouTube Views [Niche-Related] [Fashion] [R30] [Topic Related]',min:40,max:1000000,rate:135934,tags:['BARU']},
-      {id:194,category:'youtube',name:'YouTube Views [Niche-Related] [Tech] [R30] [Topic Related]',min:40,max:1000000,rate:135934,tags:['BARU']},
-      {id:195,category:'youtube',name:'Youtube Adwords Views [Minimum 100K] [Start and Complete: 24hr-30/H]',min:100000,max:1000000,rate:17717,tags:['TERMURAH']},
-      {id:196,category:'youtube',name:'YouTube Native Views [Social Ads] [Min 100K] [R30]',min:100000,max:100000000,rate:17996,tags:['BARU']},
-      {id:197,category:'youtube',name:'YouTube Native Views [Social Ads] [Min 20K] [R30]',min:20000,max:100000000,rate:19095,tags:['BARU']},
-      {id:198,category:'youtube',name:'YouTube Native Views [Social Ads] [Min 10K] [R30]',min:10000,max:100000000,rate:19464,tags:['BARU']},
-      {id:199,category:'youtube',name:'YouTube Native Views [Social Ads] [Min 3K] [R30]',min:3000,max:100000000,rate:21298,tags:['BARU']},
-      {id:200,category:'youtube',name:'YouTube Views [Social Ads] [Min 5K] [R90]',min:2000,max:1000000,rate:28427,tags:['BARU']},
-      {id:201,category:'youtube',name:'YouTube Native Views [Social Ads] [Min 1K] [R30]',min:1000,max:1000000,rate:22033,tags:['BARU']},
-      {id:202,category:'youtube',name:'YouTube Native Views [Social Ads] [Min 500] [R30]',min:500,max:1000000,rate:22801,tags:['BARU']},
-      {id:203,category:'youtube',name:'YouTube Watchtime [Untuk Video 60+ Menit] [Garansi Refill 90 Hari]',min:4000,max:4000,rate:825844,tags:['BARU']},
-      {id:204,category:'youtube',name:'YouTube Watchtime [Untuk 30-60 Menit Video] [Garansi Refill 30 Hari]',min:50,max:4000,rate:719420,tags:['BARU']},
-      {id:205,category:'youtube',name:'YouTube Watchtime [Untuk Video 45 Menit] [Order 1000 - 1000 Jam]',min:1000,max:4000,rate:863731,tags:['BARU']},
-      {id:206,category:'youtube',name:'YouTube Watchtime [Untuk Video 30-120 Menit] [1000 Order = 1000 Hours]',min:100,max:4000,rate:615683,tags:['TERMURAH']},
-      {id:207,category:'youtube',name:'YouTube Views [Garansi 30 Hari] [Drop 0.26%]',min:100,max:100000000,rate:26747,tags:['BARU']},
-      {id:208,category:'youtube',name:'YouTube Views [Max 2M] [Garansi 60 Hari] [Drop 23.19%]',min:100,max:400000,rate:29449,tags:['BARU']},
-      {id:209,category:'youtube',name:'YouTube Views [Garansi 30 Hari] (V2) [Drop 7.79%]',min:100,max:1000000,rate:29599,tags:['POPULER']},
-      {id:210,category:'youtube',name:'YouTube Views [Max 1M] [Garansi Refill 30 Hari]',min:1000,max:1000000,rate:33100,tags:['BARU']},
-      {id:211,category:'youtube',name:'YouTube Views [Max 100K] [Garansi Refill 30 Hari] [Drop 0%]',min:100,max:100000,rate:19867,tags:['TERMURAH']},
-      {id:212,category:'youtube',name:'YouTube Views [Max 100K] [Garansi Refill 45 Hari]',min:100,max:100000,rate:22626,tags:['BARU']},
-      {id:213,category:'youtube',name:'YouTube Shorts Views [R90] [Max: 2M]',min:100,max:2000000,rate:40350,tags:['TERMURAH']},
+          let category = srv.category.toLowerCase();
+          if (category.includes('instagram')) category = 'instagram';
+          else if (category.includes('tiktok')) category = 'tiktok';
+          else if (category.includes('youtube')) category = 'youtube';
+          else if (category.includes('facebook')) category = 'facebook';
+          else if (category.includes('telegram')) category = 'telegram';
+          else if (category.includes('twitter')) category = 'twitter';
+          else if (category.includes('shopee')) category = 'shopee';
+          else if (category.includes('spotify')) category = 'spotify';
+          else category = 'lainnya';
 
-      // FACEBOOK
-      {id:214,category:'facebook',name:'Facebook Followers [LQ] [Tidak Bergaransi]',min:50,max:100000,rate:7993,tags:['BARU','LQ']},
-      {id:215,category:'facebook',name:'Facebook Page/Profile Followers [Max 500K] [LQ] [Garansi 90 Hari]',min:10,max:1000000,rate:14311,tags:['BARU','LQ']},
-      {id:216,category:'facebook',name:'Facebook Page/Profile Followers [No Refill] [Cancel Enable]',min:50,max:200000,rate:5863,tags:['BARU']},
-      {id:217,category:'facebook',name:'Facebook Page/Profile Followers [HQ] [Max 100K] [Garansi 30 Hari]',min:10,max:100000,rate:10559,tags:['BARU','HQ']},
-      {id:218,category:'facebook',name:'Facebook Page/Profile Followers [HQ] [Garansi 30 Hari] [Cancel Enable]',min:10,max:100000,rate:10660,tags:['BARU','HQ']},
-      {id:219,category:'facebook',name:'Facebook Page/Profile Followers [LQ] [Max 50K] [Tidak Bergaransi]',min:100,max:1000000,rate:6099,tags:['BARU','LQ']},
-      {id:220,category:'facebook',name:'Facebook Page/Profile Followers [LQ] [Max 50K] [Garansi Refill 30 Hari]',min:100,max:1000000,rate:5980,tags:['POPULER','LQ']},
-      {id:221,category:'facebook',name:'Facebook Page/Profile Followers [LQ] [Max 10M] [Tidak Bergaransi]',min:100,max:10000000,rate:5653,tags:['TERMURAH','LQ']},
-      {id:222,category:'facebook',name:'Facebook Page/Profile Followers [LQ] [Max 10M] [Garansi Refill 30 Hari]',min:100,max:10000000,rate:6565,tags:['BARU','LQ']},
-      {id:223,category:'facebook',name:'Facebook Post/Photo Share [Max 1M] [Garansi Refill 30 Hari]',min:100,max:1000000,rate:3531,tags:['TERMURAH']},
-      {id:224,category:'facebook',name:'Facebook Post/Photo/Video Share [Max Unlimited] [Garansi Refill 30 Hari]',min:100,max:217545811,rate:6602,tags:['BARU']},
-      {id:225,category:'facebook',name:'Facebook Post/Photo/Video/LiveStream Share [Max Unlimited]',min:100,max:217545811,rate:9867,tags:['BARU']},
-      {id:226,category:'facebook',name:'Facebook Group Members [HQ] [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:14560,tags:['TERMURAH','HQ']},
-      {id:227,category:'facebook',name:'Facebook Group Members [HQ] [Max 100K] [Garansi Refill 30 Hari]',min:10,max:100000,rate:15251,tags:['BARU','HQ']},
-      {id:228,category:'facebook',name:'Facebook Live Stream Viewers [15 minutes]',min:20,max:50000,rate:17378,tags:['TERMURAH']},
-      {id:229,category:'facebook',name:'Facebook Live Stream Viewers [30 minutes]',min:20,max:50000,rate:34895,tags:['BARU']},
-      {id:230,category:'facebook',name:'Facebook Live Stream Viewers [45 minutes]',min:20,max:50000,rate:52411,tags:['BARU']},
-      {id:231,category:'facebook',name:'Facebook Live Stream Viewers [60 minutes]',min:20,max:50000,rate:69892,tags:['BARU']},
-      {id:232,category:'facebook',name:'Facebook Live Stream Viewers [90 minutes]',min:20,max:50000,rate:104926,tags:['BARU']},
-      {id:233,category:'facebook',name:'Facebook Live Stream Viewers [120 minutes]',min:20,max:50000,rate:139923,tags:['BARU']},
-      {id:234,category:'facebook',name:'Facebook Live Stream Viewers [150 minutes]',min:20,max:50000,rate:175003,tags:['BARU']},
-      {id:235,category:'facebook',name:'Facebook Live Stream Viewers [180 minutes]',min:20,max:50000,rate:210123,tags:['BARU']},
-      {id:236,category:'facebook',name:'Facebook Live Stream Viewers [210 minutes]',min:20,max:50000,rate:245164,tags:['BARU']},
-      {id:237,category:'facebook',name:'Facebook Live Stream Viewers [240 minutes]',min:20,max:50000,rate:280256,tags:['BARU']},
-      {id:238,category:'facebook',name:'Facebook Live Stream Viewers [270 minutes]',min:20,max:50000,rate:315364,tags:['BARU']},
-      {id:239,category:'facebook',name:'Facebook Live Stream Viewers [300 minutes]',min:20,max:50000,rate:350471,tags:['BARU']},
-      {id:240,category:'facebook',name:'Facebook Live Stream Viewers [360 minutes]',min:20,max:50000,rate:420687,tags:['BARU']},
-      {id:241,category:'facebook',name:'Facebook Live Stream Viewers [15 minutes] [Max 30K]',min:10,max:30000,rate:31532,tags:['TERMURAH']},
-      {id:242,category:'facebook',name:'Facebook Live Stream Viewers [30 minutes] [Max 30K]',min:10,max:30000,rate:62615,tags:['BARU']},
-      {id:243,category:'facebook',name:'Facebook Live Stream Viewers [60 minutes] [Max 30K]',min:10,max:30000,rate:124841,tags:['BARU']},
-      {id:244,category:'facebook',name:'Facebook Live Stream Viewers [90 minutes] [Max 30K]',min:10,max:30000,rate:187493,tags:['BARU']},
-      {id:245,category:'facebook',name:'Facebook Live Stream Viewers [2 Hours] [Max 30K]',min:10,max:30000,rate:249652,tags:['BARU']},
-      {id:246,category:'facebook',name:'Facebook Live Stream Viewers [4 Hours] [Max 30K]',min:10,max:30000,rate:504465,tags:['BARU']},
-      {id:247,category:'facebook',name:'Facebook Live Stream Viewers [6 Hours] [Max 50K]',min:10,max:30000,rate:755407,tags:['BARU']},
-      {id:248,category:'facebook',name:'Facebook Live Stream Viewers [8 Hours] [Max 30K]',min:10,max:50000,rate:944038,tags:['BARU']},
-      {id:249,category:'facebook',name:'Facebook Live Stream Viewers [12 Hours] [Max 50K]',min:10,max:50000,rate:1888104,tags:['BARU']},
-      {id:250,category:'facebook',name:'Facebook Live Stream Viewers [24 Hours] [Max 50K]',min:10,max:50000,rate:3776207,tags:['BARU']},
-      {id:251,category:'facebook',name:'Facebook Video Views [Garansi Refill 30 Hari] [Drop 0.76%]',min:100,max:1000000,rate:831,tags:['TERMURAH']},
-      {id:252,category:'facebook',name:'Facebook Video Views [Garansi Refill 45 Hari] [Drop 0%]',min:100,max:1000000,rate:870,tags:['BARU']},
-      {id:253,category:'facebook',name:'Facebook Video Views [No Refill]',min:100,max:100000000,rate:1420,tags:['POPULER']},
-      {id:254,category:'facebook',name:'Facebook Video/Reels Views [Max Unlimited] [All Link] [R365] [Cancel Enable] [Drop 0%]',min:500,max:217545811,rate:2204,tags:['BARU']},
-      {id:255,category:'facebook',name:'Facebook Page Likes + Followers [No Refill] [Max: 200K]',min:10,max:50000,rate:14924,tags:['POPULER']},
-      {id:256,category:'facebook',name:'Facebook Post Reaction [👍] [No Refill]',min:10,max:100000,rate:4495,tags:['POPULER']},
-      {id:257,category:'facebook',name:'Facebook Post Reaction [❤️] [No Refill]',min:10,max:100000,rate:4495,tags:['BARU']},
-      {id:258,category:'facebook',name:'Facebook Post Reaction [😆] [No Refill]',min:10,max:100000,rate:4495,tags:['BARU']},
-      {id:259,category:'facebook',name:'Facebook Post Reaction [😮] [No Refill]',min:10,max:100000,rate:4495,tags:['BARU']},
-      {id:260,category:'facebook',name:'Facebook Post Reaction [😢] [No Refill]',min:10,max:100000,rate:4495,tags:['BARU']},
-      {id:261,category:'facebook',name:'Facebook Post Reaction [😡] [No Refill]',min:10,max:100000,rate:4495,tags:['BARU']},
-      {id:262,category:'facebook',name:'Facebook Post Reaction [🤬] [No Refill]',min:10,max:100000,rate:4495,tags:['BARU']},
-      {id:263,category:'facebook',name:'Facebook Likes On Komentar Reaction [👍] [HQ] [Max 50K] [Tidak Bergaransi]',min:50,max:50000,rate:4895,tags:['TERLARIS','TERMURAH','HQ']},
-      {id:264,category:'facebook',name:'Facebook Likes On Komentar Reaction [❤️] [HQ] [Max 50K] [Tidak Bergaransi]',min:50,max:50000,rate:4895,tags:['BARU','HQ']},
-      {id:265,category:'facebook',name:'Facebook Likes On Komentar Reaction [😆] [HQ] [Max 1M] [Tidak Bergaransi]',min:50,max:1000000,rate:7546,tags:['BARU','HQ']},
-      {id:266,category:'facebook',name:'Facebook Likes On Komentar Reaction [😮] [HQ] [Max 1M] [Tidak Bergaransi]',min:50,max:1000000,rate:7546,tags:['BARU','HQ']},
-      {id:267,category:'facebook',name:'Facebook Likes On Komentar Reaction [😢] [HQ] [Max 1M] [Tidak Bergaransi]',min:50,max:1000000,rate:7546,tags:['BARU','HQ']},
-      {id:268,category:'facebook',name:'Facebook Likes On Komentar Reaction [😡] [HQ] [Max 1M] [Tidak Bergaransi]',min:50,max:1000000,rate:7546,tags:['BARU','HQ']},
-      {id:269,category:'facebook',name:'Facebook Likes On Komentar Reaction [🤬] [HQ] [Max 1M] [Tidak Bergaransi]',min:50,max:1000000,rate:7546,tags:['BARU','HQ']},
-      {id:270,category:'facebook',name:'Facebook Likes On Komentar Reaction [😍] [HQ] [Max 1M] [Tidak Bergaransi]',min:50,max:1000000,rate:7546,tags:['BARU','HQ']},
-      {id:271,category:'facebook',name:'Facebook Komentar [HQ] [Custom] [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:63806,tags:['TERLARIS','TERMURAH','HQ']},
-      {id:272,category:'facebook',name:'Facebook Komentar [Random] [LQ] [Max 1M] [Tidak Bergaransi]',min:10,max:1000000,rate:22100,tags:['TERMURAH','LQ']},
-      {id:273,category:'facebook',name:'Facebook Komentar [Custom] [LQ] [Max 1M] [Tidak Bergaransi]',min:10,max:1000000,rate:22100,tags:['BARU','LQ']},
-      {id:274,category:'facebook',name:'Facebook Post Reaction [👍] [Max 10M] [Tidak Bergaransi]',min:10,max:10000000,rate:3185,tags:['TERMURAH']},
-      {id:275,category:'facebook',name:'Facebook Post Reaction [❤️] [Max 10M] [Tidak Bergaransi]',min:10,max:10000000,rate:3185,tags:['BARU']},
-      {id:276,category:'facebook',name:'Facebook Post Reaction [😆] [Max 10M] [Tidak Bergaransi]',min:10,max:10000000,rate:3185,tags:['BARU']},
-      {id:277,category:'facebook',name:'Facebook Post Reaction [😮] [Max 10M] [Tidak Bergaransi]',min:10,max:10000000,rate:3185,tags:['BARU']},
-      {id:278,category:'facebook',name:'Facebook Post Reaction [😢] [Max 10M] [Tidak Bergaransi]',min:10,max:10000000,rate:3185,tags:['BARU']},
-      {id:279,category:'facebook',name:'Facebook Post Reaction [😡] [Max 10M] [Tidak Bergaransi]',min:10,max:10000000,rate:3185,tags:['BARU']},
-      {id:280,category:'facebook',name:'Facebook Post Reaction [🤬] [Max 10M] [Tidak Bergaransi]',min:10,max:10000000,rate:3185,tags:['BARU']},
+          var tags = [];
+          var nameL = srv.name.toLowerCase();
+          
+          var isNoRefill = nameL.includes('tidak bergaransi') || nameL.includes('no refill') || nameL.includes('tanpa garansi');
 
-      // LINKEDIN
-      {id:281,category:'linkedin',name:'LinkedIn Post Likes [Max 1K] [Tidak Ada Garansi]',min:20,max:10000,rate:100490,tags:['TERMURAH']},
-      {id:282,category:'linkedin',name:'LinkedIn Post Likes [Max 20K] [Tidak Ada Garansi]',min:50,max:20000,rate:286004,tags:['BARU']},
-      {id:283,category:'linkedin',name:'LinkedIn Post Likes [HQ] [Max 5K] [Tidak Bergaransi]',min:10,max:5000,rate:198974,tags:['BARU','HQ']},
-      {id:284,category:'linkedin',name:'LinkedIn Post Likes [HQ] [Max 5K] [Garansi Refill 25 Hari]',min:10,max:5000,rate:364811,tags:['BARU','HQ']},
-      {id:285,category:'linkedin',name:'LinkedIn Followers [Profile/Company] [Max 10K] [Speed: 200/Hari] [Tidak Ada Garansi]',min:100,max:10000,rate:567273,tags:['BARU']},
-      {id:286,category:'linkedin',name:'LinkedIn Followers [Profile/Company] [Max 10K] [Tidak Ada Garansi]',min:1,max:20000,rate:1811316,tags:['BARU']},
-      {id:287,category:'linkedin',name:'LinkedIn Profile/Company Followers [Max 5K] [Garansi Refill 30 Hari]',min:100,max:5000,rate:226808,tags:['TERMURAH']},
-      {id:288,category:'linkedin',name:'LinkedIn Profile/Company Followers [Max 10K] [Garansi Refill 30 Hari]',min:10,max:20000,rate:362894,tags:['BARU']},
+          var dropMatch = srv.name.match(/\[(Drop\s*\d+%?)\]/i) || srv.name.match(/(Drop\s*\d+%?)/i);
+          let dropText = '';
+          if (dropMatch) {
+              tags.push('DROP');
+              dropText = dropMatch[1];
+          }
 
-      // CLIPPER
-      {id:289,category:'clipper',name:'Clipper Video [Paid Per Views]',min:100000,max:1000000,rate:8366,tags:['TERLARIS','TERMURAH']},
-      {id:290,category:'clipper',name:'Clipper Video [Paid Per Video]',min:100,max:10000000,rate:41828800,tags:['BARU']},
+          if (nameL.includes('hq')) tags.push('HQ');
+          if (nameL.includes('lq')) tags.push('LQ');
+          if (nameL.includes('real')) tags.push('REAL');
 
-      // ROBLOX
-      {id:291,category:'roblox',name:'Roblox Followers Indonesia [HQ] [LOWDROP]',min:50,max:1000,rate:125483,tags:['TERLARIS','HQ']},
-      {id:292,category:'roblox',name:'Roblox Followers Indonesia [LQ] [Max 5K] [No Refill]',min:100,max:5000,rate:130504,tags:['BARU','LQ']},
-      {id:293,category:'roblox',name:'Roblox Followers Indonesia [HQ] [Max 2K] [No Refill]',min:100,max:2000,rate:163127,tags:['BARU','HQ']},
-      {id:294,category:'roblox',name:'Roblox Favorites Map Indonesia [Max 10K] [Tidak Bergaransi]',min:100,max:10000,rate:67761,tags:['TERMURAH']},
-      {id:295,category:'roblox',name:'Roblox Favorites Map Indonesia [Max 10K] [Garansi Refill 30 Hari]',min:100,max:10000,rate:112934,tags:['BARU']},
+          if ((nameL.includes('garansi') || nameL.includes('refill')) && !isNoRefill) {
+              tags.push('GARANSI');
+          }
 
-      // SHOPEE
-      {id:296,category:'shopee',name:'Shopee Followers Indonesia [Max 500K] [No Refill] [Cheap]',min:100,max:500000,rate:11712,tags:['TERLARIS','POPULER']},
-      {id:297,category:'shopee',name:'Lazada Followers Indonesia [Max 3K] [No Refill]',min:100,max:1000,rate:58559,tags:['BARU']},
-      {id:298,category:'shopee',name:'Shopee LiveStream Views [15 Minutes] [S2]',min:10,max:100000,rate:102937,tags:['TERMURAH']},
-      {id:299,category:'shopee',name:'Shopee LiveStream Views [30 Minutes] [S2]',min:10,max:100000,rate:205871,tags:['BARU']},
-      {id:300,category:'shopee',name:'Shopee LiveStream Views [60 Minutes] [S2]',min:10,max:100000,rate:411741,tags:['BARU']},
-      {id:301,category:'shopee',name:'Shopee LiveStream Views [90 Minutes] [S2]',min:10,max:100000,rate:617630,tags:['BARU']},
-      {id:302,category:'shopee',name:'Shopee LiveStream Views [120 Minutes] [S2]',min:10,max:100000,rate:823520,tags:['BARU']},
-      {id:303,category:'shopee',name:'Shopee LiveStream Views [180 Minutes] [S2]',min:10,max:100000,rate:1235260,tags:['BARU']},
-      {id:304,category:'shopee',name:'Shopee LiveStream Views [240 Minutes] [S2]',min:10,max:100000,rate:1647012,tags:['BARU']},
-      {id:305,category:'shopee',name:'Shopee LiveStream Views [360 Minutes] [S2]',min:10,max:100000,rate:2470484,tags:['BARU']},
-      {id:306,category:'shopee',name:'Shopee LiveStream Views [720 Minutes] [S2]',min:10,max:100000,rate:4941065,tags:['BARU']},
-      {id:307,category:'shopee',name:'Shopee LiveStream Views [1440 Minutes] [S2]',min:10,max:100000,rate:9882077,tags:['BARU']},
-      {id:308,category:'shopee',name:'Shopee Followers Singapore [Max 500K] [Tidak Bergaransi]',min:100,max:500000,rate:57221,tags:['TERLARIS','TERMURAH']},
-      {id:309,category:'shopee',name:'Shopee Followers Malaysia [Max 500K] [Tidak Bergaransi]',min:100,max:500000,rate:57221,tags:['BARU']},
-      {id:310,category:'shopee',name:'Shopee Followers Thailand [Max 500K] [Tidak Bergaransi]',min:100,max:500000,rate:57221,tags:['BARU']},
-      {id:311,category:'shopee',name:'Shopee Followers Vietnam [Max 500K] [Tidak Bergaransi]',min:100,max:500000,rate:57221,tags:['BARU']},
+          if (nameL.includes('fast') || nameL.includes('instant')) tags.push('FAST');
+          if (nameL.includes('promo')) tags.push('PROMO');
 
-      // SNACK VIDEO
-      {id:312,category:'snackvideo',name:'Snack Video Likes + Free Views [Low Drop] [Start 0-30min] [Garansi 60 Hari]',min:10,max:30000,rate:24752,tags:['BARU']},
-      {id:313,category:'snackvideo',name:'Snack Likes + Views [Max: 50K] [FAST] [Garansi 60 Hari]',min:10,max:50000,rate:22175,tags:['TERMURAH']},
-      {id:314,category:'snackvideo',name:'Snack Video Custom Komentar [Real Profiles]',min:10,max:1000000,rate:129489,tags:['TERLARIS','TERMURAH','BARU']},
-      {id:315,category:'snackvideo',name:'Snack Video Random Komentar [Real Profiles]',min:10,max:1000000,rate:123965,tags:['TERMURAH']},
-      {id:316,category:'snackvideo',name:'Snack Video Shares [Start 0-1H] [Lifetime]',min:10,max:30000,rate:27799,tags:['TERMURAH']},
+          return {
+            id: parseInt(srv.service),
+            category: category,
+            name: srv.name,
+            min: parseInt(srv.min),
+            max: parseInt(srv.max),
+            rate: markedUpRate,
+            tags: tags,
+            drop: dropText,
+            refill: srv.refill,
+            cancel: srv.cancel
+          };
+        });
 
-      // SPOTIFY
-      {id:317,category:'spotify',name:'Spotify Followers [Indonesia] [Artist - Playlist] [Max 100M]',min:100,max:100000000,rate:10417,tags:['TERLARIS','TERMURAH']},
-      {id:318,category:'spotify',name:'Spotify Plays [INDONESIA] [Lifetime Guaranteed] [Max: 5M]',min:500,max:5000000,rate:17615,tags:['TERLARIS','POPULER']},
-      {id:319,category:'spotify',name:'Spotify Radio Source Streams [Indonesia] [Lifetime Guaranteed] [Max: 5M]',min:500,max:20000000,rate:28378,tags:['TERLARIS','BARU']},
-      {id:320,category:'spotify',name:'Spotify Playlist Plays [INDONESIA] [Max: 1M] [Lifetime Guaranteed]',min:500,max:20000000,rate:17615,tags:['BARU']},
-      {id:321,category:'spotify',name:'[ELITE] Spotify Release Radar Streams [Indonesia] [Lifetime Guaranteed] [Max: 5M]',min:500,max:20000000,rate:28378,tags:['BARU']},
-      {id:322,category:'spotify',name:'[ELITE] Spotify Discover Weekly Streams [Indonesia] [Lifetime Guaranteed] [Max: 5M]',min:500,max:20000000,rate:28378,tags:['BARU']},
-      {id:323,category:'spotify',name:'Spotify Followers [Global] [Artist - Playlist - User] [R365] [Max 100M]',min:100,max:100000000,rate:6825,tags:['TERLARIS','POPULER']},
-      {id:324,category:'spotify',name:'Spotify Plays [USA] [Max: 5M] [R365] [Cheapest]',min:500,max:20000000,rate:6094,tags:['TERLARIS','TERMURAH']},
-      {id:325,category:'spotify',name:'Spotify Europe Plays [Max: 5M] [R365] [Cheapest]',min:500,max:20000000,rate:6094,tags:['TERMURAH']},
-      {id:326,category:'spotify',name:'Spotify Plays [Asia] [R365] [Max 5M]',min:500,max:20000000,rate:6094,tags:['BARU']},
-      {id:327,category:'spotify',name:'Spotify Plays [Global] [Max: 5M] [R365]',min:500,max:20000000,rate:6094,tags:['BARU']},
-      {id:328,category:'spotify',name:'Spotify Slow Plays [Global] [Max: 10K] [R30] [Cheapest]',min:1000,max:10000,rate:8601,tags:['BARU']},
-      {id:329,category:'spotify',name:'Spotify Plays [ICELAND] [R365] [Max: 5M]',min:500,max:20000000,rate:17615,tags:['BARU']},
-      {id:330,category:'spotify',name:'Spotify Playlist Plays [ICELAND] [Max: 1M] [R365]',min:500,max:20000000,rate:17615,tags:['BARU']},
-      {id:331,category:'spotify',name:'Spotify Playlist Plays [USA] [Max: 1M] [R365]',min:500,max:20000000,rate:19062,tags:['BARU']},
-      {id:332,category:'spotify',name:'Spotify Exclusive Power Plays [Global] [Max: 500K] [R30]',min:1000,max:500000,rate:24773,tags:['BARU']},
-      {id:333,category:'spotify',name:'Spotify Algorithmic Effect Plays [USA] [Max: 500K] [R30]',min:1000,max:500000,rate:26926,tags:['BARU']},
-      {id:334,category:'spotify',name:'Spotify Fast Plays [Global] [Min: 20K] [R365]',min:20000,max:20000000,rate:17615,tags:['BARU']},
-      {id:335,category:'spotify',name:'Spotify Qualified Plays [Global] [Max: 5M] [R365]',min:500,max:20000000,rate:5747,tags:['TERMURAH']},
-      {id:336,category:'spotify',name:'[ELITE] Spotify Web 2.0 Exclusive Streams [USA] [R365] [Max: 5M]',min:500,max:20000000,rate:89443,tags:['BARU']},
-      {id:337,category:'spotify',name:'Spotify Editorial Playlist Plays [Global] [Max: 2M]',min:1000,max:2000000,rate:39414,tags:['TERMURAH']},
-      {id:338,category:'spotify',name:'[ELITE] Spotify Release Radar Streams [Iceland] [R365] [Max: 5M]',min:500,max:20000000,rate:28378,tags:['TERMURAH']},
-      {id:339,category:'spotify',name:'Spotify Radio Source Streams [Iceland] [R365] [Max: 5M]',min:500,max:5000000,rate:28378,tags:['TERMURAH']},
-      {id:340,category:'spotify',name:'[ELITE] Spotify Power Radio Plays [Iceland] [Max: 500K] [R30]',min:500,max:500000,rate:44366,tags:['BARU']},
-      {id:341,category:'spotify',name:'[ELITE] Spotify Discover Weekly Streams [Iceland] [R365] [Max: 5M]',min:500,max:5000000,rate:28378,tags:['TERMURAH']},
-      {id:342,category:'spotify',name:'Spotify Saves [Track/Album] [Max: 1M] [R30]',min:100,max:1000000,rate:7903,tags:['TERMURAH']},
-      {id:343,category:'spotify',name:'Spotify Chart Plays [Targeted] [Max: 100K] [Guaranteed Daily Charts]',min:2000,max:10000,rate:86211,tags:['TERMURAH']},
-      {id:344,category:'spotify',name:'[ELITE] Spotify Weekly Chart Plays [Targeted] [Max: 700K] [Guaranteed Weekly Charts]',min:14000,max:70000,rate:98391,tags:['BARU']},
-      {id:345,category:'spotify',name:'Spotify Mobile Slow Plays [GLOBAL] [Max: 25K] [100% Premium Accounts] [Lifetime Guaranteed]',min:1000,max:25000,rate:17604,tags:['TERMURAH']},
-      {id:346,category:'spotify',name:'Spotify Mobile Slow Plays [USA] [Max: 25K] [100% Premium Accounts] [Lifetime Guaranteed]',min:1000,max:25000,rate:21196,tags:['BARU']},
-      {id:347,category:'spotify',name:'Spotify Mobile Plays [GLOBAL] [Max: 200K] [100% Premium Accounts] [Lifetime Guaranteed]',min:500,max:200000,rate:28378,tags:['BARU']},
-      {id:348,category:'spotify',name:'Spotify Mobile Plays [USA] [Max: 200K] [100% Premium Accounts] [Lifetime Guaranteed]',min:500,max:200000,rate:31974,tags:['BARU']},
-      {id:349,category:'spotify',name:'Spotify Mobile Plays [BRAZIL] [Max: 200K] [100% Premium Accounts] [Lifetime Guaranteed]',min:500,max:200000,rate:33787,tags:['BARU']},
-      {id:350,category:'spotify',name:'Spotify Mobile Plays [GERMANY] [Max: 200K] [100% Premium Accounts] [Lifetime Guaranteed]',min:500,max:200000,rate:33787,tags:['BARU']},
-      {id:351,category:'spotify',name:'Spotify Mobile Plays [UK] [Max: 200K] [100% Premium Accounts] [Lifetime Guaranteed]',min:500,max:200000,rate:33787,tags:['BARU']},
-      {id:352,category:'spotify',name:'Spotify Mobile Plays [INDIA] [Max: 200K] [100% Premium Accounts] [Lifetime Guaranteed]',min:500,max:200000,rate:33787,tags:['BARU']},
-      {id:353,category:'spotify',name:'Spotify Mobile Plays [FRANCE] [Max: 200K] [100% Premium Accounts] [Lifetime Guaranteed]',min:500,max:200000,rate:33787,tags:['BARU']},
-      {id:354,category:'spotify',name:'Spotify Mobile Plays [TURKEY] [Max: 200K] [100% Premium Accounts] [Lifetime Guaranteed]',min:500,max:200000,rate:33784,tags:['BARU']},
+        SERVICES.sort(function(a, b) {
+          var rateA = parseFloat(a.rate) || 0;
+          var rateB = parseFloat(b.rate) || 0;
+          if (rateA !== rateB) return rateA - rateB;
+          return a.name.localeCompare(b.name);
+        });
 
-      // THREADS
-      {id:355,category:'threads',name:'Threads Followers [Max 100K] [Tidak Bergaransi]',min:10,max:65000000,rate:131789,tags:['TERLARIS','TERMURAH']},
-      {id:356,category:'threads',name:'Threads Followers [Max 100K] [Garansi Refill 30 Hari]',min:10,max:100000,rate:428688,tags:['BARU']},
-      {id:357,category:'threads',name:'Threads Likes [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:86237,tags:['TERLARIS','POPULER']},
-      {id:358,category:'threads',name:'Threads Likes [Max 100K] [Garansi Refill 30 Hari]',min:10,max:100000,rate:170463,tags:['BARU']},
-      {id:359,category:'threads',name:'Threads Repost [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:86237,tags:['POPULER']},
-      {id:360,category:'threads',name:'Threads Repost [Max 100K] [Garansi Refill 30 Hari]',min:10,max:100000,rate:170463,tags:['BARU']},
-      {id:361,category:'threads',name:'Threads Quote [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:86237,tags:['TERMURAH']},
-      {id:362,category:'threads',name:'Threads Quote [Max 100K] [Garansi Refill 30 Hari]',min:10,max:100000,rate:170463,tags:['BARU']},
-      {id:363,category:'threads',name:'Threads Share [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:215417,tags:['TERMURAH']},
-      {id:364,category:'threads',name:'Threads Share [Max 100K] [Garansi Refill 30 Hari]',min:10,max:100000,rate:428688,tags:['BARU']},
-      {id:365,category:'threads',name:'Threads Komentar Likes [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:215417,tags:['TERMURAH']},
-      {id:366,category:'threads',name:'Threads Komentar Reposts [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:216699,tags:['BARU']},
-      {id:367,category:'threads',name:'Threads Komentar Quotes [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:216703,tags:['BARU']},
-      {id:368,category:'threads',name:'Threads Komentar Shares [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:215417,tags:['BARU']},
-      {id:369,category:'threads',name:'Threads Custom Komentar [Max 100K] [Tidak Bergaransi]',min:1,max:100000,rate:4298911,tags:['POPULER']},
-      {id:370,category:'threads',name:'Threads Custom Komentar [Max 100K] [Garansi Refill 20 Hari]',min:1,max:100000,rate:8479521,tags:['BARU']},
-      {id:371,category:'threads',name:'Threads Komentar Replies [Max 100K] [Tidak Bergaransi]',min:1,max:100000,rate:6441346,tags:['BARU']},
+        document.getElementById('totalServices').textContent = SERVICES.length;
+        
+        PLATFORMS = [];
+        groupedServices = {};
+        SERVICES.forEach(function(s) {
+          if (PLATFORMS.indexOf(s.category) === -1) {
+            PLATFORMS.push(s.category);
+            groupedServices[s.category] = [];
+          }
+          groupedServices[s.category].push(s);
+        });
+        PLATFORMS.sort();
 
-      // WHATSAPP
-      {id:372,category:'whatsapp',name:'WhatsApp Channel Members Global [Max 20K] [Tidak Bergaransi]',min:10,max:20000,rate:6503,tags:['TERLARIS','POPULER']},
-      {id:373,category:'whatsapp',name:'WhatsApp Global Channel Members [Max 20K] [Garansi Refill 30 Hari]',min:10,max:100000,rate:8045,tags:['BARU']},
-      {id:374,category:'whatsapp',name:'WhatsApp Channel Members [Max 10K] [Tidak Bergaransi]',min:10,max:10000,rate:16482,tags:['BARU']},
-      {id:375,category:'whatsapp',name:'WhatsApp Channel Post Reactions [👍] [Tidak Bergaransi]',min:10,max:100000,rate:653,tags:['TERLARIS','TERMURAH']},
-      {id:376,category:'whatsapp',name:'WhatsApp Channel Post Emoji Reactions [Random] [👍❤️😂😮😢🙏] [Max 50K]',min:10,max:50000,rate:31510,tags:['BARU']},
-      {id:377,category:'whatsapp',name:'WhatsApp Channel Post Reactions [❤️] [Tidak Bergaransi]',min:10,max:100000,rate:653,tags:['POPULER']},
-      {id:378,category:'whatsapp',name:'WhatsApp Channel Post Reactions [😂] [Tidak Bergaransi]',min:10,max:100000,rate:653,tags:['BARU']},
-      {id:379,category:'whatsapp',name:'WhatsApp Channel Post Reactions [😮] [Tidak Bergaransi]',min:10,max:100000,rate:653,tags:['BARU']},
-      {id:380,category:'whatsapp',name:'WhatsApp Channel Post Reactions [😢] [Tidak Bergaransi]',min:10,max:100000,rate:653,tags:['BARU']},
-      {id:381,category:'whatsapp',name:'WhatsApp Channel Post Reactions [🙏] [Tidak Bergaransi]',min:10,max:100000,rate:653,tags:['BARU']},
-      {id:382,category:'whatsapp',name:'WhatsApp Poll Votes [A] [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:26715,tags:['TERLARIS','TERMURAH']},
-      {id:383,category:'whatsapp',name:'WhatsApp Poll Votes [B] [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:26715,tags:['POPULER']},
-      {id:384,category:'whatsapp',name:'WhatsApp Poll Votes [C] [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:26715,tags:['BARU']},
-      {id:385,category:'whatsapp',name:'WhatsApp Poll Votes [D] [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:26715,tags:['BARU']},
-      {id:386,category:'whatsapp',name:'WhatsApp Poll Votes [E] [Max 100K] [Tidak Bergaransi]',min:10,max:100000,rate:26715,tags:['BARU']},
+        renderCategories();
+        renderFiltered();
+        document.getElementById('srvCount').innerHTML = 'Menampilkan ' + SERVICES.length + ' layanan (Auto Update)';
 
-      // TWITTER / X
-      {id:387,category:'twitter',name:'X/Twitter Followers [LQ] [Max 50K] [No Refill] [Drop 33.21%]',min:10,max:50000,rate:47963,tags:['TERLARIS','POPULER','LQ']},
-      {id:388,category:'twitter',name:'X/Twitter Followers [LQ] [Max 100K] [R14] [Drop 67.02%]',min:100,max:30000,rate:158091,tags:['BARU','LQ']},
-      {id:389,category:'twitter',name:'X/Twitter Followers [LQ] [Max 100K] [R30] [Drop 84.54%]',min:100,max:30000,rate:215304,tags:['BARU','LQ']},
-      {id:390,category:'twitter',name:'X/Twitter Followers [Start 1H] [Max 500K] [R30] [Drop 2.4%]',min:100,max:500000,rate:318035,tags:['BARU']},
-      {id:391,category:'twitter',name:'Twitter Likes [Max 5K] [No Refill] [Drop 34.8%]',min:10,max:5000,rate:36013,tags:['TERMURAH']},
-      {id:392,category:'twitter',name:'Twitter Likes [Max 10K] [No Refill] [Drop 43.63%]',min:10,max:10000,rate:39472,tags:['BARU']},
-      {id:393,category:'twitter',name:'Twitter Likes [Max 40K] [Garansi 14 Hari] [Drop 7.51%]',min:10,max:40000,rate:55633,tags:['BARU']},
-      {id:394,category:'twitter',name:'Twitter Likes [Max 40K] [Garansi 30 Hari] [Drop 4.7%]',min:10,max:40000,rate:63023,tags:['BARU']},
-      {id:395,category:'twitter',name:'X/Twitter Video Views Insight [Max Unlimited] [No Refill]',min:100,max:217545811,rate:133,tags:['TERLARIS','TERMURAH']},
-      {id:396,category:'twitter',name:'X/Twitter Video Views Insight [Max Unlimited] [R30]',min:100,max:217545811,rate:136,tags:['BARU']},
-      {id:397,category:'twitter',name:'X/Twitter Video Views Insight [Max Unlimited] [R45]',min:100,max:217545811,rate:140,tags:['POPULER']},
-
-      // TELEGRAM
-      {id:398,category:'telegram',name:'Telegram Members [HQ] [Max 1M] [Tidak Bergaransi] [Drop 0%]',min:10,max:1000000,rate:3731,tags:['TERLARIS','POPULER','HQ']},
-      {id:399,category:'telegram',name:'Telegram Members [No Refill] [Drop 5%]',min:10,max:1000000,rate:21281,tags:['BARU']},
-      {id:400,category:'telegram',name:'Telegram Members [Garansi 30 Hari] [Drop 2.1%]',min:10,max:1000000,rate:22747,tags:['BARU']},
-      {id:401,category:'telegram',name:'Telegram Members [HQ] [Max1M] [Garansi Refill 30 Hari] [Drop 2.05%]',min:10,max:1000000,rate:8660,tags:['BARU','HQ']},
-      {id:402,category:'telegram',name:'Telegram Members [HQ] [Max 1M] [Garansi Refill 45 Hari] [Drop 0.93%]',min:10,max:1000000,rate:12311,tags:['BARU','HQ']},
-      {id:403,category:'telegram',name:'Telegram Positive Reactions Channel [👍❤️🔥🎉😁🤩🤮🤣] + Views',min:50,max:1000000,rate:762,tags:['TERLARIS','POPULER']},
-      {id:404,category:'telegram',name:'Telegram Reaction [👍] + Views [Tidak Bergaransi] [Drop 0.27%]',min:10,max:1000000,rate:427,tags:['BARU']},
-      {id:405,category:'telegram',name:'Telegram Reaction [❤️] + Views [Tidak Bergaransi] [Drop 7.39%]',min:10,max:1000000,rate:427,tags:['BARU']},
-      {id:406,category:'telegram',name:'Telegram Reaction [🔥] + Views [Tidak Bergaransi] [Drop 0%]',min:10,max:1000000,rate:427,tags:['BARU']},
-      {id:407,category:'telegram',name:'Telegram Reaction [😁] + Views [Tidak Bergaransi] [Drop 0%]',min:10,max:1000000,rate:427,tags:['BARU']},
-      {id:408,category:'telegram',name:'Telegram Reaction [🤩] + Views [Tidak Bergaransi] [Drop 0%]',min:10,max:1000000,rate:427,tags:['BARU']},
-      {id:409,category:'telegram',name:'Telegram Reaction [🎉] + Views [Tidak Bergaransi] [Drop 0%]',min:10,max:1000000,rate:427,tags:['BARU']},
-      {id:410,category:'telegram',name:'Telegram Reaction [🤮] + Views [Tidak Bergaransi] [Drop 0%]',min:10,max:1000000,rate:427,tags:['BARU']},
-      {id:411,category:'telegram',name:'Telegram Reaction [🤣] + Views [Tidak Bergaransi] [Drop 0%]',min:10,max:1000000,rate:427,tags:['BARU']},
-      {id:412,category:'telegram',name:'Telegram Reaction [💩] + Views [Tidak Bergaransi] [Drop 0%]',min:10,max:1000000,rate:427,tags:['BARU']},
-      {id:413,category:'telegram',name:'Telegram Reaction [🤯] + Views [Tidak Bergaransi] [Drop 0%]',min:10,max:1000000,rate:427,tags:['BARU']},
-      {id:414,category:'telegram',name:'Telegram Negative Reactions Channel [😢😐😡🤬💩🤮] + Views',min:10,max:1000000,rate:474,tags:['BARU']},
-      {id:415,category:'telegram',name:'Telegram Reaction [😢] + Views [Tidak Bergaransi]',min:50,max:500000,rate:325,tags:['TERMURAH']},
-      {id:416,category:'telegram',name:'Telegram Reaction [😐] + Views [Tidak Bergaransi]',min:50,max:500000,rate:325,tags:['BARU']},
-      {id:417,category:'telegram',name:'Telegram Reaction [😡] + Views [Tidak Bergaransi]',min:50,max:500000,rate:325,tags:['BARU']},
-      {id:418,category:'telegram',name:'Telegram Reaction [🤬] + Views [Tidak Bergaransi]',min:50,max:500000,rate:325,tags:['BARU']},
-      {id:419,category:'telegram',name:'Telegram Reaction [💩] + Views [Tidak Bergaransi]',min:50,max:500000,rate:325,tags:['BARU']},
-      {id:420,category:'telegram',name:'Telegram Reaction [🤮] + Views [Tidak Bergaransi]',min:50,max:500000,rate:325,tags:['BARU']},
-      {id:421,category:'telegram',name:'Telegram Story Reactions Positive [❤️😁😢🎉👍😡] [Tidak Bergaransi]',min:50,max:500000,rate:260,tags:['TERMURAH']},
-      {id:422,category:'telegram',name:'Telegram Story Reactions Negative [😐😡🤬💩🤮] [Tidak Bergaransi]',min:50,max:500000,rate:260,tags:['BARU']},
-      {id:423,category:'telegram',name:'Telegram Story Reactions [❤️] [Tidak Bergaransi]',min:50,max:500000,rate:260,tags:['BARU']},
-      {id:424,category:'telegram',name:'Telegram Story Reactions [😁] [Tidak Bergaransi]',min:50,max:500000,rate:260,tags:['BARU']},
-      {id:425,category:'telegram',name:'Telegram Story Reactions [😢] [Tidak Bergaransi]',min:50,max:500000,rate:260,tags:['BARU']},
-      {id:426,category:'telegram',name:'Telegram Story Reactions [🎉] [Tidak Bergaransi]',min:50,max:500000,rate:260,tags:['BARU']},
-      {id:427,category:'telegram',name:'Telegram Story Reactions [👍] [Tidak Bergaransi]',min:50,max:500000,rate:260,tags:['BARU']},
-      {id:428,category:'telegram',name:'Telegram Story Reactions [😡] [Tidak Bergaransi]',min:50,max:500000,rate:260,tags:['BARU']},
-      {id:429,category:'telegram',name:'Telegram Story Reactions [😐] [Tidak Bergaransi]',min:50,max:500000,rate:260,tags:['BARU']},
-      {id:430,category:'telegram',name:'Telegram Story Reactions [🤬] [Tidak Bergaransi]',min:50,max:500000,rate:260,tags:['BARU']},
-      {id:431,category:'telegram',name:'Telegram Story Reactions [💩] [Tidak Bergaransi]',min:50,max:500000,rate:260,tags:['BARU']},
-      {id:432,category:'telegram',name:'Telegram Story Reactions [🤮] [Tidak Bergaransi]',min:50,max:500000,rate:260,tags:['BARU']},
-      {id:433,category:'telegram',name:'Telegram Post Views [Max 100K] [Untuk 1 Postingan] [Tidak Bergaransi]',min:10,max:100000,rate:30,tags:['TERLARIS','TERMURAH']},
-      {id:434,category:'telegram',name:'Telegram Post Views [Max 100K] [Untuk 1 Postingan] [Tidak Bergaransi] (V2)',min:10,max:100000,rate:34,tags:['BARU']},
-      {id:435,category:'telegram',name:'Telegram Mix Post Views [Max 10M] [Masuk Statistik] [Untuk 1 Postingan]',min:100,max:10000000,rate:396,tags:['BARU']},
-      {id:436,category:'telegram',name:'Telegram Poll Vote [Max 500K] [Tidak Bergaransi]',min:10,max:500000,rate:2676,tags:['TERMURAH']}
-    ];
-
-    function getSortScore(item) {
-      let score = 0;
-      if (item.tags) {
-        if (item.tags.includes('TERMURAH')) score += 10;
-        if (item.tags.includes('TERLARIS')) score += 5;
-        if (item.tags.includes('POPULER')) score += 2;
+      } catch (error) {
+        console.error('Gagal ambil data:', error);
+        document.getElementById('srvGrid').innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#f87171;padding:2rem;">Gagal memuat layanan. Cek koneksi Anda.<br><br><button onclick="location.reload()" class="btn-order">Coba Lagi</button></div>`;
       }
-      return score;
     }
 
-    // Sortir berdasarkan kategori, lalu prioritas tag (TERMURAH, TERLARIS, POPULER), lalu abjad
-    SERVICES.sort(function(a, b) {
-      if (a.category === b.category) {
-        var aScore = getSortScore(a);
-        var bScore = getSortScore(b);
-        if (aScore !== bScore) return bScore - aScore; // Prioritas tag tertinggi dulu
-        return a.name.localeCompare(b.name);
-      }
-      return a.category.localeCompare(b.category);
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchServices();
     });
 
     var LOGOS = {
@@ -1473,23 +1085,13 @@
       'snackvideo':'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="white"><circle cx="50" cy="50" r="40"/><path d="M40 35v30l25-15z" fill="#07070d"/></svg>'),
       'spotify':'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="white"><circle cx="50" cy="50" r="40"/><path d="M30 45c15-5 30-3 40 2M35 55c10-4 20-2 30 2M40 65c8-3 15-1 20 2" stroke="#07070d" stroke-width="6" stroke-linecap="round" fill="none"/></svg>'),
       'threads':'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="white"><path d="M50 20C30 20 20 35 20 50s10 30 30 30c15 0 25-10 25-20 0-15-15-20-25-20s-20 5-20 15 10 15 20 15c10 0 15-5 15-10"/></svg>'),
-      'whatsapp':'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="white"><path d="M20 80l5-20C20 50 20 30 40 20s40 0 40 20-10 30-30 30c-10 0-15-5-15-5L20 80z"/><path d="M40 40c5-5 10 0 10 5s-5 10-10 5c-5 5 5 15 10 15" stroke="#07070d" stroke-width="4" fill="none"/></svg>')
+      'whatsapp':'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="white"><path d="M20 80l5-20C20 50 20 30 40 20s40 0 40 20-10 30-30 30c-10 0-15-5-15-5L20 80z"/><path d="M40 40c5-5 10 0 10 5s-5 10-10 5c-5 5 5 15 10 15" stroke="#07070d" stroke-width="4" fill="none"/></svg>'),
+      'lainnya':'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="white"><circle cx="50" cy="50" r="40"/><path d="M10 50h80M50 10c20 20 20 60 0 80M50 10c-20 20-20 60 0 80" stroke="#07070d" stroke-width="6" fill="none"/></svg>')
     };
 
-    // Data Processing Helpers
     var PLATFORMS = [];
     var groupedServices = {};
     
-    SERVICES.forEach(function(s) {
-      if (PLATFORMS.indexOf(s.category) === -1) {
-        PLATFORMS.push(s.category);
-        groupedServices[s.category] = [];
-      }
-      groupedServices[s.category].push(s);
-    });
-    PLATFORMS.sort();
-
-    // Fungsi perbaikan logika subkategori
     function getSubCategory(name, platform) {
       let lower = name.toLowerCase();
       if (platform === 'spotify') {
@@ -1505,7 +1107,6 @@
           if (lower.includes('view')) return 'Views';
           if (lower.includes('vote')) return 'Votes';
       }
-      // Cek komentar dulu sebelum likes agar "Likes on Komentar" masuk ke Comments
       if (lower.includes('comment') || lower.includes('komentar')) return 'Comments';
       if (lower.includes('follower')) return 'Followers';
       if (lower.includes('like') || lower.includes('reaction')) return 'Likes & Reactions';
@@ -1524,15 +1125,13 @@
       return 'Lainnya';
     }
 
-    // Fungsi Highlight Pencarian
     function formatName(name, query = '') {
       let formatted = name
-        .replace(/\[Drop[^\]]*\]/g, '<span style="color:#f87171">$&</span>')
-        .replace(/\[Garansi[^\]]*\]/g, '<span style="color:#4ade80">$&</span>');
+        .replace(/\[Drop[^\]]*\]/gi, '<span style="color:#f87171">$&</span>')
+        .replace(/\[Garansi[^\]]*\]/gi, '<span style="color:#4ade80">$&</span>');
       
       if (query) {
         const safeQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        // Split by HTML tags to avoid replacing inside them
         formatted = formatted.split(/(<[^>]+>)/g).map(function(part) {
             if (part.startsWith('<')) return part;
             return part.replace(new RegExp('(' + safeQuery + ')', 'gi'), '<span class="highlight-text">$1</span>');
@@ -1556,7 +1155,8 @@
       var w = document.getElementById('catTabs'), h = '<button class="cat-btn active" data-cat="all">Semua <span style="font-size:.65rem;opacity:.7;margin-left:.2rem">'+SERVICES.length+'</span></button>';
       categories.forEach(function(c) {
         var cnt = SERVICES.filter(function(s) { return s.category === c; }).length;
-        h += '<button class="cat-btn" data-cat="'+c+'"><img src="'+LOGOS[c]+'" alt="'+c+'"> '+c.charAt(0).toUpperCase()+c.slice(1)+' <span style="font-size:.65rem;opacity:.7;margin-left:.2rem">'+cnt+'</span></button>';
+        var logoUrl = LOGOS[c] ? LOGOS[c] : LOGOS['lainnya'];
+        h += '<button class="cat-btn" data-cat="'+c+'"><img src="'+logoUrl+'" alt="'+c+'"> '+c.charAt(0).toUpperCase()+c.slice(1)+' <span style="font-size:.65rem;opacity:.7;margin-left:.2rem">'+cnt+'</span></button>';
       });
       w.innerHTML = h;
       w.querySelectorAll('.cat-btn').forEach(function(b) {
@@ -1605,35 +1205,63 @@
       });
     }
 
+    var SERVICES_PER_PAGE = 12;
+    var loadedServicesCount = 12;
+    var currentFilteredServices = [];
+
     function renderFiltered() {
       var s = document.getElementById('searchInput').value.toLowerCase().trim();
-      var f = SERVICES.filter(function(sv) {
+      currentFilteredServices = SERVICES.filter(function(sv) {
         var matchCat = (activeCat === 'all' || sv.category === activeCat);
         var matchSub = (activeSubCat === 'all' || getSubCategory(sv.name, sv.category) === activeSubCat);
         var matchSearch = (!s || sv.name.toLowerCase().indexOf(s) !== -1 || sv.category.toLowerCase().indexOf(s) !== -1);
         return matchCat && matchSub && matchSearch;
       });
-      document.getElementById('srvCount').textContent = 'Menampilkan '+f.length+' layanan';
+      
+      loadedServicesCount = SERVICES_PER_PAGE; 
+      document.getElementById('srvCount').textContent = 'Menampilkan ' + currentFilteredServices.length + ' layanan';
+      renderGrid();
+    }
+
+    function renderGrid() {
       var g = document.getElementById('srvGrid');
-      if (!f.length) {
+      var loadMoreBtn = document.getElementById('loadMoreBtn');
+      var s = document.getElementById('searchInput').value.toLowerCase().trim();
+      
+      if (!currentFilteredServices.length) {
         g.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted)"><i class="fas fa-search" style="font-size:2rem;margin-bottom:.75rem;display:block"></i>Tidak ada layanan yang cocok.<br><button class="btn-order" onclick="resetSearch()" style="margin-top:1rem"><i class="fas fa-undo"></i> Reset Pencarian</button></div>';
+        loadMoreBtn.style.display = 'none';
         return;
       }
+
+      var toDisplay = currentFilteredServices.slice(0, loadedServicesCount);
       var h = '';
-      f.forEach(function(sv, i) {
+      toDisplay.forEach(function(sv, i) {
         h += '<div class="srv-card" style="animation:fadeInUp .4s ease '+(i*0.03)+'s both">' +
           '<div class="srv-card-top">' +
-          '<div class="srv-cat-icon"><img src="'+LOGOS[sv.category]+'" alt="'+sv.category+'"></div>' +
+          '<div class="srv-cat-icon"><img src="'+(LOGOS[sv.category] || LOGOS['lainnya'])+'" alt="'+sv.category+'"></div>' +
           '<h3>'+formatName(sv.name, s)+'</h3>' +
           '</div>' +
           getBadges(sv.tags) +
           '<div class="srv-meta"><span class="srv-tag">Min: '+sv.min.toLocaleString('id-ID')+'</span><span class="srv-tag">Max: '+sv.max.toLocaleString('id-ID')+'</span></div>' +
           '<div class="srv-price">' +
           '<div><div class="price-val">'+fRp(sv.rate)+'</div><div class="price-unit">/ 1000 unit</div></div>' +
-          '<button class="btn-order" onclick="openModal('+sv.id+')"><i class="fas fa-cart-plus"></i> Pesan</button>' +
+          '<button class="btn-order" onclick="openDetailModal('+sv.id+')"><i class="fas fa-search"></i> Detail</button>' +
           '</div></div>';
       });
+      
       g.innerHTML = h;
+      
+      if (loadedServicesCount >= currentFilteredServices.length) {
+        loadMoreBtn.style.display = 'none';
+      } else {
+        loadMoreBtn.style.display = 'inline-flex';
+      }
+    }
+
+    function loadMoreServices() {
+      loadedServicesCount += SERVICES_PER_PAGE;
+      renderGrid();
     }
 
     function resetSearch() {
@@ -1647,7 +1275,51 @@
         renderFiltered();
     }
 
-    // === MODAL & ORDER LOGIC ===
+    function openDetailModal(sid) {
+      currentSrv = SERVICES.find(function(s) { return s.id === sid; });
+      if (!currentSrv) return;
+      
+      var refillText = (currentSrv.refill === true || currentSrv.refill === 'true' || currentSrv.name.toLowerCase().includes('refill') || currentSrv.name.toLowerCase().includes('garansi')) ? '<span style="color:#4ade80">Ya</span>' : '<span style="color:#f87171">Tidak</span>';
+      var cancelText = (currentSrv.cancel === true || currentSrv.cancel === 'true' || currentSrv.name.toLowerCase().includes('cancel')) ? '<span style="color:#4ade80">Ya</span>' : '<span style="color:#f87171">Tidak</span>';
+      
+      var descHTML = 
+        '<h3>'+currentSrv.name+'</h3>' +
+        '<div class="modal-cat"><img src="'+LOGOS[currentSrv.category]+'" alt="'+currentSrv.category+'" style="width:20px;height:20px;border-radius:6px;margin-right:6px">'+currentSrv.category.toUpperCase()+'</div>' +
+        '<div class="price-calc" style="background: rgba(255,255,255,0.05); padding: 1.25rem; border-radius: 10px; margin-bottom: 1.25rem;">' +
+        '<div class="pc-row"><span class="pc-label">Harga per 1000</span><span class="pc-val pc-total">'+fRp(currentSrv.rate)+'</span></div>' +
+        '<div class="pc-row"><span class="pc-label">Minimal Order</span><span class="pc-val">'+currentSrv.min.toLocaleString('id-ID')+'</span></div>' +
+        '<div class="pc-row"><span class="pc-label">Maksimal Order</span><span class="pc-val">'+currentSrv.max.toLocaleString('id-ID')+'</span></div>' +
+        '<div class="pc-row"><span class="pc-label">Garansi Refill</span><span class="pc-val">'+refillText+'</span></div>' +
+        '<div class="pc-row"><span class="pc-label">Bisa Cancel</span><span class="pc-val">'+cancelText+'</span></div>' +
+        '</div>';
+        
+      if (currentSrv.drop) {
+        descHTML += '<div class="order-result error" style="margin-bottom:1rem;"><i class="fas fa-exclamation-triangle"></i> Info Drop: <strong>'+currentSrv.drop+'</strong></div>';
+      }
+      
+      descHTML += 
+        '<div class="os-note" style="margin-bottom:1.25rem; border-left: 3px solid var(--accent);">' +
+        '<i class="fas fa-info-circle" style="color:var(--accent);margin-right:0.3rem"></i> <strong>Harap Dibaca:</strong> Detail layanan seperti estimasi waktu proses atau persentase drop mungkin tidak sepenuhnya tercantum di sini. Pastikan Anda sudah membaca deskripsi lengkap di panel kami sebelum memesan.' +
+        '</div>' +
+        '<button class="btn-submit" onclick="lanjutPesan()" style="margin-bottom:0.5rem;"><i class="fas fa-shopping-cart"></i> Lanjut Memesan</button>' +
+        '<button class="btn-back" onclick="closeDetailModal()"><i class="fas fa-xmark"></i> Batal</button>';
+        
+      document.getElementById('detailContent').innerHTML = descHTML;
+      document.getElementById('detailModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function closeDetailModal() {
+      document.getElementById('detailModal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    
+    function lanjutPesan() {
+      if (!currentSrv) return;
+      closeDetailModal();
+      openModal(currentSrv.id);
+    }
+
     var currentSrv = null, currentStep = 1, selectedPayMethod = null, orderFormData = {};
     
     function openModal(sid) {
@@ -1856,10 +1528,6 @@
         '<div class="sr-row"><span class="sr-label">Status</span><span class="sr-val">'+(STATUS_MAP[found.status]||found.status)+'</span></div>' +
         '<div class="sr-row"><span class="sr-label">Waktu</span><span class="sr-val" style="font-size:.78rem;color:var(--muted)">'+timeStr+'</span></div>';
     }
-
-    // Init
-    renderCategories();
-    renderFiltered();
     
     document.getElementById('searchInput').addEventListener('input', function() { renderFiltered(); });
     
@@ -2032,7 +1700,6 @@
     }
   </script>
   <script>
-  // Force update service worker
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.getRegistration().then(reg => {
       if (reg) {
