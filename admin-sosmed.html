@@ -45,6 +45,7 @@
         .balance-info { display: flex; flex-direction: column; gap: 0.2rem; }
         .balance-title { font-size: 0.75rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
         .balance-amount { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .balance-amount.error { color: var(--danger); font-size: 1rem; font-family: 'DM Sans', sans-serif; }
         .balance-refresh { color: var(--accent); cursor: pointer; padding: 0.5rem; border-radius: 50%; transition: 0.2s; }
         .balance-refresh:hover { background: rgba(255,221,87,0.2); transform: rotate(90deg); }
 
@@ -71,7 +72,6 @@
         .stat-box h3 { font-size: 1.3rem; color: var(--accent); }
         .stat-box p { font-size: 0.75rem; color: var(--muted); }
 
-        /* BULK ACTION BAR */
         .bulk-bar { display: none; background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.3); padding: 0.8rem 1rem; border-radius: 10px; margin-bottom: 1rem; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
         .bulk-bar.active { display: flex; }
         .bulk-info { font-size: 0.85rem; font-weight: 600; color: var(--info); }
@@ -114,7 +114,6 @@
         .btn-note { background: rgba(251,191,36,0.1); color: #fbbf24; border-color: rgba(251,191,36,0.3); }
         .btn-note:hover { background: #fbbf24; color: #000; }
 
-        /* PAGINATION */
         .pagination { display: flex; justify-content: center; align-items: center; gap: 1rem; margin-top: 1.5rem; }
         .page-btn { padding: 0.5rem 1rem; border-radius: 6px; background: var(--bg-card); border: 1px solid var(--border); color: var(--fg); cursor: pointer; font-weight: 600; font-size: 0.8rem; transition: 0.2s; }
         .page-btn:hover:not(:disabled) { background: rgba(255,255,255,0.1); }
@@ -259,7 +258,8 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        const SMM_API_URL = 'https://sosmed.tasalonikabagas.workers.dev/'; 
+        // PERBAIKAN TYPO URL WORKER (tsalonikabagas)
+        const SMM_API_URL = 'https://sosmed.tsalonikabagas.workers.dev/'; 
         const ADMIN_UID = "g2wfEDQ6niUfI3UEjRFh4GUtxvp1";
 
         let balanceInterval, syncInterval;
@@ -302,7 +302,9 @@
                 
                 setTimeout(syncOrderStatuses, 3000); 
             } else {
+                document.getElementById('login-section').classList.add('hidden');
                 document.getElementById('login-section').classList.remove('hidden');
+                document.getElementById('dashboard-section').classList.remove('hidden');
                 document.getElementById('dashboard-section').classList.add('hidden');
                 if(balanceInterval) clearInterval(balanceInterval);
                 if(syncInterval) clearInterval(syncInterval);
@@ -350,6 +352,7 @@
             return `https://wa.me/${p}`;
         }
 
+        // PERBAIKAN FUNGSI BALANCE AGAR MENAMPILKAN ERROR ASLI DARI API
         async function fetchBalance() {
             const el = document.getElementById('smmBalance');
             if(!el) return;
@@ -359,17 +362,26 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ action: 'balance' })
                 });
-                const result = await response.json();
                 
+                const text = await response.text();
+                let result;
+                try { result = JSON.parse(text); } catch(e) { throw new Error('Respon tidak valid (Bukan JSON). Cek URL Worker.'); }
+
                 if (result.balance) {
                     const numBalance = parseFloat(result.balance);
                     el.textContent = 'Rp ' + numBalance.toLocaleString('id-ID');
+                    el.classList.remove('error');
+                } else if (result.error) {
+                    el.textContent = 'Error: ' + result.error;
+                    el.classList.add('error');
                 } else {
-                    el.textContent = 'Gagal ambil saldo';
+                    el.textContent = 'Gagal ambil saldo (Unknown)';
+                    el.classList.add('error');
                 }
             } catch (error) {
-                console.error(error);
-                el.textContent = 'Error koneksi';
+                console.error('Balance error:', error);
+                el.textContent = 'Error: ' + error.message;
+                el.classList.add('error');
             }
         }
 
@@ -644,9 +656,10 @@
             }
         }
 
+        // PERBAIKAN FUNGSI CANCEL SESUAI SS DOKUMENTASI API
         async function cancelOrder(docId, smmOrderId) {
             if (!smmOrderId) return alert('Order ID SMM tidak ditemukan.');
-            if (!confirm('Yakin batalkan pesanan ini?')) return;
+            if (!confirm('Yakin batalkan pesanan ini? Pastikan saldo akan dikembalikan oleh SMM Panel.')) return;
 
             try {
                 const response = await fetch(SMM_API_URL, {
@@ -656,21 +669,38 @@
                 });
                 const result = await response.json();
                 
-                if (result && (Array.isArray(result) ? result[0].cancel : result.cancel)) {
+                // Cek jika respon berupa array (sesuai SS API) dan tidak ada properti 'error'
+                let isSuccess = false;
+                let errMsg = '';
+
+                if (Array.isArray(result) && result.length > 0) {
+                    if (result[0].cancel && !result[0].cancel.error) {
+                        isSuccess = true;
+                    } else if (result[0].cancel && result[0].cancel.error) {
+                        errMsg = result[0].cancel.error;
+                    }
+                } else if (result.cancel && !result.cancel.error) {
+                     isSuccess = true;
+                } else if (result.error) {
+                    errMsg = result.error;
+                }
+
+                if (isSuccess) {
                     await db.collection("orders").doc(docId).update({ status: 'cancelled' });
                     alert('✅ Pesanan dibatalkan.');
                     fetchBalance();
                 } else {
-                    alert('❌ Gagal Cancel: ' + JSON.stringify(result));
+                    alert('❌ Gagal Cancel: ' + (errMsg || JSON.stringify(result)));
                 }
             } catch (error) {
                 alert('❌ Error jaringan.');
             }
         }
 
+        // PERBAIKAN FUNGSI REFILL SESUAI SS DOKUMENTASI API
         async function refillOrder(docId, smmOrderId) {
             if (!smmOrderId) return alert('Order ID SMM tidak ditemukan.');
-            if (!confirm('Ajukan refill untuk pesanan ini?')) return;
+            if (!confirm('Ajukan refill untuk pesanan ini? (Hanya untuk layanan bergaransi)')) return;
 
             try {
                 const response = await fetch(SMM_API_URL, {
@@ -680,7 +710,8 @@
                 });
                 const result = await response.json();
                 
-                if (result && (result.refill || result.id || result.status === 'success')) {
+                // Cek respon {"refill": "78421"} atau {"error": "..."}
+                if (result && result.refill && !result.error) {
                     alert('✅ Permintaan refill dikirim.');
                 } else {
                     alert('❌ Gagal Refill: ' + (result.error || JSON.stringify(result)));
