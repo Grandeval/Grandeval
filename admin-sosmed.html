@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -22,43 +21,84 @@
             --border: rgba(255,255,255,0.08);
             --success: #4ade80; 
             --danger: #f87171;
+            --info: #60a5fa;
         }
         * { margin:0; padding:0; box-sizing:border-box; font-family:'DM Sans', sans-serif; }
         body { background: var(--bg); color: var(--fg); padding: 2rem; }
         h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; }
         
         .container { max-width: 1000px; margin: 0 auto; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; flex-wrap: wrap; gap: 1rem; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; flex-wrap: wrap; gap: 1rem; }
         
-        .btn { padding: 0.5rem 1rem; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; }
+        .btn { padding: 0.5rem 1rem; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.8rem; }
         .btn-primary { background: var(--accent); color: #000; }
         .btn-primary:hover { opacity: 0.8; }
         .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--fg); }
         .btn-outline:hover { background: rgba(255,255,255,0.05); }
         .btn:disabled { opacity: 0.5; cursor: not-allowed; }
         
-        /* TABS */
-        .tabs { display: flex; gap: 0.5rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; flex-wrap: wrap; }
+        .balance-widget { 
+            background: linear-gradient(135deg, rgba(255,221,87,0.1), rgba(255,221,87,0.02)); 
+            border: 1px solid rgba(255,221,87,0.3); 
+            border-radius: 12px; padding: 1rem; display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; 
+        }
+        .balance-info { display: flex; flex-direction: column; gap: 0.2rem; }
+        .balance-title { font-size: 0.75rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .balance-amount { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .balance-refresh { color: var(--accent); cursor: pointer; padding: 0.5rem; border-radius: 50%; transition: 0.2s; }
+        .balance-refresh:hover { background: rgba(255,221,87,0.2); transform: rotate(90deg); }
+
+        .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; flex-wrap: wrap; }
         .tab-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: 600; font-family: 'DM Sans', sans-serif; transition: 0.2s; }
         .tab-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
-        .stat-box { background: var(--bg-card); border: 1px solid var(--border); padding: 1rem; border-radius: 12px; text-align: center; }
-        .stat-box h3 { font-size: 1.5rem; color: var(--accent); }
-        .stat-box p { font-size: 0.8rem; color: var(--muted); }
+        .search-filter-wrap { display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1.5rem; }
+        .search-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .search-box { position: relative; flex: 1; min-width: 200px; }
+        .search-box i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--muted); }
+        .search-box input { width: 100%; padding: 0.7rem 1rem 0.7rem 2.5rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; color: var(--fg); font-size: 0.85rem; outline: none; transition: 0.2s; }
+        .search-box input:focus { border-color: var(--accent); }
+        
+        .filter-row { display: flex; gap: 0.4rem; overflow-x: auto; padding-bottom: 0.2rem; scrollbar-width: none; }
+        .filter-row::-webkit-scrollbar { display: none; }
+        .filter-btn { white-space: nowrap; padding: 0.4rem 0.8rem; border-radius: 50px; background: var(--bg-card); border: 1px solid var(--border); color: var(--muted); font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .filter-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
+
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.8rem; margin-bottom: 1.5rem; }
+        .stat-box { background: var(--bg-card); border: 1px solid var(--border); padding: 0.8rem; border-radius: 10px; text-align: center; }
+        .stat-box h3 { font-size: 1.3rem; color: var(--accent); }
+        .stat-box p { font-size: 0.75rem; color: var(--muted); }
+
+        /* BULK ACTION BAR */
+        .bulk-bar { display: none; background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.3); padding: 0.8rem 1rem; border-radius: 10px; margin-bottom: 1rem; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+        .bulk-bar.active { display: flex; }
+        .bulk-info { font-size: 0.85rem; font-weight: 600; color: var(--info); }
+        .bulk-btn { background: var(--info); color: #fff; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; border: none; cursor: pointer; transition: 0.2s; }
+        .bulk-btn:hover { background: #3b82f6; }
 
         .order-list { display: flex; flex-direction: column; gap: 1rem; }
         .order-card { background: var(--bg-card); border: 1px solid var(--border); padding: 1rem; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-        .order-info { flex: 1; min-width: 250px; }
-        .order-info h4 { font-size: 1rem; margin-bottom: 0.2rem; }
-        .order-meta { font-size: 0.8rem; color: var(--muted); display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem; }
+        .order-card.selected { border-color: var(--info); background: rgba(96,165,250,0.05); }
+        
+        .order-left { display: flex; align-items: flex-start; gap: 0.8rem; flex: 1; min-width: 250px; }
+        .checkbox-wrap { display: flex; align-items: center; justify-content: center; padding-top: 0.2rem; }
+        .checkbox-wrap input { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; }
+        
+        .order-info { flex: 1; }
+        .order-info h4 { font-size: 0.95rem; margin-bottom: 0.2rem; line-height: 1.3; }
+        .order-meta { font-size: 0.78rem; color: var(--muted); display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem; }
         .order-meta a { color: var(--accent); text-decoration: none; word-break: break-all; }
+        .wa-link { color: var(--success); text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem; font-weight: 600; }
+        .wa-link:hover { text-decoration: underline; }
+        
+        .profit-text { color: #4ade80; font-weight: 600; font-size: 0.75rem; background: rgba(74,222,128,0.1); padding: 0.1rem 0.4rem; border-radius: 4px; }
+        .admin-note { font-size: 0.75rem; color: #fbbf24; background: rgba(251,191,36,0.1); padding: 0.2rem 0.5rem; border-radius: 4px; margin-top: 0.4rem; display: inline-block; }
         
         .status-badge { padding: 0.2rem 0.6rem; border-radius: 50px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; }
         .status-pending { background: rgba(255,221,87,0.1); color: var(--accent); }
-        .status-processing { background: rgba(96,165,250,0.1); color: #60a5fa; }
+        .status-processing { background: rgba(96,165,250,0.1); color: var(--info); }
         .status-completed { background: rgba(74,222,128,0.1); color: var(--success); }
         .status-cancelled { background: rgba(248,113,113,0.1); color: var(--danger); }
         
@@ -66,55 +106,56 @@
         .btn-process { background: rgba(74,222,128,0.15); color: var(--success); border: 1px solid rgba(74,222,128,0.3); }
         .btn-process:hover { background: var(--success); color: #000; }
         
+        .btn-sm { padding: 0.3rem 0.6rem; border-radius: 6px; font-size: 0.7rem; border: 1px solid transparent; display: inline-flex; align-items: center; gap: 0.3rem; cursor: pointer; font-weight: 600; }
+        .btn-refill { background: rgba(96,165,250,0.1); color: var(--info); border-color: rgba(96,165,250,0.3); }
+        .btn-refill:hover { background: var(--info); color: #fff; }
+        .btn-cancel { background: rgba(248,113,113,0.1); color: var(--danger); border-color: rgba(248,113,113,0.3); }
+        .btn-cancel:hover { background: var(--danger); color: #fff; }
+        .btn-note { background: rgba(251,191,36,0.1); color: #fbbf24; border-color: rgba(251,191,36,0.3); }
+        .btn-note:hover { background: #fbbf24; color: #000; }
+
+        /* PAGINATION */
+        .pagination { display: flex; justify-content: center; align-items: center; gap: 1rem; margin-top: 1.5rem; }
+        .page-btn { padding: 0.5rem 1rem; border-radius: 6px; background: var(--bg-card); border: 1px solid var(--border); color: var(--fg); cursor: pointer; font-weight: 600; font-size: 0.8rem; transition: 0.2s; }
+        .page-btn:hover:not(:disabled) { background: rgba(255,255,255,0.1); }
+        .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .page-info { font-size: 0.8rem; color: var(--muted); font-weight: 600; }
+
         #login-section { text-align: center; margin-top: 20vh; }
         .hidden { display: none !important; }
 
-        /* CODE GENERATOR STYLE */
         .code-box { width: 100%; height: 350px; background: #1e1e1e; color: #d4d4d4; font-family: monospace; padding: 1rem; border-radius: 8px; border: 1px solid var(--border); margin-top: 1rem; resize: vertical; font-size: 0.85rem; }
 
-        /* =========================================
-           OPTIMASI TAMPILAN HP (MOBILE FRIENDLY)
-           ========================================= */
         @media (max-width: 768px) {
             body { padding: 1rem 0.5rem; }
             .container { padding: 0; }
-            
-            /* Header */
-            .header { flex-direction: column; align-items: stretch; gap: 0.8rem; margin-bottom: 1.5rem; }
+            .header { flex-direction: column; align-items: stretch; gap: 0.8rem; margin-bottom: 1rem; }
             .header h2 { font-size: 1.1rem; text-align: center; }
             .header > div { display: flex; width: 100%; gap: 0.4rem; }
             .header .btn { flex: 1; font-size: 0.75rem; padding: 0.6rem 0.2rem; border-radius: 6px; }
-            
-            /* Tabs */
-            .tabs { gap: 0.3rem; padding-bottom: 0.8rem; margin-bottom: 1.5rem; }
+            .balance-widget { padding: 0.8rem; margin-bottom: 1rem; border-radius: 8px; }
+            .balance-amount { font-size: 1.2rem; }
+            .tabs { gap: 0.3rem; padding-bottom: 0.8rem; margin-bottom: 1rem; }
             .tab-btn { flex: 1; font-size: 0.75rem; padding: 0.6rem 0.2rem; text-align: center; }
-            
-            /* Stats */
             .stats { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; margin-bottom: 1.2rem; }
             .stat-box { padding: 0.6rem; border-radius: 8px; }
             .stat-box h3 { font-size: 1.2rem; }
             .stat-box p { font-size: 0.65rem; }
-            
-            /* Order Cards */
             .order-card { flex-direction: column; align-items: stretch; padding: 0.8rem; gap: 0.8rem; }
-            .order-info { min-width: 100%; }
+            .order-left { min-width: 100%; }
             .order-info h4 { font-size: 0.85rem; line-height: 1.3; margin-bottom: 0.4rem; }
             .order-meta { font-size: 0.7rem; flex-direction: column; gap: 0.3rem; margin-top: 0.3rem; }
             .order-meta span { display: flex; align-items: flex-start; gap: 0.4rem; }
-            
-            /* Badge Status */
             .status-badge { font-size: 0.6rem; padding: 0.15rem 0.5rem; }
-            
-            /* Action Buttons */
-            .actions { width: 100%; flex-direction: column; }
+            .actions { width: 100%; flex-direction: column; gap: 0.5rem; }
             .btn-process { width: 100%; justify-content: center; padding: 0.7rem; font-size: 0.8rem; margin-top: 0.3rem; }
-            .actions span { font-size: 0.7rem !important; text-align: center; display: block; padding: 0.3rem; background: rgba(255,255,255,0.03); border-radius: 6px; }
-            
-            /* Generator Tab */
+            .actions > div { display: flex; width: 100%; gap: 0.5rem; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.03); padding: 0.5rem; border-radius: 6px; }
+            .btn-sm { flex: 1; justify-content: center; padding: 0.4rem; font-size: 0.75rem; }
             .code-box { height: 250px; font-size: 0.7rem; }
             .tab-content h3 { font-size: 1rem; }
             .tab-content p { font-size: 0.75rem; }
             #btn-generate, .btn-outline[onclick="copyCode()"] { width: 100%; font-size: 0.8rem; }
+            .bulk-bar { flex-direction: column; align-items: stretch; text-align: center; }
         }
     </style>
 </head>
@@ -130,28 +171,65 @@
         <div class="header">
             <h2><i class="fas fa-share-nodes"></i> Admin Sosmed</h2>
             <div>
-                <button class="btn btn-outline" onclick="syncOrderStatuses()" id="btnSync"><i class="fas fa-sync"></i> Sync Status</button>
+                <button class="btn btn-outline" onclick="exportCSV()" id="btnExport"><i class="fas fa-file-csv"></i> Export</button>
+                <button class="btn btn-outline" onclick="syncOrderStatuses()" id="btnSync"><i class="fas fa-sync"></i> Sync</button>
                 <button class="btn btn-outline" onclick="logoutAdmin()"><i class="fas fa-sign-out-alt"></i> Keluar</button>
             </div>
         </div>
 
-        <!-- TABS NAV -->
+        <div class="balance-widget">
+            <div class="balance-info">
+                <span class="balance-title">Saldo SMM Panel</span>
+                <span class="balance-amount" id="smmBalance">Memuat...</span>
+            </div>
+            <div class="balance-refresh" onclick="fetchBalance()" title="Refresh Saldo">
+                <i class="fas fa-rotate-right"></i>
+            </div>
+        </div>
+
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('orders')"><i class="fas fa-list"></i> Pesanan Masuk</button>
             <button class="tab-btn" onclick="switchTab('generator')"><i class="fas fa-code"></i> Generate Harga Web (+30%)</button>
         </div>
 
-        <!-- TAB 1: PESANAN -->
         <div id="tab-orders" class="tab-content active">
-            <div class="stats" id="stats-container">
-                <!-- Stats akan diisi via JS -->
+            <div class="search-filter-wrap">
+                <div class="search-row">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Cari Order ID / Nama / No WA..." oninput="handleSearch(this.value)">
+                    </div>
+                    <select id="dateFilter" onchange="handleDateFilter(this.value)" style="padding:0.7rem; background:var(--bg-card); border:1px solid var(--border); border-radius:10px; color:var(--fg); outline:none;">
+                        <option value="all">Semua Waktu</option>
+                        <option value="today">Hari Ini</option>
+                        <option value="7days">7 Hari Terakhir</option>
+                        <option value="30days">30 Hari Terakhir</option>
+                    </select>
+                </div>
+                <div class="filter-row" id="filterTabs">
+                    <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">Semua</button>
+                    <button class="filter-btn" data-filter="pending" onclick="setFilter('pending')">Pending</button>
+                    <button class="filter-btn" data-filter="processing" onclick="setFilter('processing')">Proses</button>
+                    <button class="filter-btn" data-filter="completed" onclick="setFilter('completed')">Selesai</button>
+                    <button class="filter-btn" data-filter="cancelled" onclick="setFilter('cancelled')">Batal</button>
+                </div>
             </div>
-            <div class="order-list" id="order-list">
-                <!-- Orders akan diisi via JS -->
+
+            <div class="bulk-bar" id="bulkBar">
+                <div class="bulk-info"><span id="selectedCount">0</span> Pesanan Terpilih</div>
+                <button class="bulk-btn" onclick="bulkProcess()"><i class="fas fa-play"></i> Proses Semua Terpilih</button>
+            </div>
+
+            <div class="stats" id="stats-container"></div>
+            <div class="order-list" id="order-list"></div>
+            
+            <div class="pagination" id="pagination">
+                <button class="page-btn" onclick="changePage(-1)" id="prevPage"><i class="fas fa-chevron-left"></i> Sebelumnya</button>
+                <span class="page-info" id="pageInfo">Halaman 1 dari 1</span>
+                <button class="page-btn" onclick="changePage(1)" id="nextPage">Selanjutnya <i class="fas fa-chevron-right"></i></button>
             </div>
         </div>
 
-        <!-- TAB 2: GENERATOR -->
         <div id="tab-generator" class="tab-content">
             <div style="background: var(--bg-card); padding: 1.5rem 1rem; border-radius: 12px; border: 1px solid var(--border);">
                 <h3>Generate Kode untuk SosialMedia.html</h3>
@@ -166,8 +244,9 @@
         </div>
     </div>
 
+    <audio id="notifSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
+
     <script>
-        // 1. FIREBASE CONFIG
         const firebaseConfig = {
             apiKey: "AIzaSyD4sgRYUhk08Y4oZPR4GXJbSuX1fHjXBtg",
             authDomain: "akinowedding-73271.firebaseapp.com",
@@ -180,18 +259,31 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // 2. KONFIGURASI CLOUDFLARE WORKER ANDA
-        const SMM_API_URL = 'https://sosmed.tsalonikabagas.workers.dev/'; 
-        
-        // Batasi hanya admin yang bisa masuk
+        const SMM_API_URL = 'https://sosmed.tasalonikabagas.workers.dev/'; 
         const ADMIN_UID = "g2wfEDQ6niUfI3UEjRFh4GUtxvp1";
 
-        // 3. LOGIKA LOGIN
+        let balanceInterval, syncInterval;
+        let allOrdersData = [];
+        let filteredOrdersData = [];
+        
+        let currentFilter = 'all';
+        let currentSearch = '';
+        let currentDateFilter = 'all';
+        
+        let currentPage = 1;
+        const itemsPerPage = 10;
+        
+        let selectedOrders = new Set();
+        let isInitialLoad = true;
+
         function loginAdmin() {
             const provider = new firebase.auth.GoogleAuthProvider();
             auth.signInWithPopup(provider).catch(err => alert('Login gagal: ' + err.message));
         }
+        
         function logoutAdmin() {
+            if(balanceInterval) clearInterval(balanceInterval);
+            if(syncInterval) clearInterval(syncInterval);
             auth.signOut();
         }
 
@@ -200,15 +292,23 @@
                 document.getElementById('login-section').classList.add('hidden');
                 document.getElementById('dashboard-section').classList.remove('hidden');
                 loadOrders();
-                // Otomatis sync status 3 detik setelah login
+                fetchBalance();
+                
+                if(balanceInterval) clearInterval(balanceInterval);
+                balanceInterval = setInterval(fetchBalance, 5 * 60 * 1000);
+                
+                if(syncInterval) clearInterval(syncInterval);
+                syncInterval = setInterval(syncOrderStatuses, 15 * 60 * 1000);
+                
                 setTimeout(syncOrderStatuses, 3000); 
             } else {
                 document.getElementById('login-section').classList.remove('hidden');
                 document.getElementById('dashboard-section').classList.add('hidden');
+                if(balanceInterval) clearInterval(balanceInterval);
+                if(syncInterval) clearInterval(syncInterval);
             }
         });
 
-        // 4. LOGIKA TAB
         function switchTab(tabName) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
@@ -222,55 +322,188 @@
             }
         }
 
-        // 5. LOAD DATA PESANAN DARI FIREBASE
+        function handleSearch(val) {
+            currentSearch = val.toLowerCase().trim();
+            currentPage = 1;
+            applyFilters();
+        }
+
+        function handleDateFilter(val) {
+            currentDateFilter = val;
+            currentPage = 1;
+            applyFilters();
+        }
+
+        function setFilter(status) {
+            currentFilter = status;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.filter-btn[data-filter="${status}"]`).classList.add('active');
+            currentPage = 1;
+            applyFilters();
+        }
+
+        function formatWALink(phone) {
+            if (!phone) return '#';
+            let p = phone.replace(/\D/g, '');
+            if (p.startsWith('0')) p = '62' + p.substring(1);
+            else if (p.startsWith('8')) p = '62' + p;
+            return `https://wa.me/${p}`;
+        }
+
+        async function fetchBalance() {
+            const el = document.getElementById('smmBalance');
+            if(!el) return;
+            try {
+                const response = await fetch(SMM_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'balance' })
+                });
+                const result = await response.json();
+                
+                if (result.balance) {
+                    const numBalance = parseFloat(result.balance);
+                    el.textContent = 'Rp ' + numBalance.toLocaleString('id-ID');
+                } else {
+                    el.textContent = 'Gagal ambil saldo';
+                }
+            } catch (error) {
+                console.error(error);
+                el.textContent = 'Error koneksi';
+            }
+        }
+
         function loadOrders() {
             const listEl = document.getElementById('order-list');
             listEl.innerHTML = '<p style="text-align:center; color:var(--muted); font-size:0.8rem; margin-top:1rem;"><i class="fas fa-spinner fa-spin"></i> Memuat pesanan...</p>';
 
             db.collection("orders").orderBy("createdAt", "desc").onSnapshot(snapshot => {
-                let html = '';
-                let stats = { pending: 0, processing: 0, completed: 0, cancelled: 0 };
-
-                if (snapshot.empty) {
-                    listEl.innerHTML = '<p style="text-align:center; color:var(--muted); font-size:0.8rem; margin-top:1rem;">Belum ada pesanan.</p>';
-                    return;
+                
+                if (!isInitialLoad) {
+                    snapshot.docChanges().forEach(change => {
+                        if (change.type === "added") {
+                            const data = change.doc.data();
+                            if (data.status === 'pending' || data.status === 'paid') {
+                                playNotificationSound();
+                            }
+                        }
+                    });
                 }
+
+                allOrdersData = [];
+                let stats = { pending: 0, processing: 0, completed: 0, cancelled: 0 };
 
                 snapshot.forEach(doc => {
                     const data = doc.data();
-                    const id = doc.id;
-                    
-                    // Hitung statistik
+                    data.id = doc.id;
+                    allOrdersData.push(data);
                     if (stats[data.status] !== undefined) stats[data.status]++;
+                });
 
-                    // Format tanggal
-                    const date = data.createdAt ? new Date(data.createdAt.seconds * 1000).toLocaleString('id-ID') : '-';
-                    
-                    // Warna Badge Status
-                    let badgeClass = 'status-pending';
-                    if (data.status === 'processing') badgeClass = 'status-processing';
-                    if (data.status === 'completed') badgeClass = 'status-completed';
-                    if (data.status === 'cancelled') badgeClass = 'status-cancelled';
+                document.getElementById('stats-container').innerHTML = `
+                    <div class="stat-box"><h3>${stats.pending}</h3><p>Pending</p></div>
+                    <div class="stat-box"><h3>${stats.processing}</h3><p>Processing</p></div>
+                    <div class="stat-box"><h3>${stats.completed}</h3><p>Selesai</p></div>
+                    <div class="stat-box"><h3>${stats.cancelled}</h3><p>Batal</p></div>
+                `;
 
-                    // Tombol Aksi
-                    let actionBtn = '';
-                    if (data.status === 'pending' || data.status === 'paid') {
-                        actionBtn = `<button class="btn btn-process" onclick="processToSMM('${id}', ${data.serviceId}, '${data.link}', ${data.quantity})"><i class="fas fa-play"></i> Proses ke SMM</button>`;
-                    } else if (data.status === 'processing') {
-                        actionBtn = `<span style="color:var(--muted); font-size:0.75rem;">Diproses (SMM ID: ${data.smmOrderId || '-'})</span>`;
-                    } else if (data.status === 'completed') {
-                        actionBtn = `<span style="color:var(--success); font-size:0.75rem;"><i class="fas fa-check-circle"></i> Selesai</span>`;
-                    }
+                applyFilters();
+                isInitialLoad = false;
+            });
+        }
 
-                    html += `
-                        <div class="order-card">
+        function applyFilters() {
+            let filtered = allOrdersData;
+            
+            if (currentFilter !== 'all') {
+                filtered = filtered.filter(o => o.status === currentFilter);
+            }
+            if (currentSearch) {
+                filtered = filtered.filter(o => 
+                    (o.orderId && o.orderId.toLowerCase().includes(currentSearch)) ||
+                    (o.customerName && o.customerName.toLowerCase().includes(currentSearch)) ||
+                    (o.customerWA && o.customerWA.includes(currentSearch))
+                );
+            }
+            if (currentDateFilter !== 'all') {
+                const now = new Date();
+                let startDate = new Date();
+                if (currentDateFilter === 'today') {
+                    startDate.setHours(0, 0, 0, 0);
+                } else if (currentDateFilter === '7days') {
+                    startDate.setDate(now.getDate() - 7);
+                } else if (currentDateFilter === '30days') {
+                    startDate.setDate(now.getDate() - 30);
+                }
+                filtered = filtered.filter(o => {
+                    if (!o.createdAt) return false;
+                    const orderDate = new Date(o.createdAt.seconds * 1000);
+                    return orderDate >= startDate;
+                });
+            }
+            
+            filteredOrdersData = filtered;
+            renderPagination();
+            renderOrders();
+        }
+
+        function renderOrders() {
+            const listEl = document.getElementById('order-list');
+            
+            if (!filteredOrdersData.length) {
+                listEl.innerHTML = '<p style="text-align:center; color:var(--muted); font-size:0.8rem; margin-top:1rem;">Tidak ada pesanan yang cocok.</p>';
+                return;
+            }
+
+            const startIdx = (currentPage - 1) * itemsPerPage;
+            const endIdx = startIdx + itemsPerPage;
+            const pageData = filteredOrdersData.slice(startIdx, endIdx);
+
+            let html = '';
+            pageData.forEach(data => {
+                const id = data.id;
+                const date = data.createdAt ? new Date(data.createdAt.seconds * 1000).toLocaleString('id-ID') : '-';
+                const isSelected = selectedOrders.has(id);
+                
+                let badgeClass = 'status-pending';
+                if (data.status === 'processing') badgeClass = 'status-processing';
+                if (data.status === 'completed') badgeClass = 'status-completed';
+                if (data.status === 'cancelled') badgeClass = 'status-cancelled';
+
+                let actionBtn = '';
+                if (data.status === 'pending' || data.status === 'paid') {
+                    actionBtn = `<button class="btn btn-process" onclick="processToSMM('${id}', ${data.serviceId}, '${data.link}', ${data.quantity})"><i class="fas fa-play"></i> Proses ke SMM</button>`;
+                } else if (data.status === 'processing' || data.status === 'completed') {
+                    actionBtn = `
+                        <div style="display:flex; flex-direction:column; gap:0.4rem; width:100%;">
+                            <span style="color:var(--muted); font-size:0.7rem; text-align:center;">SMM ID: ${data.smmOrderId || '-'}</span>
+                            <div style="display:flex; gap:0.5rem;">
+                                <button class="btn-sm btn-refill" onclick="refillOrder('${id}', '${data.smmOrderId}')"><i class="fas fa-rotate-left"></i> Refill</button>
+                                <button class="btn-sm btn-cancel" onclick="cancelOrder('${id}', '${data.smmOrderId}')"><i class="fas fa-ban"></i> Cancel</button>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                const profit = data.total - (data.total / 1.3);
+                const adminNote = data.adminNote ? `<div class="admin-note"><i class="fas fa-sticky-note"></i> ${data.adminNote}</div>` : '';
+
+                html += `
+                    <div class="order-card ${isSelected ? 'selected' : ''}">
+                        <div class="order-left">
+                            <div class="checkbox-wrap">
+                                <input type="checkbox" ${isSelected ? 'checked' : ''} onchange="toggleSelect('${id}')">
+                            </div>
                             <div class="order-info">
                                 <h4>${data.serviceName || 'Layanan Tidak Diketahui'}</h4>
                                 <div class="order-meta">
                                     <span><i class="fas fa-user"></i> ${data.customerName}</span>
-                                    <span><i class="fab fa-whatsapp"></i> ${data.customerWA}</span>
+                                    <span><i class="fab fa-whatsapp"></i> <a href="${formatWALink(data.customerWA)}" target="_blank" class="wa-link">${data.customerWA}</a></span>
                                     <span><i class="fas fa-hashtag"></i> ${data.quantity.toLocaleString('id-ID')} Unit</span>
-                                    <span style="color:var(--accent)"><i class="fas fa-money-bill"></i> Rp ${(data.total || 0).toLocaleString('id-ID')}</span>
+                                </div>
+                                <div class="order-meta">
+                                    <span style="color:var(--accent)"><i class="fas fa-money-bill"></i> Total: Rp ${(data.total || 0).toLocaleString('id-ID')}</span>
+                                    <span class="profit-text"><i class="fas fa-chart-line"></i> Profit: Rp ${Math.ceil(profit).toLocaleString('id-ID')}</span>
                                 </div>
                                 <div class="order-meta">
                                     <span><i class="fas fa-link"></i> <a href="${data.link}" target="_blank">${data.link}</a></span>
@@ -278,48 +511,73 @@
                                 <div class="order-meta">
                                     <span><i class="fas fa-clock"></i> ${date}</span>
                                     <span class="status-badge ${badgeClass}">${data.status}</span>
+                                    <button class="btn-sm btn-note" onclick="editNote('${id}', '${data.adminNote || ''}')"><i class="fas fa-pen"></i> Note</button>
                                 </div>
-                            </div>
-                            <div class="actions">
-                                ${actionBtn}
+                                ${adminNote}
                             </div>
                         </div>
-                    `;
-                });
-
-                listEl.innerHTML = html;
-                
-                // Update Statistik
-                document.getElementById('stats-container').innerHTML = `
-                    <div class="stat-box"><h3>${stats.pending}</h3><p>Pending</p></div>
-                    <div class="stat-box"><h3>${stats.processing}</h3><p>Processing</p></div>
-                    <div class="stat-box"><h3>${stats.completed}</h3><p>Selesai</p></div>
-                    <div class="stat-box"><h3>${stats.cancelled}</h3><p>Batal</p></div>
+                        <div class="actions">
+                            ${actionBtn}
+                        </div>
+                    </div>
                 `;
             });
+
+            listEl.innerHTML = html;
+            updateBulkBar();
         }
 
-        // 6. FUNGSI PROSES KE SMM PANEL (VIA WORKER)
+        function renderPagination() {
+            const totalPages = Math.ceil(filteredOrdersData.length / itemsPerPage) || 1;
+            if(currentPage > totalPages) currentPage = totalPages;
+            
+            document.getElementById('pageInfo').textContent = `Halaman ${currentPage} dari ${totalPages}`;
+            document.getElementById('prevPage').disabled = (currentPage === 1);
+            document.getElementById('nextPage').disabled = (currentPage === totalPages);
+        }
+
+        function changePage(direction) {
+            const totalPages = Math.ceil(filteredOrdersData.length / itemsPerPage) || 1;
+            currentPage += direction;
+            if (currentPage < 1) currentPage = 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+            renderOrders();
+            renderPagination();
+        }
+
+        function toggleSelect(id) {
+            if (selectedOrders.has(id)) selectedOrders.delete(id);
+            else selectedOrders.add(id);
+            renderOrders();
+        }
+
+        function updateBulkBar() {
+            const bar = document.getElementById('bulkBar');
+            const count = selectedOrders.size;
+            document.getElementById('selectedCount').textContent = count;
+            if (count > 0) bar.classList.add('active');
+            else bar.classList.remove('active');
+        }
+
+        function playNotificationSound() {
+            const audio = document.getElementById('notifSound');
+            audio.play().catch(e => console.log('Audio play failed:', e));
+            document.title = '🔔 Pesanan Baru! - Admin Sosmed';
+            setTimeout(() => { document.title = 'Admin Sosmed - Akino Store'; }, 5000);
+        }
+
         async function processToSMM(docId, serviceId, link, quantity) {
-            if (!confirm('Pastikan pembayaran user sudah masuk ke rekening Anda.\n\nProses pesanan ini ke SMM Panel sekarang?')) return;
+            if (!confirm('Pastikan pembayaran user sudah masuk.\n\nProses pesanan ini ke SMM Panel sekarang?')) return;
 
-            const btn = event.target.closest('button');
-            const originalText = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
-
+            let btn = null;
+            try { btn = event.target.closest('button'); btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>...'; } catch(e){}
+            
             try {
                 const response = await fetch(SMM_API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        action: 'add',
-                        service: serviceId,
-                        link: link,
-                        quantity: quantity
-                    })
+                    body: JSON.stringify({ action: 'add', service: serviceId, link: link, quantity: quantity })
                 });
-
                 const result = await response.json();
 
                 if (result.order) {
@@ -328,71 +586,137 @@
                         smmOrderId: result.order,
                         processedAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
-                    
-                    alert(`✅ BERHASIL! Pesanan telah masuk ke SMM Panel.\nOrder ID SMM: ${result.order}`);
+                    alert(`✅ BERHASIL! SMM ID: ${result.order}`);
+                    fetchBalance();
                 } else {
-                    alert(`❌ GAGAL DARI SMM PANEL: ${result.error || 'Terjadi kesalahan. Cek saldo SMM Panel Anda.'}`);
+                    alert(`❌ GAGAL: ${result.error || 'Cek saldo SMM Panel.'}`);
                 }
             } catch (error) {
                 console.error(error);
-                alert(`❌ ERROR JARINGAN: ${error.message}\nCek koneksi internet atau pastikan Worker sudah di-deploy dengan benar.`);
+                alert(`❌ ERROR JARINGAN: ${error.message}`);
             } finally {
-                btn.disabled = false;
-                btn.innerHTML = originalText;
+                if(btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-play"></i> Proses ke SMM'; }
             }
         }
 
-        // 7. FUNGSI SYNC STATUS OTOMATIS (CEK SMM PANEL)
-        async function syncOrderStatuses() {
-            const btnSync = document.getElementById('btnSync');
-            if(btnSync) {
-                btnSync.disabled = true;
-                btnSync.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cek...';
-            }
+        async function bulkProcess() {
+            const toProcess = Array.from(selectedOrders);
+            const validOrders = allOrdersData.filter(o => toProcess.includes(o.id) && (o.status === 'pending' || o.status === 'paid'));
+            
+            if (!validOrders.length) return alert('Tidak ada pesanan Pending yang dipilih.');
+            if (!confirm(`Proses ${validOrders.length} pesanan sekaligus ke SMM Panel?`)) return;
 
-            try {
-                // Ambil semua pesanan yang statusnya 'processing'
-                const snapshot = await db.collection("orders").where("status", "==", "processing").get();
-                
-                if (snapshot.empty) {
-                    if(btnSync) {
-                        btnSync.innerHTML = '<i class="fas fa-check"></i> Sync Status';
-                        btnSync.disabled = false;
-                    }
-                    return; // Tidak ada yang perlu di-sync
-                }
-
-                let updatedCount = 0;
-                let checkedCount = 0;
-
-                // Looping setiap pesanan
-                for (const doc of snapshot.docs) {
-                    const data = doc.data();
-                    if (!data.smmOrderId) continue; // Lewati jika tidak ada ID SMM
-
-                    checkedCount++;
-                    
-                    // Tanya ke SMM Panel via Worker
+            let success = 0, failed = 0;
+            for (const order of validOrders) {
+                try {
                     const response = await fetch(SMM_API_URL, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            action: 'status',
-                            order: data.smmOrderId
-                        })
+                        body: JSON.stringify({ action: 'add', service: order.serviceId, link: order.link, quantity: order.quantity })
                     });
+                    const result = await response.json();
+                    
+                    if (result.order) {
+                        await db.collection("orders").doc(order.id).update({
+                            status: 'processing',
+                            smmOrderId: result.order,
+                            processedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                        success++;
+                    } else {
+                        failed++;
+                    }
+                } catch (e) {
+                    failed++;
+                }
+            }
+            
+            selectedOrders.clear();
+            updateBulkBar();
+            fetchBalance();
+            alert(`✅ Selesai! Berhasil: ${success}, Gagal: ${failed}`);
+        }
 
+        async function editNote(docId, currentNote) {
+            const newNote = prompt("Masukkan catatan admin untuk pesanan ini:", currentNote);
+            if (newNote !== null && newNote !== currentNote) {
+                await db.collection("orders").doc(docId).update({ adminNote: newNote });
+            }
+        }
+
+        async function cancelOrder(docId, smmOrderId) {
+            if (!smmOrderId) return alert('Order ID SMM tidak ditemukan.');
+            if (!confirm('Yakin batalkan pesanan ini?')) return;
+
+            try {
+                const response = await fetch(SMM_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'cancel', orders: smmOrderId })
+                });
+                const result = await response.json();
+                
+                if (result && (Array.isArray(result) ? result[0].cancel : result.cancel)) {
+                    await db.collection("orders").doc(docId).update({ status: 'cancelled' });
+                    alert('✅ Pesanan dibatalkan.');
+                    fetchBalance();
+                } else {
+                    alert('❌ Gagal Cancel: ' + JSON.stringify(result));
+                }
+            } catch (error) {
+                alert('❌ Error jaringan.');
+            }
+        }
+
+        async function refillOrder(docId, smmOrderId) {
+            if (!smmOrderId) return alert('Order ID SMM tidak ditemukan.');
+            if (!confirm('Ajukan refill untuk pesanan ini?')) return;
+
+            try {
+                const response = await fetch(SMM_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'refill', order: smmOrderId })
+                });
+                const result = await response.json();
+                
+                if (result && (result.refill || result.id || result.status === 'success')) {
+                    alert('✅ Permintaan refill dikirim.');
+                } else {
+                    alert('❌ Gagal Refill: ' + (result.error || JSON.stringify(result)));
+                }
+            } catch (error) {
+                alert('❌ Error jaringan.');
+            }
+        }
+
+        async function syncOrderStatuses() {
+            const btnSync = document.getElementById('btnSync');
+            if(btnSync) { btnSync.disabled = true; btnSync.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; }
+
+            try {
+                const snapshot = await db.collection("orders").where("status", "==", "processing").get();
+                if (snapshot.empty) {
+                    if(btnSync) { btnSync.innerHTML = '<i class="fas fa-check"></i> Sync'; btnSync.disabled = false; }
+                    return;
+                }
+
+                let updatedCount = 0;
+                for (const doc of snapshot.docs) {
+                    const data = doc.data();
+                    if (!data.smmOrderId) continue;
+
+                    const response = await fetch(SMM_API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'status', order: data.smmOrderId })
+                    });
                     const result = await response.json();
 
-                    // Cek status dari SMM Panel
                     if (result.status) {
                         let newStatus = null;
-                        // SMM Panel biasanya menggunakan string "Completed", "Canceled", "Processing", dll
-                        if (result.status === 'Completed' || result.status === 'completed') {
-                            newStatus = 'completed';
-                        } else if (result.status === 'Canceled' || result.status === 'Cancelled' || result.status === 'canceled') {
-                            newStatus = 'cancelled';
-                        }
+                        if (result.status === 'Completed' || result.status === 'completed') newStatus = 'completed';
+                        else if (result.status === 'Canceled' || result.status === 'Cancelled' || result.status === 'canceled') newStatus = 'cancelled';
 
                         if (newStatus) {
                             await db.collection("orders").doc(doc.id).update({
@@ -404,29 +728,34 @@
                     }
                 }
 
-                if(btnSync) {
-                    btnSync.innerHTML = '<i class="fas fa-check"></i> Sync Status';
-                    btnSync.disabled = false;
-                }
-
-                if (updatedCount > 0) {
-                    alert(`✅ Selesai! ${updatedCount} pesanan berhasil diupdate statusnya menjadi Completed/Cancelled.`);
-                } else if (checkedCount > 0) {
-                    // alert(`ℹ️ Dicek ${checkedCount} pesanan, masih diproses di SMM Panel.`); 
-                    // Saya matikan alert ini biar gak ganggu kalau sync otomatis
-                }
+                if(btnSync) { btnSync.innerHTML = '<i class="fas fa-check"></i> Sync'; btnSync.disabled = false; }
+                if (updatedCount > 0) alert(`✅ ${updatedCount} pesanan diupdate.`);
 
             } catch (error) {
-                console.error(error);
-                if(btnSync) {
-                    btnSync.innerHTML = '<i class="fas fa-sync"></i> Sync Status';
-                    btnSync.disabled = false;
-                }
-                // alert(`❌ Gagal Sync Status: ${error.message}`);
+                if(btnSync) { btnSync.innerHTML = '<i class="fas fa-sync"></i> Sync'; btnSync.disabled = false; }
             }
         }
 
-        // 8. FUNGSI GENERATE KODE UNTUK FRONTEND (VIA WORKER)
+        function exportCSV() {
+            if (!filteredOrdersData.length) return alert('Tidak ada data untuk di-export.');
+            
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Order ID,Tanggal,Nama,WA,Layanan,Jumlah,Total,Status\n";
+
+            filteredOrdersData.forEach(function(row) {
+                const date = row.createdAt ? new Date(row.createdAt.seconds * 1000).toLocaleString('id-ID') : '-';
+                csvContent += `"${row.orderId}","${date}","${row.customerName}","${row.customerWA}","${row.serviceName}",${row.quantity},${row.total},"${row.status}"\n`;
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `Pesanan_Sosmed_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
         async function generateFrontendCode() {
             const btn = document.getElementById('btn-generate');
             const output = document.getElementById('code-output');
@@ -449,7 +778,7 @@
                     
                     const formattedServices = rawServices.map(srv => {
                         const originalRate = parseFloat(srv.rate);
-                        const markedUpRate = Math.ceil(originalRate * 1.3); // +30%
+                        const markedUpRate = Math.ceil(originalRate * 1.3);
 
                         let category = srv.category.toLowerCase();
                         if (category.includes('instagram')) category = 'instagram';
