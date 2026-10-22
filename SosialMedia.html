@@ -976,19 +976,36 @@
 
     var SERVICES = [];
 
-    async function fetchServices() {
+        async function fetchServices() {
       try {
-        const response = await fetch('https://sosmed.tsalonikabagas.workers.dev/', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'services' })
-        });
-        const rawServices = await response.json();
+        // Tarik data Layanan dan Insight secara bersamaan
+        const [resServices, resInsights] = await Promise.all([
+            fetch('https://sosmed.tsalonikabagas.workers.dev/', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'services' })
+            }),
+            fetch('https://sosmed.tsalonikabagas.workers.dev/', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'insight' }) // Ambil semua insight
+            })
+        ]);
+
+        const rawServices = await resServices.json();
+        const rawInsights = await resInsights.json();
         
+        // Buat map untuk insight berdasarkan ID layanan
+        const insightMap = {};
+        if (Array.isArray(rawInsights)) {
+            rawInsights.forEach(ins => {
+                insightMap[ins.service] = ins;
+            });
+        }
+
+        // Format data & Naikkan 30% & Auto Tag
         SERVICES = rawServices.map(srv => {
           const originalRate = parseFloat(srv.rate);
           const markedUpRate = Math.ceil(originalRate * 1.3);
-
+          
           let category = srv.category.toLowerCase();
           if (category.includes('instagram')) category = 'instagram';
           else if (category.includes('tiktok')) category = 'tiktok';
@@ -1005,23 +1022,17 @@
           
           var isNoRefill = nameL.includes('tidak bergaransi') || nameL.includes('no refill') || nameL.includes('tanpa garansi');
 
-          var dropMatch = srv.name.match(/\[(Drop\s*\d+%?)\]/i) || srv.name.match(/(Drop\s*\d+%?)/i);
-          let dropText = '';
-          if (dropMatch) {
-              tags.push('DROP');
-              dropText = dropMatch[1];
-          }
-
           if (nameL.includes('hq')) tags.push('HQ');
           if (nameL.includes('lq')) tags.push('LQ');
           if (nameL.includes('real')) tags.push('REAL');
-
-          if ((nameL.includes('garansi') || nameL.includes('refill')) && !isNoRefill) {
-              tags.push('GARANSI');
-          }
-
+          if ((nameL.includes('garansi') || nameL.includes('refill')) && !isNoRefill) tags.push('GARANSI');
           if (nameL.includes('fast') || nameL.includes('instant')) tags.push('FAST');
           if (nameL.includes('promo')) tags.push('PROMO');
+
+          // Ambil data Insight jika ada
+          const ins = insightMap[srv.service] || {};
+          
+          if (ins.recommended) tags.push('REKOMENDASI');
 
           return {
             id: parseInt(srv.service),
@@ -1031,12 +1042,17 @@
             max: parseInt(srv.max),
             rate: markedUpRate,
             tags: tags,
-            drop: dropText,
-            refill: srv.refill,
-            cancel: srv.cancel
+            // Tambahan Data Insight
+            dropRate: ins.drop_rate,
+            dropStatus: ins.drop_status,
+            speed: ins.speed_per_hour,
+            avgProcess: ins.avg_process_minutes,
+            rating: ins.rating,
+            stability: ins.stability
           };
         });
 
+        // Urutkan dari yang termurah
         SERVICES.sort(function(a, b) {
           var rateA = parseFloat(a.rate) || 0;
           var rateB = parseFloat(b.rate) || 0;
@@ -1236,13 +1252,23 @@
 
       var toDisplay = currentFilteredServices.slice(0, loadedServicesCount);
       var h = '';
-      toDisplay.forEach(function(sv, i) {
+            toDisplay.forEach(function(sv, i) {
+        // Buat badge dinamis untuk Insight
+        let insightBadges = '';
+        if (sv.dropRate !== null && sv.dropRate !== undefined) {
+            insightBadges += `<span class="badge" style="background:rgba(239,68,68,0.15); color:#f87171; border-color:rgba(239,68,68,0.3);"><i class="fas fa-arrow-down"></i> Drop: ${sv.dropRate}%</span>`;
+        }
+        if (sv.avgProcess !== null && sv.avgProcess !== undefined) {
+            insightBadges += `<span class="badge" style="background:rgba(96,165,250,0.15); color:#60a5fa; border-color:rgba(96,165,250,0.3);"><i class="fas fa-clock"></i> ~${sv.avgProcess} Mnt</span>`;
+        }
+
         h += '<div class="srv-card" style="animation:fadeInUp .4s ease '+(i*0.03)+'s both">' +
           '<div class="srv-card-top">' +
           '<div class="srv-cat-icon"><img src="'+(LOGOS[sv.category] || LOGOS['lainnya'])+'" alt="'+sv.category+'"></div>' +
           '<h3>'+formatName(sv.name, s)+'</h3>' +
           '</div>' +
-          getBadges(sv.tags) +
+          getBadges(sv.tags) + // Tag lama
+          '<div class="srv-badges" style="padding-left:0; margin-top:-0.3rem; margin-bottom:0.6rem;">' + insightBadges + '</div>' + // Tag Insight Baru
           '<div class="srv-meta"><span class="srv-tag">Min: '+sv.min.toLocaleString('id-ID')+'</span><span class="srv-tag">Max: '+sv.max.toLocaleString('id-ID')+'</span></div>' +
           '<div class="srv-price">' +
           '<div><div class="price-val">'+fRp(sv.rate)+'</div><div class="price-unit">/ 1000 unit</div></div>' +
@@ -1275,7 +1301,7 @@
         renderFiltered();
     }
 
-    function openDetailModal(sid) {
+        function openDetailModal(sid) {
       currentSrv = SERVICES.find(function(s) { return s.id === sid; });
       if (!currentSrv) return;
       
@@ -1285,6 +1311,7 @@
       var descHTML = 
         '<h3>'+currentSrv.name+'</h3>' +
         '<div class="modal-cat"><img src="'+LOGOS[currentSrv.category]+'" alt="'+currentSrv.category+'" style="width:20px;height:20px;border-radius:6px;margin-right:6px">'+currentSrv.category.toUpperCase()+'</div>' +
+        
         '<div class="price-calc" style="background: rgba(255,255,255,0.05); padding: 1.25rem; border-radius: 10px; margin-bottom: 1.25rem;">' +
         '<div class="pc-row"><span class="pc-label">Harga per 1000</span><span class="pc-val pc-total">'+fRp(currentSrv.rate)+'</span></div>' +
         '<div class="pc-row"><span class="pc-label">Minimal Order</span><span class="pc-val">'+currentSrv.min.toLocaleString('id-ID')+'</span></div>' +
@@ -1292,15 +1319,23 @@
         '<div class="pc-row"><span class="pc-label">Garansi Refill</span><span class="pc-val">'+refillText+'</span></div>' +
         '<div class="pc-row"><span class="pc-label">Bisa Cancel</span><span class="pc-val">'+cancelText+'</span></div>' +
         '</div>';
-        
-      if (currentSrv.drop) {
-        descHTML += '<div class="order-result error" style="margin-bottom:1rem;"><i class="fas fa-exclamation-triangle"></i> Info Drop: <strong>'+currentSrv.drop+'</strong></div>';
+
+      // --- TAMBAHAN INFO INSIGHT DI MODAL ---
+      if (currentSrv.dropRate !== null || currentSrv.speed !== null) {
+        descHTML += '<div style="background: rgba(255,221,87,0.05); border: 1px dashed rgba(255,221,87,0.3); padding: 1rem; border-radius: 10px; margin-bottom: 1rem;">';
+        descHTML += '<h5 style="color: var(--accent); margin-bottom: 0.5rem; font-size: 0.85rem;"><i class="fas fa-chart-bar"></i> Analitik Layanan (Real-time)</h5>';
+        if (currentSrv.dropRate !== null) descHTML += '<div class="pc-row"><span class="pc-label">Drop Rate</span><span class="pc-val" style="color:#f87171">'+currentSrv.dropRate+'%</span></div>';
+        if (currentSrv.speed !== null) descHTML += '<div class="pc-row"><span class="pc-label">Kecepatan</span><span class="pc-val">'+currentSrv.speed.toLocaleString('id-ID')+' / Jam</span></div>';
+        if (currentSrv.avgProcess !== null) descHTML += '<div class="pc-row"><span class="pc-label">Rata-rata Proses</span><span class="pc-val">~'+currentSrv.avgProcess+' Menit</span></div>';
+        if (currentSrv.rating !== null) descHTML += '<div class="pc-row"><span class="pc-label">Rating Kualitas</span><span class="pc-val" style="color:#fbbf24"><i class="fas fa-star"></i> '+currentSrv.rating+' / 5</span></div>';
+        descHTML += '</div>';
       }
       
       descHTML += 
         '<div class="os-note" style="margin-bottom:1.25rem; border-left: 3px solid var(--accent);">' +
-        '<i class="fas fa-info-circle" style="color:var(--accent);margin-right:0.3rem"></i> <strong>Harap Dibaca:</strong> Detail layanan seperti estimasi waktu proses atau persentase drop mungkin tidak sepenuhnya tercantum di sini. Pastikan Anda sudah membaca deskripsi lengkap di panel kami sebelum memesan.' +
+        '<i class="fas fa-info-circle" style="color:var(--accent);margin-right:0.3rem"></i> <strong>Harap Dibaca:</strong> Estimasi waktu dan drop rate di atas diambil dari rata-rata riwayat sistem. Hasil aktual bisa berbeda tergantung kondisi server.' +
         '</div>' +
+        
         '<button class="btn-submit" onclick="lanjutPesan()" style="margin-bottom:0.5rem;"><i class="fas fa-shopping-cart"></i> Lanjut Memesan</button>' +
         '<button class="btn-back" onclick="closeDetailModal()"><i class="fas fa-xmark"></i> Batal</button>';
         
